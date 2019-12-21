@@ -1,0 +1,130 @@
+/*.ng-invalid:not(form) .ng-select-container,
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442;
+}
+
+ng-select.ng-invalid:not(form) {
+  border-left: none;
+}
+
+ng-select.ng-disable:not(form)  {
+  background-color: rgb(136, 136, 139);
+}*/
+
+td {
+  white-space: nowrap;
+}
+
+th {
+  white-space: nowrap
+}
+
+.fileUpload {
+  position: relative;
+  overflow: hidden;
+}
+
+.fileUpload input.upload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: #333;
+}
+
+.content-modal {
+  background-color: #ecf0f5;
+}
+
+.form-control {
+  height: 36px;
+  border-radius: 4px;
+}
+
+.lefticon {
+  margin-top: 25px;
+  margin-left: -26px;
+}
+
+.icon-item-menu {
+  font-size: 18px;
+  padding-right: 35px;
+}
+
+.item-menu {
+  font-size: 17px;
+}
+
+.font-item-menu {
+  padding-left: 25px;
+}
+
+.btn-left {
+  margin-left: 8px;
+}
+
+input[type=file] {
+  color: transparent;
+}
+
+table {
+  text-align: center;
+}
+
+table th {
+  text-align: center;
+}
+
+.botao-opcao {
+  margin-left: 10px;
+}
+
+.table-roll {
+  overflow: auto;
+}
+
+.legend-default {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 10px;
+  font-size: 21px;
+  line-height: inherit;
+  color: #333;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+#toast-container {
+  margin-top: 10px;
+}
+
+/*textarea {
+  resize: none;
+}
+
+.fieldset-default {
+  border: 1px solid black;
+  margin: 0 2px 20px;
+  padding: .35em .625em .75em;
+}
+
+.control-label {
+  color: black;
+}
+
+.control-h1 {
+  color: black;
+}
+
+.inline {
+  display: inline;
+}*/

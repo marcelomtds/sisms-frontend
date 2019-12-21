@@ -1,0 +1,10 @@
+<app-header *ngIf="showTemplate"></app-header>
+<app-menu *ngIf="showTemplate"></app-menu>
+<div [ngClass]="{'content-wrapper': showTemplate}">
+  <section [ngClass]="{'content': showTemplate}" style="padding-top: 50px; background-color: #ecf0f5;">
+    <router-outlet></router-outlet>
+  </section>
+</div>
+<ngx-spinner size="large" color="#367fa9" type="ball-clip-rotate-multiple">
+  <p style="color: white"> Carregando, por favor aguarde... </p>
+</ngx-spinner>

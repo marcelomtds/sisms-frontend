@@ -1,0 +1,144 @@
+<div #content>
+  <div class="modal-header">
+    <h4 class="modal-title">Dados do Atendimento</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-header" style="border-bottom: 0px;">
+    <img src="../../../../assets/img/export_pdf.png" width="40px;" style="cursor: pointer; float: left;" height="50px;"
+      (click)="exportToPDF()" title="Exportar para PDF" class="icone_export" alt="">
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-default">
+      <legend class="legend-default">Dados Gerais do Atendimento</legend>
+      <h5 class="inline">Paciente: </h5>
+      <p class="inline">{{ atendimento?.paciente?.nomeCompleto }}</p>
+      <h5 class="inline"> - CPF: </h5>
+      <p class="inline">{{ atendimento?.paciente?.cpfFormatado }}</p>
+      <br />
+      <h5 class="inline">Tipo de Atendimento: </h5>
+      <p class="inline">{{ atendimento?.categoriaAtendimento?.descricao }}</p>
+      <br />
+      <div *ngIf="atendimento?.tipoAtendimento === 'S'">
+        <p class="inline">Sessão Avulsa</p>
+      </div>
+      <div *ngIf="atendimento?.tipoAtendimento === 'P'">
+        <h5 class="inline">Número do Pacote: </h5>
+        <p class="inline">{{ atendimento?.pacote?.numero }}</p>
+        <br />
+        <h5 class="inline">Número da Sessão: </h5>
+        <p class="inline">{{ atendimento?.numeroSessao }}</p>
+      </div>
+      <h5 class="inline">Status: </h5>
+      <p class="inline">{{ atendimento?.status === 'E' ? 'Encerrado' : 'Em aberto' }}</p>
+      <div *ngIf="atendimento?.status === 'E'">
+        <h5 class="inline">Tempo do Atendimento: </h5>
+        <p class="inline">{{ atendimento?.resultado?.tempoAtendimento }}</p>
+      </div>
+    </fieldset>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-default">
+      <legend class="legend-default">Dados do Pré-atendimento</legend>
+      <h5 class="inline">Data e Hora: </h5>
+      <p class="inline">{{ atendimento.preAtendimento.dataHora | value }}</p>
+      <br />
+      <h5 class="inline">Pressão Arterial: </h5>
+      <p class="inline">{{ atendimento?.preAtendimento?.pa | value }}</p>
+      <br />
+      <h5 class="inline">Peso: </h5>
+      <p class="inline">{{ atendimento?.preAtendimento?.peso | value }}</p>
+      <br />
+      <h5 class="inline">Cintura: </h5>
+      <p class="inline">{{ atendimento?.preAtendimento?.cintura | value }}</p>
+      <br />
+      <h5 class="inline">Linha Umbilical: </h5>
+      <p class="inline">{{ atendimento?.preAtendimento?.linhaUmbilical | value }}
+      </p>
+      <br />
+      <h5 class="inline">Flancos: </h5>
+      <p class="inline">{{ atendimento?.preAtendimento?.flancos | value }}</p>
+      <br />
+      <div *ngFor="let medidaPre of atendimento.preAtendimento.outrasMedidas">
+        <h5 class="inline">{{ medidaPre?.outraMedida?.descricao }}: </h5>
+        <p class="inline">{{ medidaPre?.valor }}</p>
+        <br />
+      </div>
+      <h5 class="inline">Observação: </h5>
+      <p class="inline">{{ atendimento?.preAtendimento?.observacao | value }}</p>
+    </fieldset>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-default">
+      <legend class="legend-default">Dados do Pós-atendimento</legend>
+      <h5 class="inline">Data e Hora: </h5>
+      <p class="inline">{{ atendimento?.posAtendimento?.dataHora | value }}</p>
+      <br />
+      <h5 class="inline">Pressão Arterial: </h5>
+      <p class="inline">{{ atendimento?.posAtendimento?.pa | value }}</p>
+      <br />
+      <h5 class="inline">Peso: </h5>
+      <p class="inline">{{ atendimento?.posAtendimento?.peso | value }}</p>
+      <br />
+      <h5 class="inline">Cintura: </h5>
+      <p class="inline">{{ atendimento?.posAtendimento?.cintura | value }}</p>
+      <br />
+      <h5 class="inline">Linha Umbilical: </h5>
+      <p class="inline">{{ atendimento?.posAtendimento?.linhaUmbilical | value }}
+      </p>
+      <br />
+      <h5 class="inline">Flancos: </h5>
+      <p class="inline">{{ atendimento?.posAtendimento?.flancos | value }}</p>
+      <br />
+      <div *ngFor="let medidaPos of atendimento?.posAtendimento?.outrasMedidas">
+        <h5 class="inline">{{ medidaPos?.outraMedida?.descricao }}: </h5>
+        <p class="inline">{{ medidaPos?.valor }}</p>
+        <br />
+      </div>
+      <h5 class="inline">Observação: </h5>
+      <p class="inline">{{ atendimento?.posAtendimento?.observacao | value }}</p>
+    </fieldset>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-default">
+      <legend class="legend-default">Resultados</legend>
+      <h5 class="inline">Peso: </h5>
+      <p class="inline">{{ atendimento?.resultado?.peso }}</p>
+      <br />
+      <h5 class="inline">Cintura: </h5>
+      <p class="inline">{{ atendimento?.resultado?.cintura }}
+      </p>
+      <br />
+      <h5 class="inline">Linha Umbilical: </h5>
+      <p class="inline">{{ atendimento?.resultado?.linhaUmbilical }}
+      </p>
+      <br />
+      <h5 class="inline">Flancos: </h5>
+      <p class="inline">{{ atendimento?.resultado?.flancos }}
+      </p>
+      <div *ngFor="let outraMedida of atendimento?.resultado?.outrasMedidas">
+        <h5 class="inline">{{ outraMedida?.descricao }}: </h5>
+        <p class="inline">{{ outraMedida?.valor }}</p>
+        <br />
+      </div>
+    </fieldset>
+  </div>
+  <div *ngIf="atendimento?.base64List?.length > 0" class="modal-body">
+    <fieldset class="fieldset-default">
+      <legend class="legend-default">Imagens</legend>
+      <carousel>
+        <slide *ngFor="let item of atendimento?.base64List">
+          <img [src]="item.imagem" alt="first slide" height="400px;" style="display: block; width: 100%;">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Observação: </h3>
+            <p>{{ item?.observacao }}</p>
+          </div>
+        </slide>
+      </carousel>
+    </fieldset>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modalRef.hide()">Fechar</button>
+  </div>
+</div>

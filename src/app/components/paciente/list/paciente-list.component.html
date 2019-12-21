@@ -1,0 +1,166 @@
+<section class="content-header">
+  <h1>Buscar</h1>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Filtros</h3>
+        </div>
+        <div class="box-body">
+          <form [formGroup]="form">
+            <div class="row">
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="cpf">CPF</label>
+                  <input type="text" class="form-control" formControlName="cpf" id="cpf" mask="000.000.000-00">
+                </div>
+              </div>
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="nome">Nome</label>
+                  <input type="text" class="form-control" maxlength="200" id="nome" formControlName="nomeCompleto">
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="sexo">Sexo</label>
+                  <ng-select id="sexo" maxlength="50" formControlName="sexoId" [items]="sexos" bindLabel="descricao"
+                    bindValue="id">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                  <label for="status">Status</label>
+                  <ng-select id="status" maxlength="50" formControlName="ativo">
+                    <ng-option [value]=true>Ativo</ng-option>
+                    <ng-option [value]=false>Inativo</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="celular">Celular</label>
+                  <input type="text" class="form-control" id="celular" formControlName="celular" mask="(00) 00000-0000">
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="celularRecado">Celular Recado</label>
+                  <input type="text" class="form-control" id="celularRecado" formControlName="celularRecado"
+                    mask="(00) 00000-0000">
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="residencial">Residencial</label>
+                  <input type="text" class="form-control" id="residencial" formControlName="residencial"
+                    mask="(00) 0000-0000">
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="comercial">Comercial</label>
+                  <input type="text" class="form-control" id="comercial" formControlName="comercial"
+                    mask="(00) 0000-0000">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="localidade">Cidade</label>
+                  <ng-select id="localidade" maxlength="50" formControlName="localidadeId" [items]="localidades"
+                    bindLabel="descricao" bindValue="id" placeholder="Todas" (click)="onClickLocalidade()">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="uf">Estado</label>
+                  <ng-select id="uf" maxlength="50" (change)="onChangeUf($event)" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="selectedUF" [items]="ufs" bindLabel="descricao" bindValue="id">
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="box-footer">
+          <button (click)="onClickFormSubmit()" class="btn btn-primary pull-right" style="margin-left: 15px;"><em
+              class="fa fa-search"></em>&nbsp;Buscar</button>
+          <button class="btn btn-warning pull-right" (click)="onClickLimparCampos()"><em
+              class="fa fa-eraser"></em>&nbsp;Limpar</button>
+        </div>
+      </div>
+      <div *ngIf="dados?.content?.length > 0" class="col-md-12" style="padding: 0px">
+        <div class="box box-primary">
+          <div class="box-header">
+            <div class="row">
+              <div class="col-xs-8">
+                <h3 class="box-title">Pacientes</h3>
+              </div>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="table-roll">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Opções</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('nomeCompleto')">Nome</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('cpf')">CPF</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('dataNascimento')">Data de Nascimento</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('dataNascimento')">Idade</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('sexo.descricao')">Sexo</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('ativo')">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let paciente of dados?.content">
+                    <td>
+                      <button title="{{ paciente?.ativo ? 'Inativar' : 'Ativar' }}"
+                        (click)="onClickUpdateStatus(paciente)"
+                        class="btn btn-{{ paciente?.ativo ? 'danger' : 'success' }} btn-left"><em
+                          class="fa fa-{{ paciente?.ativo ? 'ban' : 'check' }}"></em></button>
+                      <button title="Visualizar" (click)="onClickOpenModalVisualizar(paciente)"
+                        class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
+                      <button title="Editar" [routerLink]="['/paciente-form', paciente.id]"
+                        class="btn btn-primary btn-left"><em class="fa fa-pencil"></em></button>
+                    </td>
+                    <td>
+                      {{ paciente.nomeCompleto }}
+                    </td>
+                    <td>
+                      {{ paciente.cpf | cpf }}
+                    </td>
+                    <td>
+                      {{ paciente.dataNascimento | date: 'dd/MM/yyyy' }}
+                    </td>
+                    <td>
+                      {{ paciente.dataNascimento | idade }}
+                    </td>
+                    <td>
+                      {{ paciente.sexo.descricao }}
+                    </td>
+                    <td>
+                      {{ paciente.ativo ? 'Ativo' : 'Inativo' }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="box-footer">
+            <app-page-action [dados]="dados" [filtro]="filtro" (searchByFilter)="searchByFilter()">
+            </app-page-action>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

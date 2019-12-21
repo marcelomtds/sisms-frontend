@@ -1,0 +1,173 @@
+<section class="content-header">
+  <h1>Buscar Atendimentos de {{ categoriaAtendimentoRouting.descricao }}</h1>
+</section>
+<section class="content">
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Filtros</h3>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <div class="form-group">
+                  <label for="tipoAtendimento">Tipo de Atendimento</label>
+                  <ng-select id="tipoAtendimento" maxlength="50" formControlName="tipoAtendimentoId"
+                    [items]="tiposAtendimento" bindLabel="descricao" bindValue="id">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="preAtendimentoData">Data/Hora Pré-atendimento</label>
+                  <input id="preAtendimentoData" type="text" mask="00/00/0000 00:00"
+                    formControlName="preAtendimentoData" class="form-control" />
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="posAtendimentoData">Data/Hora Pós-atendimento</label>
+                  <input id="posAtendimentoData" type="text" mask="00/00/0000 00:00"
+                    formControlName="posAtendimentoData" class="form-control" />
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="aberto">Status do Atendimento</label>
+                  <ng-select id="aberto" maxlength="50" formControlName="aberto">
+                    <ng-option [value]=true>Em Aberto</ng-option>
+                    <ng-option [value]=false>Encerrado</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="form-group">
+                  <label for="paciente">Paciente</label>
+                  <ng-select id="paciente" maxlength="50" formControlName="pacienteId" [items]="pacientes"
+                    bindLabel="nomeCompleto" bindValue="id">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.nomeCompleto }}
+                      <br />
+                      <small>{{ item.cpf | cpf }}</small>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div *ngIf="authGuardService.isPermitido(permissaoAdministrador)"
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="form-group">
+                  <label for="usuario">Usuário</label>
+                  <ng-select id="usuario" maxlength="50" formControlName="usuarioId" [items]="usuarios"
+                    bindLabel="nomeCompleto" bindValue="id">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.nomeCompleto }}
+                      <br />
+                      <small>{{ item.cpf | cpf }}</small>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="box-footer">
+            <button (click)="onClickFormSubmit()" class="btn btn-primary pull-right" style="margin-left: 15px;"><em
+                class="fa fa-search"></em>&nbsp;Buscar</button>
+            <button class="btn btn-warning pull-right" (click)="onClickLimparCampos()"><em
+                class="fa fa-eraser"></em>&nbsp;Limpar</button>
+          </div>
+        </div>
+
+        <div *ngIf="dados?.content?.length > 0" class="col-md-12" style="padding: 0px">
+          <div class="box box-primary">
+            <div class="box-header">
+              <div class="row">
+                <div class="col-xs-8">
+                  <h3 class="box-title">Atendimentos</h3>
+                </div>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="table-roll">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>Alerta</th>
+                      <th>Opções</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')">Paciente</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')">Usuário</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('preAtendimento.data')">Data/Hora
+                        Pré-atendimento</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('posAtendimento.data')">Data/Hora
+                        Pós-atendimento</th>
+                      <th>Tempo de Atendimento</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('tipoAtendimento.descricao')">Tipo de
+                        Atendimento</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('pacote.numero')">Número Pacote</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('numero')">Número Sessão</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('aberto')">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let atendimento of dados?.content">
+                      <td>
+                        <button *ngIf="atendimento.aberto" (click)="onClickSendMessageWarning()" title="Alerta"
+                          class="btn btn-warning"><em class="fa fa-warning"></em></button>
+                        <div *ngIf="!atendimento.aberto">
+                          {{ '-' }}
+                        </div>
+                      </td>
+                      <td>
+                        <button title="Editar" (click)="onClickEditar(atendimento.id)" class="btn btn-primary"><em
+                            class="fa fa-pencil"></em></button>
+                        <button title="Visualizar" (click)="onClickOpenModalVisualizar(atendimento.id)"
+                          class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
+                      </td>
+                      <td>
+                        {{ atendimento.pacienteNomeCompleto }}
+                      </td>
+                      <td>
+                        {{ atendimento.usuarioNomeCompleto }}
+                      </td>
+                      <td>
+                        {{ atendimento.preAtendimentoData | date: 'dd/MM/yyyy HH:mm' }}
+                      </td>
+                      <td *ngIf="atendimento?.posAtendimentoData">
+                        {{ atendimento?.posAtendimentoData | date: 'dd/MM/yyyy HH:mm' }}
+                      </td>
+                      <td *ngIf="!atendimento?.posAtendimentoData">
+                        {{ '-' }}
+                      </td>
+                      <td>
+                        {{ calcularTempo(atendimento.preAtendimentoData, atendimento?.posAtendimentoData) }}
+                      </td>
+                      <td>
+                        {{ atendimento?.tipoAtendimentoDescricao }}
+                      </td>
+                      <td>
+                        {{ atendimento?.pacoteNumero || '-' }}
+                      </td>
+                      <td>
+                        {{ atendimento.numero}}
+                      </td>
+                      <td>
+                        {{ atendimento.aberto ? 'Em Aberto' : 'Encerrado' }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="box-footer">
+              <app-page-action [dados]="dados" [filtro]="filtro" (searchByFilter)="searchByFilter()">
+              </app-page-action>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>

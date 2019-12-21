@@ -1,0 +1,198 @@
+<section class="content content-modal">
+  <div class="modal-header" style="padding-top: 0px; padding-bottom: 15px;">
+    <button style="margin-right: -15px;" class="btn btn-danger pull-right" (click)="onClickCloseModal()"><em
+        class="fa fa-close"></em>&nbsp;Fechar</button>
+  </div>
+  <div class="box box-primary" *ngIf="dados?.dataCadastro">
+    <div class="box-header with-border">
+      <h3 class="box-title">Imagem do Perfil</h3>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="form-group">
+            <img src="{{ dados.imagem || '../../../../assets/img/sem-foto.jpg' }}" width="360px" height="250px"
+              class="user-image" alt="Foto de Perfil">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <div class="row">
+        <div class="col-xs-3">
+          <h3 class="box-title">Dados Pessoais</h3>
+        </div>
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Nome Completo</label>
+            <p>{{ dados.nomeCompleto }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Data de Nascimento</label>
+            <p>{{ dados.dataNascimento | date : 'dd/MM/yyyy' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Idade</label>
+            <p>{{ dados.dataNascimento | idade }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>CPF</label>
+            <p>{{ dados?.cpf ? (dados.cpf | cpf) : '-' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>RG</label>
+            <p>{{ dados?.rg || '-' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Sexo</label>
+            <p>{{ dados.sexoDescricao }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Profissão</label>
+            <p>{{ dados?.profissaoDescricao || '-' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Status</label>
+            <p>{{ dados.ativo ? 'Ativo' : 'Inativo' }}</p>
+          </div>
+        </div>
+        <div *ngIf="dados?.dataCadastro" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Data de Cadastro</label>
+            <p>{{ dados.dataCadastro | date : 'dd/MM/yyyy' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <div class="row">
+        <div class="col-xs-3">
+          <h3 class="box-title">Dados do Endereço</h3>
+        </div>
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <div class="form-group">
+            <label>CEP</label>
+            <p>{{ dados.enderecoCep | cep }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Logradouro</label>
+            <p>{{ dados.enderecoLogradouro }}</p>
+          </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <div class="form-group">
+            <label>Número</label>
+            <p>{{ dados.enderecoNumero }}</p>
+          </div>
+        </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <div class="form-group">
+            <label>Complemento</label>
+            <p>{{ dados?.enderecoComplemento || '-' }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <div class="form-group">
+            <label>Bairro</label>
+            <p>{{ dados.enderecoBairro }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Ponto de Referência</label>
+            <p>{{ dados?.enderecoPontoReferencia || '-' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <div class="form-group">
+            <label>Estado</label>
+            <p>{{ dados?.enderecoLocalidadeUFDescricao }}</p>
+          </div>
+        </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <div class="form-group">
+            <label>Cidade</label>
+            <p>{{ dados.enderecoLocalidadeDescricao }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <div class="row">
+        <div class="col-xs-3">
+          <h3 class="box-title">Dados do Contato</h3>
+        </div>
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <div class="form-group">
+            <label>Celular</label>
+            <p>{{ dados?.contatoCelular ? (dados.contatoCelular | telefone) : '-' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <div class="form-group">
+            <label>Celular Recado</label>
+            <p>{{ dados?.contatoCelularRecado ? (dados.contatoCelularRecado | telefone) : '-' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <div class="form-group">
+            <label>Residencial</label>
+            <p>{{ dados?.contatoResidencial ? (dados.contatoResidencial | telefone) : '-' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <div class="form-group">
+            <label>Comercial</label>
+            <p>{{ dados?.contatoComercial ? (dados.contatoComercial | telefone) : '-' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>E-mail</label>
+            <p>{{ dados?.contatoEmail ? (dados.contatoEmail || '-') : '-' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

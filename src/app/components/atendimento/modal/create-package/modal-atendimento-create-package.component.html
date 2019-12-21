@@ -1,0 +1,31 @@
+<section class="content content-modal">
+  <div class="modal-header" style="padding-top: 0px; padding-bottom: 15px;">
+    <button type="button" class="close" aria-label="Close" (click)="onClickCloseModal()">
+      <span aria-hidden="true">Fechar</span>
+    </button>
+  </div>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ isEdit ? 'Alterar' : 'Criar novo' }} pacote de {{ categoriaAtendimento }}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="form-group">
+          <label for="valorPacote">Valor do Pacote</label>
+          <input id="valorPacote" currencyMask [options]="{ suffix: '', prefix: '', thousands: '.', decimal: ',' }"
+            maxlength="10" type="text" [(ngModel)]="valorPacote" class="form-control" />
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding-top: 25px;">
+        <div class="form-group">
+          <button class="btn btn-primary" (click)="onClickSave()">Salvar</button>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding-top: 25px;">
+        <div class="form-group">
+          <button class="btn btn-default" (click)="onClickLimpar()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

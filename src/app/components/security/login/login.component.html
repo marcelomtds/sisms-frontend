@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+  </div>
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    <div class="row" style="text-align: center;">
+      <img src="../../../../assets/img/login.png" width="120px" height="120px" alt="">
+    </div>
+    <div class="row">
+      <h1 style="text-align: center;"><strong style="color: #3c8dbc;">Sis</strong>Ms</h1>
+    </div>
+    <div class="row">
+      <h4 style="text-align: center;">Sistema Gerenciador de Atendimentos</h4>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Login</h3>
+          </div>
+          <div class="box-body">
+            <form [formGroup]="form">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label for="cpf">CPF</label>
+                    <input type="text" [validation]="false" class="form-control" id="cpf" formControlName="cpf"
+                      mask="000.000.000-00">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <div class="input-group">
+                      <input maxlength="20" type="{{ isViewPassword ? 'text' : 'password' }}" class="form-control"
+                        id="senha" formControlName="senha">
+                      <div style="cursor: pointer;" class="input-group-addon" (click)="showHidePassword()">
+                        <em class="{{ isViewPassword ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></em>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="box-footer">
+            <button (click)="onClickFormSubmit()" class="btn btn-primary pull-right" style="margin-left: 15px;"><em
+                class="fa fa-check"></em>&nbsp;Entrar</button>
+            <button class="btn btn-warning pull-right" (click)="onClickLimparCampos()"><em
+                class="fa fa-eraser"></em>&nbsp;Limpar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+  </div>
+</div>

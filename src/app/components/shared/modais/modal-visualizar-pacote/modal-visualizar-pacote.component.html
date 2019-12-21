@@ -1,0 +1,121 @@
+<section class="content content-modal">
+  <div class="modal-header" style="padding-top: 0px; padding-bottom: 15px;">
+    <button style="margin-right: -15px;" class="btn btn-danger pull-right" (click)="onClickCloseModal()"><em
+        class="fa fa-close"></em>&nbsp;Fechar</button>
+  </div>
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <div class="row">
+        <div class="col-xs-8">
+          <h3 class="box-title">Dados do Pacote</h3>
+        </div>
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Paciente</label>
+            <p>{{ dados.pacienteNomeCompleto }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Usuário</label>
+            <p>{{ dados.usuarioNomeCompleto }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Data de Criação</label>
+            <p>{{ dados.dataCriacao | date : 'dd/MM/yyyy' }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Categoria de Atendimento</label>
+            <p>{{ dados.categoriaAtendimentoDescricao }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Valor</label>
+            <p>{{ dados.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Número</label>
+            <p>{{ dados.numero }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Status</label>
+            <p>{{ dados.aberto ? 'Em Aberto' : 'Encerrado' }}</p>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Quantidade de Atendimentos</label>
+            <p>{{ dados.quantidadeAtendimentos }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="atendimentos?.length" class="box box-primary">
+    <div class="box-header with-border">
+      <div class="row">
+        <div class="col-xs-8">
+          <h3 class="box-title">Atendimentos</h3>
+        </div>
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="table-roll">
+        <table id="example2" class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Usuário</th>
+              <th>Data/Hora Pré-atendimento</th>
+              <th>Data/Hora Pós-atendimento</th>
+              <th>Tempo de Atendimento</th>
+              <th>Número Sessão</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let atendimento of atendimentos">
+              <td>
+                {{ atendimento.usuarioNomeCompleto }}
+              </td>
+              <td>
+                {{ atendimento.preAtendimentoData | date: 'dd/MM/yyyy HH:mm' }}
+              </td>
+              <td *ngIf="atendimento.posAtendimentoData">
+                {{ atendimento.posAtendimentoData | date: 'dd/MM/yyyy HH:mm' }}
+              </td>
+              <td *ngIf="!atendimento?.posAtendimentoData">
+                {{ '-' }}
+              </td>
+              <td>
+                {{ calcularTempo(atendimento.preAtendimentoData, atendimento?.posAtendimentoData) }}
+              </td>
+              <td>
+                {{ atendimento.numero}}
+              </td>
+              <td>
+                {{ atendimento.aberto ? 'Em Aberto' : 'Encerrado' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

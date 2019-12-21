@@ -1,0 +1,20 @@
+<section class="content content-modal">
+  <div class="modal-header" style="padding-top: 0px; padding-bottom: 15px;">
+    <button style="margin-right: -15px;" class="btn btn-danger pull-right" (click)="onClickCloseModal(false)"><em
+        class="fa fa-close"></em>&nbsp;Fechar</button>
+  </div>
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">{{ titulo }}</h3>
+    </div>
+    <div class="box-body">
+      <p>{{ corpo }}</p>
+    </div>
+    <div class="box-footer">
+      <button class="btn btn-primary pull-right" style="margin-left: 15px;" (click)="onClickCloseModal(true)"><em
+          class="fa fa-check"></em>&nbsp;Sim</button>
+      <button class="btn btn-danger pull-right" (click)="onClickCloseModal(false)"><em
+          class="fa fa-ban"></em>&nbsp;Não</button>
+    </div>
+  </div>
+</section>

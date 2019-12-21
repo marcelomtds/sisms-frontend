@@ -1,0 +1,388 @@
+<section class="content-header">
+  <h1>{{ form.controls.id.value ? 'Editar' : 'Cadastar' }} Atendimento de {{ categoriaAtendimentoRouting?.descricao }}
+  </h1>
+</section>
+<section class="content">
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Dados do Atendimento</h3>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <div class="form-group">
+                  <label for="tipoAtendimento">* Tipo de Atendimento</label>
+                  <ng-select id="tipoAtendimento" [disabled]="form.controls.id.value" maxlength="50"
+                    [ngModelOptions]="{standalone: true}" [(ngModel)]="tipoAtendimentoId" [clearable]="false"
+                    [items]="tiposAtendimento" bindLabel="descricao" bindValue="id"
+                    (change)="onChangeTipoAtendimento()">
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="form-group">
+                  <label for="paciente">* Paciente</label>
+                  <ng-select id="paciente" maxlength="50" (change)="onChangePaciente()" formControlName="pacienteId"
+                    [items]="pacientes" bindLabel="nomeCompleto" bindValue="id">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.nomeCompleto }}
+                      <br />
+                      <small>{{ item.cpf | cpf }}</small>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <ng-container *ngIf="form.controls.pacienteId.value || form.controls.id.value">
+                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                  <div class="form-group">
+                    <label for="numeroSessao">* Sessão</label>
+                    <input [value]="quantidadeSessao" id="numeroSessao" readonly type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                  <div class="form-group">
+                    <label for="aberto">* Cadastrar pós-atendimento?</label>
+                    <ng-select id="aberto" maxlength="50" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="isCadastrarPosAtendimento" [clearable]="false"
+                      [disabled]="form.controls.id.value && form.controls.aberto.value === false">
+                      <ng-option [value]=true>Sim</ng-option>
+                      <ng-option [value]=false>Não</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+
+            <div *ngIf="form.controls.pacienteId.value || form.controls.id.value" class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="conduta">Conduta</label>
+                  <textarea trim="blur" style="resize: none" id="conduta" maxlength="1000" type="text" rows="5"
+                    formControlName="conduta" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="form.controls.pacienteId.value && checkTipoAtendimentoPacote() && pacote?.id"
+          class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Dados do Pacote</h3>
+          </div>
+          <div class="box-body">
+            <div *ngIf="!form.controls.id.value && form.controls.pacienteId.value && checkTipoAtendimentoPacote()"
+              class="row">
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <button title="Adicionar Medida" (click)="onOpenModalCriarPacote(false)"
+                    class="btn btn-primary"><span><em class="fa fa-plus"></em>&nbsp;Criar Pacote
+                      Novo</span></button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label>Usuário</label>
+                  <p>{{ pacote.usuarioNomeCompleto }}</p>
+                </div>
+              </div>
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label>Data de Criação</label>
+                  <p>{{ pacote.dataCriacao | date : 'dd/MM/yyyy' }}</p>
+                </div>
+              </div>
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label>Valor</label>
+                  <p>{{ pacote.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label>Status</label>
+                  <p>{{ pacote.aberto ? 'Em Aberto' : 'Encerrado' }}</p>
+                </div>
+              </div>
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label>Número</label>
+                  <p>{{ pacote.numero }}</p>
+                </div>
+              </div>
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label>Quantidade de Atendimentos</label>
+                  <p>{{ pacote.quantidadeAtendimentos }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="form.controls.pacienteId.value || form.controls.id.value">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Dados do Pré-Atendimento</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="preAtendimentoData">* Data e Hora</label>
+                    <input id="preAtendimentoData" (focus)="setDataHoraAtual('preAtendimentoData')" type="text"
+                      [validation]="false" mask="00/00/0000 00:00" formControlName="preAtendimentoData"
+                      class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="preAtendimentoPressaoArterial">Pressão Arterial</label>
+                    <input [dropSpecialCharacters]="false" mask="000/000" id="preAtendimentoPressaoArterial"
+                      maxlength="7" type="text" formControlName="preAtendimentoPressaoArterial" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="preAtendimentoPeso">Peso (kg)</label>
+                    <input currencyMask
+                      [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: ',', decimal: '.', allowNegative: 'false' }"
+                      id="preAtendimentoPeso" maxlength="5" type="text" formControlName="preAtendimentoPeso"
+                      class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="preAtendimentoSupraUmbilical">Supra Umbilical (cm)</label>
+                    <input currencyMask
+                      [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: '.', decimal: ',', allowNegative: 'false' }"
+                      maxlength="5" id="preAtendimentoSupraUmbilical" type="text"
+                      formControlName="preAtendimentoSupraUmbilical" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="preAtendimentoLinhaUmbilical">Linha Umbilical (cm)</label>
+                    <input currencyMask
+                      [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: '.', decimal: ',', allowNegative: 'false' }"
+                      id="preAtendimentoLinhaUmbilical" maxlength="5" type="text"
+                      formControlName="preAtendimentoLinhaUmbilical" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="preAtendimentoInfraUmbilical">Infra Umbilical (cm)</label>
+                    <input currencyMask
+                      [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: '.', decimal: ',', allowNegative: 'false' }"
+                      id="preAtendimentoInfraUmbilical" maxlength="5" type="text"
+                      formControlName="preAtendimentoInfraUmbilical" class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <legend class="legend-default">Outras Medidas</legend>
+              </div>
+              <div class="row">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                  <div class="form-group">
+                    <button title="Adicionar Medida" (click)="onClickAdicionarMedida()"
+                      class="btn btn-primary"><span><em class="fa fa-plus"></em>&nbsp;Adicionar Medida</span></button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+                  *ngFor="let medida of outrasMedidasSelecionadas; let i = index">
+                  <div class="form-group" style="text-align: end;">
+                    <button title="Remover Medida" class="btn btn-danger" type="button"
+                      (click)="onClickRemoverOutraMedida(medida.index)"><em class="fa fa-close"></em></button>
+                  </div>
+                  <div class="form-group">
+                    <label for="descricaOutraMedidaPre{{ i }}">* Medida</label>
+                    <ng-select id="descricaOutraMedidaPre{{ i }}" maxlength="50" [items]="outrasMedidas"
+                      [ngModelOptions]="{standalone: true}" [(ngModel)]="medida.outraMedidaId" [multiple]="false"
+                      bindLabel="descricao" bindValue="id" placeholder="Selecione">
+                    </ng-select>
+                  </div>
+                  <div class="form-group">
+                    <label for="valorOutraMedidaPre{{ i }}">* Valor (cm)</label>
+                    <input id="valorOutraMedidaPre{{ i }}" currencyMask
+                      [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: '.', decimal: ',', allowNegative: 'false' }"
+                      maxlength="5" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="medida.valorPre"
+                      class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label for="preAtendimentoObservacao">Observacão</label>
+                    <textarea trim="blur" style="resize: none" id="preAtendimentoObservacao" maxlength="1000" type="text" rows="5"
+                      formControlName="preAtendimentoObservacao" class="form-control"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="isCadastrarPosAtendimento" class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Dados do Pós-Atendimento</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="posAtendimentoData">* Data e Hora</label>
+                    <input id="posAtendimentoData" (focus)="setDataHoraAtual('posAtendimentoData')" type="text"
+                      [validation]="false" mask="00/00/0000 00:00" formControlName="posAtendimentoData"
+                      class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="posAtendimentoPressaoArterial">Pressão Arterial</label>
+                    <input [dropSpecialCharacters]="false" mask="000/000" id="posAtendimentoPressaoArterial"
+                      maxlength="7" type="text" formControlName="posAtendimentoPressaoArterial" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="posAtendimentoPeso">Peso (kg)</label>
+                    <input currencyMask
+                      [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: ',', decimal: '.', allowNegative: 'false' }"
+                      id="pesoPreAtendimento" maxlength="5" id="posAtendimentoPeso" type="text"
+                      formControlName="posAtendimentoPeso" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="posAtendimentoSupraUmbilical">Supra Umbilical (cm)</label>
+                    <input id="posAtendimentoSupraUmbilical" currencyMask
+                      [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: '.', decimal: ',', allowNegative: 'false' }"
+                      maxlength="5" type="text" formControlName="posAtendimentoSupraUmbilical" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="posAtendimentoLinhaUmbilical">Linha Umbilical (cm)</label>
+                    <input id="posAtendimentoLinhaUmbilical" currencyMask
+                      [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: '.', decimal: ',', allowNegative: 'false' }"
+                      maxlength="5" type="text" formControlName="posAtendimentoLinhaUmbilical" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label for="posAtendimentoInfraUmbilical">Infra Umbilical (cm)</label>
+                    <input id="posAtendimentoInfraUmbilical" currencyMask
+                      [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: '.', decimal: ',', allowNegative: 'false' }"
+                      maxlength="5" type="text" formControlName="posAtendimentoInfraUmbilical" class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <legend class="legend-default">Outras Medidas</legend>
+              </div>
+              <div class="row">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                  <div class="form-group">
+                    <button title="Adicionar Medida" (click)="onClickAdicionarMedida()"
+                      class="btn btn-primary"><span><em class="fa fa-plus"></em>&nbsp;Adicionar Medida</span></button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+                  *ngFor="let medida of outrasMedidasSelecionadas; let i = index">
+                  <div class="form-group" style="text-align: end;">
+                    <button title="Remover Medida" class="btn btn-danger" type="button"
+                      (click)="onClickRemoverOutraMedida(medida.index)"><em class="fa fa-close"></em></button>
+                  </div>
+                  <div class="form-group">
+                    <label for="descricaOutraMedidaPos{{ i }}">* Medida</label>
+                    <ng-select id="descricaOutraMedidaPos{{ i }}" maxlength="50" [items]="outrasMedidas"
+                      [ngModelOptions]="{standalone: true}" [(ngModel)]="medida.outraMedidaId" [multiple]="false"
+                      bindLabel="descricao" bindValue="id" placeholder="Selecione">
+                    </ng-select>
+                  </div>
+                  <div class="form-group">
+                    <label for="valorOutraMedidaPos{{ i }}">* Valor (cm)</label>
+                    <input id="valorOutraMedidaPos{{ i }}" currencyMask
+                      [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: '.', decimal: ',', allowNegative: 'false' }"
+                      maxlength="5" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="medida.valorPos "
+                      class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label for="posAtendimentoObservacao">Observacão</label>
+                    <textarea trim="blur" style="resize: none" id="posAtendimentoObservacao" maxlength="700" type="text" rows="5"
+                      formControlName="posAtendimentoObservacao" class="form-control"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Imagens</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                  <div class="form-group">
+                    <div class="fileUpload btn btn-primary">
+                      <span><em class="fa fa-plus"></em>&nbsp;Adicionar Imagens</span>
+                      <input title="Adicionar Imagens" #inputImage id="imagem" type="file" multiple class="upload"
+                        (change)="onChangeImage($event.target.files)" (click)="inputImage.value=null" />
+                    </div>
+                    <button title="Visualizar Imagens" class="btn btn-primary"
+                      *ngIf="form.controls.imagens.value?.length" style="margin-left: 15px;"
+                      (click)="onClickOpenModalVisualizarImagens()"><em class="fa fa-eye"></em>&nbsp;Visualizar
+                      Imagens</button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+                  *ngFor="let imagem of form.controls.imagens.value; let i = index">
+                  <div class="form-group" style="text-align: end;">
+                    <button title="Remover Imagem" class="btn btn-danger" type="button"
+                      (click)="onClickRemoverImagem(imagem.index)"><em class="fa fa-close"></em></button>
+                  </div>
+                  <div class="form-group">
+                    <img alt="Imagem" [src]="imagem.imagem" id="image{{ i }}" width="100%" height="100%">
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="observacaoImagem{{ i }}">Observacão</label>
+                    <textarea trim="blur" style="resize: none;" id="observacaoImagem{{ i }}" [(ngModel)]="imagem.observacao"
+                      [ngModelOptions]="{standalone: true}" id="observacaoImagem" maxlength="200" type="text" rows="4"
+                      class="form-control"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="box box-primary">
+            <div class="box-footer">
+              <button class="btn btn-primary pull-right" (click)="onClickFormSubmit()"><em
+                  class="fa fa-save"></em>&nbsp;Salvar</button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+</section>

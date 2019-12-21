@@ -1,0 +1,79 @@
+<header class="main-header" style="position: fixed; width: -webkit-fill-available;">
+  <a href="index2.html" class="logo">
+    <span class="logo-mini"><b>S</b>M</span>
+    <span class="logo-lg"><b>Sis</b>Ms</span>
+  </a>
+  <nav class="navbar navbar-static-top">
+    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+      <span class="sr-only">Toggle navigation</span>
+    </a>
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <li class="dropdown notifications-menu" title="Configurações">
+          <a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-gears"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <ul class="menu">
+                <li>
+                  <a style="cursor: pointer;" (click)="onClickOpenModal('profissao')">
+                    <i class="fa fa-users text-aqua"></i> Gerenciar Profissões
+                  </a>
+                </li>
+                <li>
+                  <a style="cursor: pointer;" (click)="onClickOpenModal('medida')">
+                    <i class="fa fa-users text-aqua"></i> Gerenciar Medidas
+                  </a>
+                </li>
+                <li>
+                  <a style="cursor: pointer;" (click)="onClickOpenModal('uf')">
+                    <i class="fa fa-users text-aqua"></i> Gerenciar Estados
+                  </a>
+                </li>
+                <li>
+                  <a style="cursor: pointer;" (click)="onClickOpenModal('localidade')">
+                    <i class="fa fa-users text-aqua"></i> Gerenciar Cidades
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown user user-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="{{ usuario.imagem || '../../../../assets/img/sem-foto.jpg' }}" class="user-image"
+              alt="Foto do Perfil">
+            <span class="hidden-xs">{{ usuario?.nomeCompleto }}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="user-header">
+              <img src="{{ usuario.imagem || '../../../../assets/img/sem-foto.jpg' }}" class="img-circle"
+                alt="Foto do Perfil">
+              <p>
+                {{ usuario?.nomeCompleto }} <br>
+                <small>{{ usuario?.perfil?.descricao }}</small>
+              </p>
+            </li>
+            <li class="user-body">
+              <div class="row">
+                <div [routerLink]="[ '/usuario-form', usuario.id ]" class="col-xs-6 text-center"
+                  style="cursor: pointer;">
+                  <a>Alterar Dados Cadastrais</a>
+                </div>
+                <div [routerLink]="[ '/alterar-senha']" class="col-xs-6 text-center" style="cursor: pointer;">
+                  <a>Alterar Senha</a>
+                </div>
+              </div>
+            </li>
+            <li class="user-footer">
+              <div class="pull-right">
+                <a (click)="signOut()" class="btn btn-default btn-flat">Sair</a>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

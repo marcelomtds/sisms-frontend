@@ -1,0 +1,122 @@
+<section class="content-header">
+  <h1>Buscar Usuários</h1>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Filtros</h3>
+        </div>
+        <div class="box-body">
+          <form [formGroup]="form">
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
+                <label for="nome">Nome</label>
+                <input type="text" trim="blur" class="form-control" maxlength="200" id="nome"
+                  formControlName="nomeCompleto">
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="cpf">CPF</label>
+                  <input type="text" class="form-control" formControlName="cpf" id="cpf" mask="000.000.000-00">
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="sexo">Sexo</label>
+                  <ng-select id="sexo" maxlength="50" formControlName="sexoId" [items]="sexos" bindLabel="descricao"
+                    bindValue="id">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                  <label for="status">Status</label>
+                  <ng-select id="status" maxlength="50" formControlName="ativo">
+                    <ng-option [value]=true>Ativo</ng-option>
+                    <ng-option [value]=false>Inativo</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="box-footer">
+          <button (click)="onClickFormSubmit()" class="btn btn-primary pull-right" style="margin-left: 15px;"><em
+              class="fa fa-search"></em>&nbsp;Buscar</button>
+          <button class="btn btn-warning pull-right" (click)="onClickLimparCampos()"><em
+              class="fa fa-eraser"></em>&nbsp;Limpar</button>
+        </div>
+      </div>
+      <div *ngIf="dados.content?.length" class="col-md-12" style="padding: 0px">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <div class="row">
+              <div class="col-xs-2">
+                <h3 class="box-title">Resultado</h3>
+              </div>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="table-roll">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Opções</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('nomeCompleto')">Nome</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('cpf')">CPF</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('dataNascimento')">Data de Nascimetno</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('perfil.descricao')">Perfil</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('sexo.descricao')">Sexo</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('ativo')">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let usuario of dados.content">
+                    <td>
+                      <button title="{{ usuario.ativo ? 'Inativar' : 'Ativar' }}"
+                        *ngIf="authGuardService.isPermitido(permissaoAdministrador) && usuario.id !== currentUser?.id"
+                        (click)="onClickUpdateStatus(usuario)"
+                        class="btn btn-{{ usuario.ativo ? 'danger' : 'success' }}"><em
+                          class="fa fa-{{ usuario.ativo ? 'ban' : 'check' }}"></em>
+                      </button>
+                      <button title="Visualizar" *ngIf="authGuardService.isPermitido(permissaoAdministrador)"
+                        (click)="onClickOpenModalVisualizar(usuario.id)"
+                        class="btn btn-primary {{ usuario.id !== currentUser?.id ? 'btn-left' : '' }}"><em
+                          class="fa fa-eye"></em>
+                      </button>
+                    </td>
+                    <td>
+                      {{ usuario.nomeCompleto }}
+                    </td>
+                    <td>
+                      {{ usuario.cpf | cpf }}
+                    </td>
+                    <td>
+                      {{ usuario.dataNascimento | date: 'dd/MM/yyyy' }}
+                    </td>
+                    <td>
+                      {{ usuario.perfilDescricao }}
+                    </td>
+                    <td>
+                      {{ usuario.sexoDescricao }}
+                    </td>
+                    <td>
+                      {{ usuario.ativo ? 'Ativo' : 'Inativo' }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="box-footer">
+            <app-page-action [dados]="dados" [filtro]="filtro" (searchByFilter)="searchByFilter()">
+            </app-page-action>
+          </div>
+        </div>
+      </div>
+      <app-no-records *ngIf="showNoRecords && !dados.content?.length"></app-no-records>
+    </div>
+  </div>
+</section>
