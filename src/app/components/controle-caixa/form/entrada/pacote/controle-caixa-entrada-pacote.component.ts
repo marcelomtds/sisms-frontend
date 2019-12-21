@@ -62,7 +62,7 @@ export class ControleCaixaEntradaPacoteComponent implements OnInit {
         } */
       });
     } else {
-      this.messageService.error(Messages.CAMPO_OBRIGATORIO, 'Erro');
+      this.messageService.error(Messages.MSG0004, 'Erro');
     }
 
   }

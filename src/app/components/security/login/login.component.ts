@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']);
       });
     } else {
-      this.messageService.error(Messages.CAMPO_OBRIGATORIO, Messages.ERRO);
+      this.messageService.error(Messages.MSG0004, Messages.ERRO);
     }
   }
 

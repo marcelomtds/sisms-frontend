@@ -1,6 +1,6 @@
-/*.ng-invalid:not(form) .ng-select-container,
+.ng-invalid:not(form) .ng-select-container,
 .ng-invalid:not(form) {
-  border-left: 5px solid #a94442;
+  border-left: 5px solid #BD362F;
 }
 
 ng-select.ng-invalid:not(form) {
@@ -9,7 +9,13 @@ ng-select.ng-invalid:not(form) {
 
 ng-select.ng-disable:not(form)  {
   background-color: rgb(136, 136, 139);
-}*/
+}
+
+.invalid-feedback {
+  color: #BD362F;
+  margin-top: 5px;
+  font-size: 13px;
+}
 
 td {
   white-space: nowrap;

@@ -64,7 +64,7 @@ export class ModalGerenciarLocalidadeComponent implements OnInit {
         });
       }
     } else {
-      this.messageService.error(Messages.CAMPO_OBRIGATORIO, Messages.ERRO);
+      this.messageService.error(Messages.MSG0004, Messages.ERRO);
     }
   }
 

@@ -3,58 +3,67 @@
 </section>
 <section class="content">
   <form [formGroup]="form">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div *ngIf="!isEdit" class="box box-primary">
-        <div class="box-header with-border">
-          <h3 class="box-title">Credenciais de Acesso</h3>
-        </div>
-        <div class="box-body">
-          <div class="row">
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-              <div class="form-group">
-                <label for="senhaAtual">* Senha Atual</label>
-                <div class="input-group">
-                  <input id="senhaAtual" maxlength="20" type="{{ isViewCurrentPassword ? 'text' : 'password' }}"
-                    formControlName="senhaAtual" class="form-control" />
-                  <div style="cursor: pointer;" class="input-group-addon" (click)="showHidePassword('senhaAtual')">
-                    <em class="{{ isViewCurrentPassword ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></em>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Credenciais de Acesso</h3>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="senhaAtual">Senha Atual</label>
+                  <div class="input-group">
+                    <input id="senhaAtual" maxlength="20" type="{{ isShowSenhaAtual ? 'text' : 'password' }}"
+                      formControlName="senhaAtual" class="form-control" />
+                    <div style="cursor: pointer;" class="input-group-addon" (click)="showHidePassword('senhaAtual')">
+                      <em class="{{ isShowSenhaAtual ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></em>
+                    </div>
                   </div>
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('senhaAtual')">
+                  </app-message-required>
                 </div>
               </div>
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-              <div class="form-group">
-                <label for="senha">* Nova Senha</label>
-                <div class="input-group">
-                  <input id="senha" maxlength="20" type="{{ isViewPassword ? 'text' : 'password' }}"
-                    formControlName="senha" class="form-control" />
-                  <div style="cursor: pointer;" class="input-group-addon" (click)="showHidePassword('senha')">
-                    <em class="{{ isViewPassword ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></em>
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="novaSenha">Nova Senha</label>
+                  <div class="input-group">
+                    <input id="novaSenha" maxlength="20" type="{{ isShowNovaSenha ? 'text' : 'password' }}"
+                      formControlName="novaSenha" class="form-control" />
+                    <div style="cursor: pointer;" class="input-group-addon" (click)="showHidePassword('novaSenha')">
+                      <em class="{{ isShowNovaSenha ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></em>
+                    </div>
                   </div>
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('novaSenha')">
+                  </app-message-required>
                 </div>
               </div>
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-              <div class="form-group">
-                <label for="senhaConfirmacao">* Confirmar Nova Senha</label>
-                <div class="input-group">
-                  <input id="senhaConfirmacao" maxlength="20"
-                    type="{{ isViewPasswordConfirmation ? 'text' : 'password' }}" formControlName="senhaConfirmacao"
-                    class="form-control" />
-                  <div style="cursor: pointer;" class="input-group-addon"
-                    (click)="showHidePassword('senhaConfirmacao')">
-                    <em class="{{ isViewPasswordConfirmation ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></em>
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="novaSenhaConfirmacao">Confirmar Nova Senha</label>
+                  <div class="input-group">
+                    <input id="novaSenhaConfirmacao" maxlength="20"
+                      type="{{ isShowNovaSenhaConfirmacao ? 'text' : 'password' }}"
+                      formControlName="novaSenhaConfirmacao" class="form-control" />
+                    <div style="cursor: pointer;" class="input-group-addon"
+                      (click)="showHidePassword('novaSenhaConfirmacao')">
+                      <em class="{{ isShowNovaSenhaConfirmacao ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></em>
+                    </div>
                   </div>
+                  <app-message-required [isInvalidForm]="isInvalidForm"
+                    [controlComponent]="form.get('novaSenhaConfirmacao')">
+                  </app-message-required>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="box-footer">
-          <button class="btn btn-primary pull-right" style="margin-left: 15px;" (click)="onClickFormSubmit()"><em
-              class="fa fa-save"></em>&nbsp;Salvar</button>
-          <button class="btn btn-warning pull-right" (click)="onClickLimparCampos()"><em
-              class="fa fa-eraser"></em>&nbsp;Limpar</button>
+          <div class="box-footer">
+            <button class="btn btn-primary pull-right" style="margin-left: 15px;" (click)="onClickFormSubmit()"><em
+                class="fa fa-save"></em>&nbsp;Salvar</button>
+            <button class="btn btn-warning pull-right" (click)="onClickLimparCampos()"><em
+                class="fa fa-eraser"></em>&nbsp;Limpar</button>
+          </div>
         </div>
       </div>
     </div>

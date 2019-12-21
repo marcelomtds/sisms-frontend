@@ -1,5 +1,5 @@
 export enum Messages {
-    CAMPO_OBRIGATORIO = 'É necessário preencher todos os campos obrigatórios.',
+    MSG0004 = 'É necessário preencher todos os campos obrigatórios.',
     SUCESSO_CRIACAO = 'Registro criado com sucesso.',
     SUCESSO_EDICAO = 'Registro alterado com sucesso.',
     SENHA_ALTERACAO_SUCESSO = 'Senha alterada com sucesso.',

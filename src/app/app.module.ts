@@ -65,6 +65,7 @@ import { AlterarSenhaComponent } from './components/usuario/password/alterar-sen
 import { ModalCriarPacoteComponent } from './components/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
 import { ModalVisualizarAtendimentoComponent } from './components/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
 import { NoRecordsComponent } from './components/shared/model/template/no-records/no-records.component';
+import { MessageRequiredComponent } from './components/shared/message-required/message-required.component';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -167,7 +168,8 @@ registerLocaleData(localePt);
     ModalVisualizarPacoteComponent,
     ModalCriarPacoteComponent,
     ModalVisualizarAtendimentoComponent,
-    NoRecordsComponent
+    NoRecordsComponent,
+    MessageRequiredComponent
   ],
 })
 export class AppModule { }

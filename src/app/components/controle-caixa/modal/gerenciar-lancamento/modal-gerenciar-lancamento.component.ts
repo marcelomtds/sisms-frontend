@@ -98,7 +98,7 @@ export class ModalGerenciarLancamentoComponent implements OnInit {
         this.createOrUpdate(obj);
       }
     } else {
-      this.messageService.error(Messages.CAMPO_OBRIGATORIO, 'Erro');
+      this.messageService.error(Messages.MSG0004, 'Erro');
     }
   }
 

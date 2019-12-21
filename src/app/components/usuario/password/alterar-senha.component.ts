@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Messages } from '../../shared/message/messages';
+import { Senha } from '../../shared/model/model/senha.model';
 import { MessageService } from '../../shared/services/message.service';
 import { UsuarioService } from '../service/usuario.service';
 
@@ -10,9 +12,10 @@ import { UsuarioService } from '../service/usuario.service';
 export class AlterarSenhaComponent implements OnInit {
 
   public form: FormGroup;
-  public isViewCurrentPassword = false;
-  public isViewPassword = false;
-  public isViewPasswordConfirmation = false;
+  public isShowSenhaAtual = false;
+  public isShowNovaSenha = false;
+  public isShowNovaSenhaConfirmacao = false;
+  public isInvalidForm = false;
 
   public constructor(
     private formBuilder: FormBuilder,
@@ -26,36 +29,46 @@ export class AlterarSenhaComponent implements OnInit {
 
   public onCreateForm(): void {
     this.form = this.formBuilder.group({
-      senhaAtual: [null],
-      senha: [null],
-      senhaConfirmacao: [null],
+      senhaAtual: [null, Validators.required],
+      novaSenha: [null, Validators.required],
+      novaSenhaConfirmacao: [null, Validators.required],
     });
   }
 
   public onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
-    this.service.updatePassword(this.form.value).subscribe(response => {
-      this.messageService.sendMessageSuccess(response.message);
-      this.onCreateForm();
-    });
+    if (this.form.valid) {
+      const formValue: Senha = {
+        ...this.form.value
+      };
+      this.service.updatePassword(formValue).subscribe(response => {
+        this.messageService.sendMessageSuccess(response.message);
+        this.onClickLimparCampos();
+      });
+    } else {
+      this.isInvalidForm = true;
+      this.messageService.sendMessageError(Messages.MSG0004);
+    }
   }
 
   public showHidePassword(param: string): void {
     this.messageService.clearAllMessages();
-    if (param === 'senha') {
-      this.isViewPassword = !this.isViewPassword;
-    } else if (param === 'senhaConfirmacao') {
-      this.isViewPasswordConfirmation = !this.isViewPasswordConfirmation;
-    } else if (param === 'senhaAtual') {
-      this.isViewCurrentPassword = !this.isViewCurrentPassword;
+    if (param === 'senhaAtual') {
+      this.isShowSenhaAtual = !this.isShowSenhaAtual;
+    } else if (param === 'novaSenha') {
+      this.isShowNovaSenha = !this.isShowNovaSenha;
+    } else if (param === 'novaSenhaConfirmacao') {
+      this.isShowNovaSenhaConfirmacao = !this.isShowNovaSenhaConfirmacao;
     }
   }
 
   public onClickLimparCampos(): void {
+    this.messageService.clearAllMessages();
     this.onCreateForm();
-    this.isViewCurrentPassword = false;
-    this.isViewPassword = false;
-    this.isViewPasswordConfirmation = false;
+    this.isInvalidForm = false;
+    this.isShowSenhaAtual = false;
+    this.isShowNovaSenha = false;
+    this.isShowNovaSenhaConfirmacao = false;
   }
 
 }

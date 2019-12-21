@@ -211,7 +211,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
         });
       }
     } else {
-      this.messageService.error(Messages.CAMPO_OBRIGATORIO, Messages.ERRO);
+      this.messageService.error(Messages.MSG0004, Messages.ERRO);
     }
   }
 
