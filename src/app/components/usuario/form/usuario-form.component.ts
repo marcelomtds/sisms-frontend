@@ -1,12 +1,11 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../security/service/shared.service';
 import { Messages } from '../../shared/message/messages';
-import { PerfilEnum } from '../../shared/model/enum/perfil.enum';
 import { Localidade } from '../../shared/model/model/localidade.model';
 import { Profissao } from '../../shared/model/model/profissao.model';
 import { Sexo } from '../../shared/model/model/sexo.model';
@@ -33,9 +32,9 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
   public profissoes = new Array<Profissao>();
   public localidades = new Array<Localidade>();
   public ufs = new Array<UF>();
-  public isViewPassword = false;
-  public isViewPasswordConfirmation = false;
-  public selectedUF: number = null;
+  public isShowSenha = false;
+  public isShowSenhaConfirmacao = false;
+  public isInvalidForm = false;
   public subscription: Subscription;
 
   public constructor(
@@ -58,7 +57,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
       this.onLoadComboUF();
     });
     this.subscription = this.localidadeService.getLocalidade().subscribe(() => {
-      this.onChangeUf(new UF(this.selectedUF));
+      this.onChangeUf();
     });
   }
 
@@ -107,23 +106,24 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
   private onCreateForm(): void {
     this.form = this.formBuilder.group({
       id: [null],
-      senha: [null],
-      senhaConfirmacao: [null],
-      nomeCompleto: [null],
-      dataNascimento: [null],
+      senha: [null, Validators.required],
+      senhaConfirmacao: [null, Validators.required],
+      nomeCompleto: [null, Validators.required],
+      dataNascimento: [null, Validators.required],
       rg: [null],
-      cpf: [null],
+      cpf: [null, Validators.required],
       imagem: [null],
-      sexoId: [null],
-      profissaoId: [null],
+      sexoId: [null, Validators.required],
+      profissaoId: [null, Validators.required],
       enderecoId: [null],
-      enderecoCep: [null],
-      enderecoLogradouro: [null],
-      enderecoNumero: [null],
+      enderecoCep: [null, Validators.required],
+      enderecoLogradouro: [null, Validators.required],
+      enderecoNumero: [null, Validators.required],
       enderecoComplemento: [null],
-      enderecoBairro: [null],
+      enderecoBairro: [null, Validators.required],
       enderecoPontoReferencia: [null],
-      enderecoLocalidadeId: [null],
+      enderecoLocalidadeId: [null, Validators.required],
+      enderecoLocalidadeUFId: [null, Validators.required],
       contatoId: [null],
       contatoCelular: [null],
       contatoCelularRecado: [null],
@@ -135,15 +135,16 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
 
   public onClickLocalidade(): void {
     this.messageService.clearAllMessages();
-    if (!this.selectedUF) {
+    if (!this.form.controls.enderecoLocalidadeUFId.value) {
       this.messageService.sendMessageWarning(Messages.SELECIONE_ESTADO);
     }
   }
 
-  public onChangeUf(uf: UF): void {
+  public onChangeUf(): void {
     this.messageService.clearAllMessages();
-    if (uf && uf.id) {
-      this.localidadeService.findByUfId(uf.id).subscribe(response => {
+    const id = this.form.controls.enderecoLocalidadeUFId.value;
+    if (id) {
+      this.localidadeService.findByUfId(id).subscribe(response => {
         this.localidades = response.result;
         if (this.form.value.enderecoLocalidadeId && !this.localidades.find(x => x.id === this.form.value.enderecoLocalidadeId)) {
           this.form.controls.enderecoLocalidadeId.setValue(null);
@@ -155,28 +156,43 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  private removerValidacaoSenhas(): void {
+    if (this.form.controls.id.value) {
+      this.form.controls.senha.setValidators([]);
+      this.form.controls.senhaConfirmacao.setValidators([]);
+      this.form.controls.senha.updateValueAndValidity();
+      this.form.controls.senhaConfirmacao.updateValueAndValidity();
+    }
+  }
+
   public onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
-    const dataNascimento = this.form.value.dataNascimento;
-    if (dataNascimento && !Util.isDataValida(dataNascimento)) {
-      this.messageService.sendMessageError(Messages.DATA_NASCIMENTO_INVALIDA);
-      return;
-    }
-    const formValue: Usuario = {
-      ...this.form.value,
-      dataNascimento: Util.convertStringToDate(this.form.value.dataNascimento)
-    };
-    if (formValue.id) {
-      this.service.update(formValue.id, formValue).subscribe(response => {
-        this.messageService.sendMessageSuccess(response.message);
-        this.service.setUsuario(response.result);
-        this.router.navigate([this.sharedService.getUserSession().perfilRole === PerfilEnum.administrador ? '/usuario-list' : '/']);
-      });
+    this.removerValidacaoSenhas();
+    if (this.form.valid) {
+      const dataNascimento = this.form.value.dataNascimento;
+      if (dataNascimento && !Util.isDataValida(dataNascimento)) {
+        this.messageService.sendMessageError(Messages.DATA_NASCIMENTO_INVALIDA);
+        return;
+      }
+      const formValue: Usuario = {
+        ...this.form.value,
+        dataNascimento: Util.convertStringToDate(this.form.value.dataNascimento)
+      };
+      if (formValue.id) {
+        this.service.update(formValue.id, formValue).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.service.setUsuario(response.result);
+          this.router.navigate(['/']);
+        });
+      } else {
+        this.service.create(formValue).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.router.navigate(['/usuario-list']);
+        });
+      }
     } else {
-      this.service.create(formValue).subscribe(response => {
-        this.messageService.sendMessageSuccess(response.message);
-        this.router.navigate(['/usuario-list']);
-      });
+      this.isInvalidForm = true;
+      this.messageService.sendMessageError(Messages.MSG0004);
     }
   }
 
@@ -203,7 +219,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
         reader.onload = () => {
           this.spinnerService.show();
           resizeBase64ForMaxWidthAndMaxHeight(reader.result, 1024, 768, (resizedImage) => {
-            this.form.value.imagem = resizedImage;
+            this.form.controls.imagem.setValue(resizedImage);
             this.spinnerService.hide();
           });
         };
@@ -235,6 +251,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
         enderecoBairro: response.result.enderecoBairro,
         enderecoPontoReferencia: response.result.enderecoPontoReferencia || null,
         enderecoLocalidadeId: response.result.enderecoLocalidadeId,
+        enderecoLocalidadeUFId: response.result.enderecoLocalidadeUFId,
         contatoId: response.result.contatoId,
         contatoCelular: response.result.contatoCelular || null,
         contatoCelularRecado: response.result.contatoCelularRecado || null,
@@ -242,24 +259,23 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
         contatoComercial: response.result.contatoComercial || null,
         contatoEmail: response.result.contatoEmail || null,
       });
-      this.onChangeUf(new UF(response.result.enderecoLocalidadeUFId));
-      this.selectedUF = response.result.enderecoLocalidadeUFId;
+      this.onChangeUf();
     });
   }
 
   public showHidePassword(param: string): void {
     this.messageService.clearAllMessages();
     if (param === 'senha') {
-      this.isViewPassword = !this.isViewPassword;
+      this.isShowSenha = !this.isShowSenha;
     } else {
-      this.isViewPasswordConfirmation = !this.isViewPasswordConfirmation;
+      this.isShowSenhaConfirmacao = !this.isShowSenhaConfirmacao;
     }
   }
 
   public onClickLimparCampos(): void {
     this.messageService.clearAllMessages();
     this.onCreateForm();
-    this.selectedUF = null;
+    this.isInvalidForm = false;
     this.localidades = new Array<Localidade>();
   }
 
