@@ -1,5 +1,5 @@
 <section class="content-header">
-  <h1>{{ form.value.id ? 'Editar' : 'Cadastar' }}</h1>
+  <h1>{{ form.controls.id.value ? 'Editar' : 'Cadastar' }}</h1>
 </section>
 <section class="content">
   <form [formGroup]="form">
@@ -13,33 +13,39 @@
             <div class="row">
               <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                 <div class="form-group">
-                  <label for="nomeCompleto">* Nome Completo</label>
+                  <label for="nomeCompleto">Nome Completo</label>
                   <input id="nomeCompleto" trim="blur" maxlength="200" type="text" formControlName="nomeCompleto"
                     class="form-control" />
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('nomeCompleto')">
+                  </app-message-required>
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                  <label for="dataNascimento">* Data de Nascimento</label>
+                  <label for="dataNascimento">Data de Nascimento</label>
                   <input id="dataNascimento" [validation]="false" mask="00/00/0000" type="text"
                     formControlName="dataNascimento" class="form-control" />
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('dataNascimento')">
+                  </app-message-required>
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
-                  <label for="sexo">* Sexo</label>
+                  <label for="sexo">Sexo</label>
                   <ng-select id="sexo" maxlength="50" formControlName="sexoId" [items]="sexos" bindLabel="descricao"
                     bindValue="id" placeholder="Selecione">
                   </ng-select>
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('sexoId')">
+                  </app-message-required>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
-                  <label for="cpf">* CPF</label>
+                  <label for="cpf">CPF</label>
                   <input id="cpf" [validation]="false" mask="000.000.000-00" type="text" formControlName="cpf"
-                    class="form-control" [readonly]="form.value.id" />
+                    class="form-control" [readonly]="isCpfReadonly" />
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -51,7 +57,7 @@
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
-                  <label for="profissao">* Profissão</label>
+                  <label for="profissao">Profissão</label>
                   <ng-select id="profissao" maxlength="50" formControlName="profissaoId" [items]="profissoes"
                     bindLabel="descricao" bindValue="id" placeholder="Selecione">
                   </ng-select>
@@ -68,23 +74,30 @@
             <div class="row">
               <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
-                  <label for="cep">* CEP</label>
+                  <label for="cep">CEP</label>
                   <input id="cep" type="text" [validation]="false" mask="00.000-000" formControlName="enderecoCep"
                     class="form-control" />
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('enderecoCep')">
+                  </app-message-required>
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
-                  <label for="logradouro">* Logradouro</label>
+                  <label for="logradouro">Logradouro</label>
                   <input id="logradouro" trim="blur" type="text" maxlength="200" formControlName="enderecoLogradouro"
                     class="form-control" />
+                  <app-message-required [isInvalidForm]="isInvalidForm"
+                    [controlComponent]="form.get('enderecoLogradouro')">
+                  </app-message-required>
                 </div>
               </div>
               <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
-                  <label for="numero">* Número</label>
+                  <label for="numero">Número</label>
                   <input id="numero" type="text" mask="0{10}" [validation]="false" formControlName="enderecoNumero"
                     class="form-control" />
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('enderecoNumero')">
+                  </app-message-required>
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -99,9 +112,11 @@
             <div class="row">
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                  <label for="bairro">* Bairro</label>
+                  <label for="bairro">Bairro</label>
                   <input id="bairro" trim="blur" type="text" maxlength="100" formControlName="enderecoBairro"
                     class="form-control" />
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('enderecoBairro')">
+                  </app-message-required>
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -113,19 +128,26 @@
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                  <label for="uf">* Estado</label>
-                  <ng-select id="uf" maxlength="50" (change)="onChangeUf($event)" [ngModelOptions]="{standalone: true}"
-                    [(ngModel)]="selectedUF" [items]="ufs" bindLabel="descricao" bindValue="id" placeholder="Selecione">
+                  <label for="uf">Estado</label>
+                  <ng-select id="uf" maxlength="50" formControlName="enderecoLocalidadeUFId"
+                    (change)="onChangeUf(true)" [items]="ufs" bindLabel="descricao" bindValue="id"
+                    placeholder="Selecione">
                   </ng-select>
+                  <app-message-required [isInvalidForm]="isInvalidForm"
+                    [controlComponent]="form.get('enderecoLocalidadeUFId')">
+                  </app-message-required>
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                  <label for="localidade">* Cidade</label>
+                  <label for="localidade">Cidade</label>
                   <ng-select id="localidade" (click)="onClickLocalidade()" maxlength="50"
                     formControlName="enderecoLocalidadeId" [items]="localidades" bindLabel="descricao" bindValue="id"
                     placeholder="Selecione">
                   </ng-select>
+                  <app-message-required [isInvalidForm]="isInvalidForm"
+                    [controlComponent]="form.get('enderecoLocalidadeId')">
+                  </app-message-required>
                 </div>
               </div>
             </div>
@@ -179,8 +201,6 @@
           <div class="box-footer">
             <button class="btn btn-primary pull-right" style="margin-left: 15px;" (click)="onClickFormSubmit()"><em
                 class="fa fa-save"></em>&nbsp;Salvar</button>
-            <button class="btn btn-warning pull-right" (click)="onClickLimparCampos()"><em
-                class="fa fa-eraser"></em>&nbsp;Limpar</button>
           </div>
         </div>
       </div>

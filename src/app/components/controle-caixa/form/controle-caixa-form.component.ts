@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PacienteService } from '../../paciente/service/paciente.service';
 import { Messages } from '../../shared/message/messages';
 import Util from '../../shared/util/util';
-import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento/categoria-atendimento.service';
+import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

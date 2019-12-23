@@ -14,13 +14,15 @@
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="cpf">CPF</label>
-                  <input type="text" class="form-control" formControlName="cpf" id="cpf" mask="000.000.000-00">
+                  <input type="text" [validation]="false" class="form-control" formControlName="cpf" id="cpf"
+                    mask="000.000.000-00">
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="nome">Nome</label>
-                  <input type="text" class="form-control" maxlength="200" id="nome" formControlName="nomeCompleto">
+                  <input type="text" trim="blur" class="form-control" maxlength="200" id="nome"
+                    formControlName="nomeCompleto">
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -45,45 +47,46 @@
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="celular">Celular</label>
-                  <input type="text" class="form-control" id="celular" formControlName="celular" mask="(00) 00000-0000">
-                </div>
-              </div>
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <div class="form-group">
-                  <label for="celularRecado">Celular Recado</label>
-                  <input type="text" class="form-control" id="celularRecado" formControlName="celularRecado"
+                  <input type="text" [validation]="false" class="form-control" id="celular" formControlName="celular"
                     mask="(00) 00000-0000">
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
+                  <label for="celularRecado">Celular Recado</label>
+                  <input type="text" [validation]="false" class="form-control" id="celularRecado"
+                    formControlName="celularRecado" mask="(00) 00000-0000">
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
                   <label for="residencial">Residencial</label>
-                  <input type="text" class="form-control" id="residencial" formControlName="residencial"
-                    mask="(00) 0000-0000">
+                  <input type="text" [validation]="false" class="form-control" id="residencial"
+                    formControlName="residencial" mask="(00) 0000-0000">
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="comercial">Comercial</label>
-                  <input type="text" class="form-control" id="comercial" formControlName="comercial"
-                    mask="(00) 0000-0000">
+                  <input type="text" [validation]="false" class="form-control" id="comercial"
+                    formControlName="comercial" mask="(00) 0000-0000">
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                  <label for="localidade">Cidade</label>
-                  <ng-select id="localidade" maxlength="50" formControlName="localidadeId" [items]="localidades"
-                    bindLabel="descricao" bindValue="id" placeholder="Todas" (click)="onClickLocalidade()">
+                  <label for="uf">Estado</label>
+                  <ng-select id="uf" maxlength="50" (change)="onChangeUf(true)" formControlName="ufId" [items]="ufs"
+                    bindLabel="descricao" bindValue="id">
                   </ng-select>
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                  <label for="uf">Estado</label>
-                  <ng-select id="uf" maxlength="50" (change)="onChangeUf($event)" [ngModelOptions]="{standalone: true}"
-                    [(ngModel)]="selectedUF" [items]="ufs" bindLabel="descricao" bindValue="id">
+                  <label for="localidade">Cidade</label>
+                  <ng-select id="localidade" maxlength="50" formControlName="localidadeId" [items]="localidades"
+                    bindLabel="descricao" bindValue="id" placeholder="Todas" (click)="onClickLocalidade()">
                   </ng-select>
                 </div>
               </div>
@@ -102,7 +105,7 @@
           <div class="box-header">
             <div class="row">
               <div class="col-xs-8">
-                <h3 class="box-title">Pacientes</h3>
+                <h3 class="box-title">Resultado</h3>
               </div>
             </div>
           </div>
@@ -121,12 +124,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let paciente of dados?.content">
+                  <tr *ngFor="let paciente of dados.content">
                     <td>
-                      <button title="{{ paciente?.ativo ? 'Inativar' : 'Ativar' }}"
+                      <button title="{{ paciente.ativo ? 'Inativar' : 'Ativar' }}"
                         (click)="onClickUpdateStatus(paciente)"
-                        class="btn btn-{{ paciente?.ativo ? 'danger' : 'success' }} btn-left"><em
-                          class="fa fa-{{ paciente?.ativo ? 'ban' : 'check' }}"></em></button>
+                        class="btn btn-{{ paciente.ativo ? 'danger' : 'success' }} btn-left"><em
+                          class="fa fa-{{ paciente.ativo ? 'ban' : 'check' }}"></em></button>
                       <button title="Visualizar" (click)="onClickOpenModalVisualizar(paciente)"
                         class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
                       <button title="Editar" [routerLink]="['/paciente-form', paciente.id]"
@@ -145,7 +148,7 @@
                       {{ paciente.dataNascimento | idade }}
                     </td>
                     <td>
-                      {{ paciente.sexo.descricao }}
+                      {{ paciente.sexoDescricao }}
                     </td>
                     <td>
                       {{ paciente.ativo ? 'Ativo' : 'Inativo' }}
@@ -161,6 +164,7 @@
           </div>
         </div>
       </div>
+      <app-no-records *ngIf="showNoRecords && !dados.content?.length"></app-no-records>
     </div>
   </div>
 </section>

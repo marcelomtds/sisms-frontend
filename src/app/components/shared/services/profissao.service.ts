@@ -1,16 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { PageableFilter } from '../../model/filter/filter.filter';
-import { Profissao } from '../../model/model/profissao.model';
-import { BaseService } from '../base-service/base.service';
+import { Profissao } from '../model/model/profissao.model';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfissaoService extends BaseService<Profissao, {}> {
 
-  subject = new Subject();
+  subject = new Subject<void>();
 
   public constructor(http: HttpClient) {
     super(http, '/api/profissao');
@@ -20,7 +19,7 @@ export class ProfissaoService extends BaseService<Profissao, {}> {
     this.subject.next();
   }
 
-  public getProfissao(): Observable<any> {
+  public getProfissao(): Observable<void> {
     return this.subject.asObservable();
   }
 

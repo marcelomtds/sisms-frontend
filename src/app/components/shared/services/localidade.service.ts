@@ -1,17 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { PageableFilter } from '../model/filter/filter.filter';
 import { Localidade } from '../model/model/localidade.model';
 import { Response } from '../model/model/response.model';
-import { BaseService } from './base-service/base.service';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalidadeService extends BaseService<Localidade, {}> {
 
-  public subject = new Subject();
+  public subject = new Subject<void>();
 
   constructor(http: HttpClient) {
     super(http, '/api/localidade');
@@ -25,7 +24,7 @@ export class LocalidadeService extends BaseService<Localidade, {}> {
     this.subject.next();
   }
 
-  public getLocalidade(): Observable<any> {
+  public getLocalidade(): Observable<void> {
     return this.subject.asObservable();
   }
 

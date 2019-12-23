@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { Messages } from '../../message/messages';
 import Pageable from '../../pageable/pageable';
 import Page from '../../pagination/pagination';
-import { CategoriaLancamentoService } from '../../services/categoria-lancamento-service/categoria-lancamento.service';
+import { CategoriaLancamentoService } from '../../services/categoria-lancamento.service';
 
 @Component({
   selector: 'app-modal-gerenciar-categoria-lancamento',
@@ -42,7 +42,7 @@ export class ModalGerenciarCategoriaLancamentoComponent implements OnInit {
     this.messageService.clear();
     if (this.form.valid) {
       if (this.form.value.id) {
-        this.categoriaLancamentoService.update(this.form.value).subscribe(result => {
+        this.categoriaLancamentoService.update(this.form.value.id, this.form.value).subscribe(result => {
           this.messageService.success(result.message, Messages.SUCESSO);
           this.onCreateForm();
           this.loadCategorias();
@@ -72,7 +72,7 @@ export class ModalGerenciarCategoriaLancamentoComponent implements OnInit {
 
   loadCategorias(): void {
     this.categoriaLancamentoService.findByFilter(this.filtro).subscribe(dados => {
-      this.dados = dados.data;
+      this.dados = dados.result;
     });
   }
 

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Subject } from 'rxjs';
 import { Pacote } from '../../model/model/pacote.model';
 import { MessageService } from '../../services/message.service';
-import { PacoteService } from '../../services/pacote-service/pacote.service';
+import { PacoteService } from '../../services/pacote.service';
 import { ModalConfirmacaoComponent } from '../modal-confirmacao/modal-confirmacao.component';
 
 @Component({
@@ -32,9 +32,9 @@ export class ModalCriarPacoteComponent implements OnInit {
   private onCreateForm(): void {
     this.form = this.formBuilder.group({
       id: [null],
-      categoriaAtendimentoId: [this.dados.categoriaAtendimentoId],
-      pacienteId: [this.dados.pacienteId],
-      valor: [0]
+      categoriaAtendimentoId: [this.dados.categoriaAtendimentoId, Validators.required],
+      pacienteId: [this.dados.pacienteId, Validators.required],
+      valor: [0, Validators.required]
     });
   }
 

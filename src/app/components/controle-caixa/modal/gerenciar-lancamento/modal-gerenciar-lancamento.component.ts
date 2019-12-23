@@ -6,7 +6,7 @@ import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalConfirmacaoComponent } from 'src/app/components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import Pageable from 'src/app/components/shared/pageable/pageable';
 import Page from 'src/app/components/shared/pagination/pagination';
-import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento-service/forma-pagamento.service';
+import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
 import Util from 'src/app/components/shared/util/util';
 import { LancamentoService } from '../../service/lancamento.service';
 
@@ -44,7 +44,7 @@ export class ModalGerenciarLancamentoComponent implements OnInit {
 
   private onLoadComboFormaPagamento(): void {
     this.formaPagamentoService.findAll().subscribe(dados => {
-      this.formaPagamentoList = dados.data;
+      this.formaPagamentoList = dados;
     });
   }
 

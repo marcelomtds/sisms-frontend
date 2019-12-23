@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { Messages } from '../../message/messages';
 import { PageableFilter } from '../../model/filter/filter.filter';
 import { Profissao } from '../../model/model/profissao.model';
 import Page from '../../pagination/pagination';
-import { ProfissaoService } from '../../services/profissao-service/profissao.service';
+import { MessageService } from '../../services/message.service';
+import { ProfissaoService } from '../../services/profissao.service';
 
 @Component({
   selector: 'app-modal-gerenciar-profissao',
@@ -17,12 +17,14 @@ export class ModalGerenciarProfissaoComponent implements OnInit {
   public dados = new Page<Array<Profissao>>();
   public form: FormGroup;
   public filtro = new PageableFilter();
+  public isInvalidForm = false;
+  public showNoRecords = false;
 
   public constructor(
     private bsModalRef: BsModalRef,
     private service: ProfissaoService,
     private formBuilder: FormBuilder,
-    private messageService: ToastrService
+    private messageService: MessageService
   ) { }
 
   public ngOnInit(): void {
@@ -38,52 +40,61 @@ export class ModalGerenciarProfissaoComponent implements OnInit {
   }
 
   public onClickFormSubmit(): void {
-    this.messageService.clear();
+    this.messageService.clearAllMessages();
     if (this.form.valid) {
+      const formValue: Profissao = {
+        ...this.form.value
+      };
       if (this.form.value.id) {
-        this.service.update(this.form.value.id, this.form.value).subscribe(response => {
-          this.messageService.success(response.message, Messages.SUCESSO);
+        this.service.update(formValue.id, formValue).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
           this.onUpdate();
         });
       } else {
-        this.service.create(this.form.value).subscribe(response => {
-          this.messageService.success(response.message, Messages.SUCESSO);
+        this.service.create(formValue).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
           this.onUpdate();
         });
       }
     } else {
-      this.messageService.error(Messages.MSG0004, Messages.ERRO);
+      this.isInvalidForm = true;
+      this.messageService.sendMessageError(Messages.MSG0004);
     }
   }
 
   private onUpdate(): void {
+    this.service.setProfissao();
     this.onCreateForm();
     this.searchByFilter();
+    this.showNoRecords = false;
+    this.isInvalidForm = false;
   }
 
   public onClickEditar(profissao: Profissao): void {
-    this.messageService.clear();
-    this.form.controls.id.setValue(profissao.id);
-    this.form.controls.descricao.setValue(profissao.descricao);
+    this.messageService.clearAllMessages();
+    this.form.patchValue(profissao);
   }
 
   public searchByFilter(): void {
     this.service.findByFilter(this.filtro).subscribe(response => {
+      this.showNoRecords = true;
       this.dados = response.result;
     });
   }
 
   public onClickCancelar(): void {
-    this.messageService.clear();
+    this.messageService.clearAllMessages();
+    this.showNoRecords = false;
+    this.isInvalidForm = false;
     this.onCreateForm();
   }
 
   public onClickCloseModal(): void {
-    this.service.setProfissao();
     this.bsModalRef.hide();
   }
 
   public onClickOrderBy(descricao: string): void {
+    this.messageService.clearAllMessages();
     this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
     this.filtro.orderBy = descricao;
     this.searchByFilter();

@@ -16,20 +16,20 @@
         <div class="row">
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
-              <label for="paciente">* Paciente</label>
+              <label for="paciente">Paciente</label>
               <input [value]="dados.pacienteNomeCompleto" id="paciente" readonly type="text" class="form-control" />
             </div>
           </div>
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
-              <label for="categoriaAtendimento">* Categoria de Atendimento</label>
+              <label for="categoriaAtendimento">Categoria de Atendimento</label>
               <input [value]="dados.categoriaAtendimentoDescricao" id="categoriaAtendimento" readonly type="text"
                 class="form-control" />
             </div>
           </div>
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
-              <label for="valor">* Valor</label>
+              <label for="valor">Valor</label>
               <input id="valor" currencyMask
                 [options]="{ align: 'left', suffix: '', prefix: '', thousands: '.', decimal: ',', allowNegative: 'false' }"
                 type="text" formControlName="valor" maxlength="10" class="form-control" />

@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TipoAtendimento } from '../model/model/tipo-atendimento.model';
+import { Perfil } from '../model/model/perfil.model';
 import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TipoAtendimentoService extends BaseService<TipoAtendimento, {}> {
+export class PerfilService extends BaseService<Perfil, {}> {
 
   constructor(http: HttpClient) {
-    super(http, '/api/tipoAtendimento');
+    super(http, '/api/perfil');
   }
 }

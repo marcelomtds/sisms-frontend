@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PacoteFilter } from '../../model/filter/pacote.filter';
-import { Pacote } from '../../model/model/pacote.model';
-import { Response } from '../../model/model/response.model';
-import { BaseService } from '../base-service/base.service';
+import { PacoteFilter } from '../model/filter/pacote.filter';
+import { Pacote } from '../model/model/pacote.model';
+import { Response } from '../model/model/response.model';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'

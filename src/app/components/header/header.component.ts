@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public onClickOpenModal(modal: string): void {
-    this.modalService.show(this.onLoadModal(modal), { keyboard: false, backdrop: 'static', class: 'gray modal-lg' });
+    this.modalService.show(this.onLoadModal(modal), { backdrop: 'static', class: 'gray modal-lg' });
   }
 
   public signOut(): void {

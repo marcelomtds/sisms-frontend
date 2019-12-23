@@ -1,18 +1,46 @@
 <section class="content content-modal">
   <div class="modal-header" style="padding-top: 0px; padding-bottom: 15px;">
-    <button style="margin-right: -15px;" class="btn btn-danger pull-right" (click)="onClickCloseModal()"><i
-        class="fa fa-close"></i>&nbsp;Fechar</button>
+    <button style="margin-right: -15px;" class="btn btn-danger pull-right" (click)="onClickCloseModal()"><em
+        class="fa fa-close"></em>&nbsp;Fechar</button>
   </div>
-  <form [formGroup]="form">
-    <div class="box box-primary">
-      <div class="box-header">
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">{{ form.controls.id.value ? 'Alterar' : 'Cadastrar' }}</h3>
+    </div>
+    <div class="box-body">
+      <form [formGroup]="form">
         <div class="row">
-          <div class="col-xs-8">
-            <h3 class="box-title">Estados</h3>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label for="descricao">Descrição</label>
+              <input id="descricao" trim="blur" maxlength="100" type="text" formControlName="descricao"
+                class="form-control" />
+              <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('descricao')">
+              </app-message-required>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-top: 25px;">
+            <div class="form-group">
+              <button class="btn btn-primary" (click)="onClickFormSubmit()"><em
+                  class="fa fa-save"></em>&nbsp;Salvar</button>
+              <button class="btn btn-danger" (click)="onClickCancelar()" style="margin-left: 15px;"><em
+                  class="fa fa-ban"></em>&nbsp;Cancelar</button>
+            </div>
           </div>
         </div>
+      </form>
+    </div>
+  </div>
+  <div *ngIf="dados?.content?.length > 0" class="box box-primary">
+    <div class="box-header">
+      <div class="row">
+        <div class="col-xs-8">
+          <h3 class="box-title">Resultado</h3>
+        </div>
       </div>
-      <div class="box-body">
+    </div>
+    <div class="box-body">
+      <div class="table-roll">
         <table id="example2" class="table table-bordered table-hover">
           <thead>
             <tr>
@@ -26,8 +54,8 @@
                 {{ uf.descricao }}
               </td>
               <td>
-                <button *ngIf="form.value.id !== uf.id" class="btn btn-primary" (click)="onClickEditar(uf)"><i
-                    class="fa fa-pencil"></i>&nbsp;Editar</button>
+                <button title="Editar" *ngIf="form.controls.id.value !== uf.id" class="btn btn-primary"
+                  (click)="onClickEditar(uf)"><em class="fa fa-pencil"></em>&nbsp;</button>
               </td>
             </tr>
           </tbody>
@@ -38,29 +66,6 @@
         </app-page-action>
       </div>
     </div>
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        <h3 class="box-title">{{ form.value.id ? 'Alterar' : 'Cadastrar' }}</h3>
-      </div>
-      <div class="box-body">
-        <div class="row">
-          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <div class="form-group">
-              <label for="descricao">* Descrição</label>
-              <input id="descricao" trim="blur" maxlength="100" type="text" formControlName="descricao"
-                class="form-control" />
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-top: 25px;">
-            <div class="form-group">
-              <button class="btn btn-primary" (click)="onClickFormSubmit()"><i
-                  class="fa fa-save"></i>&nbsp;Salvar</button>
-              <button class="btn btn-danger" (click)="onClickCancelar()" style="margin-left: 15px;"><i
-                  class="fa fa-ban"></i>&nbsp;Cancelar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
+  </div>
+  <app-no-records *ngIf="showNoRecords && !dados.content?.length"></app-no-records>
 </section>

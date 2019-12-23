@@ -1,18 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { PageableFilter } from '../model/filter/filter.filter';
 import { UF } from '../model/model/uf.model';
-import { BaseService } from './base-service/base.service';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UfService extends BaseService<UF, {}> {
 
-  public subject = new Subject();
+  public subject = new Subject<void>();
 
-  constructor(http: HttpClient) {
+  public constructor(http: HttpClient) {
     super(http, '/api/uf');
   }
 
@@ -20,7 +19,7 @@ export class UfService extends BaseService<UF, {}> {
     this.subject.next();
   }
 
-  public getUF(): Observable<any> {
+  public getUF(): Observable<void> {
     return this.subject.asObservable();
   }
 

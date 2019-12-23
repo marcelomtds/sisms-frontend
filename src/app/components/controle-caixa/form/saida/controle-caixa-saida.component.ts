@@ -4,8 +4,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalGerenciarCategoriaLancamentoComponent } from 'src/app/components/shared/modais/modal-gerenciar-categoria-lancamento/modal-gerenciar-categoria-lancamento.component';
-import { CategoriaLancamentoService } from 'src/app/components/shared/services/categoria-lancamento-service/categoria-lancamento.service';
-import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento-service/forma-pagamento.service';
+import { CategoriaLancamentoService } from 'src/app/components/shared/services/categoria-lancamento.service';
+import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
 import Util from 'src/app/components/shared/util/util';
 import { LancamentoService } from '../../service/lancamento.service';
 
@@ -38,13 +38,13 @@ export class ControleCaixaSaidaComponent implements OnInit {
 
   private onLoadComboCategoriaLancamento(): void {
     this.categoriaLancamentoService.findAll().subscribe(dados => {
-      this.categoriaList = dados.data;
+      this.categoriaList = dados;
     });
   }
 
   private onLoadComboFormaPagamento(): void {
     this.formaPagamentoService.findAll().subscribe(dados => {
-      this.formaPagamentoList = dados.data;
+      this.formaPagamentoList = dados;
     });
   }
 

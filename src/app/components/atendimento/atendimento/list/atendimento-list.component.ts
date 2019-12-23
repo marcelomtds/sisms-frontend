@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalService } from 'ngx-bootstrap';
 import { AuthGuard } from 'src/app/components/security/auth.guard';
 import { Messages } from 'src/app/components/shared/message/messages';
+import { ModalVisualizarAtendimentoComponent } from 'src/app/components/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
 import { PerfilEnum } from 'src/app/components/shared/model/enum/perfil.enum';
 import { AtendimentoFilter } from 'src/app/components/shared/model/filter/atendimento.filter';
 import { PageableFilter } from 'src/app/components/shared/model/filter/filter.filter';
 import { Atendimento } from 'src/app/components/shared/model/model/atendimento.model';
 import { CategoriaAtendimentoRouting } from 'src/app/components/shared/model/model/categoria-atendimento-routing.model';
+import { Response } from 'src/app/components/shared/model/model/response.model';
 import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
@@ -18,9 +21,6 @@ import { TipoAtendimento } from '../../../shared/model/model/tipo-atendimento.mo
 import Page from '../../../shared/pagination/pagination';
 import { TipoAtendimentoService } from '../../../shared/services/tipo-atendimento.service';
 import { AtendimentoService } from '../../service/atendimento.service';
-import { ModalVisualizarAtendimentoComponent } from 'src/app/components/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
-import { BsModalService } from 'ngx-bootstrap';
-import { Response } from 'src/app/components/shared/model/model/response.model';
 
 @Component({
   selector: 'app-atendimento-list',
@@ -37,6 +37,7 @@ export class AtendimentoListComponent implements OnInit {
   public currentUser = new Usuario();
   public permissaoAdministrador = PerfilEnum.administrador;
   public form: FormGroup;
+  public showNoRecords = false;
 
   public constructor(
     private formBuilder: FormBuilder,
@@ -128,10 +129,8 @@ export class AtendimentoListComponent implements OnInit {
   public searchByFilter(): void {
     this.messageService.clearAllMessages();
     this.service.findByFilter(this.filtro).subscribe(response => {
+      this.showNoRecords = true;
       this.dados = response.result;
-      if (!response.result.content.length) {
-        this.messageService.sendMessageInfo(Messages.NENHUM_REGISTRO_ENCONTRADO);
-      }
     });
   }
 
@@ -141,6 +140,7 @@ export class AtendimentoListComponent implements OnInit {
     this.dados = new Page<Array<Atendimento>>();
     this.filtro = new PageableFilter<AtendimentoFilter>();
     this.form.controls.categoriaAtendimentoId.setValue(this.categoriaAtendimentoRouting.id);
+    this.showNoRecords = false;
   }
 
   public onClickEditar(id: number): void {
@@ -154,7 +154,7 @@ export class AtendimentoListComponent implements OnInit {
     const initialState = {
       atendimento: atendimento.result
     };
-    this.modalService.show(ModalVisualizarAtendimentoComponent, { class: 'gray modal-lg', initialState, backdrop: 'static' });
+    this.modalService.show(ModalVisualizarAtendimentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
   public onClickOrderBy(descricao: string): void {

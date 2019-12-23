@@ -6,8 +6,8 @@ import { PacienteService } from '../../paciente/service/paciente.service';
 import { Messages } from '../../shared/message/messages';
 import Pageable from '../../shared/pageable/pageable';
 import Page from '../../shared/pagination/pagination';
-import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento/categoria-atendimento.service';
-import { FormaPagamentoService } from '../../shared/services/forma-pagamento-service/forma-pagamento.service';
+import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
+import { FormaPagamentoService } from '../../shared/services/forma-pagamento.service';
 import Util from '../../shared/util/util';
 import { LancamentoService } from '../service/lancamento.service';
 
@@ -83,7 +83,7 @@ export class ControleCaixaListComponent implements OnInit {
       } */
     });
     this.formaPagamentoService.findAll().subscribe(dados => {
-      this.formaPagamentoList = dados.data;
+      this.formaPagamentoList = dados.result;
     });
   }
 

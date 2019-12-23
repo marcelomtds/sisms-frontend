@@ -12,10 +12,27 @@ export class Paciente {
         public rg?: string,
         public cpf?: string,
         public ativo?: boolean,
-        public sexo?: Sexo,
-        public profissao?: Profissao,
-        public endereco?: Endereco,
-        public contato?: Contato
+        public sexoId?: number,
+        public sexoDescricao?: string,
+        public profissaoId?: number,
+        public profissaoDescricao?: string,
+        public enderecoId?: number,
+        public enderecoCep?: string,
+        public enderecoLogradouro?: string,
+        public enderecoNumero?: string,
+        public enderecoComplemento?: string,
+        public enderecoBairro?: string,
+        public enderecoPontoReferencia?: string,
+        public enderecoLocalidadeId?: number,
+        public enderecoLocalidadeDescricao?: string,
+        public enderecoLocalidadeUFId?: number,
+        public enderecoLocalidadeUFDescricao?: string,
+        public contatoId?: number,
+        public contatoCelular?: string,
+        public contatoCelularRecado?: string,
+        public contatoResidencial?: string,
+        public contatoComercial?: string,
+        public contatoEmail?: string
     ) { }
 
 }

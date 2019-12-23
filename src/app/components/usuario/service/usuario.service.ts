@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { PacienteUsuarioFilter } from '../../shared/model/filter/paciente-usuario.filter';
 import { Response } from '../../shared/model/model/response.model';
 import { Usuario } from '../../shared/model/model/usuario.model';
-import { BaseService } from '../../shared/services/base-service/base.service';
+import { BaseService } from '../../shared/services/base.service';
 
 @Injectable({
   providedIn: 'root'

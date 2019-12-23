@@ -1,17 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Messages } from '../../shared/message/messages';
+import { Atendimento } from '../../shared/model/model/atendimento.model';
 import { Localidade } from '../../shared/model/model/localidade.model';
 import { Profissao } from '../../shared/model/model/profissao.model';
 import { Sexo } from '../../shared/model/model/sexo.model';
 import { UF } from '../../shared/model/model/uf.model';
 import { LocalidadeService } from '../../shared/services/localidade.service';
-import { ProfissaoService } from '../../shared/services/profissao-service/profissao.service';
-import { SexoService } from '../../shared/services/sexo-service/sexo.service';
+import { MessageService } from '../../shared/services/message.service';
+import { ProfissaoService } from '../../shared/services/profissao.service';
+import { SexoService } from '../../shared/services/sexo.service';
 import { UfService } from '../../shared/services/uf.service';
 import Util from '../../shared/util/util';
 import { PacienteService } from '../service/paciente.service';
@@ -27,11 +27,11 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
   public profissoes = new Array<Profissao>();
   public localidades = new Array<Localidade>();
   public ufs = new Array<UF>();
-  public selectedUF: number = null;
   public subscription: Subscription;
+  public isInvalidForm = false;
+  public isCpfReadonly = false;
 
   public constructor(
-    private spinnerService: NgxSpinnerService,
     private router: Router,
     private route: ActivatedRoute,
     private localidadeService: LocalidadeService,
@@ -40,7 +40,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
     private profissaoService: ProfissaoService,
     private sexoService: SexoService,
     private formBuilder: FormBuilder,
-    private messageService: ToastrService
+    private messageService: MessageService
   ) {
     this.subscription = this.profissaoService.getProfissao().subscribe(() => {
       this.onLoadComboProfissao();
@@ -49,7 +49,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
       this.onLoadComboUF();
     });
     this.subscription = this.localidadeService.getLocalidade().subscribe(() => {
-      this.onChangeUf(new UF(this.selectedUF));
+      this.onChangeUf();
     });
   }
 
@@ -96,7 +96,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
       nomeCompleto: [null, Validators.required],
       dataNascimento: [null, Validators.required],
       rg: [null],
-      cpf: [null, Validators.required],
+      cpf: [null],
       sexoId: [null, Validators.required],
       profissaoId: [null],
       enderecoId: [null],
@@ -107,6 +107,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
       enderecoBairro: [null, Validators.required],
       enderecoPontoReferencia: [null],
       enderecoLocalidadeId: [null, Validators.required],
+      enderecoLocalidadeUFId: [null, Validators.required],
       contatoId: [null],
       contatoCelular: [null],
       contatoCelularRecado: [null],
@@ -117,16 +118,19 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
   }
 
   public onClickLocalidade(): void {
-    this.messageService.clear();
-    if (!this.selectedUF) {
-      this.messageService.warning(Messages.SELECIONE_ESTADO, Messages.AVISO);
+    this.messageService.clearAllMessages();
+    if (!this.form.controls.enderecoLocalidadeUFId.value) {
+      this.messageService.sendMessageWarning(Messages.SELECIONE_ESTADO);
     }
   }
 
-  public onChangeUf(uf: UF): void {
-    this.messageService.clear();
-    if (uf && uf.id) {
-      this.localidadeService.findByUfId(uf.id).subscribe(response => {
+  public onChangeUf(isclearAllMessages?: boolean): void {
+    if (isclearAllMessages) {
+      this.messageService.clearAllMessages();
+    }
+    const id = this.form.controls.enderecoLocalidadeUFId.value;
+    if (id) {
+      this.localidadeService.findByUfId(id).subscribe(response => {
         this.localidades = response.result;
         if (this.form.value.enderecoLocalidadeId && !this.localidades.find(x => x.id === this.form.value.enderecoLocalidadeId)) {
           this.form.controls.enderecoLocalidadeId.setValue(null);
@@ -139,79 +143,31 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
   }
 
   public onClickFormSubmit(): void {
-    this.messageService.clear();
+    this.messageService.clearAllMessages();
     if (this.form.valid) {
       const dataNascimento = this.form.value.dataNascimento;
-      const cpf = this.form.value.cpf;
-      const senha = this.form.value.senha;
-      const senhaConfirmacao = this.form.value.senhaConfirmacao;
-      const celular = this.form.value.contatoCelular;
-      const celularRecado = this.form.value.contatoCelularRecado;
-      const residencial = this.form.value.contatoResidencial;
-      const comercial = this.form.value.contatoComercial;
-      const cep = this.form.value.enderecoCep;
-      const email = this.form.value.contatoEmail;
       if (dataNascimento && !Util.isDataValida(dataNascimento)) {
-        this.messageService.error(Messages.DATA_NASCIMENTO_INVALIDA, Messages.ERRO);
+        this.messageService.sendMessageError(Messages.DATA_NASCIMENTO_INVALIDA);
         return;
       }
-      if (dataNascimento && !Util.isDataAnteriorAtual(dataNascimento)) {
-        this.messageService.error(Messages.DATA_NASCIMENTO_MAIOR_ATUAL, Messages.ERRO);
-        return;
-      }
-      if (cpf && !Util.isCpfValido(cpf)) {
-        this.messageService.error(Messages.CPF_INVALIDO, Messages.ERRO);
-        return;
-      }
-      if (!this.form.value.id && senha && !Util.isSenhaTamanhoSuficiente(senha)) {
-        this.messageService.error(Messages.SENHA_INSUFICIENTE, Messages.ERRO);
-        return;
-      }
-      if (!this.form.value.id && senha && senhaConfirmacao && !Util.isSenhasIguais(senha, senhaConfirmacao)) {
-        this.messageService.error(Messages.SENHAS_DIFERENTES, Messages.ERRO);
-        return;
-      }
-      if (cep && !Util.isCepValido(cep)) {
-        this.messageService.error(Messages.CEP_INVALIDO, Messages.ERRO);
-        return;
-      }
-      if (celular && !Util.isNumeroTelefoneValido(celular, 11)) {
-        this.messageService.error(Messages.NUMERO_CELULAR_INVALIDO, Messages.ERRO);
-        return;
-      }
-      if (celularRecado && !Util.isNumeroTelefoneValido(celularRecado, 11)) {
-        this.messageService.error(Messages.NUMERO_CELULAR_RECADO_INVALIDO, Messages.ERRO);
-        return;
-      }
-      if (residencial && !Util.isNumeroTelefoneValido(residencial, 10)) {
-        this.messageService.error(Messages.NUMERO_TELEFONE_RESIDENCIAL_INVALIDO, Messages.ERRO);
-        return;
-      }
-      if (comercial && !Util.isNumeroTelefoneValido(comercial, 10)) {
-        this.messageService.error(Messages.NUMERO_TELEFONE_COMERCIAL_INVALIDO, Messages.ERRO);
-        return;
-      }
-      if (email && !Util.isEmailValido(email)) {
-        this.messageService.error(Messages.EMAIL_INVALIDO, Messages.ERRO);
-        return;
-      }
-      const formValue = {
+      const formValue: Atendimento = {
         ...this.form.value,
         dataNascimento: Util.convertStringToDate(this.form.value.dataNascimento)
       };
       if (formValue.id) {
         this.service.update(formValue.id, formValue).subscribe(response => {
-          this.messageService.success(response.message, Messages.SUCESSO);
+          this.messageService.sendMessageSuccess(response.message);
           this.router.navigate(['/paciente-list']);
         });
       } else {
         this.service.create(formValue).subscribe(response => {
-          this.messageService.success(response.message, Messages.SUCESSO);
+          this.messageService.sendMessageSuccess(response.message);
           this.router.navigate(['/paciente-list']);
         });
       }
     } else {
-      this.messageService.error(Messages.MSG0004, Messages.ERRO);
+      this.isInvalidForm = true;
+      this.messageService.sendMessageError(Messages.MSG0004);
     }
   }
 
@@ -221,51 +177,29 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
         id: response.result.id,
         nomeCompleto: response.result.nomeCompleto,
         dataNascimento: Util.convertDateToString(response.result.dataNascimento),
-        rg: response.result.rg,
-        cpf: response.result.cpf,
-        sexoId: response.result.sexo.id,
-        profissaoId: response.result.profissao.id,
-        enderecoId: response.result.endereco.id,
-        enderecoCep: response.result.endereco.cep,
-        enderecoLogradouro: response.result.endereco.logradouro,
-        enderecoNumero: response.result.endereco.numero,
-        enderecoComplemento: response.result.endereco.complemento,
-        enderecoBairro: response.result.endereco.bairro,
-        enderecoPontoReferencia: response.result.endereco.pontoReferencia,
-        enderecoLocalidadeId: response.result.endereco.localidade.id,
-        contatoId: response.result.contato.id,
-        contatoCelular: response.result.contato.celular,
-        contatoCelularRecado: response.result.contato.celularRecado,
-        contatoResidencial: response.result.contato.residencial,
-        contatoComercial: response.result.contato.comercial,
-        contatoEmail: response.result.contato.email,
+        rg: response.result.rg || null,
+        cpf: response.result.cpf || null,
+        sexoId: response.result.sexoId,
+        profissaoId: response.result.profissaoId || null,
+        enderecoId: response.result.enderecoId,
+        enderecoCep: response.result.enderecoCep,
+        enderecoLogradouro: response.result.enderecoLogradouro,
+        enderecoNumero: response.result.enderecoNumero,
+        enderecoComplemento: response.result.enderecoComplemento || null,
+        enderecoBairro: response.result.enderecoBairro,
+        enderecoPontoReferencia: response.result.enderecoPontoReferencia || null,
+        enderecoLocalidadeId: response.result.enderecoLocalidadeId,
+        enderecoLocalidadeUFId: response.result.enderecoLocalidadeUFId,
+        contatoId: response.result.contatoId || null,
+        contatoCelular: response.result.contatoCelular || null,
+        contatoCelularRecado: response.result.contatoCelularRecado || null,
+        contatoResidencial: response.result.contatoResidencial || null,
+        contatoComercial: response.result.contatoComercial || null,
+        contatoEmail: response.result.contatoEmail || null,
       });
-      this.onChangeUf(response.result.endereco.localidade.uf);
-      this.selectedUF = response.result.endereco.localidade.uf.id;
+      this.onChangeUf();
+      this.isCpfReadonly = response.result.cpf ? true : false;
     });
-  }
-
-  public onClickLimparCampos(): void {
-    this.messageService.clear();
-    this.form.controls.nomeCompleto.setValue(null);
-    this.form.controls.dataNascimento.setValue(null);
-    this.form.controls.sexoId.setValue(null);
-    this.form.controls.rg.setValue(null);
-    this.form.controls.profissaoId.setValue(null);
-    this.form.controls.enderecoCep.setValue(null);
-    this.form.controls.enderecoLogradouro.setValue(null);
-    this.form.controls.enderecoNumero.setValue(null);
-    this.form.controls.enderecoComplemento.setValue(null);
-    this.form.controls.enderecoBairro.setValue(null);
-    this.form.controls.enderecoPontoReferencia.setValue(null);
-    this.form.controls.enderecoLocalidadeId.setValue(null);
-    this.form.controls.contatoCelular.setValue(null);
-    this.form.controls.contatoCelularRecado.setValue(null);
-    this.form.controls.contatoResidencial.setValue(null);
-    this.form.controls.contatoComercial.setValue(null);
-    this.form.controls.contatoEmail.setValue(null);
-    this.selectedUF = null;
-    this.localidades = new Array<Localidade>();
   }
 
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
-import Util from '../../util/util';
-import { PacoteService } from '../../services/pacote-service/pacote.service';
 import { Atendimento } from '../../model/model/atendimento.model';
 import { Pacote } from '../../model/model/pacote.model';
+import { PacoteService } from '../../services/pacote.service';
+import Util from '../../util/util';
 
 @Component({
   selector: 'app-modal-visualizar-atendimento',

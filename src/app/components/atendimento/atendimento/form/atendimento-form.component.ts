@@ -22,8 +22,8 @@ import { PosAtendimentoOutraMedida } from 'src/app/components/shared/model/model
 import { PreAtendimentoOutraMedida } from 'src/app/components/shared/model/model/pre-atendimento-outra-medida.model';
 import { TipoAtendimento } from 'src/app/components/shared/model/model/tipo-atendimento.model';
 import { MessageService } from 'src/app/components/shared/services/message.service';
-import { OutraMedidaService } from 'src/app/components/shared/services/outra-medida-service/outra-medida.service';
-import { PacoteService } from 'src/app/components/shared/services/pacote-service/pacote.service';
+import { OutraMedidaService } from 'src/app/components/shared/services/outra-medida.service';
+import { PacoteService } from 'src/app/components/shared/services/pacote.service';
 import { TipoAtendimentoService } from 'src/app/components/shared/services/tipo-atendimento.service';
 import Util from 'src/app/components/shared/util/util';
 import { AtendimentoService } from '../../service/atendimento.service';
@@ -151,7 +151,6 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         this.pacotService.findById(this.form.value.pacoteId).subscribe(packageResponse => {
           this.pacote = packageResponse.result;
         });
-      } else {
       }
     });
   }
@@ -252,7 +251,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       });
       if (!this.pacote) {
         const pacienteNomeCompleto = this.getNomePaciente(pacienteId);
-        const modalRef = this.modalService.show(ModalConfirmacaoComponent, { keyboard: false, backdrop: 'static' });
+        const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
         modalRef.content.titulo = 'Confirmação de Criação de Pacote';
         modalRef.content.corpo = `Não existe pacote de ${this.categoriaAtendimentoRouting.descricao} em aberto para o paciente ${pacienteNomeCompleto}. Deseja agora?`;
         modalRef.content.onClose.subscribe((result: boolean) => {
@@ -280,7 +279,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         categoriaAtendimentoDescricao: this.categoriaAtendimentoRouting.descricao
       }
     };
-    const modalRefPackage = this.modalService.show(ModalCriarPacoteComponent, { class: 'gray modal-lg', initialState, keyboard: false, backdrop: 'static' });
+    const modalRefPackage = this.modalService.show(ModalCriarPacoteComponent, { class: 'gray modal-lg', initialState, backdrop: 'static' });
     modalRefPackage.content.onClose.subscribe((result: boolean) => {
       if (result) {
         this.pacotService.findLastOpen(this.categoriaAtendimentoRouting.id, pacienteId).subscribe(response => {
@@ -303,7 +302,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     this.quantidadeSessao = 0;
     this.pacote = new Pacote();
     this.isCadastrarPosAtendimento = false;
-    this.isInvalidFormPacienteId = false; 
+    this.isInvalidFormPacienteId = false;
     this.isInvalidForm = false;
   }
 
@@ -424,6 +423,10 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       this.form.value.posAtendimentoOutrasMedidas = [];
       if (this.outrasMedidasSelecionadas.length) {
         for (const item of this.outrasMedidasSelecionadas) {
+          if (!item.outraMedidaId) {
+            this.showErrorInvalidForm();
+            return;
+          }
           this.form.value.preAtendimentoOutrasMedidas.push({
             outraMedidaId: item.outraMedidaId,
             valor: item.valorPre
@@ -441,9 +444,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         pacienteId: this.form.controls.pacienteId.value,
         aberto: !this.isCadastrarPosAtendimento,
         preAtendimentoData: Util.convertStringToDateTime(preAtendimentoData),
-        posAtendimentoData: Util.convertStringToDateTime(posAtendimentoData),
-        preAtendimentoPressaoArterial: this.form.controls.preAtendimentoPressaoArterial.value || null,
-        posAtendimentoPressaoArterial: this.form.controls.posAtendimentoPressaoArterial.value || null
+        posAtendimentoData: Util.convertStringToDateTime(posAtendimentoData)
       };
       if (formValue.id) {
         this.service.update(formValue.id, formValue).subscribe(response => {
@@ -457,10 +458,22 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         });
       }
     } else {
-      this.isInvalidForm = true;
-      this.isInvalidFormOutraMedidaDescricao = true;
-      this.messageService.sendMessageError(Messages.MSG0004);
+      this.showErrorInvalidForm();
     }
+  }
+
+  private showErrorInvalidForm(): void {
+    this.isInvalidForm = true;
+    this.isInvalidFormOutraMedidaDescricao = true;
+    this.messageService.sendMessageError(Messages.MSG0004);
+  }
+
+  public isDrenagem(): boolean {
+    return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.DRENAGEM_LINFATICA;
+  }
+
+  public isFisioterapia(): boolean {
+    return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.FISIOTERAPIA;
   }
 
   public onClickOpenModalVisualizarImagens(): void {

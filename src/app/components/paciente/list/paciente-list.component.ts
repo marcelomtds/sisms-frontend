@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Messages } from '../../shared/message/messages';
 import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
@@ -14,7 +13,8 @@ import { Sexo } from '../../shared/model/model/sexo.model';
 import { UF } from '../../shared/model/model/uf.model';
 import Page from '../../shared/pagination/pagination';
 import { LocalidadeService } from '../../shared/services/localidade.service';
-import { SexoService } from '../../shared/services/sexo-service/sexo.service';
+import { MessageService } from '../../shared/services/message.service';
+import { SexoService } from '../../shared/services/sexo.service';
 import { UfService } from '../../shared/services/uf.service';
 import { PacienteService } from '../service/paciente.service';
 
@@ -30,8 +30,8 @@ export class PacienteListComponent implements OnInit, OnDestroy {
   public dados = new Page<Array<Paciente>>();
   public form: FormGroup;
   public filtro = new PageableFilter<PacienteUsuarioFilter>();
-  public selectedUF: number = null;
   public subscription: Subscription;
+  public showNoRecords = false;
 
   public constructor(
     private modalService: BsModalService,
@@ -40,13 +40,13 @@ export class PacienteListComponent implements OnInit, OnDestroy {
     private localidadeService: LocalidadeService,
     private ufService: UfService,
     private formBuilder: FormBuilder,
-    private messageService: ToastrService
+    private messageService: MessageService
   ) {
     this.subscription = this.ufService.getUF().subscribe(() => {
       this.onLoadComboUF();
     });
     this.subscription = this.localidadeService.getLocalidade().subscribe(() => {
-      this.onChangeUf(new UF(this.selectedUF));
+      this.onChangeUf();
     });
   }
 
@@ -92,14 +92,19 @@ export class PacienteListComponent implements OnInit, OnDestroy {
   }
 
   public onClickLocalidade(): void {
-    if (!this.selectedUF) {
-      this.messageService.warning(Messages.SELECIONE_ESTADO, Messages.AVISO);
+    this.messageService.clearAllMessages();
+    if (!this.form.controls.ufId.value) {
+      this.messageService.sendMessageWarning(Messages.SELECIONE_ESTADO);
     }
   }
 
-  public onChangeUf(uf: UF): void {
-    if (uf && uf.id) {
-      this.localidadeService.findByUfId(uf.id).subscribe(response => {
+  public onChangeUf(isclearAllMessages?: boolean): void {
+    if (isclearAllMessages) {
+      this.messageService.clearAllMessages();
+    }
+    const id = this.form.controls.ufId.value;
+    if (id) {
+      this.localidadeService.findByUfId(id).subscribe(response => {
         this.localidades = response.result;
         if (this.form.value.localidadeId && !this.localidades.find(x => x.id === this.form.value.localidadeId)) {
           this.form.controls.localidadeId.setValue(null);
@@ -112,7 +117,7 @@ export class PacienteListComponent implements OnInit, OnDestroy {
   }
 
   public onClickFormSubmit(): void {
-    this.messageService.clear();
+    this.messageService.clearAllMessages();
     this.filtro = {
       ...this.filtro,
       filter: {
@@ -123,45 +128,48 @@ export class PacienteListComponent implements OnInit, OnDestroy {
   }
 
   public searchByFilter(): void {
+    this.messageService.clearAllMessages();
     this.service.findByFilter(this.filtro).subscribe(response => {
+      this.showNoRecords = true;
       this.dados = response.result;
-      if (!response.result.content.length) {
-        this.messageService.warning(Messages.NENHUM_REGISTRO_ENCONTRADO, Messages.AVISO);
-      }
     });
   }
 
   public onClickLimparCampos(): void {
+    this.messageService.clearAllMessages();
     this.onCreateForm();
     this.dados = new Page<Array<Paciente>>();
     this.filtro = new PageableFilter<PacienteUsuarioFilter>();
+    this.showNoRecords = false;
   }
 
   public onClickUpdateStatus(paciente: Paciente): void {
-    this.messageService.clear();
+    this.messageService.clearAllMessages();
     const modalRef = this.modalService.show(ModalConfirmacaoComponent, { keyboard: false, backdrop: 'static' });
     const status = paciente.ativo ? 'desativar' : 'ativar';
-    const sexo = paciente.sexo.id === 1 ? 'o' : 'a';
+    const sexo = paciente.sexoId === 1 ? 'o' : 'a';
     modalRef.content.titulo = 'Confirmação de Alteração de Status';
     modalRef.content.corpo = `Deseja ${status} ${sexo} paciente ${paciente.nomeCompleto}?`;
-    modalRef.content.onClose.subscribe(() => {
-      this.service.activeOrInative(paciente.id).subscribe(response => {
-        this.messageService.success(response.message);
-        this.searchByFilter();
-      });
+    modalRef.content.onClose.subscribe(result => {
+      if (result) {
+        this.service.activeOrInative(paciente.id).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.searchByFilter();
+        });
+      }
     });
   }
 
   public onClickOpenModalVisualizar(paciente: Paciente): void {
+    this.messageService.clearAllMessages();
     const initialState = {
       dados: paciente
     };
-    this.messageService.clear();
     this.modalService.show(ModalVisualizarPacienteUsuarioComponent, { initialState, keyboard: false, backdrop: 'static', class: 'gray modal-lg' });
   }
 
   public onClickOrderBy(descricao: string): void {
-    this.messageService.clear();
+    this.messageService.clearAllMessages();
     this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
     this.filtro.orderBy = descricao;
     this.searchByFilter();

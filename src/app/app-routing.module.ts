@@ -164,7 +164,7 @@ export const ROUTES: Routes = [
   {
     path: 'atendimento-form/pilates',
     data: {
-      id: 3,
+      id: 4,
       descricao: 'Pilates',
       rota: 'pilates'
     },
@@ -174,7 +174,7 @@ export const ROUTES: Routes = [
   {
     path: 'atendimento-form/pilates/:id',
     data: {
-      id: 3,
+      id: 4,
       descricao: 'Pilates',
       rota: 'pilates'
     },
@@ -186,7 +186,7 @@ export const ROUTES: Routes = [
   {
     path: 'atendimento-list/massagem-relaxante',
     data: {
-      id: 4,
+      id: 5,
       descricao: 'Massagem Relaxante',
       rota: 'massagem-relaxante'
     },
@@ -196,7 +196,7 @@ export const ROUTES: Routes = [
   {
     path: 'atendimento-form/massagem-relaxante',
     data: {
-      id: 4,
+      id: 5,
       descricao: 'Massagem Relaxante',
       rota: 'massagem-relaxante'
     },
@@ -206,7 +206,7 @@ export const ROUTES: Routes = [
   {
     path: 'atendimento-form/massagem-relaxante/:id',
     data: {
-      id: 4,
+      id: 5,
       descricao: 'Massagem Relaxante',
       rota: 'massagem-relaxante'
     },

@@ -201,7 +201,7 @@
                 <div class="form-group">
                   <label for="uf">Estado</label>
                   <ng-select id="uf" maxlength="50" formControlName="enderecoLocalidadeUFId"
-                    (change)="onChangeUf($event)" [items]="ufs" bindLabel="descricao" bindValue="id"
+                    (change)="onChangeUf(true)" [items]="ufs" bindLabel="descricao" bindValue="id"
                     placeholder="Selecione">
                   </ng-select>
                   <app-message-required [isInvalidForm]="isInvalidForm"

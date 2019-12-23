@@ -13,7 +13,7 @@ import { Sexo } from '../../shared/model/model/sexo.model';
 import { Usuario } from '../../shared/model/model/usuario.model';
 import Page from '../../shared/pagination/pagination';
 import { MessageService } from '../../shared/services/message.service';
-import { SexoService } from '../../shared/services/sexo-service/sexo.service';
+import { SexoService } from '../../shared/services/sexo.service';
 import { UsuarioService } from '../service/usuario.service';
 
 @Component({
@@ -79,6 +79,7 @@ export class UsuarioListComponent implements OnInit {
   }
 
   public searchByFilter(): void {
+    this.messageService.clearAllMessages();
     this.service.findByFilter(this.filtro).subscribe(response => {
       this.showNoRecords = true;
       this.dados = response.result;

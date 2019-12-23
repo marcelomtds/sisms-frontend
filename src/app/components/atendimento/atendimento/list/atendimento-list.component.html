@@ -167,6 +167,7 @@
             </div>
           </div>
         </div>
+        <app-no-records *ngIf="showNoRecords && !dados.content?.length"></app-no-records>
       </div>
     </div>
   </form>

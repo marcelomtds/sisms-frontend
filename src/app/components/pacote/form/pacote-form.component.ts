@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { PacienteService } from '../../paciente/service/paciente.service';
+import { Messages } from '../../shared/message/messages';
 import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { CategoriaAtendimento } from '../../shared/model/model/categoriaAtendimento.model';
+import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
 import { Paciente } from '../../shared/model/model/paciente.model';
 import { Pacote } from '../../shared/model/model/pacote.model';
-import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento/categoria-atendimento.service';
+import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
 import { MessageService } from '../../shared/services/message.service';
-import { PacoteService } from '../../shared/services/pacote-service/pacote.service';
+import { PacoteService } from '../../shared/services/pacote.service';
 
 @Component({
   selector: 'app-pacote-form',
@@ -20,6 +21,7 @@ export class PacoteFormComponent implements OnInit {
   public pacientes = new Array<Paciente>();
   public categoriasAtendimento = new Array<CategoriaAtendimento>();
   public form: FormGroup;
+  public isInvalidForm = false;
 
   public constructor(
     private formBuilder: FormBuilder,
@@ -43,12 +45,7 @@ export class PacoteFormComponent implements OnInit {
 
   private findById(id: number): void {
     this.service.findById(id).subscribe(response => {
-      this.form.setValue({
-        id: response.result.id,
-        categoriaAtendimentoId: response.result.categoriaAtendimentoId,
-        pacienteId: response.result.pacienteId,
-        valor: response.result.valor
-      });
+      this.form.patchValue(response.result);
       this.form.controls.categoriaAtendimentoId.disable();
       this.form.controls.categoriaAtendimentoId.updateValueAndValidity();
       this.form.controls.pacienteId.disable();
@@ -59,9 +56,9 @@ export class PacoteFormComponent implements OnInit {
   private onCreateForm(): void {
     this.form = this.formBuilder.group({
       id: [null],
-      categoriaAtendimentoId: [null],
-      pacienteId: [null],
-      valor: [0]
+      categoriaAtendimentoId: [null, Validators.required],
+      pacienteId: [null, Validators.required],
+      valor: [0, Validators.required]
     });
   }
 
@@ -76,28 +73,35 @@ export class PacoteFormComponent implements OnInit {
 
   public onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
-    const formValue: Pacote = {
-      ...this.form.value,
-      pacienteId: this.form.controls.pacienteId.value,
-      categoriaAtendimentoId: this.form.controls.categoriaAtendimentoId.value
-    };
-    if (formValue.id) {
-      this.service.update(formValue.id, formValue).subscribe(response => {
-        this.messageService.sendMessageSuccess(response.message);
-        this.onCreateForm();
-        this.router.navigate(['/pacote-list']);
-      });
-    } else {
-      const modalRef = this.modalService.show(ModalConfirmacaoComponent, { keyboard: false, backdrop: 'static' });
-      modalRef.content.titulo = 'Confirmação de Criação de Pacote';
-      modalRef.content.corpo = 'Ao criar um novo pacote o anterior será encerrado automaticamente. Deseja continuar?';
-      modalRef.content.onClose.subscribe(() => {
-        this.service.create(formValue).subscribe(response => {
+    if (this.form.valid) {
+      const formValue: Pacote = {
+        ...this.form.value,
+        pacienteId: this.form.controls.pacienteId.value,
+        categoriaAtendimentoId: this.form.controls.categoriaAtendimentoId.value
+      };
+      if (formValue.id) {
+        this.service.update(formValue.id, formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
           this.onCreateForm();
           this.router.navigate(['/pacote-list']);
         });
-      });
+      } else {
+        const modalRef = this.modalService.show(ModalConfirmacaoComponent, { keyboard: false, backdrop: 'static' });
+        modalRef.content.titulo = 'Confirmação de Criação de Pacote';
+        modalRef.content.corpo = 'Ao criar um novo pacote o anterior será encerrado automaticamente. Deseja continuar?';
+        modalRef.content.onClose.subscribe(result => {
+          if (result) {
+            this.service.create(formValue).subscribe(response => {
+              this.messageService.sendMessageSuccess(response.message);
+              this.onCreateForm();
+              this.router.navigate(['/pacote-list']);
+            });
+          }
+        });
+      }
+    } else {
+      this.isInvalidForm = true;
+      this.messageService.sendMessageError(Messages.MSG0004);
     }
   }
 

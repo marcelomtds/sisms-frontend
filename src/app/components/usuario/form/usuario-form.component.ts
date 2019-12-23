@@ -13,8 +13,8 @@ import { UF } from '../../shared/model/model/uf.model';
 import { Usuario } from '../../shared/model/model/usuario.model';
 import { LocalidadeService } from '../../shared/services/localidade.service';
 import { MessageService } from '../../shared/services/message.service';
-import { ProfissaoService } from '../../shared/services/profissao-service/profissao.service';
-import { SexoService } from '../../shared/services/sexo-service/sexo.service';
+import { ProfissaoService } from '../../shared/services/profissao.service';
+import { SexoService } from '../../shared/services/sexo.service';
 import { UfService } from '../../shared/services/uf.service';
 import Util from '../../shared/util/util';
 import { UsuarioService } from '../service/usuario.service';
@@ -140,8 +140,10 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onChangeUf(): void {
-    this.messageService.clearAllMessages();
+  public onChangeUf(isclearAllMessages?: boolean): void {
+    if (isclearAllMessages) {
+      this.messageService.clearAllMessages();
+    }
     const id = this.form.controls.enderecoLocalidadeUFId.value;
     if (id) {
       this.localidadeService.findByUfId(id).subscribe(response => {
