@@ -272,11 +272,4 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickLimparCampos(): void {
-    this.messageService.clearAllMessages();
-    this.onCreateForm();
-    this.isInvalidForm = false;
-    this.localidades = new Array<Localidade>();
-  }
-
 }

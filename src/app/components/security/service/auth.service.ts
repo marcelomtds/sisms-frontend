@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EndPoint } from '../../shared/endpoint/endpoint';
+import { Autenticacao } from '../../shared/model/model/autenticacao.model';
+import { CurrentAuthentication } from '../../shared/model/model/current-authentication.model';
+import { Response } from '../../shared/model/model/response.model';
+import { BaseService } from '../../shared/services/base-service/base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService extends BaseService<Autenticacao, {}> {
 
-  constructor(private http: HttpClient) { }
-
-  login(form: any): Observable<any> {
-    return this.http.post(`${EndPoint.URL}/api/auth`, form);
+  constructor(http: HttpClient) {
+    super(http, '/api/auth');
   }
 
-  verifyCurrentUser(form: any): Observable<any> {
-    return this.http.post(`${EndPoint.URL}/api/auth/verifyCurrentUser`, form);
+  public login(form: Autenticacao): Observable<Response<CurrentAuthentication>> {
+    return this.http.post<Response<CurrentAuthentication>>(this.apiBaseUrl, form);
   }
-
 
 }

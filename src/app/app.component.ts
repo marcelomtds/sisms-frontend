@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgSelectConfig } from '@ng-select/ng-select';
+import { CarouselConfig } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { SharedService } from './components/security/service/shared.service';
 import { Messages } from './components/shared/message/messages';
-import { CarouselConfig } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +12,11 @@ import { CarouselConfig } from 'ngx-bootstrap';
 })
 export class AppComponent implements OnInit {
 
-  title = 'SisMs';
-  subscription: Subscription;
-  showTemplate = false;
+  public title = 'SisMs';
+  public subscription: Subscription;
+  public showTemplate = false;
 
-  constructor(
+  public constructor(
     private sharedService: SharedService,
     public ngSelectConfig: NgSelectConfig,
     private carouselConfig: CarouselConfig
@@ -24,12 +24,12 @@ export class AppComponent implements OnInit {
     this.carouselConfig.interval = 0;
     ngSelectConfig.placeholder = Messages.PLACEHOLDER_NG_SELECT;
     ngSelectConfig.notFoundText = Messages.VAZIO_NG_SELECT;
-    this.subscription = this.sharedService.updateTemplateGet().subscribe(showTemplate => {
-      this.showTemplate = showTemplate;
+    this.subscription = this.sharedService.updateTemplateGet().subscribe(response => {
+      this.showTemplate = response;
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.showTemplate = this.sharedService.isLoggedIn();
   }
 

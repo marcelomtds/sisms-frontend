@@ -65,7 +65,7 @@ export const ROUTES: Routes = [
     path: 'atendimento-list/drenagem',
     data: {
       id: 1,
-      descricao: 'Drenagem',
+      descricao: 'Drenagem Linfática',
       rota: 'drenagem'
     },
     component: AtendimentoListComponent,
@@ -75,7 +75,7 @@ export const ROUTES: Routes = [
     path: 'atendimento-form/drenagem',
     data: {
       id: 1,
-      descricao: 'Drenagem',
+      descricao: 'Drenagem Linfática',
       rota: 'drenagem'
     },
     component: AtendimentoFormComponent,
@@ -85,7 +85,7 @@ export const ROUTES: Routes = [
     path: 'atendimento-form/drenagem/:id',
     data: {
       id: 1,
-      descricao: 'Drenagem',
+      descricao: 'Drenagem Linfática',
       rota: 'drenagem'
     },
     component: AtendimentoFormComponent,

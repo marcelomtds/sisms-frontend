@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { Messages } from '../../shared/message/messages';
-import Util from '../../shared/util/util';
+import { Autenticacao } from '../../shared/model/model/autenticacao.model';
+import { MessageService } from '../../shared/services/message.service';
 import { AuthService } from '../service/auth.service';
 import { SharedService } from '../service/shared.service';
 
@@ -15,18 +15,19 @@ export class LoginComponent implements OnInit {
 
   public form: FormGroup;
   public isViewPassword = false;
+  public isInvalidForm = false;
 
   public constructor(
-    private authService: AuthService,
+    private service: AuthService,
     private router: Router,
-    private messageService: ToastrService,
+    private messageService: MessageService,
     private formBuilder: FormBuilder,
     private sharedService: SharedService
   ) {
   }
 
   public ngOnInit(): void {
-    if (sessionStorage.getItem('token') && sessionStorage.getItem('usuario')) {
+    if (this.sharedService.isLoggedIn()) {
       this.router.navigate(['/']);
     }
     this.onCreateForm();
@@ -44,23 +45,25 @@ export class LoginComponent implements OnInit {
   }
 
   public onClickLimparCampos(): void {
+    this.messageService.clearAllMessages();
     this.onCreateForm();
+    this.isInvalidForm = false;
   }
 
   public onClickFormSubmit(): void {
-    this.messageService.clear();
+    this.messageService.clearAllMessages();
     if (this.form.valid) {
-      if (!Util.isCpfValido(this.form.value.cpf)) {
-        this.messageService.error(Messages.CPF_INVALIDO, Messages.ERRO);
-        return;
-      }
-      this.authService.login(this.form.value).subscribe((userAuthentication: any) => {
-        this.sharedService.setUserAndTokenSession(userAuthentication.result.usuario, userAuthentication.result.token);
+      const formValue: Autenticacao = {
+        ...this.form.value
+      };
+      this.service.login(formValue).subscribe(response => {
+        this.sharedService.setUserAndTokenSession(response.result.usuario, response.result.token);
         this.sharedService.updateTemplateSet(true);
         this.router.navigate(['/']);
       });
     } else {
-      this.messageService.error(Messages.MSG0004, Messages.ERRO);
+      this.isInvalidForm = true;
+      this.messageService.sendMessageError(Messages.MSG0004);
     }
   }
 

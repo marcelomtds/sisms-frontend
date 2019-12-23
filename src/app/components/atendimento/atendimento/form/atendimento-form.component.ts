@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -9,7 +9,6 @@ import { PacienteService } from 'src/app/components/paciente/service/paciente.se
 import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalConfirmacaoComponent } from 'src/app/components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalCriarPacoteComponent } from 'src/app/components/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
-import { ModalVisualizarAtendimentoComponent } from 'src/app/components/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
 import { ModalVisualizarImagensComponent } from 'src/app/components/shared/modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
 import { CategoriaAtendimentoEnum } from 'src/app/components/shared/model/enum/categoria-atendimento.enum';
 import { TipoAtendimentoEnum } from 'src/app/components/shared/model/enum/tipo-atendimento.enum';
@@ -48,6 +47,9 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   public quantidadeSessao = 0;
   public subscription: Subscription;
   public isCadastrarPosAtendimento = false;
+  public isInvalidForm = false;
+  public isInvalidFormPacienteId = false;
+  public isInvalidFormOutraMedidaDescricao = false;
 
   public constructor(
     private formBuilder: FormBuilder,
@@ -189,9 +191,9 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       id: [null],
       pacoteId: [null],
-      pacienteId: [null],
+      pacienteId: [null, Validators.required],
       preAtendimentoId: [null],
-      preAtendimentoData: [null],
+      preAtendimentoData: [null, Validators.required],
       preAtendimentoPressaoArterial: [null],
       preAtendimentoPeso: [0],
       preAtendimentoSupraUmbilical: [0],
@@ -200,7 +202,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       preAtendimentoObservacao: [null],
       preAtendimentoOutrasMedidas: [[]],
       posAtendimentoId: [null],
-      posAtendimentoData: [null],
+      posAtendimentoData: [null, Validators.required],
       posAtendimentoPressaoArterial: [null],
       posAtendimentoPeso: [0],
       posAtendimentoSupraUmbilical: [0],
@@ -230,12 +232,16 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     return this.pacientes.find(x => x.id === id).nomeCompleto;
   }
 
-
-  public async onChangePaciente(): Promise<any> {
+  public async onChangePaciente(): Promise<void> {
     this.messageService.clearAllMessages();
     const pacienteId = this.form.controls.pacienteId.value;
     this.onResetValues();
-    this.form.controls.pacienteId.setValue(pacienteId);
+    if (pacienteId) {
+      this.isInvalidFormPacienteId = false;
+      this.form.controls.pacienteId.setValue(pacienteId);
+    } else {
+      this.isInvalidFormPacienteId = true;
+    }
     if (pacienteId && this.tipoAtendimentoId === TipoAtendimentoEnum.SESSAO) {
       await this.service.findTotalBySession(pacienteId, this.categoriaAtendimentoRouting.id).toPromise().then(response => {
         this.quantidadeSessao = response.result + 1;
@@ -297,6 +303,8 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     this.quantidadeSessao = 0;
     this.pacote = new Pacote();
     this.isCadastrarPosAtendimento = false;
+    this.isInvalidFormPacienteId = false; 
+    this.isInvalidForm = false;
   }
 
   public onClickAdicionarMedida(): void {
@@ -391,53 +399,67 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  private removerValidacao(): void {
+    if (!this.isCadastrarPosAtendimento) {
+      this.form.controls.posAtendimentoData.setValidators([]);
+      this.form.controls.posAtendimentoData.updateValueAndValidity();
+    }
+  }
+
   public onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
-    const preAtendimentoData = this.form.value.preAtendimentoData;
-    const posAtendimentoData = this.form.value.posAtendimentoData;
-    if (preAtendimentoData && !Util.isDataHoraValida(preAtendimentoData)) {
-      this.messageService.sendMessageError(Messages.DATA_HORA_PRE_ATENDIMENTO_INVALIDA);
-      return;
-    }
-    if (posAtendimentoData && !Util.isDataHoraValida(posAtendimentoData)) {
-      this.messageService.sendMessageError(Messages.DATA_HORA_POS_ATENDIMENTO_INVALIDA);
-      return;
-    }
-    this.form.value.preAtendimentoOutrasMedidas = [];
-    this.form.value.posAtendimentoOutrasMedidas = [];
-    if (this.outrasMedidasSelecionadas.length) {
-      for (const item of this.outrasMedidasSelecionadas) {
-        this.form.value.preAtendimentoOutrasMedidas.push({
-          outraMedidaId: item.outraMedidaId,
-          valor: item.valorPre
-        });
-        if (this.isCadastrarPosAtendimento) {
-          this.form.value.posAtendimentoOutrasMedidas.push({
+    this.removerValidacao();
+    if (this.form.valid) {
+      const preAtendimentoData = this.form.value.preAtendimentoData;
+      const posAtendimentoData = this.form.value.posAtendimentoData;
+      if (preAtendimentoData && !Util.isDataHoraValida(preAtendimentoData)) {
+        this.messageService.sendMessageError(Messages.DATA_HORA_PRE_ATENDIMENTO_INVALIDA);
+        return;
+      }
+      if (posAtendimentoData && !Util.isDataHoraValida(posAtendimentoData)) {
+        this.messageService.sendMessageError(Messages.DATA_HORA_POS_ATENDIMENTO_INVALIDA);
+        return;
+      }
+      this.form.value.preAtendimentoOutrasMedidas = [];
+      this.form.value.posAtendimentoOutrasMedidas = [];
+      if (this.outrasMedidasSelecionadas.length) {
+        for (const item of this.outrasMedidasSelecionadas) {
+          this.form.value.preAtendimentoOutrasMedidas.push({
             outraMedidaId: item.outraMedidaId,
-            valor: item.valorPos
+            valor: item.valorPre
           });
+          if (this.isCadastrarPosAtendimento) {
+            this.form.value.posAtendimentoOutrasMedidas.push({
+              outraMedidaId: item.outraMedidaId,
+              valor: item.valorPos
+            });
+          }
         }
       }
-    }
-    const formValue: Atendimento = {
-      ...this.form.value,
-      pacienteId: this.form.controls.pacienteId.value,
-      aberto: !this.isCadastrarPosAtendimento,
-      preAtendimentoData: Util.convertStringToDateTime(preAtendimentoData),
-      posAtendimentoData: Util.convertStringToDateTime(posAtendimentoData),
-      preAtendimentoPressaoArterial: this.form.controls.preAtendimentoPressaoArterial.value || null,
-      posAtendimentoPressaoArterial: this.form.controls.posAtendimentoPressaoArterial.value || null
-    };
-    if (formValue.id) {
-      this.service.update(formValue.id, formValue).subscribe(response => {
-        this.messageService.sendMessageSuccess(response.message);
-        this.router.navigate([`/atendimento-list/${this.categoriaAtendimentoRouting.rota}`]);
-      });
+      const formValue: Atendimento = {
+        ...this.form.value,
+        pacienteId: this.form.controls.pacienteId.value,
+        aberto: !this.isCadastrarPosAtendimento,
+        preAtendimentoData: Util.convertStringToDateTime(preAtendimentoData),
+        posAtendimentoData: Util.convertStringToDateTime(posAtendimentoData),
+        preAtendimentoPressaoArterial: this.form.controls.preAtendimentoPressaoArterial.value || null,
+        posAtendimentoPressaoArterial: this.form.controls.posAtendimentoPressaoArterial.value || null
+      };
+      if (formValue.id) {
+        this.service.update(formValue.id, formValue).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.router.navigate([`/atendimento-list/${this.categoriaAtendimentoRouting.rota}`]);
+        });
+      } else {
+        this.service.create(formValue).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.router.navigate([`/atendimento-list/${this.categoriaAtendimentoRouting.rota}`]);
+        });
+      }
     } else {
-      this.service.create(formValue).subscribe(response => {
-        this.messageService.sendMessageSuccess(response.message);
-        this.router.navigate([`/atendimento-list/${this.categoriaAtendimentoRouting.rota}`]);
-      });
+      this.isInvalidForm = true;
+      this.isInvalidFormOutraMedidaDescricao = true;
+      this.messageService.sendMessageError(Messages.MSG0004);
     }
   }
 

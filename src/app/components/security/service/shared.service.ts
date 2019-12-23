@@ -7,42 +7,37 @@ import { Usuario } from '../../shared/model/model/usuario.model';
 })
 export class SharedService {
 
-  subject = new Subject<any>();
+  public subject = new Subject<boolean>();
 
-  constructor() {
+  public isLoggedIn(): boolean {
+    return sessionStorage.getItem('token') && sessionStorage.getItem('usuario') ? true : false;
   }
 
-  isLoggedIn(): boolean {
-    if (sessionStorage.getItem('token') == null && sessionStorage.getItem('usuario') == null) {
-      return false;
-    }
-    return true;
-  }
-
-  updateTemplateGet(): Observable<any> {
+  public updateTemplateGet(): Observable<boolean> {
     return this.subject.asObservable();
   }
 
-  updateTemplateSet(showTemplate: boolean): any {
+  public updateTemplateSet(showTemplate: boolean): void {
     this.subject.next(showTemplate);
   }
 
-  getUserSession(): Usuario {
+  public getUserSession(): Usuario {
     return JSON.parse(sessionStorage.getItem('usuario'));
   }
 
-  setUserAndTokenSession(usuario: any, token: any): void {
+  public setUserAndTokenSession(usuario: Usuario, token: string): void {
     sessionStorage.setItem('token', token);
     sessionStorage.setItem('usuario', JSON.stringify(usuario));
   }
 
-  setUserSession(usuario: any): void {
+  public setUserSession(usuario: Usuario): void {
     sessionStorage.setItem('usuario', JSON.stringify(usuario));
   }
 
-  removeUserAndTokenSession(): void {
+  public removeUserAndTokenSession(): void {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('usuario');
     this.updateTemplateSet(false);
   }
+
 }

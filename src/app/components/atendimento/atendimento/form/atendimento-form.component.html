@@ -14,7 +14,7 @@
             <div class="row">
               <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                 <div class="form-group">
-                  <label for="tipoAtendimento">* Tipo de Atendimento</label>
+                  <label for="tipoAtendimento">Tipo de Atendimento</label>
                   <ng-select id="tipoAtendimento" [disabled]="form.controls.id.value" maxlength="50"
                     [ngModelOptions]="{standalone: true}" [(ngModel)]="tipoAtendimentoId" [clearable]="false"
                     [items]="tiposAtendimento" bindLabel="descricao" bindValue="id"
@@ -26,27 +26,30 @@
             <div class="row">
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <div class="form-group">
-                  <label for="paciente">* Paciente</label>
+                  <label for="paciente">Paciente</label>
                   <ng-select id="paciente" maxlength="50" (change)="onChangePaciente()" formControlName="pacienteId"
-                    [items]="pacientes" bindLabel="nomeCompleto" bindValue="id">
+                    [items]="pacientes" bindLabel="nomeCompleto" placeholder="Selecione" bindValue="id">
                     <ng-template ng-option-tmp let-item="item">
                       {{ item.nomeCompleto }}
                       <br />
                       <small>{{ item.cpf | cpf }}</small>
                     </ng-template>
                   </ng-select>
+                  <app-message-required [isInvalidForm]="isInvalidForm ||isInvalidFormPacienteId"
+                    [controlComponent]="form.get('pacienteId')">
+                  </app-message-required>
                 </div>
               </div>
               <ng-container *ngIf="form.controls.pacienteId.value || form.controls.id.value">
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                   <div class="form-group">
-                    <label for="numeroSessao">* Sessão</label>
+                    <label for="numeroSessao">Sessão</label>
                     <input [value]="quantidadeSessao" id="numeroSessao" readonly type="text" class="form-control" />
                   </div>
                 </div>
                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                   <div class="form-group">
-                    <label for="aberto">* Cadastrar pós-atendimento?</label>
+                    <label for="aberto">Cadastrar pós-atendimento?</label>
                     <ng-select id="aberto" maxlength="50" [ngModelOptions]="{standalone: true}"
                       [(ngModel)]="isCadastrarPosAtendimento" [clearable]="false"
                       [disabled]="form.controls.id.value && form.controls.aberto.value === false">
@@ -138,17 +141,21 @@
               <div class="row">
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                   <div class="form-group">
-                    <label for="preAtendimentoData">* Data e Hora</label>
+                    <label for="preAtendimentoData">Data e Hora</label>
                     <input id="preAtendimentoData" (focus)="setDataHoraAtual('preAtendimentoData')" type="text"
                       [validation]="false" mask="00/00/0000 00:00" formControlName="preAtendimentoData"
                       class="form-control" />
+                    <app-message-required [isInvalidForm]="isInvalidForm"
+                      [controlComponent]="form.get('preAtendimentoData')">
+                    </app-message-required>
                   </div>
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                   <div class="form-group">
                     <label for="preAtendimentoPressaoArterial">Pressão Arterial</label>
-                    <input [dropSpecialCharacters]="false" mask="000/000" id="preAtendimentoPressaoArterial"
-                      maxlength="7" type="text" formControlName="preAtendimentoPressaoArterial" class="form-control" />
+                    <input [dropSpecialCharacters]="false" [validation]="false" mask="000/000"
+                      id="preAtendimentoPressaoArterial" maxlength="7" type="text"
+                      formControlName="preAtendimentoPressaoArterial" class="form-control" />
                   </div>
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -207,14 +214,17 @@
                       (click)="onClickRemoverOutraMedida(medida.index)"><em class="fa fa-close"></em></button>
                   </div>
                   <div class="form-group">
-                    <label for="descricaOutraMedidaPre{{ i }}">* Medida</label>
+                    <label for="descricaOutraMedidaPre{{ i }}">Medida</label>
                     <ng-select id="descricaOutraMedidaPre{{ i }}" maxlength="50" [items]="outrasMedidas"
                       [ngModelOptions]="{standalone: true}" [(ngModel)]="medida.outraMedidaId" [multiple]="false"
-                      bindLabel="descricao" bindValue="id" placeholder="Selecione">
+                      bindLabel="descricao" required #descricaoOutraMedidaPre="ngModel" bindValue="id"
+                      placeholder="Selecione">
                     </ng-select>
+                    <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="descricaoOutraMedidaPre">
+                    </app-message-required>
                   </div>
                   <div class="form-group">
-                    <label for="valorOutraMedidaPre{{ i }}">* Valor (cm)</label>
+                    <label for="valorOutraMedidaPre{{ i }}">Valor (cm)</label>
                     <input id="valorOutraMedidaPre{{ i }}" currencyMask
                       [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: '.', decimal: ',', allowNegative: 'false' }"
                       maxlength="5" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="medida.valorPre"
@@ -226,8 +236,8 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                   <div class="form-group">
                     <label for="preAtendimentoObservacao">Observacão</label>
-                    <textarea trim="blur" style="resize: none" id="preAtendimentoObservacao" maxlength="1000" type="text" rows="5"
-                      formControlName="preAtendimentoObservacao" class="form-control"></textarea>
+                    <textarea trim="blur" style="resize: none" id="preAtendimentoObservacao" maxlength="1000"
+                      type="text" rows="5" formControlName="preAtendimentoObservacao" class="form-control"></textarea>
                   </div>
                 </div>
               </div>
@@ -241,17 +251,21 @@
               <div class="row">
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                   <div class="form-group">
-                    <label for="posAtendimentoData">* Data e Hora</label>
+                    <label for="posAtendimentoData">Data e Hora</label>
                     <input id="posAtendimentoData" (focus)="setDataHoraAtual('posAtendimentoData')" type="text"
                       [validation]="false" mask="00/00/0000 00:00" formControlName="posAtendimentoData"
                       class="form-control" />
+                    <app-message-required [isInvalidForm]="isInvalidForm"
+                      [controlComponent]="form.get('posAtendimentoData')">
+                    </app-message-required>
                   </div>
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                   <div class="form-group">
                     <label for="posAtendimentoPressaoArterial">Pressão Arterial</label>
-                    <input [dropSpecialCharacters]="false" mask="000/000" id="posAtendimentoPressaoArterial"
-                      maxlength="7" type="text" formControlName="posAtendimentoPressaoArterial" class="form-control" />
+                    <input [dropSpecialCharacters]="false" [validation]="false" mask="000/000"
+                      id="posAtendimentoPressaoArterial" maxlength="7" type="text"
+                      formControlName="posAtendimentoPressaoArterial" class="form-control" />
                   </div>
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -307,14 +321,17 @@
                       (click)="onClickRemoverOutraMedida(medida.index)"><em class="fa fa-close"></em></button>
                   </div>
                   <div class="form-group">
-                    <label for="descricaOutraMedidaPos{{ i }}">* Medida</label>
+                    <label for="descricaOutraMedidaPos{{ i }}">Medida</label>
                     <ng-select id="descricaOutraMedidaPos{{ i }}" maxlength="50" [items]="outrasMedidas"
                       [ngModelOptions]="{standalone: true}" [(ngModel)]="medida.outraMedidaId" [multiple]="false"
-                      bindLabel="descricao" bindValue="id" placeholder="Selecione">
+                      bindLabel="descricao" bindValue="id" placeholder="Selecione" required
+                      #descricaoOutraMedidaPos="ngModel">
                     </ng-select>
+                    <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="descricaoOutraMedidaPos">
+                    </app-message-required>
                   </div>
                   <div class="form-group">
-                    <label for="valorOutraMedidaPos{{ i }}">* Valor (cm)</label>
+                    <label for="valorOutraMedidaPos{{ i }}">Valor (cm)</label>
                     <input id="valorOutraMedidaPos{{ i }}" currencyMask
                       [options]="{ align: 'left', suffix: '', prefix: '', precision: 1, thousands: '.', decimal: ',', allowNegative: 'false' }"
                       maxlength="5" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="medida.valorPos "
@@ -326,8 +343,8 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                   <div class="form-group">
                     <label for="posAtendimentoObservacao">Observacão</label>
-                    <textarea trim="blur" style="resize: none" id="posAtendimentoObservacao" maxlength="700" type="text" rows="5"
-                      formControlName="posAtendimentoObservacao" class="form-control"></textarea>
+                    <textarea trim="blur" style="resize: none" id="posAtendimentoObservacao" maxlength="700" type="text"
+                      rows="5" formControlName="posAtendimentoObservacao" class="form-control"></textarea>
                   </div>
                 </div>
               </div>
@@ -367,9 +384,9 @@
                   </div>
                   <div class="form-group">
                     <label for="observacaoImagem{{ i }}">Observacão</label>
-                    <textarea trim="blur" style="resize: none;" id="observacaoImagem{{ i }}" [(ngModel)]="imagem.observacao"
-                      [ngModelOptions]="{standalone: true}" id="observacaoImagem" maxlength="200" type="text" rows="4"
-                      class="form-control"></textarea>
+                    <textarea trim="blur" style="resize: none;" id="observacaoImagem{{ i }}"
+                      [(ngModel)]="imagem.observacao" [ngModelOptions]="{standalone: true}" id="observacaoImagem"
+                      maxlength="200" type="text" rows="4" class="form-control"></textarea>
                   </div>
                 </div>
               </div>

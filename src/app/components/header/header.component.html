@@ -44,15 +44,15 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="{{ usuario.imagem || '../../../../assets/img/sem-foto.jpg' }}" class="user-image"
               alt="Foto do Perfil">
-            <span class="hidden-xs">{{ usuario?.nomeCompleto }}</span>
+            <span class="hidden-xs">{{ usuario.nomeCompleto }}</span>
           </a>
           <ul class="dropdown-menu">
             <li class="user-header">
               <img src="{{ usuario.imagem || '../../../../assets/img/sem-foto.jpg' }}" class="img-circle"
                 alt="Foto do Perfil">
               <p>
-                {{ usuario?.nomeCompleto }} <br>
-                <small>{{ usuario?.perfil?.descricao }}</small>
+                {{ usuario.nomeCompleto }} <br>
+                <small>{{ usuario.perfilDescricao }}</small>
               </p>
             </li>
             <li class="user-body">

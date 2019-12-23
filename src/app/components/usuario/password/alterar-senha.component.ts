@@ -43,7 +43,7 @@ export class AlterarSenhaComponent implements OnInit {
       };
       this.service.updatePassword(formValue).subscribe(response => {
         this.messageService.sendMessageSuccess(response.message);
-        this.onClickLimparCampos();
+        this.onResetValues();
       });
     } else {
       this.isInvalidForm = true;
@@ -62,7 +62,7 @@ export class AlterarSenhaComponent implements OnInit {
     }
   }
 
-  public onClickLimparCampos(): void {
+  public onResetValues(): void {
     this.messageService.clearAllMessages();
     this.onCreateForm();
     this.isInvalidForm = false;
