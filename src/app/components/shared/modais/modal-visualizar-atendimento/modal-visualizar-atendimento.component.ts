@@ -4,6 +4,7 @@ import { Atendimento } from '../../model/model/atendimento.model';
 import { Pacote } from '../../model/model/pacote.model';
 import { PacoteService } from '../../services/pacote.service';
 import Util from '../../util/util';
+import { CategoriaAtendimentoEnum } from '../../model/enum/categoria-atendimento.enum';
 
 @Component({
   selector: 'app-modal-visualizar-atendimento',
@@ -53,6 +54,14 @@ export class ModalVisualizarAtendimentoComponent implements OnInit {
 
   public formatKG(value: number): string {
     return value !== null && value !== undefined ? `${value} kg` : '-';
+  }
+
+  public isDrenagem(): boolean {
+    return this.atendimento.categoriaAtendimentoId === CategoriaAtendimentoEnum.DRENAGEM_LINFATICA;
+  }
+
+  public isFisioterapia(): boolean {
+    return this.atendimento.categoriaAtendimentoId === CategoriaAtendimentoEnum.FISIOTERAPIA;
   }
 
 }

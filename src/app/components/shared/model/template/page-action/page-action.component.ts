@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PageableFilter } from '../../filter/filter.filter';
-import Page from '../../../pagination/pagination';
+import Page from '../../../pagination/page';
 
 @Component({
   selector: 'app-page-action',

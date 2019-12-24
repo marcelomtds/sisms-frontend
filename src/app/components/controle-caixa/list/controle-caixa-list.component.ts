@@ -1,122 +1,148 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
-import { ToastrService } from 'ngx-toastr';
 import { PacienteService } from '../../paciente/service/paciente.service';
-import { Messages } from '../../shared/message/messages';
+import { TipoLancamentoEnum } from '../../shared/model/enum/tipo-lancamento.enum';
+import { PageableFilter } from '../../shared/model/filter/filter.filter';
+import { LancamentoFilter } from '../../shared/model/filter/lancamento.filter';
+import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
+import { FormaPagamento } from '../../shared/model/model/forma-pagamento.model';
+import { Lancamento } from '../../shared/model/model/lancamento.model';
+import { Paciente } from '../../shared/model/model/paciente.model';
+import { Periodo } from '../../shared/model/model/periodo';
+import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model';
+import { TipoLancamento } from '../../shared/model/model/tipo-lancamento.model';
 import Pageable from '../../shared/pageable/pageable';
-import Page from '../../shared/pagination/pagination';
+import Page from '../../shared/pagination/page';
 import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
 import { FormaPagamentoService } from '../../shared/services/forma-pagamento.service';
+import { MessageService } from '../../shared/services/message.service';
+import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
+import { TipoLancamentoService } from '../../shared/services/tipo-lancamento.service';
 import Util from '../../shared/util/util';
 import { LancamentoService } from '../service/lancamento.service';
 
 @Component({
   selector: 'app-controle-caixa-list',
-  templateUrl: './controle-caixa-list.component.html',
-  styleUrls: ['./controle-caixa-list.component.css']
+  templateUrl: './controle-caixa-list.component.html'
 })
 export class ControleCaixaListComponent implements OnInit {
 
-  pacienteList: any = [];
-  categoriaAtendimentoList: any = [];
-  formaPagamentoList: any = [];
-  mesAnoList: any = [];
-  form: FormGroup;
-  filtro = new Pageable();
-  lancamentoList = new Page();
-  totalEntrada = 0;
-  totalSaida = 0;
-  total = 0;
+  public pacientes = new Array<Paciente>();
+  public tiposLancamento = new Array<TipoLancamento>();
+  public tiposAtendimento = new Array<TipoAtendimento>();
+  public categoriasAtendimento = new Array<CategoriaAtendimento>();
+  public formasPagamento = new Array<FormaPagamento>();
+  public mesAnoList = new Array<Periodo>();
+  public form: FormGroup;
+  public filtro = new PageableFilter<LancamentoFilter>();
+  public dados = new Page<Array<Lancamento>>();
+  public totalEntrada = 0;
+  public totalSaida = 0;
+  public totalGeral = 0;
+  public showNoRecords = false;
 
-  constructor(
+  public constructor(
     private formBuilder: FormBuilder,
     private categoriaAtendimentoService: CategoriaAtendimentoService,
     private formaPagamentoService: FormaPagamentoService,
     private pacienteService: PacienteService,
+    private tipoLancamentoService: TipoLancamentoService,
+    private tipoAtendimentoService: TipoAtendimentoService,
     private lancamentoService: LancamentoService,
-    private messageService: ToastrService
+    private messageService: MessageService
   ) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.onCreateForm();
     this.onLoadCombos();
     this.getDatas();
-    this.filtro.direction = 'DESC';
   }
 
-  onCreateForm(): void {
+  public onCreateForm(): void {
     this.form = this.formBuilder.group({
-      'tipoLancamento': [null],
-      'tipoAtendimento': [null],
-      'idCategoriaAtendimento': [null],
-      'idPaciente': [null],
-      'idFormaPagamento': [null],
-      'dataInicio': [null],
-      'dataFim': [null]
+      tipoLancamentoId: [null],
+      tipoAtendimentoId: [null],
+      categoriaAtendimentoId: [null],
+      pacienteId: [null],
+      formaPagamentoId: [null],
+      dataInicio: [null],
+      dataFim: [null]
     });
   }
 
-  onChangeTipoLancamento(): void {
-    if (this.form.value.tipoLancamento === 'S') {
-      this.form.get('tipoAtendimento').setValue(null);
-      this.form.get('idCategoriaAtendimento').setValue(null);
-      this.form.get('idPaciente').setValue(null);
+  /*public onChangeTipoLancamento(): void {
+    if (this.form.value.tipoLancamento === TipoLancamentoEnum.ENTRADA) {
+      this.form.controls.tipoAtendimentoId.setValue(null);
+      this.form.controls.categoriaAtendimentoId.setValue(null);
+      this.form.controls.pacienteId.setValue(null);
     }
-    this.lancamentoList = new Page();
-    this.filtro = new Pageable();
+    this.dados = new Page<Array<Lancamento>>();
+    this.filtro = new PageableFilter<LancamentoFilter>();
+  }*/
+
+  public get isEntrada(): boolean {
+    return this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.ENTRADA;
   }
 
-  onLoadCombos(): void {
-    this.categoriaAtendimentoService.findAll().subscribe(dados => {
-      this.categoriaAtendimentoList = dados.result;
+  public onLoadCombos(): void {
+    this.tipoLancamentoService.findAll().subscribe(response => {
+      this.tiposLancamento = response.result;
     });
-    this.pacienteService.findAllActive().subscribe(dados => {
-      /* if (dados.data && dados.data.length > 0) {
-        dados.data.forEach(element => {
-          element.nomeItem = `${element.nome} ${element.sobrenome}`;
-          element.cpfItem = `CPF: ${Util.formatarCpf(element.cpf)}`;
-        });
-        this.pacienteList = dados.data;
-      } else {
-        this.messageService.warning(Messages.NENHUM_PACIENTE_ENCONTRADO, 'Aviso');
-      } */
+    this.tipoAtendimentoService.findAll().subscribe(response => {
+      this.tiposAtendimento = response.result;
     });
-    this.formaPagamentoService.findAll().subscribe(dados => {
-      this.formaPagamentoList = dados.result;
+    this.categoriaAtendimentoService.findAll().subscribe(response => {
+      this.categoriasAtendimento = response.result;
+    });
+    this.pacienteService.findAllActive().subscribe(response => {
+      this.pacientes = response.result;
+    });
+    this.formaPagamentoService.findAll().subscribe(response => {
+      this.formasPagamento = response.result;
     });
   }
 
-  onClickFormSubmit(): void {
-    this.messageService.clear();
+  public onClickFormSubmit(): void {
+    this.messageService.clearAllMessages();
     this.filtro = new Pageable();
     this.filtro = {
       ...this.filtro,
-      ...this.form.value,
-      dataInicio: Util.convertStringToDate(this.form.get('dataInicio').value),
-      dataFim: Util.convertStringToDate(this.form.get('dataFim').value)
+      filter: {
+        ...this.form.value,
+        dataInicio: Util.convertStringToDate(this.form.controls.dataInicio.value),
+        dataFim: Util.convertStringToDate(this.form.controls.dataFim.value)
+      },
     };
-    this.searchByFilter(this.filtro);
+    this.searchByFilter();
   }
 
-  searchByFilter(filter: any): void {
-    this.lancamentoService.findByFilter(filter).subscribe(lancamentos => {
-      this.totalEntrada = 0;
+  public searchByFilter(): void {
+    this.lancamentoService.findByFilter(this.filtro).subscribe(response => {
+      this.showNoRecords = true;
+      this.dados = response.result;
+      /*this.totalEntrada = 0;
       this.totalSaida = 0;
-      this.lancamentoList = lancamentos.data;
-      if (lancamentos.data && lancamentos.data.content && lancamentos.data.content.length > 0) {
-        this.lancamentoService.findLancamentoTotal(filter).subscribe(result => {
-          this.totalEntrada = result.data.entrada;
+      this.dados = response.result;
+      if (response.result && response.result.content && response.result.content.length > 0) {
+        this.lancamentoService.findLancamentoTotal(this.filtro).subscribe(result => {
+          this.totalEntrada = result.data.entradA;
           this.totalSaida = result.data.saida;
-          this.total = result.data.total;
+          this.totalGeral = result.data.total;
         });
-      } else {
-        this.messageService.warning(Messages.NENHUM_REGISTRO_ENCONTRADO, 'Aviso');
-      }
+      }*/
     });
   }
 
-  onChangeComboMesAno(event: any): void {
+  public onClickLimparCampos(): void {
+    this.messageService.clearAllMessages();
+    this.onCreateForm();
+    this.dados = new Page<Array<Paciente>>();
+    this.filtro = new PageableFilter<LancamentoFilter>();
+    this.showNoRecords = false;
+  }
+
+  public onChangeComboMesAno(event: Periodo): void {
     if (event) {
       this.form.get('dataInicio').setValue(event.dataInicio.toLocaleDateString());
       this.form.get('dataFim').setValue(event.dataFim.toLocaleDateString());
@@ -140,7 +166,7 @@ export class ControleCaixaListComponent implements OnInit {
       }
       const dataInicio = moment(`${anoAtual}-${mesAtual}`, 'YYYY-MM');
       const dataFim = moment(dataInicio).endOf('month');
-      const obj = {
+      const obj: Periodo = {
         dataInicio: dataInicio.toDate(),
         dataFim: dataFim.toDate(),
         descricao: `${Util.mesesAno(mesAtual)}/${anoAtual}`
@@ -150,37 +176,11 @@ export class ControleCaixaListComponent implements OnInit {
     }
   }
 
-  setNextPage(event: any): void {
-    event.preventDefault();
-    if (this.filtro.currentPage + 1 < this.lancamentoList.totalPages) {
-      this.filtro.currentPage += 1;
-      this.searchByFilter(this.filtro);
-    }
-  }
-
-  setPreviousPage(event: any): void {
-    event.preventDefault();
-    if (this.filtro.currentPage > 0) {
-      this.filtro.currentPage -= 1;
-      this.searchByFilter(this.filtro);
-    }
-  }
-
-  showInfo(): string {
-    return (`Página ${this.filtro.currentPage + 1} de ${this.lancamentoList.totalPages} - Total de ${this.lancamentoList.totalElements} registros.`);
-  }
-
-  onChangePageSize(): void {
-    this.filtro.currentPage = 0;
-    this.filtro.orderBy = '';
-    this.filtro.direction = 'ASC';
-    this.searchByFilter(this.filtro);
-  }
-
-  onClickOrderBy(descricao: string): void {
+  public onClickOrderBy(descricao: string): void {
+    this.messageService.clearAllMessages();
     this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
     this.filtro.orderBy = descricao;
-    this.searchByFilter(this.filtro);
+    this.searchByFilter();
   }
 
 }

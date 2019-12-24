@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Localidade } from '../model/model/localidade.model';
-import { Response } from '../model/model/response.model';
+import { Response } from '../pageable/response.model';
 import { BaseService } from './base.service';
 
 @Injectable({

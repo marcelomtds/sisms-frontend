@@ -15,7 +15,7 @@ import { Paciente } from '../../shared/model/model/paciente.model';
 import { Pacote } from '../../shared/model/model/pacote.model';
 import { Usuario } from '../../shared/model/model/usuario.model';
 import { OrderBy } from '../../shared/page-order-by/orderby';
-import Page from '../../shared/pagination/pagination';
+import Page from '../../shared/pagination/page';
 import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
 import { MessageService } from '../../shared/services/message.service';
 import { PacoteService } from '../../shared/services/pacote.service';

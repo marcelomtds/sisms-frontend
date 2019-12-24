@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalConfirmacaoComponent } from 'src/app/components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import Pageable from 'src/app/components/shared/pageable/pageable';
-import Page from 'src/app/components/shared/pagination/pagination';
+import Page from 'src/app/components/shared/pagination/page';
 import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
 import Util from 'src/app/components/shared/util/util';
 import { LancamentoService } from '../../service/lancamento.service';
@@ -114,11 +114,11 @@ export class ModalGerenciarLancamentoComponent implements OnInit {
   }
 
   private createOrUpdate(obj: any): void {
-    this.lancamentoService.createOrUpdate(obj).subscribe(() => {
+   /*  this.lancamentoService.createOrUpdate(obj).subscribe(() => {
       this.messageService.success(this.isEdit ? Messages.SUCESSO_EDICAO : Messages.SUCESSO_CRIACAO, 'Sucesso');
       this.loadLancamentos();
       this.initValues();
-    });
+    }); */
   }
 
   onClickEditar(lancamento: any): void {
@@ -157,14 +157,15 @@ export class ModalGerenciarLancamentoComponent implements OnInit {
     };
     this.lancamentoService.findByFilter(filter).subscribe(lancamentos => {
       let valorPago = 0;
-      if (lancamentos.data && lancamentos.data.content) {
-        lancamentos.data.content.forEach(element => {
-          valorPago += element.valor;
+      if (lancamentos.result && lancamentos.result.content) {
+        lancamentos.result.content.forEach(element => {
+          //TODO verificar
+          //valorPago += element;
         });
         this.filtroControleCaixa.valorPago = valorPago;
         this.filtroControleCaixa.valorPagar = this.filtroControleCaixa.dados.valorPacote - valorPago;
       }
-      this.lancamentoList = lancamentos.data;
+      this.lancamentoList = lancamentos.result;
     });
   }
 

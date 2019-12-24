@@ -1,28 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EndPoint } from '../../shared/endpoint/endpoint';
+import { PageableFilter } from '../../shared/model/filter/filter.filter';
+import { LancamentoFilter } from '../../shared/model/filter/lancamento.filter';
+import { Lancamento } from '../../shared/model/model/lancamento.model';
+import { BaseService } from '../../shared/services/base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LancamentoService {
+export class LancamentoService extends BaseService<Lancamento, LancamentoFilter> {
 
-  constructor(private http: HttpClient) { }
-
-  findByFilter(filter: any): Observable<any> {
-    return this.http.post(`${EndPoint.URL}/api/lancamento/findByFilter`, filter);
+  public constructor(http: HttpClient) {
+    super(http, '/api/lancamento');
   }
 
-  findLancamentoTotal(filter: any): Observable<any> {
-    return this.http.post(`${EndPoint.URL}/api/lancamento/findLancamentoTotal`, filter);
+  public findLancamentoTotal(filter: PageableFilter<LancamentoFilter>): Observable<any> {
+    return null;
+   // return this.http.post<>(`${this.apiBaseUrl}/findLancamentoTotal`, filter);
   }
 
-  createOrUpdate(form: any): Observable<any> {
-    return this.http.post(`${EndPoint.URL}/api/lancamento/createOrUpdate`, form);
-  }
-
-  delete(id: any): Observable<any> {
-    return this.http.delete(`${EndPoint.URL}/api/lancamento/delete/${id}`);
-  }
 }

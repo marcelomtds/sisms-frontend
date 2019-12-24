@@ -22,14 +22,14 @@
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="preAtendimentoData">Data/Hora Pré-atendimento</label>
-                  <input id="preAtendimentoData" type="text" mask="00/00/0000 00:00"
+                  <input id="preAtendimentoData" [validation]="false" type="text" mask="00/00/0000 00:00"
                     formControlName="preAtendimentoData" class="form-control" />
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="posAtendimentoData">Data/Hora Pós-atendimento</label>
-                  <input id="posAtendimentoData" type="text" mask="00/00/0000 00:00"
+                  <input id="posAtendimentoData" [validation]="false" type="text" mask="00/00/0000 00:00"
                     formControlName="posAtendimentoData" class="form-control" />
                 </div>
               </div>

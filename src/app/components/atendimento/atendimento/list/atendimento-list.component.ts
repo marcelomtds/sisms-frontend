@@ -10,7 +10,7 @@ import { AtendimentoFilter } from 'src/app/components/shared/model/filter/atendi
 import { PageableFilter } from 'src/app/components/shared/model/filter/filter.filter';
 import { Atendimento } from 'src/app/components/shared/model/model/atendimento.model';
 import { CategoriaAtendimentoRouting } from 'src/app/components/shared/model/model/categoria-atendimento-routing.model';
-import { Response } from 'src/app/components/shared/model/model/response.model';
+import { Response } from 'src/app/components/shared/pageable/response.model';
 import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
@@ -18,7 +18,7 @@ import { UsuarioService } from 'src/app/components/usuario/service/usuario.servi
 import { PacienteService } from '../../../paciente/service/paciente.service';
 import { Paciente } from '../../../shared/model/model/paciente.model';
 import { TipoAtendimento } from '../../../shared/model/model/tipo-atendimento.model';
-import Page from '../../../shared/pagination/pagination';
+import Page from '../../../shared/pagination/page';
 import { TipoAtendimentoService } from '../../../shared/services/tipo-atendimento.service';
 import { AtendimentoService } from '../../service/atendimento.service';
 

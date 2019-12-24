@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AtendimentoFilter } from '../../shared/model/filter/atendimento.filter';
 import { Atendimento } from '../../shared/model/model/atendimento.model';
-import { Response } from '../../shared/model/model/response.model';
+import { Response } from '../../shared/pageable/response.model';
 import { BaseService } from '../../shared/services/base.service';
 
 @Injectable({

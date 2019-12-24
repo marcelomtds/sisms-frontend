@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { Messages } from '../../message/messages';
 import Pageable from '../../pageable/pageable';
-import Page from '../../pagination/pagination';
+import Page from '../../pagination/page';
 import { CategoriaLancamentoService } from '../../services/categoria-lancamento.service';
 
 @Component({

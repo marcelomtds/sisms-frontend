@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Messages } from '../../message/messages';
 import { PageableFilter } from '../../model/filter/filter.filter';
 import { UF } from '../../model/model/uf.model';
-import Page from '../../pagination/pagination';
+import Page from '../../pagination/page';
 import { UfService } from '../../services/uf.service';
 import { MessageService } from '../../services/message.service';
 

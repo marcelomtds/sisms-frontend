@@ -4,7 +4,7 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { Messages } from '../../message/messages';
 import { PageableFilter } from '../../model/filter/filter.filter';
 import { Profissao } from '../../model/model/profissao.model';
-import Page from '../../pagination/pagination';
+import Page from '../../pagination/page';
 import { MessageService } from '../../services/message.service';
 import { ProfissaoService } from '../../services/profissao.service';
 

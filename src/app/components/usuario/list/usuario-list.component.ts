@@ -11,7 +11,7 @@ import { PageableFilter } from '../../shared/model/filter/filter.filter';
 import { PacienteUsuarioFilter } from '../../shared/model/filter/paciente-usuario.filter';
 import { Sexo } from '../../shared/model/model/sexo.model';
 import { Usuario } from '../../shared/model/model/usuario.model';
-import Page from '../../shared/pagination/pagination';
+import Page from '../../shared/pagination/page';
 import { MessageService } from '../../shared/services/message.service';
 import { SexoService } from '../../shared/services/sexo.service';
 import { UsuarioService } from '../service/usuario.service';

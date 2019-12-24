@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Autenticacao } from '../../shared/model/model/autenticacao.model';
 import { CurrentAuthentication } from '../../shared/model/model/current-authentication.model';
-import { Response } from '../../shared/model/model/response.model';
+import { Response } from '../../shared/pageable/response.model';
 import { BaseService } from '../../shared/services/base.service';
 
 @Injectable({

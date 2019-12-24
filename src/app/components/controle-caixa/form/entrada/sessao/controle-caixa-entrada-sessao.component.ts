@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AtendimentoService } from 'src/app/components/atendimento/service/atendimento.service';
 import { Messages } from 'src/app/components/shared/message/messages';
 import Pageable from 'src/app/components/shared/pageable/pageable';
-import Page from 'src/app/components/shared/pagination/pagination';
+import Page from 'src/app/components/shared/pagination/page';
 import Util from 'src/app/components/shared/util/util';
 import { ModalGerenciarLancamentoComponent } from '../../../modal/gerenciar-lancamento/modal-gerenciar-lancamento.component';
 

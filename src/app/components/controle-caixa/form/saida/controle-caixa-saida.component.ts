@@ -94,10 +94,10 @@ export class ControleCaixaSaidaComponent implements OnInit {
   }
 
   private createOrUpdate(obj: any): void {
-    this.lancamentoService.createOrUpdate(obj).subscribe(() => {
+    /* this.lancamentoService.createOrUpdate(obj).subscribe(() => {
       this.messageService.success(this.isEdit ? Messages.SUCESSO_EDICAO : Messages.SUCESSO_CRIACAO, 'Sucesso');
       this.initValues();
-    });
+    }); */
   }
 
   onClickCancelar(): void {

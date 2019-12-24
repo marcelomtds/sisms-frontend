@@ -11,7 +11,7 @@ import { Localidade } from '../../shared/model/model/localidade.model';
 import { Paciente } from '../../shared/model/model/paciente.model';
 import { Sexo } from '../../shared/model/model/sexo.model';
 import { UF } from '../../shared/model/model/uf.model';
-import Page from '../../shared/pagination/pagination';
+import Page from '../../shared/pagination/page';
 import { LocalidadeService } from '../../shared/services/localidade.service';
 import { MessageService } from '../../shared/services/message.service';
 import { SexoService } from '../../shared/services/sexo.service';

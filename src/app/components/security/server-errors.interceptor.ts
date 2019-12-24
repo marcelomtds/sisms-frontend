@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Messages } from '../shared/message/messages';
-import { Response } from '../shared/model/model/response.model';
+import { Response } from '../shared/pageable/response.model';
 import { MessageService } from '../shared/services/message.service';
 import { SharedService } from './service/shared.service';
 

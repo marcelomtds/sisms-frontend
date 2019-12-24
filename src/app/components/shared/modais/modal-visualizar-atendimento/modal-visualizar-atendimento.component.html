@@ -58,14 +58,16 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <div class="form-group">
-            <label>Conduta</label>
-            <p>{{ atendimento.conduta || '-' }}</p>
+      <ng-container *ngIf="isFisioterapia() || isDrenagem()">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group">
+              <label>Conduta</label>
+              <p>{{ atendimento.conduta || '-' }}</p>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-container>
     </div>
   </div>
 
@@ -133,55 +135,64 @@
             <p>{{ atendimento.preAtendimentoData | date: 'dd/MM/yyyy HH:mm' }}</p>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Pressão Arterial</label>
-            <p>{{ atendimento.preAtendimentoPressaoArterial || '-' }}</p>
+
+        <ng-container *ngIf="isDrenagem() || isFisioterapia()">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label>Pressão Arterial</label>
+              <p>{{ atendimento.preAtendimentoPressaoArterial || '-' }}</p>
+            </div>
           </div>
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Peso</label>
-            <p>{{ formatKG(atendimento.preAtendimentoPeso) }}</p>
+        </ng-container>
+
+        <ng-container *ngIf="isDrenagem()">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label>Peso</label>
+              <p>{{ formatKG(atendimento.preAtendimentoPeso) }}</p>
+            </div>
           </div>
-        </div>
+        </ng-container>
+
       </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Supra Umbilical</label>
-            <p>{{ formatCM(atendimento.preAtendimentoSupraUmbilical) }}</p>
+      <ng-container *ngIf="isDrenagem()">
+        <div class="row">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label>Supra Umbilical</label>
+              <p>{{ formatCM(atendimento.preAtendimentoSupraUmbilical) }}</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label>Linha Umbilical</label>
+              <p>{{ formatCM(atendimento.preAtendimentoLinhaUmbilical) }}</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label>Infra Umbilical</label>
+              <p>{{ formatCM(atendimento.preAtendimentoInfraUmbilical) }}</p>
+            </div>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Linha Umbilical</label>
-            <p>{{ formatCM(atendimento.preAtendimentoLinhaUmbilical) }}</p>
+        <legend class="legend-default">Outras Medidas</legend>
+        <div class="row">
+          <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+            *ngFor="let medida of atendimento?.preAtendimentoOutrasMedidas; let i = index">
+            <div class="form-group">
+              <label for="outraMedidaPre{{ i }}">{{ medida.outraMedidaDescricao }}</label>
+              <p id="outraMedidaPre{{ i }}">{{ formatCM(medida.valor) }}</p>
+            </div>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Infra Umbilical</label>
-            <p>{{ formatCM(atendimento.preAtendimentoInfraUmbilical) }}</p>
-          </div>
-        </div>
-      </div>
-      <legend class="legend-default">Outras Medidas</legend>
-      <div class="row">
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
-          *ngFor="let medida of atendimento?.preAtendimentoOutrasMedidas; let i = index">
-          <div class="form-group">
-            <label for="outraMedidaPre{{ i }}">{{ medida.outraMedidaDescricao }}</label>
-            <p id="outraMedidaPre{{ i }}">{{ formatCM(medida.valor) }}</p>
-          </div>
-        </div>
-      </div>
-      <legend class="legend-default"></legend>
+        <legend class="legend-default"></legend>
+      </ng-container>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="form-group">
             <label>Observacão</label>
-            <p>{{ atendimento.preAtendimentoObservacao }}</p>
+            <p>{{ atendimento.preAtendimentoObservacao || '-' }}</p>
           </div>
         </div>
       </div>
@@ -203,61 +214,67 @@
             <p>{{ atendimento.posAtendimentoData | date: 'dd/MM/yyyy HH:mm' }}</p>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Pressão Arterial</label>
-            <p>{{ atendimento.posAtendimentoPressaoArterial || '-' }}</p>
+        <ng-container *ngIf="isDrenagem() || isFisioterapia()">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label>Pressão Arterial</label>
+              <p>{{ atendimento.posAtendimentoPressaoArterial || '-' }}</p>
+            </div>
           </div>
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Peso</label>
-            <p>{{ formatKG(atendimento.posAtendimentoPeso) }}</p>
+        </ng-container>
+        <ng-container *ngIf="isDrenagem()">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label>Peso</label>
+              <p>{{ formatKG(atendimento.posAtendimentoPeso) }}</p>
+            </div>
           </div>
-        </div>
+        </ng-container>
       </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Supra Umbilical</label>
-            <p>{{ formatCM(atendimento.posAtendimentoSupraUmbilical) }}</p>
+      <ng-container *ngIf="isDrenagem()">
+        <div class="row">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label>Supra Umbilical</label>
+              <p>{{ formatCM(atendimento.posAtendimentoSupraUmbilical) }}</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label>Linha Umbilical</label>
+              <p>{{ formatCM(atendimento.posAtendimentoLinhaUmbilical) }}</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label>Infra Umbilical</label>
+              <p>{{ formatCM(atendimento.posAtendimentoInfraUmbilical) }}</p>
+            </div>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Linha Umbilical</label>
-            <p>{{ formatCM(atendimento.posAtendimentoLinhaUmbilical) }}</p>
+        <legend class="legend-default">Outras Medidas</legend>
+        <div class="row">
+          <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+            *ngFor="let medida of atendimento?.posAtendimentoOutrasMedidas; let i = index">
+            <div class="form-group">
+              <label for="outraMedidaPos{{ i }}">{{ medida.outraMedidaDescricao }}</label>
+              <p id="outraMedidaPos{{ i }}">{{ formatCM(medida.valor) }}</p>
+            </div>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Infra Umbilical</label>
-            <p>{{ formatCM(atendimento.posAtendimentoInfraUmbilical) }}</p>
-          </div>
-        </div>
-      </div>
-      <legend class="legend-default">Outras Medidas</legend>
-      <div class="row">
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
-          *ngFor="let medida of atendimento?.posAtendimentoOutrasMedidas; let i = index">
-          <div class="form-group">
-            <label for="outraMedidaPos{{ i }}">{{ medida.outraMedidaDescricao }}</label>
-            <p id="outraMedidaPos{{ i }}">{{ formatCM(medida.valor) }}</p>
-          </div>
-        </div>
-      </div>
-      <legend class="legend-default"></legend>
+        <legend class="legend-default"></legend>
+      </ng-container>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="form-group">
             <label>Observacão</label>
-            <p>{{ atendimento.posAtendimentoObservacao }}</p>
+            <p>{{ atendimento.posAtendimentoObservacao || '-' }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="!atendimento.aberto" class="box box-primary">
+  <div *ngIf="!atendimento.aberto && isDrenagem()" class="box box-primary">
     <div class="box-header with-border">
       <h3 class="box-title">Resultados</h3>
     </div>

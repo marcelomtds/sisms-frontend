@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Response } from '../model/model/response.model';
-import Page from '../pagination/pagination';
 import { PageableFilter } from '../model/filter/filter.filter';
+import { Response } from '../pageable/response.model';
+import Page from '../pagination/page';
 
 export class BaseService<M, F> {
 
@@ -25,6 +25,10 @@ export class BaseService<M, F> {
 
   public findById(id: number): Observable<Response<M>> {
     return this.http.get<Response<M>>(`${this.apiBaseUrl}/${id}`);
+  }
+
+  public delete(id: number): Observable<Response<M>> {
+    return this.http.delete<Response<M>>(`${this.apiBaseUrl}/${id}`);
   }
 
   public findByFilter(filter: PageableFilter<F>): Observable<Response<Page<M[]>>> {
