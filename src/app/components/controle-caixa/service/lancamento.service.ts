@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageableFilter } from '../../shared/model/filter/filter.filter';
 import { LancamentoFilter } from '../../shared/model/filter/lancamento.filter';
+import { LancamentoTotal } from '../../shared/model/model/lancamento-total.model';
 import { Lancamento } from '../../shared/model/model/lancamento.model';
+import { Response } from '../../shared/pageable/response.model';
 import { BaseService } from '../../shared/services/base.service';
 
 @Injectable({
@@ -15,9 +17,8 @@ export class LancamentoService extends BaseService<Lancamento, LancamentoFilter>
     super(http, '/api/lancamento');
   }
 
-  public findLancamentoTotal(filter: PageableFilter<LancamentoFilter>): Observable<any> {
-    return null;
-   // return this.http.post<>(`${this.apiBaseUrl}/findLancamentoTotal`, filter);
+  public findTotalByFilter(filter: PageableFilter<LancamentoFilter>): Observable<Response<LancamentoTotal>> {
+    return this.http.post<Response<LancamentoTotal>>(`${this.apiBaseUrl}/findTotalByFilter`, filter);
   }
 
 }

@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../security/service/shared.service';
+import { ModalGerenciarCategoriaLancamentoComponent } from '../shared/modais/modal-gerenciar-categoria-lancamento/modal-gerenciar-categoria-lancamento.component';
 import { ModalGerenciarLocalidadeComponent } from '../shared/modais/modal-gerenciar-localidade/modal-gerenciar-localidade.component';
+import { ModalGerenciarMedidaComponent } from '../shared/modais/modal-gerenciar-medidas/modal-gerenciar-medida.component';
 import { ModalGerenciarProfissaoComponent } from '../shared/modais/modal-gerenciar-profissao/modal-gerenciar-profissao.component';
 import { ModalGerenciarUfComponent } from '../shared/modais/modal-gerenciar-uf/modal-gerenciar-uf.component';
 import { Usuario } from '../shared/model/model/usuario.model';
 import { UsuarioService } from '../usuario/service/usuario.service';
-import { ModalGerenciarMedidaComponent } from '../shared/modais/modal-gerenciar-medidas/modal-gerenciar-medida.component';
 
 @Component({
   selector: 'app-header',
@@ -45,6 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       case 'uf': return ModalGerenciarUfComponent;
       case 'localidade': return ModalGerenciarLocalidadeComponent;
       case 'medida': return ModalGerenciarMedidaComponent;
+      case 'categoriaLancamento': return ModalGerenciarCategoriaLancamentoComponent;
       default: return;
     }
   }

@@ -14,7 +14,7 @@ import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendim
 import { Paciente } from '../../shared/model/model/paciente.model';
 import { Pacote } from '../../shared/model/model/pacote.model';
 import { Usuario } from '../../shared/model/model/usuario.model';
-import { OrderBy } from '../../shared/page-order-by/orderby';
+import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
 import Page from '../../shared/pagination/page';
 import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
 import { MessageService } from '../../shared/services/message.service';
@@ -26,7 +26,7 @@ import { UsuarioService } from '../../usuario/service/usuario.service';
   selector: 'app-pacote-list',
   templateUrl: './pacote-list.component.html'
 })
-export class PacoteListComponent implements OnInit, OrderBy {
+export class PacoteListComponent implements OnInit, IActionOrderBy {
 
   public pacientes = new Array<Paciente>();
   public usuarios = new Array<Usuario>();
@@ -155,6 +155,16 @@ export class PacoteListComponent implements OnInit, OrderBy {
     this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
     this.filtro.orderBy = descricao;
     this.searchByFilter();
+  }
+
+  public getIconOrderBy(param: string): string {
+    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-asc';
+    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-desc';
+    } else {
+      return 'fa fa-sort';
+    }
   }
 
 }

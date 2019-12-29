@@ -1,103 +1,150 @@
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        <h3 class="box-title">Filtro</h3>
-      </div>
-      <div class="box-body">
-        <form [formGroup]="form">
+<form [formGroup]="form">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Buscar Pacotes</h3>
+        </div>
+        <div class="box-body">
           <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
-                <label for="status">Status do Pacote</label>
-                <ng-select id="status" maxlength="30" formControlName="status" [multiple]="false"
-                  placeholder="Selecione" [searchable]="false" notFoundText="Nenhuma registro encontrado."
-                  [clearable]="false">
-                  <ng-option value=''>Todos</ng-option>
-                  <ng-option value='A'>Em Aberto</ng-option>
-                  <ng-option value='E'>Encerrado</ng-option>
+                <label for="categoriaAtendimento">Categoria de Atendimento</label>
+                <ng-select id="categoriaAtendimento" maxlength="50" formControlName="categoriaAtendimentoId"
+                  [items]="categoriasAtendimento" bindLabel="descricao" bindValue="id">
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="dataInicio">Data Início</label>
+                <input id="dataInicio" type="text" [validation]="false" mask="00/00/0000" formControlName="dataInicio"
+                  class="form-control" />
+              </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="dataFim">Data Fim</label>
+                <input id="dataFim" type="text" [validation]="false" mask="00/00/0000" formControlName="dataFim"
+                  class="form-control" />
+              </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="aberto">Status do Pacote</label>
+                <ng-select id="aberto" maxlength="50" formControlName="aberto">
+                  <ng-option [value]=true>Em Aberto</ng-option>
+                  <ng-option [value]=false>Encerrado</ng-option>
                 </ng-select>
               </div>
             </div>
           </div>
-        </form>
-      </div>
-      <div class="box-footer">
-        <button (click)="onClickFormSubmit()" class="btn btn-info pull-right">Buscar</button>
-      </div>
-    </div>
-    <div *ngIf="pacoteList?.content?.length > 0" class="col-md-12" style="padding: 0px">
-      <div class="box box-primary">
-        <div class="box-header">
           <div class="row">
-            <div class="col-xs-8">
-              <h3 class="box-title">Pacotes</h3>
-            </div>
-            <label for="registro">Registros por Página</label>
-            <div class="col-xs-2">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
               <div class="form-group">
-                <select id="registro" class="form-control" (change)="onChangePageSize($event.target.value)">
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                </select>
+                <label for="paciente">Paciente</label>
+                <ng-select id="paciente" maxlength="50" formControlName="pacienteId" [items]="pacientes"
+                  bindLabel="nomeCompleto" bindValue="id">
+                  <ng-template ng-option-tmp let-item="item">
+                    {{ item.nomeCompleto }}
+                    <br />
+                    <small>{{ item.cpf | cpf }}</small>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+            <div *ngIf="authGuardService.isPermitido(permissaoAdministrador)"
+              class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <div class="form-group">
+                <label for="usuario">Usuário</label>
+                <ng-select id="usuario" maxlength="50" formControlName="usuarioId" [items]="usuarios"
+                  bindLabel="nomeCompleto" bindValue="id">
+                  <ng-template ng-option-tmp let-item="item">
+                    {{ item.nomeCompleto }}
+                    <br />
+                    <small>{{ item.cpf | cpf }}</small>
+                  </ng-template>
+                </ng-select>
               </div>
             </div>
           </div>
         </div>
-        <div class="box-body">
-          <table id="example2" class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Sobrenome</th>
-                <th style="cursor: pointer" (click)="onClickOrderBy('dataCriacao')">Data da Primeira Sessão</th>
-                <th *ngIf="!form.value.idPacote" style="cursor: pointer" (click)="onClickOrderBy('numero')">
-                  Número do Pacote</th>
-                <th style="cursor: pointer" (click)="onClickOrderBy('status')">Status</th>
-                <th>Opção</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let pacote of pacoteList?.content">
-                <td>
-                  {{ pacote?.paciente.nome }}
-                </td>
-                <td>
-                  {{ pacote?.paciente.sobrenome }}
-                </td>
-                <td>
-                  {{ getPrimeiraSessao(pacote) | date: 'dd/MM/yyyy' }}
-                </td>
-                <td>
-                  {{ pacote?.numero }}
-                </td>
-                <td>
-                  {{ pacote?.status | status }}
-                </td>
-                <td>
-                  <button class="btn btn-primary" (click)="onClickOpenModalGerenciarLancamento(pacote)">Gerenciar
-                    Pagamentos</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
         <div class="box-footer">
-          <div class="col-md-12">
-            <div class="col-xs-2">
-              <button class="btn btn-primary pull-left" (click)="setPreviousPage($event)">Anterior</button>
+          <button (click)="onClickFormSubmit()" class="btn btn-primary pull-right" style="margin-left: 15px;"><em
+              class="fa fa-search"></em>&nbsp;Buscar</button>
+          <button class="btn btn-warning pull-right" (click)="onClickLimparCampos()"><em
+              class="fa fa-eraser"></em>&nbsp;Limpar</button>
+        </div>
+      </div>
+
+      <div *ngIf="dados?.content?.length > 0" class="col-md-12" style="padding: 0px">
+        <div class="box box-primary">
+          <div class="box-header">
+            <div class="row">
+              <div class="col-xs-8">
+                <h3 class="box-title">Pacotes</h3>
+              </div>
             </div>
-            <div class="col-xs-8" style="text-align: center">
-              <span>{{ showInfo() }}</span>
+          </div>
+          <div class="box-body">
+            <div class="table-roll">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Opções</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')">Paciente</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')">Usuário</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('dataCriacao')">Data Criação</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('categoriaAtendimento.descricao')">Categoria
+                      de Atendimento</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('valor')">Valor</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('numero')">Número</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('aberto')">Status</th>
+                    <th>Quantidade de Atendimentos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let pacote of dados?.content">
+                    <td>
+                      <button title="Gerenciar Lançamentos" (click)="onClickOpenModalGerenciarLancamentos(pacote.id)"
+                        class="btn btn-danger"><em class="fa fa-ban"></em></button>
+                    </td>
+                    <td>
+                      {{ pacote.pacienteNomeCompleto }}
+                    </td>
+                    <td>
+                      {{ pacote.usuarioNomeCompleto }}
+                    </td>
+                    <td>
+                      {{ pacote.dataCriacao | date: 'dd/MM/yyyy' }}
+                    </td>
+                    <td>
+                      {{ pacote.categoriaAtendimentoDescricao }}
+                    </td>
+                    <td>
+                      {{ pacote.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}
+                    </td>
+                    <td>
+                      {{ pacote.numero }}
+                    </td>
+                    <td>
+                      {{ pacote.aberto ? 'Em Aberto' : 'Encerrado' }}
+                    </td>
+                    <td>
+                      {{ pacote.quantidadeAtendimentos }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="col-xs-2">
-              <button class="btn btn-primary pull-right" (click)="setNextPage($event)">Próxima</button>
-            </div>
+          </div>
+          <div class="box-footer">
+            <app-page-action [dados]="dados" [filtro]="filtro" (searchByFilter)="searchByFilter()">
+            </app-page-action>
           </div>
         </div>
       </div>
+      <app-no-records *ngIf="showNoRecords && !dados.content?.length"></app-no-records>
     </div>
   </div>
-</div>
+</form>

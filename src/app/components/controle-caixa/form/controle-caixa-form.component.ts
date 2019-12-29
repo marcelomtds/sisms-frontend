@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { PacienteService } from '../../paciente/service/paciente.service';
-import { Messages } from '../../shared/message/messages';
-import Util from '../../shared/util/util';
-import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
-import { ToastrService } from 'ngx-toastr';
+import { TipoAtendimentoEnum } from '../../shared/model/enum/tipo-atendimento.enum';
+import { TipoLancamentoEnum } from '../../shared/model/enum/tipo-lancamento.enum';
+import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model';
+import { TipoLancamento } from '../../shared/model/model/tipo-lancamento.model';
+import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
+import { TipoLancamentoService } from '../../shared/services/tipo-lancamento.service';
 
 @Component({
   selector: 'app-controle-caixa-form',
@@ -11,39 +12,43 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ControleCaixaFormComponent implements OnInit {
 
-  tipoLancamento = 'E';
-  tipoAtendimento = 'S';
-  categoriaAtendimento = '';
-  idCategoriaAtendimento = 1;
-  idPaciente = null;
-  pacienteList: any = [];
-  categoriaAtendimentoList: any = [];
+  public tipoLancamentoId = TipoLancamentoEnum.ENTRADA;
+  public tipoAtendimentoId: number;
+  public tiposLancamento = new Array<TipoLancamento>();
+  public tiposAtendimento = new Array<TipoAtendimento>();
 
-  constructor(
-    private categoriaAtendimentoService: CategoriaAtendimentoService,
-    private pacienteService: PacienteService,
-    private messageService: ToastrService
+  public constructor(
+    private tipoAtendimentoService: TipoAtendimentoService,
+    private tipoLancamentoService: TipoLancamentoService
   ) { }
 
-  ngOnInit() {
-    this.onLoadCombos();
+  public ngOnInit(): void {
+    this.onLoadTiposLancamento();
   }
 
-  onLoadCombos(): void {
-    this.categoriaAtendimentoService.findAll().subscribe(dados => {
-      this.categoriaAtendimentoList = dados.result;
+  private onLoadTiposLancamento(): void {
+    this.tipoLancamentoService.findAll().subscribe(response => {
+      this.tiposLancamento = response.result;
     });
-    this.pacienteService.findAllActive().subscribe(dados => {
-      /*if (dados.data && dados.data.length > 0) {
-        dados.data.forEach(element => {
-          element.nomeItem = `${element.nome} ${element.sobrenome}`;
-          element.cpfItem = `CPF: ${Util.formatarCpf(element.cpf)}`;
-        });
-        this.pacienteList = dados.data;
-      } else {
-        this.messageService.warning(Messages.NENHUM_PACIENTE_ENCONTRADO, 'Aviso');
-      }*/
+    this.tipoAtendimentoService.findAll().subscribe(response => {
+      this.tiposAtendimento = response.result;
     });
+  }
+
+  public get isEntrada(): boolean {
+    return this.tipoLancamentoId === TipoLancamentoEnum.ENTRADA;
+  }
+
+  public get isSaida(): boolean {
+    return this.tipoLancamentoId === TipoLancamentoEnum.SAIDA;
+  }
+
+  public get isSessao(): boolean {
+    return this.tipoAtendimentoId === TipoAtendimentoEnum.SESSAO;
+  }
+
+  public get isPacote(): boolean {
+    return this.tipoAtendimentoId === TipoAtendimentoEnum.PACOTE;
   }
 
 }

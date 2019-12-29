@@ -16,19 +16,6 @@ export class AuthInterceptor implements HttpInterceptor {
         this.totalRequests++;
         //this.spinnerService.show();
         let authRequest: any;
-        if (req.url.split('ws')[0] === 'https://viacep.com.br/' && this.sharedService.isLoggedIn()) {
-            return next.handle(req).pipe(
-                tap(res => {
-                    if (res instanceof HttpResponse) {
-                        this.decreaseRequests();
-                    }
-                }),
-                catchError(err => {
-                    this.decreaseRequests();
-                    throw err;
-                })
-            );
-        }
         if (this.sharedService.isLoggedIn()) {
             authRequest = req.clone({
                 setHeaders: {

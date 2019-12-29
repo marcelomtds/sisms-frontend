@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import { Periodo } from '../model/model/periodo';
 
 export default class Util {
 
@@ -351,6 +352,28 @@ export default class Util {
                 case 12: return 'Dezembro';
             }
         }
+    }
+
+    static mesAno(): Periodo[] {
+        const mesAnoList = new Array<Periodo>();
+        let mesAtual = new Date().getMonth() + 1;
+        let anoAtual = new Date().getFullYear();
+        for (let i = 1; i <= 12; i++) {
+            if (mesAtual < 1) {
+                mesAtual = 12;
+                anoAtual = anoAtual - 1;
+            }
+            const dataInicio = moment(`${anoAtual}-${mesAtual}`, 'YYYY-MM');
+            const dataFim = moment(dataInicio).endOf('month');
+            const obj: Periodo = {
+                dataInicio: dataInicio.toDate(),
+                dataFim: dataFim.toDate(),
+                descricao: `${Util.mesesAno(mesAtual)}/${anoAtual}`
+            };
+            mesAnoList.push(obj);
+            --mesAtual;
+        }
+        return mesAnoList;
     }
 
 }

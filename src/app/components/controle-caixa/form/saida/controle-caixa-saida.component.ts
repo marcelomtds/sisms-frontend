@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 import { Messages } from 'src/app/components/shared/message/messages';
-import { ModalGerenciarCategoriaLancamentoComponent } from 'src/app/components/shared/modais/modal-gerenciar-categoria-lancamento/modal-gerenciar-categoria-lancamento.component';
+import { CategoriaLancamento } from 'src/app/components/shared/model/model/categoria-lancamento.model';
+import { FormaPagamento } from 'src/app/components/shared/model/model/forma-pagamento.model';
+import { Lancamento } from 'src/app/components/shared/model/model/lancamento.model';
 import { CategoriaLancamentoService } from 'src/app/components/shared/services/categoria-lancamento.service';
 import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
+import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
 import { LancamentoService } from '../../service/lancamento.service';
 
@@ -13,108 +15,97 @@ import { LancamentoService } from '../../service/lancamento.service';
   selector: 'app-controle-caixa-saida',
   templateUrl: './controle-caixa-saida.component.html'
 })
-export class ControleCaixaSaidaComponent implements OnInit {
+export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
 
-  isEdit = false;
-  form: FormGroup;
-  categoriaList: any = [];
-  formaPagamentoList: any = [];
-  modalRef: BsModalRef;
+  public form: FormGroup;
+  public categoriasLancamento = new Array<CategoriaLancamento>();
+  public formasPagamento = new Array<FormaPagamento>();
+  public isInvalidForm = false;
+  public subscription: Subscription;
 
-  constructor(
+  public constructor(
     private formBuilder: FormBuilder,
-    private lancamentoService: LancamentoService,
-    private messageService: ToastrService,
-    private modalService: BsModalService,
+    private service: LancamentoService,
+    private messageService: MessageService,
     private categoriaLancamentoService: CategoriaLancamentoService,
     private formaPagamentoService: FormaPagamentoService
-  ) { }
+  ) {
+    this.subscription = this.categoriaLancamentoService.getCategoriaLancamento().subscribe(() => {
+      this.onLoadComboCategoriaLancamento();
+    });
+  }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.onCreateForm();
     this.onLoadComboCategoriaLancamento();
     this.onLoadComboFormaPagamento();
   }
 
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   private onLoadComboCategoriaLancamento(): void {
-    this.categoriaLancamentoService.findAll().subscribe(dados => {
-      this.categoriaList = dados;
+    this.categoriaLancamentoService.findAll().subscribe(response => {
+      this.categoriasLancamento = response.result;
     });
   }
 
   private onLoadComboFormaPagamento(): void {
-    this.formaPagamentoService.findAll().subscribe(dados => {
-      this.formaPagamentoList = dados;
+    this.formaPagamentoService.findAll().subscribe(response => {
+      this.formasPagamento = response.result;
     });
   }
 
   private onCreateForm(): void {
     this.form = this.formBuilder.group({
-      'id': [null],
-      'data': [null, Validators.required],
-      'valor': [0, Validators.required],
-      'tipoLancamento': ['S', Validators.required],
-      'observacao': [null],
-      'pacote': {
-        'id': null
-      },
-      'atendimento': {
-        'id': null
-      },
-      'categoriaLancamento': this.formBuilder.group({
-        'id': [null, Validators.required]
-      }),
-      'formaPagamento': this.formBuilder.group({
-        'id': [null, Validators.required]
-      })
+      id: [null],
+      data: [null, Validators.required],
+      valor: [0, Validators.required],
+      observacao: [null],
+      categoriaLancamentoId: [null, Validators.required],
+      formaPagamentoId: [null, Validators.required]
     });
   }
 
-  getDataAtual(): void {
-    if (!this.form.value.data) {
-      this.form.get('data').setValue(new Date().toLocaleDateString());
+  public getDataAtual(): void {
+    this.messageService.clearAllMessages();
+    if (!this.form.controls.data.value) {
+      this.form.controls.data.setValue(new Date().toLocaleDateString());
     }
   }
 
-  onClickFormSubmit(): void {
-    this.messageService.clear();
-    if (this.form.valid && this.form.value.valor > 0) {
-      if (!Util.validarData(this.form.value.data)) {
-        this.messageService.error(Messages.DATA_INVALIDA, 'Erro');
+  public onClickFormSubmit(): void {
+    this.messageService.clearAllMessages();
+    if (this.form.valid) {
+      if (!Util.isDataValida(this.form.controls.data.value)) {
+        this.messageService.sendMessageError(Messages.DATA_INVALIDA);
         return;
       }
-      const obj = {
+      const formValue: Lancamento = {
         ...this.form.value,
-        data: Util.convertStringToDate(this.form.value.data)
+        data: Util.convertStringToDate(this.form.controls.data.value)
       };
-      this.createOrUpdate(obj);
+      if (formValue.id) {
+        this.service.update(formValue.id, formValue).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.clearValues();
+        });
+      } else {
+        this.service.create(formValue).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.clearValues();
+        });
+      }
     } else {
-      this.messageService.error(Messages.MSG0004, 'Erro');
+      this.isInvalidForm = true;
+      this.messageService.sendMessageError(Messages.MSG0004);
     }
   }
 
-  private createOrUpdate(obj: any): void {
-    /* this.lancamentoService.createOrUpdate(obj).subscribe(() => {
-      this.messageService.success(this.isEdit ? Messages.SUCESSO_EDICAO : Messages.SUCESSO_CRIACAO, 'Sucesso');
-      this.initValues();
-    }); */
-  }
-
-  onClickCancelar(): void {
-    this.messageService.clear();
-    this.initValues();
-  }
-
-  private initValues(): void {
+  private clearValues(): void {
     this.onCreateForm();
-    this.isEdit = false;
-  }
-
-  onClickOpenModalGerenciarCategoriaLancamento(): void {
-    this.modalRef = this.modalService.show(ModalGerenciarCategoriaLancamentoComponent, { keyboard: false, backdrop: 'static' });
-    this.modalRef.content.onClose.subscribe(() => {
-      this.onLoadComboCategoriaLancamento();
-    });
+    this.isInvalidForm = false;
   }
 
 }

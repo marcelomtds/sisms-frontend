@@ -1,5 +1,5 @@
 <section class="content-header">
-  <h1>Controle de Caixa</h1>
+  <h1>Cadastrar Laçamento</h1>
 </section>
 <section class="content">
   <div class="row">
@@ -10,50 +10,22 @@
         </div>
         <div class="box-body">
           <div class="row">
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
-                <label for="tipoLancamento">* Tipo de Lançamento</label>
-                <ng-select id="tipoLancamento" [searchable]="false" [multiple]="false" [clearable]="false"
-                  [(ngModel)]="tipoLancamento">
-                  <ng-option value='E'>Entrada</ng-option>
-                  <ng-option value='S'>Saída</ng-option>
+                <label for="tipoLancamento">Tipo de Lançamento</label>
+                <ng-select id="tipoLancamento" [(ngModel)]="tipoLancamentoId" [items]="tiposLancamento"
+                  [clearable]="false" bindLabel="descricao" bindValue="id">
                 </ng-select>
               </div>
             </div>
-            <div *ngIf="tipoLancamento === 'E'">
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <div class="form-group">
-                  <label for="tipoAtendimento">* Tipo de Atendimento</label>
-                  <ng-select id="tipoAtendimento" [searchable]="false" [multiple]="false" [clearable]="false"
-                    [(ngModel)]="tipoAtendimento">
-                    <ng-option value='S'>Sessão</ng-option>
-                    <ng-option value='P'>Pacote</ng-option>
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <div class="form-group">
-                  <label for="categoriaAtendimento">* Categoria de Atendimento</label>
-                  <ng-select id="categoriaAtendimento" [(ngModel)]="idCategoriaAtendimento" maxlength="15"
-                    [items]="categoriaAtendimentoList" [searchable]="false" [clearable]="false" [multiple]="false"
-                    bindLabel="descricao" bindValue="id" placeholder="Selecione"
-                    notFoundText="Nenhuma registro encontrado.">
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label for="paciente">* Paciente</label>
-                  <ng-select id="paciente" [(ngModel)]="idPaciente" maxlength="30" [items]="pacienteList"
-                    [multiple]="false" bindLabel="nomeItem" bindValue="id" placeholder="Selecione"
-                    notFoundText="Nenhuma registro encontrado.">
-                    <ng-template ng-option-tmp let-item="item">
-                      {{item.nomeItem}}
-                      <br />
-                      <small>{{item.cpfItem}}</small>
-                    </ng-template>
-                  </ng-select>
-                </div>
+            <div *ngIf="isEntrada" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="tipoAtendimento">Tipo de Atendimento</label>
+                <ng-select id="tipoAtendimento" [(ngModel)]="tipoAtendimentoId" [items]="tiposAtendimento" required
+                  bindLabel="descricao" placeholder="Selecione" #tipoAtendimento="ngModel" bindValue="id">
+                </ng-select>
+                <app-message-required [controlComponent]="tipoAtendimento">
+                </app-message-required>
               </div>
             </div>
           </div>
@@ -61,12 +33,9 @@
       </div>
     </div>
   </div>
-  <app-controle-caixa-entrada-sessao [idCategoriaAtendimento]="idCategoriaAtendimento" [idPaciente]="idPaciente"
-    *ngIf="tipoAtendimento === 'S' && tipoLancamento === 'E'">
-  </app-controle-caixa-entrada-sessao>
-  <app-controle-caixa-entrada-pacote [idCategoriaAtendimento]="idCategoriaAtendimento" [idPaciente]="idPaciente"
-    *ngIf="tipoAtendimento === 'P' && tipoLancamento === 'E'">
-  </app-controle-caixa-entrada-pacote>
-  <app-controle-caixa-saida *ngIf="tipoLancamento === 'S'">
-  </app-controle-caixa-saida>
+  <ng-container *ngIf="isEntrada">
+    <app-controle-caixa-entrada-sessao *ngIf="isSessao"></app-controle-caixa-entrada-sessao>
+    <app-controle-caixa-entrada-pacote *ngIf="isPacote"></app-controle-caixa-entrada-pacote>
+  </ng-container>
+  <app-controle-caixa-saida *ngIf="isSaida"></app-controle-caixa-saida>
 </section>

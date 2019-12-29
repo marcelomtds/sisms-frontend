@@ -1,124 +1,143 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { PacienteService } from 'src/app/components/paciente/service/paciente.service';
+import { AuthGuard } from 'src/app/components/security/auth.guard';
+import { SharedService } from 'src/app/components/security/service/shared.service';
 import { Messages } from 'src/app/components/shared/message/messages';
-import Pageable from 'src/app/components/shared/pageable/pageable';
+import { PerfilEnum } from 'src/app/components/shared/model/enum/perfil.enum';
+import { PageableFilter } from 'src/app/components/shared/model/filter/filter.filter';
+import { PacoteFilter } from 'src/app/components/shared/model/filter/pacote.filter';
+import { CategoriaAtendimento } from 'src/app/components/shared/model/model/categoria-atendimento.model';
+import { Paciente } from 'src/app/components/shared/model/model/paciente.model';
+import { Pacote } from 'src/app/components/shared/model/model/pacote.model';
+import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
+import { IActionOrderBy } from 'src/app/components/shared/page-order-by/iaction-orderby';
 import Page from 'src/app/components/shared/pagination/page';
+import { CategoriaAtendimentoService } from 'src/app/components/shared/services/categoria-atendimento.service';
+import { MessageService } from 'src/app/components/shared/services/message.service';
 import { PacoteService } from 'src/app/components/shared/services/pacote.service';
-import { ModalGerenciarLancamentoComponent } from '../../../modal/gerenciar-lancamento/modal-gerenciar-lancamento.component';
+import Util from 'src/app/components/shared/util/util';
+import { UsuarioService } from 'src/app/components/usuario/service/usuario.service';
 
 @Component({
   selector: 'app-controle-caixa-entrada-pacote',
   templateUrl: './controle-caixa-entrada-pacote.component.html'
 })
-export class ControleCaixaEntradaPacoteComponent implements OnInit {
+export class ControleCaixaEntradaPacoteComponent implements OnInit, IActionOrderBy {
 
-  @Input() idPaciente: any;
-  @Input() idCategoriaAtendimento: any;
+  public pacientes = new Array<Paciente>();
+  public usuarios = new Array<Usuario>();
+  public categoriasAtendimento = new Array<CategoriaAtendimento>();
+  public filtro = new PageableFilter<PacoteFilter>();
+  public dados = new Page<Array<Pacote>>();
+  public currentUser = new Usuario();
+  public permissaoAdministrador = PerfilEnum.administrador;
+  public form: FormGroup;
+  public showNoRecords = false;
 
-  modalRef: BsModalRef;
-  filtro = new Pageable();
-  categoriaAtendimentoList = [];
-  pacienteList = [];
-  form: FormGroup;
-  pacoteList = new Page();
-
-  constructor(
-    private messageService: ToastrService,
-    private pacoteService: PacoteService,
+  public constructor(
     private formBuilder: FormBuilder,
-    private modalService: BsModalService
+    private service: PacoteService,
+    public messageService: MessageService,
+    private pacienteService: PacienteService,
+    private categoriaAtendimentoService: CategoriaAtendimentoService,
+    private usuarioService: UsuarioService,
+    private sharedService: SharedService,
+    public authGuardService: AuthGuard
   ) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.onCreateForm();
+    this.getCurrentUser();
+    this.onLoadCombos();
   }
 
-  onCreateForm(): void {
+  private getCurrentUser(): void {
+    this.currentUser = this.sharedService.getUserSession();
+  }
+
+  private onCreateForm(): void {
     this.form = this.formBuilder.group({
-      'status': '',
-      'idCategoriaAtendimento': [1, Validators.required],
-      'idPaciente': [null, Validators.required],
+      categoriaAtendimentoId: [null],
+      pacienteId: [null],
+      usuarioId: [null],
+      aberto: [null],
+      dataInicio: [null],
+      dataFim: [null]
     });
   }
 
-  onClickFormSubmit(): void {
-    this.messageService.clear();
-    this.form.get('idCategoriaAtendimento').setValue(this.idCategoriaAtendimento);
-    this.form.get('idPaciente').setValue(this.idPaciente);
-    if (this.form.valid) {
-
-      const filter = {
-        ...this.form.value,
-        ...this.filtro,
-      };
-      this.pacoteService.findByFilter(filter).subscribe(dados => {
-        this.pacoteList = new Page();
-        /* if (dados.data && dados.data.content && dados.data.content.length > 0) {
-          this.pacoteList = dados.data;
-        } else {
-          this.messageService.warning(Messages.NENHUM_REGISTRO_ENCONTRADO, 'Aviso');
-        } */
+  private onLoadCombos(): void {
+    this.pacienteService.findAll().subscribe(response => {
+      this.pacientes = response.result;
+    });
+    this.categoriaAtendimentoService.findAll().subscribe(response => {
+      this.categoriasAtendimento = response.result;
+    });
+    if (this.currentUser.perfilRole === this.permissaoAdministrador) {
+      this.usuarioService.findAll().subscribe(response => {
+        this.usuarios = response.result;
       });
-    } else {
-      this.messageService.error(Messages.MSG0004, 'Erro');
-    }
-
-  }
-
-  getPrimeiraSessao(pacote: any): any {
-    if (pacote && pacote.atendimentos) {
-      const obj = pacote.atendimentos.find(x => x.numeroSessao === 1);
-      return obj ? obj.preAtendimento.dataHora : '';
     }
   }
 
-  onClickOpenModalGerenciarLancamento(row: any): void {
-    const initialState = {
-      filtroControleCaixa: {
-        pacote: {
-          id: row.id
-        },
-        atendimento: {
-          id: null
-        },
-        tipoLancamento: 'E',
-        dados: row
+  public onClickFormSubmit(): void {
+    this.messageService.clearAllMessages();
+    const dataInicio = this.form.value.dataInicio;
+    const dataFim = this.form.value.dataFim;
+    if (dataInicio && !Util.isDataValida(dataInicio)) {
+      this.messageService.sendMessageError(Messages.DATA_INICIO_INVALIDA);
+      return;
+    }
+    if (dataFim && !Util.isDataValida(dataFim)) {
+      this.messageService.sendMessageError(Messages.DATA_FIM_INVALIDA);
+      return;
+    }
+    this.filtro = new PageableFilter<PacoteFilter>();
+    this.filtro = {
+      ...this.filtro,
+      orderBy: 'dataCriacao',
+      direction: 'DESC',
+      filter: {
+        ...this.form.value,
+        dataInicio: Util.convertStringToDate(dataInicio),
+        dataFim: Util.convertStringToDate(dataFim)
       }
     };
-    this.modalRef = this.modalService.show(ModalGerenciarLancamentoComponent, { class: 'gray modal-lg', initialState, keyboard: false, backdrop: 'static' });
+    this.searchByFilter();
   }
 
-  setNextPage(event: any): void {
-    event.preventDefault();
-    if (this.filtro.currentPage + 1 < this.pacoteList.totalPages) {
-      this.filtro.currentPage += 1;
-      this.onClickFormSubmit();
-    }
+  public searchByFilter(): void {
+    this.messageService.clearAllMessages();
+    this.service.findByFilter(this.filtro).subscribe(response => {
+      this.showNoRecords = true;
+      this.dados = response.result;
+    });
   }
 
-  setPreviousPage(event: any): void {
-    event.preventDefault();
-    if (this.filtro.currentPage > 0) {
-      this.filtro.currentPage -= 1;
-      this.onClickFormSubmit();
-    }
+  public onClickLimparCampos(): void {
+    this.messageService.clearAllMessages();
+    this.onCreateForm();
+    this.dados = new Page<Array<Pacote>>();
+    this.filtro = new PageableFilter<PacoteFilter>();
+    this.showNoRecords = false;
   }
 
-  showInfo(): string {
-    return (`Página ${this.filtro.currentPage + 1} de ${this.pacoteList.totalPages} - Total de ${this.pacoteList.totalElements} registros.`);
-  }
-
-  onChangePageSize(size: any): void {
-    this.filtro.pageSize = parseInt(size);
-    this.onClickFormSubmit();
-  }
-
-  onClickOrderBy(descricao: string): void {
+  public onClickOrderBy(descricao: string): void {
+    this.messageService.clearAllMessages();
     this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
     this.filtro.orderBy = descricao;
-    this.onClickFormSubmit();
+    this.searchByFilter();
+  }
+
+  public getIconOrderBy(param: string): string {
+    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-asc';
+    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-desc';
+    } else {
+      return 'fa fa-sort';
+    }
   }
 
 }

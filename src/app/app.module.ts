@@ -66,6 +66,7 @@ import { ModalCriarPacoteComponent } from './components/shared/modais/modal-cria
 import { ModalVisualizarAtendimentoComponent } from './components/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
 import { NoRecordsComponent } from './components/shared/model/template/no-records/no-records.component';
 import { MessageRequiredComponent } from './components/shared/message-required/message-required.component';
+import { ModalGerenciarLancamentoSessaoComponent } from './components/controle-caixa/modal/gerenciar-lancamento/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -108,6 +109,7 @@ registerLocaleData(localePt);
   ],
   bootstrap: [AppComponent],
   entryComponents: [
+    ModalGerenciarLancamentoSessaoComponent,
     ModalVisualizarAtendimentoComponent,
     ModalCriarPacoteComponent,
     ModalVisualizarImagensComponent,
@@ -169,7 +171,8 @@ registerLocaleData(localePt);
     ModalCriarPacoteComponent,
     ModalVisualizarAtendimentoComponent,
     NoRecordsComponent,
-    MessageRequiredComponent
+    MessageRequiredComponent,
+    ModalGerenciarLancamentoSessaoComponent
   ],
 })
 export class AppModule { }

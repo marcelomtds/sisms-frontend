@@ -12,8 +12,7 @@ import { LancamentoService } from '../../service/lancamento.service';
 
 @Component({
   selector: 'app-modal-gerenciar-lancamento',
-  templateUrl: './modal-gerenciar-lancamento.component.html',
-  styleUrls: ['./modal-gerenciar-lancamento.component.css']
+  templateUrl: './modal-gerenciar-lancamento.component.html'
 })
 export class ModalGerenciarLancamentoComponent implements OnInit {
 

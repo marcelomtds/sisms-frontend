@@ -9,44 +9,41 @@
           <div class="row">
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
               <div class="form-group">
-                <label for="data">* Data</label>
-                <input id="data" mask="00/00/0000" [validation]="false" type="text" formControlName="data"
+                <label for="data">Data</label>
+                <input id="data" mask="d0/m0/0000" [validation]="false" type="text" formControlName="data"
                   class="form-control" (focus)="getDataAtual()" />
+                <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('data')">
+                </app-message-required>
               </div>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
               <div class="form-group">
-                <label for="valor">* Valor</label>
-                <input id="valor" currencyMask
-                  [options]="{ suffix: '', prefix: '', thousands: '.', decimal: ',', allowNegative: 'false' }"
+                <label for="valor">Valor</label>
+                <input id="valor" maxlength="10" currencyMask
+                  [options]="{ align: 'left', suffix: '', prefix: '', thousands: '.', decimal: ',', allowNegative: 'false'  }"
                   type="text" formControlName="valor" class="form-control" />
               </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-              <ng-container formGroupName="formaPagamento">
-                <div class="form-group">
-                  <label for="formaPagamento">* Forma de Pagamento</label>
-                  <ng-select id="formaPagamento" maxlength="20" formControlName="id" [items]="formaPagamentoList"
-                    [multiple]="false" bindLabel="descricao" bindValue="id" placeholder="Selecione"
-                    notFoundText="Nenhuma registro encontrado.">
-                  </ng-select>
-                </div>
-              </ng-container>
+              <div class="form-group">
+                <label for="formaPagamento">Forma de Pagamento</label>
+                <ng-select id="formaPagamento" formControlName="formaPagamentoId" [items]="formasPagamento"
+                  bindLabel="descricao" bindValue="id" placeholder="Selecione">
+                </ng-select>
+                <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('formaPagamentoId')">
+                </app-message-required>
+              </div>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-              <ng-container formGroupName="categoriaLancamento">
-                <div class="form-group">
-                  <label for="categoria">* Categoria</label>
-                  <ng-select id="categoria" maxlength="20" formControlName="id" [items]="categoriaList"
-                    [multiple]="false" bindLabel="descricao" bindValue="id" placeholder="Selecione"
-                    notFoundText="Nenhuma registro encontrado.">
-                  </ng-select>
-                </div>
-              </ng-container>
-            </div>
-            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-              <a class="btn btn-primary lefticon" title="Gerenciar Categorias"
-                (click)="onClickOpenModalGerenciarCategoriaLancamento()"><i class="fa fa-pencil"></i></a>
+              <div class="form-group">
+                <label for="categoria">Categoria de Lançamento</label>
+                <ng-select id="categoria" formControlName="categoriaLancamentoId" [items]="categoriasLancamento"
+                  bindLabel="descricao" bindValue="id" placeholder="Selecione">
+                </ng-select>
+                <app-message-required [isInvalidForm]="isInvalidForm"
+                  [controlComponent]="form.get('categoriaLancamentoId')">
+                </app-message-required>
+              </div>
             </div>
           </div>
           <div class="row">
@@ -61,8 +58,8 @@
         </form>
       </div>
       <div class="box-footer">
-        <button class="btn btn-primary pull-right" (click)="onClickFormSubmit()">Salvar</button>
-        <button class="btn btn-default" (click)="onClickCancelar()">Cancelar</button>
+        <button class="btn btn-primary pull-right" style="margin-left: 15px;" (click)="onClickFormSubmit()"><em
+            class="fa fa-save"></em>&nbsp;Salvar</button>
       </div>
     </div>
   </div>

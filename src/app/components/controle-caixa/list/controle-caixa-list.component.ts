@@ -1,62 +1,80 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 import { PacienteService } from '../../paciente/service/paciente.service';
 import { TipoLancamentoEnum } from '../../shared/model/enum/tipo-lancamento.enum';
 import { PageableFilter } from '../../shared/model/filter/filter.filter';
 import { LancamentoFilter } from '../../shared/model/filter/lancamento.filter';
 import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
+import { CategoriaLancamento } from '../../shared/model/model/categoria-lancamento.model';
 import { FormaPagamento } from '../../shared/model/model/forma-pagamento.model';
+import { LancamentoTotal } from '../../shared/model/model/lancamento-total.model';
 import { Lancamento } from '../../shared/model/model/lancamento.model';
 import { Paciente } from '../../shared/model/model/paciente.model';
 import { Periodo } from '../../shared/model/model/periodo';
 import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model';
 import { TipoLancamento } from '../../shared/model/model/tipo-lancamento.model';
+import { Usuario } from '../../shared/model/model/usuario.model';
+import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
 import Pageable from '../../shared/pageable/pageable';
 import Page from '../../shared/pagination/page';
 import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
+import { CategoriaLancamentoService } from '../../shared/services/categoria-lancamento.service';
 import { FormaPagamentoService } from '../../shared/services/forma-pagamento.service';
 import { MessageService } from '../../shared/services/message.service';
 import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
 import { TipoLancamentoService } from '../../shared/services/tipo-lancamento.service';
 import Util from '../../shared/util/util';
+import { UsuarioService } from '../../usuario/service/usuario.service';
 import { LancamentoService } from '../service/lancamento.service';
 
 @Component({
   selector: 'app-controle-caixa-list',
   templateUrl: './controle-caixa-list.component.html'
 })
-export class ControleCaixaListComponent implements OnInit {
+export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrderBy {
 
   public pacientes = new Array<Paciente>();
+  public usuarios = new Array<Usuario>();
   public tiposLancamento = new Array<TipoLancamento>();
   public tiposAtendimento = new Array<TipoAtendimento>();
+  public categoriasLancamento = new Array<CategoriaLancamento>();
   public categoriasAtendimento = new Array<CategoriaAtendimento>();
   public formasPagamento = new Array<FormaPagamento>();
   public mesAnoList = new Array<Periodo>();
   public form: FormGroup;
   public filtro = new PageableFilter<LancamentoFilter>();
   public dados = new Page<Array<Lancamento>>();
-  public totalEntrada = 0;
-  public totalSaida = 0;
-  public totalGeral = 0;
   public showNoRecords = false;
+  public lancamentoTotal = new LancamentoTotal;
+  public mesAno: Periodo;
+  public subscription: Subscription;
 
   public constructor(
     private formBuilder: FormBuilder,
     private categoriaAtendimentoService: CategoriaAtendimentoService,
+    private categoriaLancamentoService: CategoriaLancamentoService,
     private formaPagamentoService: FormaPagamentoService,
     private pacienteService: PacienteService,
+    private usuarioService: UsuarioService,
     private tipoLancamentoService: TipoLancamentoService,
     private tipoAtendimentoService: TipoAtendimentoService,
-    private lancamentoService: LancamentoService,
+    private service: LancamentoService,
     private messageService: MessageService
-  ) { }
+  ) {
+    this.subscription = this.categoriaLancamentoService.getCategoriaLancamento().subscribe(() => {
+      this.onLoadComboCategoriaLancamento();
+    });
+  }
 
   public ngOnInit(): void {
     this.onCreateForm();
     this.onLoadCombos();
     this.getDatas();
+  }
+
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   public onCreateForm(): void {
@@ -65,27 +83,26 @@ export class ControleCaixaListComponent implements OnInit {
       tipoAtendimentoId: [null],
       categoriaAtendimentoId: [null],
       pacienteId: [null],
+      usuarioId: [null],
       formaPagamentoId: [null],
+      categoriaLancamentoId: [null],
       dataInicio: [null],
       dataFim: [null]
     });
   }
 
-  /*public onChangeTipoLancamento(): void {
-    if (this.form.value.tipoLancamento === TipoLancamentoEnum.ENTRADA) {
-      this.form.controls.tipoAtendimentoId.setValue(null);
-      this.form.controls.categoriaAtendimentoId.setValue(null);
-      this.form.controls.pacienteId.setValue(null);
-    }
-    this.dados = new Page<Array<Lancamento>>();
-    this.filtro = new PageableFilter<LancamentoFilter>();
-  }*/
-
   public get isEntrada(): boolean {
-    return this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.ENTRADA;
+    return this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.ENTRADA || !this.form.controls.tipoLancamentoId.value;
+  }
+
+  public get isSaida(): boolean {
+    return this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.SAIDA || !this.form.controls.tipoLancamentoId.value;
   }
 
   public onLoadCombos(): void {
+    this.usuarioService.findAll().subscribe(response => {
+      this.usuarios = response.result;
+    });
     this.tipoLancamentoService.findAll().subscribe(response => {
       this.tiposLancamento = response.result;
     });
@@ -100,6 +117,13 @@ export class ControleCaixaListComponent implements OnInit {
     });
     this.formaPagamentoService.findAll().subscribe(response => {
       this.formasPagamento = response.result;
+    });
+    this.onLoadComboCategoriaLancamento();
+  }
+
+  public onLoadComboCategoriaLancamento(): void {
+    this.categoriaLancamentoService.findAll().subscribe(response => {
+      this.categoriasLancamento = response.result;
     });
   }
 
@@ -118,19 +142,12 @@ export class ControleCaixaListComponent implements OnInit {
   }
 
   public searchByFilter(): void {
-    this.lancamentoService.findByFilter(this.filtro).subscribe(response => {
-      this.showNoRecords = true;
+    this.showNoRecords = true;
+    this.service.findByFilter(this.filtro).subscribe(response => {
       this.dados = response.result;
-      /*this.totalEntrada = 0;
-      this.totalSaida = 0;
-      this.dados = response.result;
-      if (response.result && response.result.content && response.result.content.length > 0) {
-        this.lancamentoService.findLancamentoTotal(this.filtro).subscribe(result => {
-          this.totalEntrada = result.data.entradA;
-          this.totalSaida = result.data.saida;
-          this.totalGeral = result.data.total;
-        });
-      }*/
+    });
+    this.service.findTotalByFilter(this.filtro).subscribe(response => {
+      this.lancamentoTotal = response.result;
     });
   }
 
@@ -139,48 +156,45 @@ export class ControleCaixaListComponent implements OnInit {
     this.onCreateForm();
     this.dados = new Page<Array<Paciente>>();
     this.filtro = new PageableFilter<LancamentoFilter>();
+    this.lancamentoTotal = new LancamentoTotal();
     this.showNoRecords = false;
+    this.mesAno = null;
   }
 
-  public onChangeComboMesAno(event: Periodo): void {
-    if (event) {
-      this.form.get('dataInicio').setValue(event.dataInicio.toLocaleDateString());
-      this.form.get('dataFim').setValue(event.dataFim.toLocaleDateString());
-      this.form.get('dataInicio').disable();
-      this.form.get('dataFim').disable();
+  public onChangeComboMesAno(periodo: Periodo): void {
+    this.messageService.clearAllMessages();
+    if (periodo) {
+      this.form.controls.dataInicio.setValue(periodo.dataInicio.toLocaleDateString());
+      this.form.controls.dataFim.setValue(periodo.dataFim.toLocaleDateString());
     } else {
-      this.form.get('dataInicio').setValue(null);
-      this.form.get('dataFim').setValue(null);
-      this.form.get('dataInicio').enable();
-      this.form.get('dataFim').enable();
+      this.form.controls.dataInicio.setValue(null);
+      this.form.controls.dataFim.setValue(null);
     }
   }
 
   private getDatas(): void {
-    let mesAtual = new Date().getMonth() + 1;
-    let anoAtual = new Date().getFullYear();
-    for (let i = 1; i <= 12; i++) {
-      if (mesAtual < 1) {
-        mesAtual = 12;
-        anoAtual = anoAtual - 1;
-      }
-      const dataInicio = moment(`${anoAtual}-${mesAtual}`, 'YYYY-MM');
-      const dataFim = moment(dataInicio).endOf('month');
-      const obj: Periodo = {
-        dataInicio: dataInicio.toDate(),
-        dataFim: dataFim.toDate(),
-        descricao: `${Util.mesesAno(mesAtual)}/${anoAtual}`
-      };
-      this.mesAnoList.push(obj);
-      --mesAtual;
-    }
+    this.mesAnoList = Util.mesAno();
   }
 
   public onClickOrderBy(descricao: string): void {
     this.messageService.clearAllMessages();
-    this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    if (this.filtro.orderBy === descricao) {
+      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    } else {
+      this.filtro.direction = 'ASC';
+    }
     this.filtro.orderBy = descricao;
     this.searchByFilter();
+  }
+
+  public getIconOrderBy(param: string): string {
+    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-asc';
+    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-desc';
+    } else {
+      return 'fa fa-sort';
+    }
   }
 
 }

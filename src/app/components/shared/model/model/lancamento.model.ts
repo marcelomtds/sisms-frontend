@@ -4,19 +4,24 @@ export class Lancamento {
     constructor(
         public id?: number,
         public data?: string,
-        public Valor?: number,
+        public valor?: number,
         public observacao?: string,
         public usuarioId?: number,
-        public usuarioDescricao?: string,
+        public usuarioNomeCompleto?: string,
         public atendimentoId?: number,
+        public atendimentoPacienteNomeCompleto?: string,
+        public pacotePacienteNomeCompleto?: string,
         public pacoteId?: number,
         public categoriaLancamentoId?: number,
-        public atendimentoPacienteNomeCompleto?: string,
         public categoriaLancamentoDescricao?: string,
         public formaPagamentoId?: number,
         public formaPagamentoDescricao?: string,
         public tipoLancamentoId?: number,
-        public tipoLancamentoDescricao?: string
+        public tipoLancamentoDescricao?: string,
+        public tipoAtendimentoId?: number,
+        public tipoAtendimentoDescricao?: string,
+        public atendimentoCategoriaAtendimentoDescricao?: string,
+        public pacoteCategoriaAtendimentoDescricao?: string
     ) { }
 
 }
