@@ -38,6 +38,7 @@ export class Atendimento {
         public numero?: number,
         public aberto?: boolean,
         public conduta?: string,
+        public totalPago?: number,
     ) { }
 
 }

@@ -63,21 +63,21 @@
           <div class="form-group">
             <label for="valorPacote">Valor do Pacote</label>
             <input id="valorPacote"
-              [value]="filtroControleCaixa?.dados?.valorPacote | currency:'BRL':'symbol':'0.2-2':'pt'" type="text"
+              [value]="filtroControleCaixa?.dados?.valorPacote || 0 | currency:'BRL':'symbol':'0.2-2':'pt'" type="text"
               class="form-control" readonly />
           </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
           <div class="form-group">
             <label for="valorPago">Valor Total Pago</label>
-            <input id="valorPago" [value]="filtroControleCaixa?.valorPago | currency:'BRL':'symbol':'0.2-2':'pt'"
+            <input id="valorPago" [value]="filtroControleCaixa?.valorPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt'"
               type="text" class="form-control" readonly />
           </div>
         </div>
         <div *ngIf="filtroControleCaixa?.pacote?.id" class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
           <div class="form-group">
             <label for="valorPagar">Valor Total à Pagar</label>
-            <input id="valorPagar" [value]="filtroControleCaixa?.valorPagar | currency:'BRL':'symbol':'0.2-2':'pt'"
+            <input id="valorPagar" [value]="filtroControleCaixa?.valorPagar || 0 | currency:'BRL':'symbol':'0.2-2':'pt'"
               type="text" class="form-control" readonly />
           </div>
         </div>

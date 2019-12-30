@@ -125,76 +125,74 @@
             </div>
           </div>
           <div class="box-body">
-            <div class="box-body">
-              <div class="row">
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                  <div class="form-group">
-                    <label for="totalEntrada">Total de Entrada</label>
-                    <p id="totalEntrada">{{ lancamentoTotal.entrada | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
-                  </div>
-                </div>
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                  <div class="form-group">
-                    <label for="totalSaida">Total de Saída</label>
-                    <p id="totalSaida">{{ lancamentoTotal.saida | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
-                  </div>
-                </div>
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                  <div class="form-group">
-                    <label for="totalGeral">Total Geral</label>
-                    <p [ngStyle]="{'color': lancamentoTotal.total < 0 ? 'red' : 'green' , 'font-weight': 'bold'}"
-                      id="totalGeral">
-                      {{ lancamentoTotal.total | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
-                  </div>
+            <div class="row">
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                  <label for="totalEntrada">Total de Entrada</label>
+                  <p id="totalEntrada">{{ lancamentoTotal.entrada | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
                 </div>
               </div>
-              <div class="table-roll">
-                <table id="example2" class="table table-bordered table-hover">
-                  <thead>
-                    <tr>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('pac.nomeCompleto')"><em
-                          [class]="getIconOrderBy('pac.nomeCompleto')"></em>&nbsp;Paciente</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')"><em
-                          [class]="getIconOrderBy('usuario.nomeCompleto')"></em>&nbsp;Usuário</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('data')"><em
-                          [class]="getIconOrderBy('data')"></em>&nbsp;Data</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('valor')"><em
-                          [class]="getIconOrderBy('valor')"></em>&nbsp;Valor</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('formaPagamento.descricao')"><em
-                          [class]="getIconOrderBy('formaPagamento.descricao')"></em>&nbsp;Forma de
-                        Pagamento</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('tipoLancamento.descricao')"><em
-                          [class]="getIconOrderBy('tipoLancamento.descricao')"></em>&nbsp;Tipo de
-                        Lançamento</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('categoriaLancamento.descricao')"><em
-                          [class]="getIconOrderBy('categoriaLancamento.descricao')"></em>&nbsp;Categoria de
-                        Lançamento</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('tipoAtendimento.descricao')"><em
-                          [class]="getIconOrderBy('tipoAtendimento.descricao')"></em>&nbsp;Tipo de
-                        Atendimento</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('ca.descricao')"><em
-                          [class]="getIconOrderBy('ca.descricao')"></em>&nbsp;Categoria de Atendimento</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let lancamento of dados.content">
-                      <td>
-                        {{ lancamento.atendimentoPacienteNomeCompleto || lancamento.pacotePacienteNomeCompleto || '-' }}
-                      </td>
-                      <td>{{ lancamento.usuarioNomeCompleto }}</td>
-                      <td>{{ lancamento.data | date : 'dd/MM/yyyy' }}</td>
-                      <td>{{ lancamento.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</td>
-                      <td>{{ lancamento.formaPagamentoDescricao }}</td>
-                      <td>{{ lancamento.tipoLancamentoDescricao }}</td>
-                      <td>{{ lancamento?.categoriaLancamentoDescricao || '-' }}</td>
-                      <td>{{ lancamento.tipoAtendimentoDescricao || '-' }}</td>
-                      <td>
-                        {{ lancamento?.atendimentoCategoriaAtendimentoDescricao || lancamento?.pacoteCategoriaAtendimentoDescricao || '-' }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                  <label for="totalSaida">Total de Saída</label>
+                  <p id="totalSaida">{{ lancamentoTotal.saida | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
+                </div>
               </div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                  <label for="totalGeral">Total Geral</label>
+                  <p [ngStyle]="{'color': lancamentoTotal.total < 0 ? 'red' : 'green' , 'font-weight': 'bold'}"
+                    id="totalGeral">
+                    {{ lancamentoTotal.total | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="table-roll">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('pac.nomeCompleto')">
+                    Paciente</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')"><em
+                        [class]="getIconOrderBy('usuario.nomeCompleto')"></em>&nbsp;Usuário</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('data')"><em
+                        [class]="getIconOrderBy('data')"></em>&nbsp;Data</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('valor')"><em
+                        [class]="getIconOrderBy('valor')"></em>&nbsp;Valor</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('formaPagamento.descricao')"><em
+                        [class]="getIconOrderBy('formaPagamento.descricao')"></em>&nbsp;Forma de
+                      Pagamento</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('tipoLancamento.descricao')"><em
+                        [class]="getIconOrderBy('tipoLancamento.descricao')"></em>&nbsp;Tipo de
+                      Lançamento</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('categoriaLancamento.descricao')"><em
+                        [class]="getIconOrderBy('categoriaLancamento.descricao')"></em>&nbsp;Categoria de
+                      Lançamento</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('tipoAtendimento.descricao')"><em
+                        [class]="getIconOrderBy('tipoAtendimento.descricao')"></em>&nbsp;Tipo de
+                      Atendimento</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('ca.descricao')"><em
+                        [class]="getIconOrderBy('ca.descricao')"></em>&nbsp;Categoria de Atendimento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let lancamento of dados.content">
+                    <td>
+                      {{ lancamento.atendimentoPacienteNomeCompleto || lancamento.pacotePacienteNomeCompleto || '-' }}
+                    </td>
+                    <td>{{ lancamento.usuarioNomeCompleto }}</td>
+                    <td>{{ lancamento.data | date : 'dd/MM/yyyy' }}</td>
+                    <td>{{ lancamento.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</td>
+                    <td>{{ lancamento.formaPagamentoDescricao }}</td>
+                    <td>{{ lancamento.tipoLancamentoDescricao }}</td>
+                    <td>{{ lancamento?.categoriaLancamentoDescricao || '-' }}</td>
+                    <td>{{ lancamento.tipoAtendimentoDescricao || '-' }}</td>
+                    <td>
+                      {{ lancamento?.atendimentoCategoriaAtendimentoDescricao || lancamento?.pacoteCategoriaAtendimentoDescricao || '-' }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <div class="box-footer">
               <app-page-action [dados]="dados" [filtro]="filtro" (searchByFilter)="searchByFilter()">

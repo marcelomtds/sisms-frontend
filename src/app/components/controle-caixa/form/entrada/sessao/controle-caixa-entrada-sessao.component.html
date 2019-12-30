@@ -92,17 +92,26 @@
                 <thead>
                   <tr>
                     <th>Opções</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')">Paciente</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')">Usuário</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('preAtendimento.data')">Data/Hora
+                    <th style="cursor: pointer" (click)="onClickOrderBy('totalPago')"><em
+                        [class]="getIconOrderBy('totalPago')"></em>&nbsp;Total Pago</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
+                        [class]="getIconOrderBy('paciente.nomeCompleto')"></em>&nbsp;Paciente</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')"><em
+                        [class]="getIconOrderBy('usuario.nomeCompleto')"></em>&nbsp;Usuário</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('preAtendimento.data')"><em
+                        [class]="getIconOrderBy('preAtendimento.data')"></em>&nbsp;Data/Hora
                       Pré-atendimento</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('posAtendimento.data')">Data/Hora
+                    <th style="cursor: pointer" (click)="onClickOrderBy('posAtendimento.data')"><em
+                        [class]="getIconOrderBy('posAtendimento.data')"></em>&nbsp;Data/Hora
                       Pós-atendimento</th>
                     <th>Tempo de Atendimento</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('tipoAtendimento.descricao')">Categoria de
+                    <th style="cursor: pointer" (click)="onClickOrderBy('tipoAtendimento.descricao')"><em
+                        [class]="getIconOrderBy('tipoAtendimento.descricao')"></em>&nbsp;Categoria de
                       Atendimento</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('numero')">Número Sessão</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('aberto')">Status</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('numero')"><em
+                        [class]="getIconOrderBy('numero')"></em>&nbsp;Número Sessão</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('aberto')"><em
+                        [class]="getIconOrderBy('aberto')"></em>&nbsp;Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -111,6 +120,9 @@
                       <button title="Gerenciar Lançamentos"
                         (click)="onClickOpenModalGerenciarLancamentos(atendimento.id)" class="btn btn-success"><em
                           class="fa fa-usd"></em></button>
+                    </td>
+                    <td>
+                      {{ atendimento.totalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
                     </td>
                     <td>
                       {{ atendimento.pacienteNomeCompleto }}

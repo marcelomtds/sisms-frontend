@@ -1,63 +1,70 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { AtendimentoService } from 'src/app/components/atendimento/service/atendimento.service';
 import { SharedService } from 'src/app/components/security/service/shared.service';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalConfirmacaoComponent } from 'src/app/components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { PerfilEnum } from 'src/app/components/shared/model/enum/perfil.enum';
 import { PageableFilter } from 'src/app/components/shared/model/filter/filter.filter';
 import { LancamentoFilter } from 'src/app/components/shared/model/filter/lancamento.filter';
-import { Atendimento } from 'src/app/components/shared/model/model/atendimento.model';
 import { FormaPagamento } from 'src/app/components/shared/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/components/shared/model/model/lancamento.model';
+import { Pacote } from 'src/app/components/shared/model/model/pacote.model';
 import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
-import { IActionOrderBy } from 'src/app/components/shared/page-order-by/iaction-orderby';
 import Page from 'src/app/components/shared/pagination/page';
 import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
 import { MessageService } from 'src/app/components/shared/services/message.service';
+import { PacoteService } from 'src/app/components/shared/services/pacote.service';
 import Util from 'src/app/components/shared/util/util';
 import { LancamentoService } from '../../../service/lancamento.service';
 
 @Component({
-  selector: 'app-modal-gerenciar-lancamento-sessao',
-  templateUrl: './modal-gerenciar-lancamento-sessao.component.html'
+  selector: 'app-modal-gerenciar-lancamento-pacote',
+  templateUrl: './modal-gerenciar-lancamento-pacote.component.html'
 })
-export class ModalGerenciarLancamentoSessaoComponent implements OnInit, IActionOrderBy {
+export class ModalGerenciarLancamentoPacoteComponent implements OnInit {
 
   public dados = new Page<Array<Lancamento>>();
   public form: FormGroup;
-  public atendimento = new Atendimento();
+  public pacote = new Pacote();
   public formasPagamento = new Array<FormaPagamento>();
   public filtro = new PageableFilter<LancamentoFilter>();
   public isInvalidForm = false;
   public showNoRecords = false;
-  public atendimentoId: number;
+  public pacoteId: number;
+  public valorSelecionado = 0;
   public currentUser = new Usuario();
 
   public constructor(
     private bsModalRef: BsModalRef,
     private service: LancamentoService,
+    private sharedService: SharedService,
     private formBuilder: FormBuilder,
     private formaPagamentoService: FormaPagamentoService,
-    private atendimentoService: AtendimentoService,
+    private pacoteService: PacoteService,
     private modalService: BsModalService,
-    private messageService: MessageService,
-    private sharedService: SharedService
+    private messageService: MessageService
   ) { }
 
   public ngOnInit(): void {
     this.onCreateForm();
     this.searchByFilter();
     this.onLoadComboFormaPagamento();
-    this.onLoadAtendimento();
-    this.getCurrentUser();
+    this.onLoadPacote();
   }
 
-  private onLoadAtendimento(): void {
-    this.atendimentoService.findById(this.atendimentoId).subscribe(response => {
-      this.atendimento = response.result;
+  private onLoadPacote(): void {
+    this.pacoteService.findById(this.pacoteId).subscribe(response => {
+      this.pacote = response.result;
     });
+  }
+
+  private getCurrentUser(): void {
+    this.currentUser = this.sharedService.getUserSession();
+  }
+
+  public get isAdministrador(): boolean {
+    return this.currentUser.perfilRole === PerfilEnum.administrador;
   }
 
   private onLoadComboFormaPagamento(): void {
@@ -66,17 +73,13 @@ export class ModalGerenciarLancamentoSessaoComponent implements OnInit, IActionO
     });
   }
 
-  public calcularTempo(dataInicio: any, dataFim: any): string {
-    return Util.calcularTempoHorasMinutos(dataInicio, dataFim);
-  }
-
   private onCreateForm(): void {
     this.form = this.formBuilder.group({
       id: [null],
       data: [null, Validators.required],
       valor: [0, Validators.required],
       observacao: [null],
-      atendimentoId: [this.atendimentoId, Validators.required],
+      pacoteId: [this.pacoteId, Validators.required],
       formaPagamentoId: [null, Validators.required]
     });
   }
@@ -92,16 +95,11 @@ export class ModalGerenciarLancamentoSessaoComponent implements OnInit, IActionO
         ...this.form.value,
         data: Util.convertStringToDate(this.form.controls.data.value)
       };
-      if (formValue.id) {
-        this.service.update(formValue.id, formValue).subscribe(response => {
-          this.messageService.sendMessageSuccess(response.message);
-          this.onUpdate();
-        });
+      const valor = this.form.controls.valor.value + this.pacote.totalPago - (this.form.controls.id.value ? this.valorSelecionado : 0);
+      if (valor > this.pacote.valor) {
+        this.openModalConfirmacaoValorExcedido(formValue);
       } else {
-        this.service.create(formValue).subscribe(response => {
-          this.messageService.sendMessageSuccess(response.message);
-          this.onUpdate();
-        });
+        this.createOrUpdate(formValue);
       }
     } else {
       this.isInvalidForm = true;
@@ -109,31 +107,50 @@ export class ModalGerenciarLancamentoSessaoComponent implements OnInit, IActionO
     }
   }
 
-  private getCurrentUser(): void {
-    this.currentUser = this.sharedService.getUserSession();
+  private openModalConfirmacaoValorExcedido(obj: any): void {
+    const bsModalRefConfirmacaoValorExcedido = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
+    bsModalRefConfirmacaoValorExcedido.content.titulo = `Confirmação de ${this.form.controls.id.value ? 'Alteração' : 'Inclusão'}`;
+    bsModalRefConfirmacaoValorExcedido.content.corpo = 'O valor total pago excede o valor do pacote. Deseja continuar?';
+    bsModalRefConfirmacaoValorExcedido.content.onClose.subscribe((result) => {
+      if (result) {
+        this.createOrUpdate(obj);
+      }
+    });
   }
 
-  public get isAdministrador(): boolean {
-    return this.currentUser.perfilRole === PerfilEnum.administrador;
+  private createOrUpdate(formValue: Lancamento): void {
+    if (formValue.id) {
+      this.service.update(formValue.id, formValue).subscribe(response => {
+        this.messageService.sendMessageSuccess(response.message);
+        this.onUpdate();
+      });
+    } else {
+      this.service.create(formValue).subscribe(response => {
+        this.messageService.sendMessageSuccess(response.message);
+        this.onUpdate();
+      });
+    }
   }
 
   private onUpdate(): void {
     this.onCreateForm();
     this.searchByFilter();
-    this.onLoadAtendimento();
+    this.onLoadPacote();
     this.service.setLancamento();
+    this.valorSelecionado = 0;
     this.showNoRecords = false;
     this.isInvalidForm = false;
   }
 
   public onClickEditar(lancamento: Lancamento): void {
     this.messageService.clearAllMessages();
+    this.valorSelecionado = lancamento.valor;
     this.form.setValue({
       id: lancamento.id,
       data: Util.convertDateToString(lancamento.data),
       valor: lancamento.valor,
       observacao: lancamento.observacao || null,
-      atendimentoId: lancamento.atendimentoId,
+      pacoteId: lancamento.pacoteId,
       formaPagamentoId: lancamento.formaPagamentoId
     });
   }
@@ -164,7 +181,7 @@ export class ModalGerenciarLancamentoSessaoComponent implements OnInit, IActionO
     this.filtro = {
       ...this.filtro,
       filter: {
-        atendimentoId: this.atendimentoId
+        pacoteId: this.pacoteId
       }
     };
     this.service.findByFilter(this.filtro).subscribe(response => {
@@ -177,6 +194,7 @@ export class ModalGerenciarLancamentoSessaoComponent implements OnInit, IActionO
     this.messageService.clearAllMessages();
     this.showNoRecords = false;
     this.isInvalidForm = false;
+    this.valorSelecionado = 0;
     this.onCreateForm();
   }
 

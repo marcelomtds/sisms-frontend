@@ -117,7 +117,8 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a [routerLink]="[ '/controle-caixa-list' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a
+              [routerLink]="[ '/controle-caixa-list' ]"><em class="fa fa-search"></em>Buscar</a></li>
           <li><a [routerLink]="[ '/controle-caixa-form' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
         </ul>
       </li>

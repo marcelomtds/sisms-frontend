@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { BsModalService } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs';
 import { PacienteService } from 'src/app/components/paciente/service/paciente.service';
 import { AuthGuard } from 'src/app/components/security/auth.guard';
 import { SharedService } from 'src/app/components/security/service/shared.service';
@@ -18,6 +20,8 @@ import { MessageService } from 'src/app/components/shared/services/message.servi
 import { PacoteService } from 'src/app/components/shared/services/pacote.service';
 import Util from 'src/app/components/shared/util/util';
 import { UsuarioService } from 'src/app/components/usuario/service/usuario.service';
+import { ModalGerenciarLancamentoPacoteComponent } from '../../../modal/gerenciar-lancamento/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
+import { LancamentoService } from '../../../service/lancamento.service';
 
 @Component({
   selector: 'app-controle-caixa-entrada-pacote',
@@ -34,17 +38,24 @@ export class ControleCaixaEntradaPacoteComponent implements OnInit, IActionOrder
   public permissaoAdministrador = PerfilEnum.administrador;
   public form: FormGroup;
   public showNoRecords = false;
+  public subscription: Subscription;
 
   public constructor(
     private formBuilder: FormBuilder,
     private service: PacoteService,
+    private lancamentoService: LancamentoService,
     public messageService: MessageService,
     private pacienteService: PacienteService,
     private categoriaAtendimentoService: CategoriaAtendimentoService,
     private usuarioService: UsuarioService,
     private sharedService: SharedService,
-    public authGuardService: AuthGuard
-  ) { }
+    public authGuardService: AuthGuard,
+    private modalService: BsModalService
+  ) {
+    this.subscription = this.lancamentoService.getLancamento().subscribe(() => {
+      this.searchByFilter();
+    });
+  }
 
   public ngOnInit(): void {
     this.onCreateForm();
@@ -61,10 +72,18 @@ export class ControleCaixaEntradaPacoteComponent implements OnInit, IActionOrder
       categoriaAtendimentoId: [null],
       pacienteId: [null],
       usuarioId: [null],
-      aberto: [null],
+      aberto: [true],
       dataInicio: [null],
       dataFim: [null]
     });
+  }
+
+  public onClickOpenModalGerenciarLancamentos(id: number): void {
+    this.messageService.clearAllMessages();
+    const initialState = {
+      pacoteId: id
+    };
+    this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
   private onLoadCombos(): void {
@@ -108,7 +127,6 @@ export class ControleCaixaEntradaPacoteComponent implements OnInit, IActionOrder
   }
 
   public searchByFilter(): void {
-    this.messageService.clearAllMessages();
     this.service.findByFilter(this.filtro).subscribe(response => {
       this.showNoRecords = true;
       this.dados = response.result;

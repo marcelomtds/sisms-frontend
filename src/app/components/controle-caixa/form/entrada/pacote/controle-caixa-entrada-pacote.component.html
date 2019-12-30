@@ -92,22 +92,43 @@
                 <thead>
                   <tr>
                     <th>Opções</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')">Paciente</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')">Usuário</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('dataCriacao')">Data Criação</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('categoriaAtendimento.descricao')">Categoria
+                    <th style="cursor: pointer" (click)="onClickOrderBy('valor')"><em
+                        [class]="getIconOrderBy('valor')"></em>&nbsp;Valor do Pacote</th>
+                    <th style="cursor: pointer" xxxx (click)="onClickOrderBy('totalPago')"><em
+                        [class]="getIconOrderBy('totalPago')"></em>&nbsp;Total Pago</th>
+                    <th>Total à Pagar</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
+                        [class]="getIconOrderBy('paciente.nomeCompleto')"></em>&nbsp;Paciente</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')"><em
+                        [class]="getIconOrderBy('usuario.nomeCompleto')"></em>&nbsp;Usuário</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('dataCriacao')"><em
+                        [class]="getIconOrderBy('dataCriacao')"></em>&nbsp;Data Criação</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('categoriaAtendimento.descricao')"><em
+                        [class]="getIconOrderBy('categoriaAtendimento.descricao')"></em>&nbsp;Categoria
                       de Atendimento</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('valor')">Valor</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('numero')">Número</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('aberto')">Status</th>
-                    <th>Quantidade de Atendimentos</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('numero')"><em
+                        [class]="getIconOrderBy('numero')"></em>&nbsp;Número</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('aberto')"><em
+                        [class]="getIconOrderBy('aberto')"></em>&nbsp;Status</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('quantidadeAtendimentos')"><em
+                        [class]="getIconOrderBy('quantidadeAtendimentos')"></em>&nbsp;Quantidade de Atendimentos</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let pacote of dados?.content">
                     <td>
-                      <button title="Gerenciar Lançamentos" (click)="onClickOpenModalGerenciarLancamentos(pacote.id)"
-                        class="btn btn-danger"><em class="fa fa-ban"></em></button>
+                      <button title="Gerenciar Lançamentos"
+                        (click)="onClickOpenModalGerenciarLancamentos(pacote.id)" class="btn btn-success"><em
+                          class="fa fa-usd"></em></button>
+                    </td>
+                    <td>
+                      {{ pacote.valor || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
+                    </td>
+                    <td>
+                      {{ pacote.totalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
+                    </td>
+                    <td>
+                      {{ pacote.valor - pacote.totalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
                     </td>
                     <td>
                       {{ pacote.pacienteNomeCompleto }}
@@ -120,9 +141,6 @@
                     </td>
                     <td>
                       {{ pacote.categoriaAtendimentoDescricao }}
-                    </td>
-                    <td>
-                      {{ pacote.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}
                     </td>
                     <td>
                       {{ pacote.numero }}

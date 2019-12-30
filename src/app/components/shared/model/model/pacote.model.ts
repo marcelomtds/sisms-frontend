@@ -14,6 +14,7 @@ export class Pacote {
         public numero?: number,
         public aberto?: boolean,
         public quantidadeAtendimentos?: number,
+        public totalPago?: number
     ) { }
 
 }
