@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { AtendimentoService } from 'src/app/components/atendimento/service/atendimento.service';
+import { AtendimentoService } from 'src/app/components/shared/services/atendimento.service';
 import { PacienteService } from 'src/app/components/paciente/service/paciente.service';
 import { AuthGuard } from 'src/app/components/security/auth.guard';
 import { Messages } from 'src/app/components/shared/message/messages';
@@ -19,8 +19,8 @@ import { CategoriaAtendimentoService } from 'src/app/components/shared/services/
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
 import { UsuarioService } from 'src/app/components/usuario/service/usuario.service';
-import { ModalGerenciarLancamentoSessaoComponent } from '../../../modal/gerenciar-lancamento/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 import { LancamentoService } from '../../../service/lancamento.service';
+import { ModalGerenciarLancamentoSessaoComponent } from '../../../modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 
 @Component({
   selector: 'app-controle-caixa-entrada-sessao',

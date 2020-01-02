@@ -20,7 +20,7 @@ import { MessageService } from 'src/app/components/shared/services/message.servi
 import { PacoteService } from 'src/app/components/shared/services/pacote.service';
 import Util from 'src/app/components/shared/util/util';
 import { UsuarioService } from 'src/app/components/usuario/service/usuario.service';
-import { ModalGerenciarLancamentoPacoteComponent } from '../../../modal/gerenciar-lancamento/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
+import { ModalGerenciarLancamentoPacoteComponent } from '../../../modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
 import { LancamentoService } from '../../../service/lancamento.service';
 
 @Component({

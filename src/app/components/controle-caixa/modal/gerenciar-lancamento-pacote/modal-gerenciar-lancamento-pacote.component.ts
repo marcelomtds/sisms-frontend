@@ -16,7 +16,7 @@ import { FormaPagamentoService } from 'src/app/components/shared/services/forma-
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import { PacoteService } from 'src/app/components/shared/services/pacote.service';
 import Util from 'src/app/components/shared/util/util';
-import { LancamentoService } from '../../../service/lancamento.service';
+import { LancamentoService } from '../../service/lancamento.service';
 
 @Component({
   selector: 'app-modal-gerenciar-lancamento-pacote',

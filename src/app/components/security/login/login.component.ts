@@ -29,8 +29,9 @@ export class LoginComponent implements OnInit {
   public ngOnInit(): void {
     if (this.sharedService.isLoggedIn()) {
       this.router.navigate(['/']);
+    } else {
+      this.onCreateForm();
     }
-    this.onCreateForm();
   }
 
   public showHidePassword(): void {
@@ -42,12 +43,6 @@ export class LoginComponent implements OnInit {
       cpf: [null, Validators.required],
       senha: [null, Validators.required]
     });
-  }
-
-  public onClickLimparCampos(): void {
-    this.messageService.clearAllMessages();
-    this.onCreateForm();
-    this.isInvalidForm = false;
   }
 
   public onClickFormSubmit(): void {

@@ -26,9 +26,8 @@ import { ControleCaixaEntradaPacoteComponent } from './components/controle-caixa
 import { ControleCaixaEntradaSessaoComponent } from './components/controle-caixa/form/entrada/sessao/controle-caixa-entrada-sessao.component';
 import { ControleCaixaSaidaComponent } from './components/controle-caixa/form/saida/controle-caixa-saida.component';
 import { ControleCaixaListComponent } from './components/controle-caixa/list/controle-caixa-list.component';
-import { ModalGerenciarLancamentoPacoteComponent } from './components/controle-caixa/modal/gerenciar-lancamento/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
-import { ModalGerenciarLancamentoSessaoComponent } from './components/controle-caixa/modal/gerenciar-lancamento/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
-import { ModalGerenciarLancamentoComponent } from './components/controle-caixa/modal/gerenciar-lancamento/modal-gerenciar-lancamento.component';
+import { ModalGerenciarLancamentoPacoteComponent } from './components/controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
+import { ModalGerenciarLancamentoSessaoComponent } from './components/controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
@@ -120,7 +119,6 @@ registerLocaleData(localePt);
     ModalAtendimentoViewComponent,
     ModalAtendimentoCreatePackageComponent,
     ModalGerenciarMedidaComponent,
-    ModalGerenciarLancamentoComponent,
     ModalGerenciarCategoriaLancamentoComponent,
     ModalGerenciarUfComponent,
     ModalGerenciarLocalidadeComponent,
@@ -156,7 +154,6 @@ registerLocaleData(localePt);
     ModalGerenciarMedidaComponent,
     ControleCaixaFormComponent,
     ControleCaixaListComponent,
-    ModalGerenciarLancamentoComponent,
     ControleCaixaEntradaSessaoComponent,
     ControleCaixaEntradaPacoteComponent,
     ControleCaixaSaidaComponent,

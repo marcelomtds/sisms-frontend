@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { AtendimentoService } from 'src/app/components/atendimento/service/atendimento.service';
+import { AtendimentoService } from 'src/app/components/shared/services/atendimento.service';
 import { SharedService } from 'src/app/components/security/service/shared.service';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalConfirmacaoComponent } from 'src/app/components/shared/modais/modal-confirmacao/modal-confirmacao.component';
@@ -17,7 +17,7 @@ import Page from 'src/app/components/shared/pagination/page';
 import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
-import { LancamentoService } from '../../../service/lancamento.service';
+import { LancamentoService } from '../../service/lancamento.service';
 
 @Component({
   selector: 'app-modal-gerenciar-lancamento-sessao',

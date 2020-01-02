@@ -63,7 +63,6 @@ export class AlterarSenhaComponent implements OnInit {
   }
 
   public onResetValues(): void {
-    this.messageService.clearAllMessages();
     this.onCreateForm();
     this.isInvalidForm = false;
     this.isShowSenhaAtual = false;

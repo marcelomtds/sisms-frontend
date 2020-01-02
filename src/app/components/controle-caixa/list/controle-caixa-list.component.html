@@ -151,8 +151,9 @@
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                   <tr>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('pac.nomeCompleto')">
-                    Paciente</th>
+                    <th>Opções</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('pac.nomeCompleto')"><em
+                        [class]="getIconOrderBy('pac.nomeCompleto')"></em>&nbsp;Paciente</th>
                     <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')"><em
                         [class]="getIconOrderBy('usuario.nomeCompleto')"></em>&nbsp;Usuário</th>
                     <th style="cursor: pointer" (click)="onClickOrderBy('data')"><em
@@ -177,6 +178,15 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let lancamento of dados.content">
+                    <td>
+                      <ng-container *ngIf="saida === lancamento.tipoLancamentoId; else elseSaida">
+                        <button title="Editar" (click)="onClickEditar(lancamento.id)" class="btn btn-primary"><em
+                            class="fa fa-pencil"></em></button>
+                      </ng-container>
+                      <ng-template #elseSaida>
+                        {{ '-' }}
+                      </ng-template>
+                    </td>
                     <td>
                       {{ lancamento.atendimentoPacienteNomeCompleto || lancamento.pacotePacienteNomeCompleto || '-' }}
                     </td>

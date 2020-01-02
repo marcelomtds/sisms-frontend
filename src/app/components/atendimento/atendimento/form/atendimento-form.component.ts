@@ -26,7 +26,7 @@ import { OutraMedidaService } from 'src/app/components/shared/services/outra-med
 import { PacoteService } from 'src/app/components/shared/services/pacote.service';
 import { TipoAtendimentoService } from 'src/app/components/shared/services/tipo-atendimento.service';
 import Util from 'src/app/components/shared/util/util';
-import { AtendimentoService } from '../../service/atendimento.service';
+import { AtendimentoService } from '../../../shared/services/atendimento.service';
 
 @Component({
   selector: 'app-atendimento-form',
@@ -74,7 +74,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    const id = +this.route.snapshot.params['id'];
+    const id = +this.route.snapshot.params.id;
     if (id) {
       this.findById(id);
     }
@@ -101,6 +101,10 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   public checkCategoriaAtendimentoMassagem(): boolean {
     return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.MASSAGEM_RELAXANTE;
+  }
+
+  public get isNotMassagem(): boolean {
+    return this.categoriaAtendimentoRouting.id !== CategoriaAtendimentoEnum.MASSAGEM_RELAXANTE;
   }
 
   private findById(id: number): void {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
-import { AtendimentoService } from 'src/app/components/atendimento/service/atendimento.service';
+import { AtendimentoService } from 'src/app/components/shared/services/atendimento.service';
 import { Atendimento } from '../../model/model/atendimento.model';
 import { Pacote } from '../../model/model/pacote.model';
 import Util from '../../util/util';

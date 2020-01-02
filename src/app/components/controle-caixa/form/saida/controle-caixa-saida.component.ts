@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { CategoriaLancamento } from 'src/app/components/shared/model/model/categoria-lancamento.model';
@@ -27,6 +28,8 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private service: LancamentoService,
     private messageService: MessageService,
+    private route: ActivatedRoute,
+    private router: Router,
     private categoriaLancamentoService: CategoriaLancamentoService,
     private formaPagamentoService: FormaPagamentoService
   ) {
@@ -36,6 +39,10 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    const id = +this.route.snapshot.params.id;
+    if (id) {
+      this.findById(id);
+    }
     this.onCreateForm();
     this.onLoadComboCategoriaLancamento();
     this.onLoadComboFormaPagamento();
@@ -54,6 +61,19 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
   private onLoadComboFormaPagamento(): void {
     this.formaPagamentoService.findAll().subscribe(response => {
       this.formasPagamento = response.result;
+    });
+  }
+
+  private findById(id: number): void {
+    this.service.findById(id).subscribe(response => {
+      this.form.setValue({
+        id: response.result.id,
+        data: Util.convertDateToString(response.result.data),
+        valor: response.result.valor,
+        observacao: response.result.observacao || null,
+        categoriaLancamentoId: response.result.categoriaLancamentoId,
+        formaPagamentoId: response.result.formaPagamentoId
+      });
     });
   }
 
@@ -106,6 +126,8 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
   private clearValues(): void {
     this.onCreateForm();
     this.isInvalidForm = false;
+    //TODO VERIFICAR URL
+    //this.router.navigateByUrl('asd');
   }
 
 }

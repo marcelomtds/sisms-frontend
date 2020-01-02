@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PacienteService } from '../../paciente/service/paciente.service';
 import { TipoLancamentoEnum } from '../../shared/model/enum/tipo-lancamento.enum';
@@ -46,6 +47,7 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
   public filtro = new PageableFilter<LancamentoFilter>();
   public dados = new Page<Array<Lancamento>>();
   public showNoRecords = false;
+  public saida = TipoLancamentoEnum.SAIDA;
   public lancamentoTotal = new LancamentoTotal;
   public mesAno: Periodo;
   public subscription: Subscription;
@@ -60,6 +62,7 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
     private tipoLancamentoService: TipoLancamentoService,
     private tipoAtendimentoService: TipoAtendimentoService,
     private service: LancamentoService,
+    private router: Router,
     private messageService: MessageService
   ) {
     this.subscription = this.categoriaLancamentoService.getCategoriaLancamento().subscribe(() => {
@@ -185,6 +188,11 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
     }
     this.filtro.orderBy = descricao;
     this.searchByFilter();
+  }
+
+  public onClickEditar(id: number): void {
+    this.messageService.clearAllMessages();
+    this.router.navigate([`/controle-caixa-form/${id}`]);
   }
 
   public getIconOrderBy(param: string): string {

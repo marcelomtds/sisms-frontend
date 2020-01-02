@@ -20,7 +20,7 @@ import { Paciente } from '../../../shared/model/model/paciente.model';
 import { TipoAtendimento } from '../../../shared/model/model/tipo-atendimento.model';
 import Page from '../../../shared/pagination/page';
 import { TipoAtendimentoService } from '../../../shared/services/tipo-atendimento.service';
-import { AtendimentoService } from '../../service/atendimento.service';
+import { AtendimentoService } from '../../../shared/services/atendimento.service';
 
 @Component({
   selector: 'app-atendimento-list',

@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AtendimentoFilter } from '../../shared/model/filter/atendimento.filter';
-import { Atendimento } from '../../shared/model/model/atendimento.model';
-import { Response } from '../../shared/pageable/response.model';
-import { BaseService } from '../../shared/services/base.service';
+import { AtendimentoFilter } from '../model/filter/atendimento.filter';
+import { Atendimento } from '../model/model/atendimento.model';
+import { Response } from '../pageable/response.model';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
