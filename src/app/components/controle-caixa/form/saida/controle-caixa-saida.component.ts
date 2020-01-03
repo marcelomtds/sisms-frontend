@@ -10,7 +10,7 @@ import { CategoriaLancamentoService } from 'src/app/components/shared/services/c
 import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
-import { LancamentoService } from '../../service/lancamento.service';
+import { LancamentoService } from '../../../shared/services/lancamento.service';
 
 @Component({
   selector: 'app-controle-caixa-saida',

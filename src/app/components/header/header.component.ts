@@ -55,6 +55,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.modalService.show(this.onLoadModal(modal), { backdrop: 'static', class: 'gray modal-lg' });
   }
 
+  public onClickAlterarDados(id: number): void {
+    this.router.navigate([`/usuario-form/${id}`]);
+  }
+
+  public onClickAlterarSenha(): void {
+    this.router.navigate(['/alterar-senha']);
+  }
+
   public signOut(): void {
     this.sharedService.removeUserAndTokenSession();
     this.sharedService.updateTemplateSet(false);

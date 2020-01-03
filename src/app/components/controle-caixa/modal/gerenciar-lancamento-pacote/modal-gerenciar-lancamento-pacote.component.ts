@@ -13,10 +13,10 @@ import { Pacote } from 'src/app/components/shared/model/model/pacote.model';
 import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
 import Page from 'src/app/components/shared/pagination/page';
 import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
+import { LancamentoService } from 'src/app/components/shared/services/lancamento.service';
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import { PacoteService } from 'src/app/components/shared/services/pacote.service';
 import Util from 'src/app/components/shared/util/util';
-import { LancamentoService } from '../../service/lancamento.service';
 
 @Component({
   selector: 'app-modal-gerenciar-lancamento-pacote',
@@ -51,6 +51,7 @@ export class ModalGerenciarLancamentoPacoteComponent implements OnInit {
     this.searchByFilter();
     this.onLoadComboFormaPagamento();
     this.onLoadPacote();
+    this.getCurrentUser();
   }
 
   private onLoadPacote(): void {
@@ -64,7 +65,7 @@ export class ModalGerenciarLancamentoPacoteComponent implements OnInit {
   }
 
   public get isAdministrador(): boolean {
-    return this.currentUser.perfilRole === PerfilEnum.administrador;
+    return this.currentUser.perfilRole === PerfilEnum.Administrador;
   }
 
   private onLoadComboFormaPagamento(): void {

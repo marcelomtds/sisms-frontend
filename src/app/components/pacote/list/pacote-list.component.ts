@@ -34,7 +34,7 @@ export class PacoteListComponent implements OnInit, IActionOrderBy {
   public filtro = new PageableFilter<PacoteFilter>();
   public dados = new Page<Array<Pacote>>();
   public currentUser = new Usuario();
-  public permissaoAdministrador = PerfilEnum.administrador;
+  public permissaoAdministrador = PerfilEnum.Administrador;
   public form: FormGroup;
   public showNoRecords = false;
 

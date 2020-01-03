@@ -25,6 +25,6 @@ export class AuthGuard implements CanActivate {
     }
 
     public isPermitido(role: string): boolean {
-        return this.sharedService.getUserSession().perfilRole === role;
+        return this.sharedService.getUserSession() && this.sharedService.getUserSession().perfilRole === role;
     }
 }

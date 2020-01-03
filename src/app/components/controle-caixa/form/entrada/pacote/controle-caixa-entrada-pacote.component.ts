@@ -21,7 +21,7 @@ import { PacoteService } from 'src/app/components/shared/services/pacote.service
 import Util from 'src/app/components/shared/util/util';
 import { UsuarioService } from 'src/app/components/usuario/service/usuario.service';
 import { ModalGerenciarLancamentoPacoteComponent } from '../../../modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
-import { LancamentoService } from '../../../service/lancamento.service';
+import { LancamentoService } from '../../../../shared/services/lancamento.service';
 
 @Component({
   selector: 'app-controle-caixa-entrada-pacote',
@@ -35,7 +35,7 @@ export class ControleCaixaEntradaPacoteComponent implements OnInit, IActionOrder
   public filtro = new PageableFilter<PacoteFilter>();
   public dados = new Page<Array<Pacote>>();
   public currentUser = new Usuario();
-  public permissaoAdministrador = PerfilEnum.administrador;
+  public permissaoAdministrador = PerfilEnum.Administrador;
   public form: FormGroup;
   public showNoRecords = false;
   public subscription: Subscription;

@@ -15,12 +15,12 @@ import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
 import { UsuarioService } from 'src/app/components/usuario/service/usuario.service';
-import { PacienteService } from '../../../paciente/service/paciente.service';
-import { Paciente } from '../../../shared/model/model/paciente.model';
-import { TipoAtendimento } from '../../../shared/model/model/tipo-atendimento.model';
-import Page from '../../../shared/pagination/page';
-import { TipoAtendimentoService } from '../../../shared/services/tipo-atendimento.service';
-import { AtendimentoService } from '../../../shared/services/atendimento.service';
+import { PacienteService } from '../../paciente/service/paciente.service';
+import { Paciente } from '../../shared/model/model/paciente.model';
+import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model';
+import Page from '../../shared/pagination/page';
+import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
+import { AtendimentoService } from '../../shared/services/atendimento.service';
 
 @Component({
   selector: 'app-atendimento-list',
@@ -35,7 +35,7 @@ export class AtendimentoListComponent implements OnInit {
   public filtro = new PageableFilter<AtendimentoFilter>();
   public dados = new Page<Array<Atendimento>>();
   public currentUser = new Usuario();
-  public permissaoAdministrador = PerfilEnum.administrador;
+  public permissaoAdministrador = PerfilEnum.Administrador;
   public form: FormGroup;
   public showNoRecords = false;
 

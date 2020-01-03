@@ -26,7 +26,7 @@ import { OutraMedidaService } from 'src/app/components/shared/services/outra-med
 import { PacoteService } from 'src/app/components/shared/services/pacote.service';
 import { TipoAtendimentoService } from 'src/app/components/shared/services/tipo-atendimento.service';
 import Util from 'src/app/components/shared/util/util';
-import { AtendimentoService } from '../../../shared/services/atendimento.service';
+import { AtendimentoService } from '../../shared/services/atendimento.service';
 
 @Component({
   selector: 'app-atendimento-form',

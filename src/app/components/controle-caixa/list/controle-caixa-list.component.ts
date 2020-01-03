@@ -27,7 +27,7 @@ import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.s
 import { TipoLancamentoService } from '../../shared/services/tipo-lancamento.service';
 import Util from '../../shared/util/util';
 import { UsuarioService } from '../../usuario/service/usuario.service';
-import { LancamentoService } from '../service/lancamento.service';
+import { LancamentoService } from '../../shared/services/lancamento.service';
 
 @Component({
   selector: 'app-controle-caixa-list',
@@ -192,7 +192,7 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
 
   public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.router.navigate([`/controle-caixa-form/${id}`]);
+    this.router.navigate([`/controle-caixa-form-saida/${id}`]);
   }
 
   public getIconOrderBy(param: string): string {

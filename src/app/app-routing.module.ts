@@ -1,20 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AtendimentoFormComponent } from './components/atendimento/atendimento/form/atendimento-form.component';
-import { AtendimentoListComponent } from './components/atendimento/atendimento/list/atendimento-list.component';
-import { ControleCaixaFormComponent } from './components/controle-caixa/form/controle-caixa-form.component';
+import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
+import { AtendimentoFormComponent } from './components/atendimento/form/atendimento-form.component';
+import { AtendimentoListComponent } from './components/atendimento/list/atendimento-list.component';
+import { ControleCaixaEntradaPacoteComponent } from './components/controle-caixa/form/entrada/pacote/controle-caixa-entrada-pacote.component';
+import { ControleCaixaEntradaSessaoComponent } from './components/controle-caixa/form/entrada/sessao/controle-caixa-entrada-sessao.component';
+import { ControleCaixaSaidaComponent } from './components/controle-caixa/form/saida/controle-caixa-saida.component';
 import { ControleCaixaListComponent } from './components/controle-caixa/list/controle-caixa-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { PacienteFormComponent } from './components/paciente/form/paciente-form.component';
 import { PacienteListComponent } from './components/paciente/list/paciente-list.component';
+import { PacoteFormComponent } from './components/pacote/form/pacote-form.component';
+import { PacoteListComponent } from './components/pacote/list/pacote-list.component';
 import { AuthGuard } from './components/security/auth.guard';
 import { LoginComponent } from './components/security/login/login.component';
 import { UsuarioFormComponent } from './components/usuario/form/usuario-form.component';
 import { UsuarioListComponent } from './components/usuario/list/usuario-list.component';
 import { AlterarSenhaComponent } from './components/usuario/password/alterar-senha.component';
-import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
-import { PacoteListComponent } from './components/pacote/list/pacote-list.component';
-import { PacoteFormComponent } from './components/pacote/form/pacote-form.component';
+import { PerfilEnum } from './components/shared/model/enum/perfil.enum';
 
 export const ROUTES: Routes = [
   {
@@ -33,12 +36,12 @@ export const ROUTES: Routes = [
   },
   {
     path: 'usuario-list',
-    component: UsuarioListComponent, data: { role: 'ROLE_ADMINISTRADOR' },
+    component: UsuarioListComponent, data: { role: PerfilEnum.Administrador },
     canActivate: [AuthGuard]
   },
   {
     path: 'usuario-form',
-    component: UsuarioFormComponent, data: { role: 'ROLE_ADMINISTRADOR' },
+    component: UsuarioFormComponent, data: { role: PerfilEnum.Administrador },
     canActivate: [AuthGuard]
   },
   {
@@ -230,17 +233,27 @@ export const ROUTES: Routes = [
   },
   {
     path: 'controle-caixa-list',
-    component: ControleCaixaListComponent,
+    component: ControleCaixaListComponent, data: { role: PerfilEnum.Administrador },
     canActivate: [AuthGuard]
   },
   {
-    path: 'controle-caixa-form',
-    component: ControleCaixaFormComponent,
+    path: 'controle-caixa-form-entrada-sessao',
+    component: ControleCaixaEntradaSessaoComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'controle-caixa-form/:id',
-    component: ControleCaixaFormComponent,
+    path: 'controle-caixa-form-entrada-pacote',
+    component: ControleCaixaEntradaPacoteComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'controle-caixa-form-saida',
+    component: ControleCaixaSaidaComponent, data: { role: PerfilEnum.Administrador },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'controle-caixa-form-saida/:id',
+    component: ControleCaixaSaidaComponent, data: { role: PerfilEnum.Administrador },
     canActivate: [AuthGuard]
   },
   {

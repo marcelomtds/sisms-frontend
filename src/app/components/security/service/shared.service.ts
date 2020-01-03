@@ -25,6 +25,10 @@ export class SharedService {
     return JSON.parse(sessionStorage.getItem('usuario'));
   }
 
+  public getTokenSession(): string {
+    return sessionStorage.getItem('token');
+  }
+
   public setUserAndTokenSession(usuario: Usuario, token: string): void {
     sessionStorage.setItem('token', token);
     sessionStorage.setItem('usuario', JSON.stringify(usuario));

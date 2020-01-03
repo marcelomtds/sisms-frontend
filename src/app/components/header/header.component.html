@@ -1,7 +1,7 @@
 <header class="main-header" style="position: fixed; width: -webkit-fill-available;">
   <a href="index2.html" class="logo">
-    <span class="logo-mini"><b>S</b>M</span>
-    <span class="logo-lg"><b>Sis</b>Ms</span>
+    <span class="logo-mini"><strong>S</strong>M</span>
+    <span class="logo-lg"><strong>Sis</strong>Ms</span>
   </a>
   <nav class="navbar navbar-static-top">
     <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -11,34 +11,34 @@
       <ul class="nav navbar-nav">
         <li class="dropdown notifications-menu" title="Configurações">
           <a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-gears"></i>
+            <em class="fa fa-gears"></em>
           </a>
           <ul class="dropdown-menu">
             <li>
               <ul class="menu">
                 <li>
                   <a style="cursor: pointer;" (click)="onClickOpenModal('profissao')">
-                    <i class="fa fa-users text-aqua"></i> Gerenciar Profissões
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Profissões
                   </a>
                 </li>
                 <li>
                   <a style="cursor: pointer;" (click)="onClickOpenModal('medida')">
-                    <i class="fa fa-users text-aqua"></i> Gerenciar Medidas
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Medidas
                   </a>
                 </li>
                 <li>
                   <a style="cursor: pointer;" (click)="onClickOpenModal('uf')">
-                    <i class="fa fa-users text-aqua"></i> Gerenciar Estados
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Estados
                   </a>
                 </li>
                 <li>
                   <a style="cursor: pointer;" (click)="onClickOpenModal('localidade')">
-                    <i class="fa fa-users text-aqua"></i> Gerenciar Cidades
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Cidades
                   </a>
                 </li>
                 <li>
                   <a style="cursor: pointer;" (click)="onClickOpenModal('categoriaLancamento')">
-                    <i class="fa fa-users text-aqua"></i> Gerenciar Categorias de Lançamento
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Categorias de Lançamento
                   </a>
                 </li>
               </ul>
@@ -62,18 +62,23 @@
             </li>
             <li class="user-body">
               <div class="row">
-                <div [routerLink]="[ '/usuario-form', usuario.id ]" class="col-xs-6 text-center"
-                  style="cursor: pointer;">
-                  <a>Alterar Dados Cadastrais</a>
+                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                  <button title="Aterar Dados Cadastrais" (click)="onClickAlterarDados(usuario.id)"
+                    class="btn btn-primary">Alterar
+                    Dados
+                    Cadastrais</button>
                 </div>
-                <div [routerLink]="[ '/alterar-senha']" class="col-xs-6 text-center" style="cursor: pointer;">
-                  <a>Alterar Senha</a>
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                  <button title="Alterar
+                      Senha" (click)="onClickAlterarSenha()" class="btn btn-primary pull-right">Alterar
+                    Senha</button>
                 </div>
               </div>
             </li>
             <li class="user-footer">
               <div class="pull-right">
-                <a (click)="signOut()" class="btn btn-default btn-flat">Sair</a>
+                <button title="Sair" (click)="signOut()" class="btn btn-danger pull-right"
+                  style="margin-left: 15px;"><em class="fa fa-power-off"></em>&nbsp;Sair</button>
               </div>
             </li>
           </ul>

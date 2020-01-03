@@ -7,8 +7,7 @@ import { Messages } from './components/shared/message/messages';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
 
@@ -31,6 +30,10 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.showTemplate = this.sharedService.isLoggedIn();
+  }
+
+  public get isShowTemplate(): boolean {
+    return this.showTemplate;
   }
 
 }

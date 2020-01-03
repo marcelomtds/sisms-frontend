@@ -177,16 +177,21 @@
           </div>
         </div>
         <legend class="legend-default">Outras Medidas</legend>
-        <div class="row">
-          <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
-            *ngFor="let medida of atendimento?.preAtendimentoOutrasMedidas; let i = index">
-            <div class="form-group">
-              <label for="outraMedidaPre{{ i }}">{{ medida.outraMedidaDescricao }}</label>
-              <p id="outraMedidaPre{{ i }}">{{ formatCM(medida.valor) }}</p>
+        <ng-container *ngIf="atendimento?.preAtendimentoOutrasMedidas?.length; else hiddenOMPre">
+          <div class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+              *ngFor="let medida of atendimento?.preAtendimentoOutrasMedidas; let i = index">
+              <div class="form-group">
+                <label for="outraMedidaPre{{ i }}">{{ medida.outraMedidaDescricao }}</label>
+                <p id="outraMedidaPre{{ i }}">{{ formatCM(medida.valor) }}</p>
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
         <legend class="legend-default"></legend>
+        <ng-template #hiddenOMPre>
+          {{ '-' }}
+        </ng-template>
       </ng-container>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -253,16 +258,21 @@
           </div>
         </div>
         <legend class="legend-default">Outras Medidas</legend>
-        <div class="row">
-          <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
-            *ngFor="let medida of atendimento?.posAtendimentoOutrasMedidas; let i = index">
-            <div class="form-group">
-              <label for="outraMedidaPos{{ i }}">{{ medida.outraMedidaDescricao }}</label>
-              <p id="outraMedidaPos{{ i }}">{{ formatCM(medida.valor) }}</p>
+        <ng-container *ngIf="atendimento?.posAtendimentoOutrasMedidas?.length; else hiddenOMPos">
+          <div class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+              *ngFor="let medida of atendimento?.posAtendimentoOutrasMedidas; let i = index">
+              <div class="form-group">
+                <label for="outraMedidaPos{{ i }}">{{ medida.outraMedidaDescricao }}</label>
+                <p id="outraMedidaPos{{ i }}">{{ formatCM(medida.valor) }}</p>
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
         <legend class="legend-default"></legend>
+        <ng-template #hiddenOMPos>
+          {{ '-' }}
+        </ng-template>
       </ng-container>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -309,16 +319,21 @@
         </div>
       </div>
       <legend class="legend-default">Outras Medidas</legend>
-      <div class="row">
-        <div *ngFor="let medida of atendimento?.preAtendimentoOutrasMedidas; let i = index;"
-          class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-          <div class="form-group">
-            <label>{{ medida.outraMedidaDescricao }}</label>
-            <p>{{ calcularCM(medida.valor, atendimento?.posAtendimentoOutrasMedidas[i].valor) }}
-            </p>
+      <ng-container *ngIf="atendimento?.preAtendimentoOutrasMedidas?.length; else hiddenOM">
+        <div class="row">
+          <div *ngFor="let medida of atendimento?.preAtendimentoOutrasMedidas; let i = index;"
+            class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="form-group">
+              <label>{{ medida.outraMedidaDescricao }}</label>
+              <p>{{ calcularCM(medida.valor, atendimento?.posAtendimentoOutrasMedidas[i].valor) }}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-container>
+      <ng-template #hiddenOM>
+        {{ '-' }}
+      </ng-template>
     </div>
   </div>
   <div *ngIf="atendimento?.imagens?.length" class="box box-primary">

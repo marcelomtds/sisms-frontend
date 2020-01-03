@@ -119,7 +119,12 @@
         <ul class="treeview-menu">
           <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a
               [routerLink]="[ '/controle-caixa-list' ]"><em class="fa fa-search"></em>Buscar</a></li>
-          <li><a [routerLink]="[ '/controle-caixa-form' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
+          <li><a [routerLink]="[ '/controle-caixa-form-entrada-sessao' ]"><em class="fa fa-plus"></em>Gerenciar Entrada
+              - Sessão</a></li>
+          <li><a [routerLink]="[ '/controle-caixa-form-entrada-pacote' ]"><em class="fa fa-plus"></em>Gerenciar Entrada
+              - Pacote</a></li>
+          <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a
+              [routerLink]="[ '/controle-caixa-form-saida' ]"><em class="fa fa-plus"></em>Cadastrar Saída</a></li>
         </ul>
       </li>
     </ul>

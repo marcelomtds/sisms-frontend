@@ -27,7 +27,7 @@ export class UsuarioListComponent implements OnInit {
   public form: FormGroup;
   public filtro = new PageableFilter<PacienteUsuarioFilter>();
   public currentUser = new Usuario();
-  public permissaoAdministrador = PerfilEnum.administrador;
+  public permissaoAdministrador = PerfilEnum.Administrador;
   public showNoRecords = false;
 
   public constructor(
@@ -79,7 +79,6 @@ export class UsuarioListComponent implements OnInit {
   }
 
   public searchByFilter(): void {
-    this.messageService.clearAllMessages();
     this.service.findByFilter(this.filtro).subscribe(response => {
       this.showNoRecords = true;
       this.dados = response.result;

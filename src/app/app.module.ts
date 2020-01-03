@@ -17,11 +17,8 @@ import { NgxUpperCaseDirectiveModule } from 'ngx-upper-case-directive';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
-import { AtendimentoFormComponent } from './components/atendimento/atendimento/form/atendimento-form.component';
-import { AtendimentoListComponent } from './components/atendimento/atendimento/list/atendimento-list.component';
-import { ModalAtendimentoCreatePackageComponent } from './components/atendimento/modal/create-package/modal-atendimento-create-package.component';
-import { ModalAtendimentoViewComponent } from './components/atendimento/modal/view/modal-atendimento-view.component';
-import { ControleCaixaFormComponent } from './components/controle-caixa/form/controle-caixa-form.component';
+import { AtendimentoFormComponent } from './components/atendimento/form/atendimento-form.component';
+import { AtendimentoListComponent } from './components/atendimento/list/atendimento-list.component';
 import { ControleCaixaEntradaPacoteComponent } from './components/controle-caixa/form/entrada/pacote/controle-caixa-entrada-pacote.component';
 import { ControleCaixaEntradaSessaoComponent } from './components/controle-caixa/form/entrada/sessao/controle-caixa-entrada-sessao.component';
 import { ControleCaixaSaidaComponent } from './components/controle-caixa/form/saida/controle-caixa-saida.component';
@@ -42,6 +39,7 @@ import { LoginComponent } from './components/security/login/login.component';
 import { ServerErrorsInterceptor } from './components/security/server-errors.interceptor';
 import { SharedService } from './components/security/service/shared.service';
 import { DirectiveModule } from './components/shared/directive/directive.module';
+import { SpinnerInterceptorService } from './components/shared/interceptor/spinner-interceptor.service';
 import { MessageRequiredComponent } from './components/shared/message-required/message-required.component';
 import { ModalConfirmacaoComponent } from './components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalCriarPacoteComponent } from './components/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
@@ -105,6 +103,11 @@ registerLocaleData(localePt);
       useClass: ServerErrorsInterceptor,
       multi: true
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptorService,
+      multi: true
+    }
 
   ],
   bootstrap: [AppComponent],
@@ -116,8 +119,6 @@ registerLocaleData(localePt);
     ModalVisualizarImagensComponent,
     ModalGerenciarProfissaoComponent,
     ModalConfirmacaoComponent,
-    ModalAtendimentoViewComponent,
-    ModalAtendimentoCreatePackageComponent,
     ModalGerenciarMedidaComponent,
     ModalGerenciarCategoriaLancamentoComponent,
     ModalGerenciarUfComponent,
@@ -149,10 +150,7 @@ registerLocaleData(localePt);
     PacienteListComponent,
     AtendimentoFormComponent,
     AtendimentoListComponent,
-    ModalAtendimentoViewComponent,
-    ModalAtendimentoCreatePackageComponent,
     ModalGerenciarMedidaComponent,
-    ControleCaixaFormComponent,
     ControleCaixaListComponent,
     ControleCaixaEntradaSessaoComponent,
     ControleCaixaEntradaPacoteComponent,

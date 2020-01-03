@@ -17,7 +17,7 @@ import Page from 'src/app/components/shared/pagination/page';
 import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
-import { LancamentoService } from '../../service/lancamento.service';
+import { LancamentoService } from '../../../shared/services/lancamento.service';
 
 @Component({
   selector: 'app-modal-gerenciar-lancamento-sessao',
@@ -114,7 +114,7 @@ export class ModalGerenciarLancamentoSessaoComponent implements OnInit, IActionO
   }
 
   public get isAdministrador(): boolean {
-    return this.currentUser.perfilRole === PerfilEnum.administrador;
+    return this.currentUser.perfilRole === PerfilEnum.Administrador;
   }
 
   private onUpdate(): void {

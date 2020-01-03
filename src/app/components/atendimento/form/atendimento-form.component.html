@@ -93,20 +93,20 @@
             <div class="row">
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
-                  <label>Usuário</label>
-                  <p>{{ pacote.usuarioNomeCompleto }}</p>
+                  <label for="usuario">Usuário</label>
+                  <p id="usuario">{{ pacote.usuarioNomeCompleto }}</p>
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
-                  <label>Data de Criação</label>
-                  <p>{{ pacote.dataCriacao | date : 'dd/MM/yyyy' }}</p>
+                  <label for="dataCriacao">Data de Criação</label>
+                  <p id="dataCriacao">{{ pacote.dataCriacao | date : 'dd/MM/yyyy' }}</p>
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
-                  <label>Valor</label>
-                  <p>{{ pacote.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
+                  <label for="valor">Valor</label>
+                  <p id="valor">{{ pacote.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
                 </div>
               </div>
             </div>

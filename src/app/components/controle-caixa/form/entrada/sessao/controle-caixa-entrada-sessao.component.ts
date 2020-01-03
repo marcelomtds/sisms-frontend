@@ -19,7 +19,7 @@ import { CategoriaAtendimentoService } from 'src/app/components/shared/services/
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
 import { UsuarioService } from 'src/app/components/usuario/service/usuario.service';
-import { LancamentoService } from '../../../service/lancamento.service';
+import { LancamentoService } from '../../../../shared/services/lancamento.service';
 import { ModalGerenciarLancamentoSessaoComponent } from '../../../modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 
 @Component({
@@ -34,7 +34,7 @@ export class ControleCaixaEntradaSessaoComponent implements OnInit {
   public filtro = new PageableFilter<AtendimentoFilter>();
   public dados = new Page<Array<Atendimento>>();
   public currentUser = new Usuario();
-  public permissaoAdministrador = PerfilEnum.administrador;
+  public permissaoAdministrador = PerfilEnum.Administrador;
   public form: FormGroup;
   public showNoRecords = false;
   public subscription: Subscription;
@@ -71,7 +71,7 @@ export class ControleCaixaEntradaSessaoComponent implements OnInit {
       usuarioId: [null],
       preAtendimentoData: [null],
       posAtendimentoData: [null],
-      aberto: null,
+      aberto: false,
       categoriaAtendimentoId: [null]
     });
   }
