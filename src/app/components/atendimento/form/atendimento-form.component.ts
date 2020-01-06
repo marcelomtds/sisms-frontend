@@ -5,7 +5,6 @@ import { BsModalService } from 'ngx-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
-import { PacienteService } from 'src/app/components/paciente/service/paciente.service';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalConfirmacaoComponent } from 'src/app/components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalCriarPacoteComponent } from 'src/app/components/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
@@ -23,6 +22,7 @@ import { PreAtendimentoOutraMedida } from 'src/app/components/shared/model/model
 import { TipoAtendimento } from 'src/app/components/shared/model/model/tipo-atendimento.model';
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import { OutraMedidaService } from 'src/app/components/shared/services/outra-medida.service';
+import { PacienteService } from 'src/app/components/shared/services/paciente.service';
 import { PacoteService } from 'src/app/components/shared/services/pacote.service';
 import { TipoAtendimentoService } from 'src/app/components/shared/services/tipo-atendimento.service';
 import Util from 'src/app/components/shared/util/util';
@@ -74,13 +74,13 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.onLoadCategoriaAtendimento();
     const id = +this.route.snapshot.params.id;
     if (id) {
       this.findById(id);
     }
     this.onCreateForm();
     this.onLoadCombos();
-    this.onLoadCategoriaAtendimento();
   }
 
   public checkTipoAtendimentoPacote(): boolean {
@@ -107,8 +107,16 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     return this.categoriaAtendimentoRouting.id !== CategoriaAtendimentoEnum.MASSAGEM_RELAXANTE;
   }
 
+  private isTipoAtendimentoIgual(categoriaAtendimentoId: number): boolean {
+    return categoriaAtendimentoId === this.categoriaAtendimentoRouting.id;
+  }
+
   private findById(id: number): void {
     this.service.findById(id).subscribe(response => {
+      if (!this.isTipoAtendimentoIgual(response.result.tipoAtendimentoId)) {
+        this.messageService.sendMessageError(Messages.MSG00027);
+        this.router.navigate(['/']);
+      }
       this.form.setValue({
         id: response.result.id,
         pacoteId: response.result.pacoteId || null,
@@ -319,7 +327,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         valorPos: 0
       });
     } else {
-      this.messageService.sendMessageError(Messages.MAXIMO_OUTRA_MEDIDA);
+      this.messageService.sendMessageError(Messages.MSG00025);
     }
   }
 
@@ -333,17 +341,17 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   public onChangeImage(images: File[]): void {
     this.messageService.clearAllMessages();
     if (this.form.value.imagens.length + images.length > 10) {
-      this.messageService.sendMessageError(Messages.MAXIMO_IMAGENS);
+      this.messageService.sendMessageError(Messages.MSG00024);
       return;
     }
     if (images && images.length) {
       try {
         if (!this.validarFormatoImagem(images)) {
-          this.messageService.sendMessageError(images.length > 1 ? Messages.IMAGENS_FORMATO_INVALIDO : Messages.IMAGEM_FORMATO_INVALIDO);
+          this.messageService.sendMessageError(images.length > 1 ? Messages.MSG00021 : Messages.MSG00020);
           return;
         }
         if (!this.validarTamanhoImagem(images)) {
-          this.messageService.sendMessageError(images.length > 1 ? Messages.IMAGENS_TAMANHO_INVALIDO : Messages.IMAGEM_TAMANHO_INVALIDO);
+          this.messageService.sendMessageError(images.length > 1 ? Messages.MSG00023 : Messages.MSG00022);
           return;
         }
         for (const image of images) {
@@ -362,7 +370,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
           };
         }
       } catch {
-        this.messageService.sendMessageError(images.length > 1 ? Messages.ERRO_CARREGAR_IMAGENS : Messages.ERRO_CARREGAR_IMAGEM);
+        this.messageService.sendMessageError(images.length > 1 ? Messages.MSG00012 : Messages.MSG00011);
         this.spinnerService.hide();
       }
     }
@@ -416,11 +424,11 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       const preAtendimentoData = this.form.value.preAtendimentoData;
       const posAtendimentoData = this.form.value.posAtendimentoData;
       if (preAtendimentoData && !Util.isDataHoraValida(preAtendimentoData)) {
-        this.messageService.sendMessageError(Messages.DATA_HORA_PRE_ATENDIMENTO_INVALIDA);
+        this.messageService.sendMessageError(Messages.MSG00016);
         return;
       }
       if (posAtendimentoData && !Util.isDataHoraValida(posAtendimentoData)) {
-        this.messageService.sendMessageError(Messages.DATA_HORA_POS_ATENDIMENTO_INVALIDA);
+        this.messageService.sendMessageError(Messages.MSG00017);
         return;
       }
       this.form.value.preAtendimentoOutrasMedidas = [];

@@ -2,23 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { AtendimentoService } from 'src/app/components/shared/services/atendimento.service';
-import { PacienteService } from 'src/app/components/paciente/service/paciente.service';
-import { AuthGuard } from 'src/app/components/security/auth.guard';
+import { AuthGuard } from 'src/app/components/auth/auth.guard';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { PerfilEnum } from 'src/app/components/shared/model/enum/perfil.enum';
 import { TipoAtendimentoEnum } from 'src/app/components/shared/model/enum/tipo-atendimento.enum';
 import { AtendimentoFilter } from 'src/app/components/shared/model/filter/atendimento.filter';
-import { PageableFilter } from 'src/app/components/shared/model/filter/filter.filter';
+import { PageableFilter } from 'src/app/components/shared/pageable/filter.filter';
 import { Atendimento } from 'src/app/components/shared/model/model/atendimento.model';
 import { CategoriaAtendimento } from 'src/app/components/shared/model/model/categoria-atendimento.model';
 import { Paciente } from 'src/app/components/shared/model/model/paciente.model';
 import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
-import Page from 'src/app/components/shared/pagination/page';
+import Page from 'src/app/components/shared/pageable/page';
+import { AtendimentoService } from 'src/app/components/shared/services/atendimento.service';
 import { CategoriaAtendimentoService } from 'src/app/components/shared/services/categoria-atendimento.service';
 import { MessageService } from 'src/app/components/shared/services/message.service';
+import { PacienteService } from 'src/app/components/shared/services/paciente.service';
+import { UsuarioService } from 'src/app/components/shared/services/usuario.service';
 import Util from 'src/app/components/shared/util/util';
-import { UsuarioService } from 'src/app/components/usuario/service/usuario.service';
 import { LancamentoService } from '../../../../shared/services/lancamento.service';
 import { ModalGerenciarLancamentoSessaoComponent } from '../../../modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 
@@ -34,7 +34,7 @@ export class ControleCaixaEntradaSessaoComponent implements OnInit {
   public filtro = new PageableFilter<AtendimentoFilter>();
   public dados = new Page<Array<Atendimento>>();
   public currentUser = new Usuario();
-  public permissaoAdministrador = PerfilEnum.Administrador;
+  public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
   public form: FormGroup;
   public showNoRecords = false;
   public subscription: Subscription;
@@ -77,7 +77,7 @@ export class ControleCaixaEntradaSessaoComponent implements OnInit {
   }
 
   private onLoadCombos(): void {
-    this.pacienteService.findAll().subscribe(response => {
+    this.pacienteService.findAllActive().subscribe(response => {
       this.pacientes = response.result;
     });
     if (this.authGuardService.isPermitido(this.permissaoAdministrador)) {
@@ -95,11 +95,11 @@ export class ControleCaixaEntradaSessaoComponent implements OnInit {
     const dataInicio = this.form.value.preAtendimentoData;
     const dataFim = this.form.value.posAtendimentoData;
     if (dataInicio && !Util.isDataHoraValida(dataInicio)) {
-      this.messageService.sendMessageError(Messages.DATA_HORA_PRE_ATENDIMENTO_INVALIDA);
+      this.messageService.sendMessageError(Messages.MSG00016);
       return;
     }
     if (dataFim && !Util.isDataHoraValida(dataFim)) {
-      this.messageService.sendMessageError(Messages.DATA_HORA_POS_ATENDIMENTO_INVALIDA);
+      this.messageService.sendMessageError(Messages.MSG00017);
       return;
     }
     this.filtro = new PageableFilter<AtendimentoFilter>();

@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { Messages } from '../shared/message/messages';
 import { Response } from '../shared/pageable/response.model';
 import { MessageService } from '../shared/services/message.service';
-import { SharedService } from './service/shared.service';
+import { SharedService } from '../shared/services/shared.service';
 
 
 @Injectable()
@@ -26,7 +26,7 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                             this.showMessages(response.error);
                             break;
                         case 401:
-                            this.messageService.sendMessageError(Messages.USUARIO_NAO_AUTENTICADO);
+                            this.showMessages(response.error);
                             this.sharedService.removeUserAndTokenSession();
                             this.route.navigate(['/login']);
                             break;
@@ -34,10 +34,10 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                             this.route.navigate(['/acesso-negado']);
                             break;
                         case 404:
-                            this.messageService.sendMessageError(Messages.ERRO_INESPERADO);
+                            this.messageService.sendMessageError(Messages.MSG00019);
                             break;
                         case 500:
-                            this.messageService.sendMessageError(Messages.ERRO_INESPERADO);
+                            this.messageService.sendMessageError(Messages.MSG00019);
                             break;
                         default:
                             break;

@@ -4,10 +4,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SpinnerInterceptorService implements HttpInterceptor {
+@Injectable()
+export class SpinnerInterceptor implements HttpInterceptor {
 
   constructor(private loaderService: NgxSpinnerService) {
   }

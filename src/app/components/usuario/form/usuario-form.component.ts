@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
-import { SharedService } from '../../security/service/shared.service';
+import { SharedService } from '../../shared/services/shared.service';
 import { Messages } from '../../shared/message/messages';
 import { Localidade } from '../../shared/model/model/localidade.model';
 import { Profissao } from '../../shared/model/model/profissao.model';
@@ -17,7 +17,7 @@ import { ProfissaoService } from '../../shared/services/profissao.service';
 import { SexoService } from '../../shared/services/sexo.service';
 import { UfService } from '../../shared/services/uf.service';
 import Util from '../../shared/util/util';
-import { UsuarioService } from '../service/usuario.service';
+import { UsuarioService } from '../../shared/services/usuario.service';
 
 @Component({
   selector: 'app-usuario-form',
@@ -136,7 +136,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
   public onClickLocalidade(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.enderecoLocalidadeUFId.value) {
-      this.messageService.sendMessageWarning(Messages.SELECIONE_ESTADO);
+      this.messageService.sendMessageWarning(Messages.MSG00010);
     }
   }
 
@@ -173,7 +173,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       const dataNascimento = this.form.value.dataNascimento;
       if (dataNascimento && !Util.isDataValida(dataNascimento)) {
-        this.messageService.sendMessageError(Messages.DATA_NASCIMENTO_INVALIDA);
+        this.messageService.sendMessageError(Messages.MSG00018);
         return;
       }
       const formValue: Usuario = {
@@ -209,11 +209,11 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     if (imagem) {
       try {
         if (!Util.isFormatoImagemValido(imagem)) {
-          this.messageService.sendMessageError(Messages.IMAGEM_FORMATO_INVALIDO);
+          this.messageService.sendMessageError(Messages.MSG00020);
           return;
         }
         if (!Util.isTamanhoImagemValido(imagem)) {
-          this.messageService.sendMessageError(Messages.IMAGEM_TAMANHO_INVALIDO);
+          this.messageService.sendMessageError(Messages.MSG00022);
           return;
         }
         const reader = new FileReader();
@@ -226,7 +226,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
           });
         };
       } catch {
-        this.messageService.sendMessageError(Messages.ERRO_CARREGAR_IMAGEM);
+        this.messageService.sendMessageError(Messages.MSG00011);
         this.spinnerService.hide();
       }
     }

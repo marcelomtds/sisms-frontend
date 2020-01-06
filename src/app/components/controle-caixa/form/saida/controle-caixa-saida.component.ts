@@ -99,7 +99,7 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isDataValida(this.form.controls.data.value)) {
-        this.messageService.sendMessageError(Messages.DATA_INVALIDA);
+        this.messageService.sendMessageError(Messages.MSG00015);
         return;
       }
       const formValue: Lancamento = {

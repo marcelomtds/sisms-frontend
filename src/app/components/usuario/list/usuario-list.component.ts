@@ -1,33 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
-import { AuthGuard } from '../../security/auth.guard';
-import { SharedService } from '../../security/service/shared.service';
+import { AuthGuard } from '../../auth/auth.guard';
+import { SharedService } from '../../shared/services/shared.service';
 import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalVisualizarPacienteUsuarioComponent } from '../../shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
 import { PerfilEnum } from '../../shared/model/enum/perfil.enum';
 import { SexoEnum } from '../../shared/model/enum/sexo.enum';
-import { PageableFilter } from '../../shared/model/filter/filter.filter';
+import { PageableFilter } from '../../shared/pageable/filter.filter';
 import { PacienteUsuarioFilter } from '../../shared/model/filter/paciente-usuario.filter';
 import { Sexo } from '../../shared/model/model/sexo.model';
 import { Usuario } from '../../shared/model/model/usuario.model';
-import Page from '../../shared/pagination/page';
+import Page from '../../shared/pageable/page';
 import { MessageService } from '../../shared/services/message.service';
 import { SexoService } from '../../shared/services/sexo.service';
-import { UsuarioService } from '../service/usuario.service';
+import { UsuarioService } from '../../shared/services/usuario.service';
+import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
 
 @Component({
   selector: 'app-usuario-list',
   templateUrl: './usuario-list.component.html'
 })
-export class UsuarioListComponent implements OnInit {
+export class UsuarioListComponent implements OnInit, IActionOrderBy {
 
   public sexos = new Array<Sexo>();
   public dados = new Page<Array<Usuario>>();
   public form: FormGroup;
   public filtro = new PageableFilter<PacienteUsuarioFilter>();
   public currentUser = new Usuario();
-  public permissaoAdministrador = PerfilEnum.Administrador;
+  public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
   public showNoRecords = false;
 
   public constructor(
@@ -119,9 +120,23 @@ export class UsuarioListComponent implements OnInit {
 
   public onClickOrderBy(descricao: string): void {
     this.messageService.clearAllMessages();
-    this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    if (this.filtro.orderBy === descricao) {
+      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    } else {
+      this.filtro.direction = 'ASC';
+    }
     this.filtro.orderBy = descricao;
     this.searchByFilter();
+  }
+
+  public getIconOrderBy(param: string): string {
+    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-asc';
+    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-desc';
+    } else {
+      return 'fa fa-sort';
+    }
   }
 
 }

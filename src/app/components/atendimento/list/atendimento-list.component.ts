@@ -2,23 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
-import { AuthGuard } from 'src/app/components/security/auth.guard';
+import { AuthGuard } from 'src/app/components/auth/auth.guard';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalVisualizarAtendimentoComponent } from 'src/app/components/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
 import { PerfilEnum } from 'src/app/components/shared/model/enum/perfil.enum';
 import { AtendimentoFilter } from 'src/app/components/shared/model/filter/atendimento.filter';
-import { PageableFilter } from 'src/app/components/shared/model/filter/filter.filter';
+import { PageableFilter } from 'src/app/components/shared/pageable/filter.filter';
 import { Atendimento } from 'src/app/components/shared/model/model/atendimento.model';
 import { CategoriaAtendimentoRouting } from 'src/app/components/shared/model/model/categoria-atendimento-routing.model';
 import { Response } from 'src/app/components/shared/pageable/response.model';
 import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
-import { UsuarioService } from 'src/app/components/usuario/service/usuario.service';
-import { PacienteService } from '../../paciente/service/paciente.service';
+import { UsuarioService } from 'src/app/components/shared/services/usuario.service';
+import { PacienteService } from '../../shared/services/paciente.service';
 import { Paciente } from '../../shared/model/model/paciente.model';
 import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model';
-import Page from '../../shared/pagination/page';
+import Page from '../../shared/pageable/page';
 import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
 import { AtendimentoService } from '../../shared/services/atendimento.service';
 
@@ -35,7 +35,7 @@ export class AtendimentoListComponent implements OnInit {
   public filtro = new PageableFilter<AtendimentoFilter>();
   public dados = new Page<Array<Atendimento>>();
   public currentUser = new Usuario();
-  public permissaoAdministrador = PerfilEnum.Administrador;
+  public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
   public form: FormGroup;
   public showNoRecords = false;
 
@@ -100,11 +100,11 @@ export class AtendimentoListComponent implements OnInit {
     const dataInicio = this.form.value.preAtendimentoData;
     const dataFim = this.form.value.posAtendimentoData;
     if (dataInicio && !Util.isDataHoraValida(dataInicio)) {
-      this.messageService.sendMessageError(Messages.DATA_HORA_PRE_ATENDIMENTO_INVALIDA);
+      this.messageService.sendMessageError(Messages.MSG00016);
       return;
     }
     if (dataFim && !Util.isDataHoraValida(dataFim)) {
-      this.messageService.sendMessageError(Messages.DATA_HORA_POS_ATENDIMENTO_INVALIDA);
+      this.messageService.sendMessageError(Messages.MSG00017);
       return;
     }
     this.filtro = new PageableFilter<AtendimentoFilter>();
@@ -123,7 +123,7 @@ export class AtendimentoListComponent implements OnInit {
 
   public onClickSendMessageWarning(): void {
     this.messageService.clearAllMessages();
-    this.messageService.sendMessageWarning(Messages.ATENDIMENTO_ABERTO);
+    this.messageService.sendMessageWarning(Messages.MSG00026);
   }
 
   public searchByFilter(): void {

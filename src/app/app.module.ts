@@ -19,6 +19,7 @@ import { AppComponent } from './app.component';
 import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
 import { AtendimentoFormComponent } from './components/atendimento/form/atendimento-form.component';
 import { AtendimentoListComponent } from './components/atendimento/list/atendimento-list.component';
+import { AuthGuard } from './components/auth/auth.guard';
 import { ControleCaixaEntradaPacoteComponent } from './components/controle-caixa/form/entrada/pacote/controle-caixa-entrada-pacote.component';
 import { ControleCaixaEntradaSessaoComponent } from './components/controle-caixa/form/entrada/sessao/controle-caixa-entrada-sessao.component';
 import { ControleCaixaSaidaComponent } from './components/controle-caixa/form/saida/controle-caixa-saida.component';
@@ -28,18 +29,15 @@ import { ModalGerenciarLancamentoSessaoComponent } from './components/controle-c
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
+import { AuthInterceptor } from './components/interceptor/auth.interceptor';
+import { ServerErrorsInterceptor } from './components/interceptor/server-errors.interceptor';
+import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { PacienteFormComponent } from './components/paciente/form/paciente-form.component';
 import { PacienteListComponent } from './components/paciente/list/paciente-list.component';
 import { PacoteFormComponent } from './components/pacote/form/pacote-form.component';
 import { PacoteListComponent } from './components/pacote/list/pacote-list.component';
-import { AuthGuard } from './components/security/auth.guard';
-import { AuthInterceptor } from './components/security/auth.interceptor';
-import { LoginComponent } from './components/security/login/login.component';
-import { ServerErrorsInterceptor } from './components/security/server-errors.interceptor';
-import { SharedService } from './components/security/service/shared.service';
-import { DirectiveModule } from './components/shared/directive/directive.module';
-import { SpinnerInterceptorService } from './components/shared/interceptor/spinner-interceptor.service';
+import { AlterarSenhaComponent } from './components/password/alterar-senha.component';
 import { MessageRequiredComponent } from './components/shared/message-required/message-required.component';
 import { ModalConfirmacaoComponent } from './components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalCriarPacoteComponent } from './components/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
@@ -56,15 +54,12 @@ import { NoRecordsComponent } from './components/shared/model/template/no-record
 import { PageActionComponent } from './components/shared/model/template/page-action/page-action.component';
 import { CepPipe } from './components/shared/pipe/cep.pipe';
 import { CpfPipe } from './components/shared/pipe/cpf.pipe';
-import { DataHoraPipe } from './components/shared/pipe/data-hora.pipe';
 import { IdadePipe } from './components/shared/pipe/idade.pipe';
-import { StatusPipe } from './components/shared/pipe/status.pipe';
 import { TelefonePipe } from './components/shared/pipe/telefone.pipe';
-import { TipoLancamentoPipe } from './components/shared/pipe/tipoLancamento.pipe';
-import { ValuePipe } from './components/shared/pipe/value.pipe';
+import { SharedService } from './components/shared/services/shared.service';
 import { UsuarioFormComponent } from './components/usuario/form/usuario-form.component';
 import { UsuarioListComponent } from './components/usuario/list/usuario-list.component';
-import { AlterarSenhaComponent } from './components/usuario/password/alterar-senha.component';
+import { SpinnerInterceptor } from './components/interceptor/spinner.interceptor';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -76,7 +71,6 @@ registerLocaleData(localePt);
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    DirectiveModule,
     NgxUpperCaseDirectiveModule,
     NgSelectModule,
     NgxSpinnerModule,
@@ -105,7 +99,7 @@ registerLocaleData(localePt);
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: SpinnerInterceptorService,
+      useClass: SpinnerInterceptor,
       multi: true
     }
 
@@ -134,12 +128,8 @@ registerLocaleData(localePt);
     LoginComponent,
     HomeComponent,
     UsuarioListComponent,
-    ValuePipe,
     CpfPipe,
     CepPipe,
-    StatusPipe,
-    TipoLancamentoPipe,
-    DataHoraPipe,
     IdadePipe,
     TelefonePipe,
     ModalGerenciarProfissaoComponent,

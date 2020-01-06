@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Autenticacao } from '../../shared/model/model/autenticacao.model';
-import { CurrentAuthentication } from '../../shared/model/model/current-authentication.model';
-import { Response } from '../../shared/pageable/response.model';
-import { BaseService } from '../../shared/services/base.service';
+import { Autenticacao } from '../model/model/autenticacao.model';
+import { CurrentAuthentication } from '../model/model/current-authentication.model';
+import { Response } from '../pageable/response.model';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'

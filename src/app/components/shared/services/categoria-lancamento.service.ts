@@ -9,7 +9,7 @@ import { BaseService } from './base.service';
 })
 export class CategoriaLancamentoService extends BaseService<CategoriaLancamento, {}> {
 
-  subject = new Subject<void>();
+  public subject = new Subject<void>();
 
   public constructor(http: HttpClient) {
     super(http, '/api/categoriaLancamento');

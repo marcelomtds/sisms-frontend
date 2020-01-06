@@ -2,7 +2,7 @@
 <div class="col-xs-2">
   <div class="form-group">
     <ng-select id="registro" [(ngModel)]="filtro.pageSize" [ngModelOptions]="{standalone: true}" [searchable]="false"
-      [multiple]="false" [clearable]="false" (change)="onChangePageSize($event)">
+      [multiple]="false" [clearable]="false" (change)="onChangePageSize()">
       <ng-option [value]=5>5</ng-option>
       <ng-option [value]=10>10</ng-option>
       <ng-option [value]=20>20</ng-option>

@@ -12,11 +12,11 @@ import { PacienteFormComponent } from './components/paciente/form/paciente-form.
 import { PacienteListComponent } from './components/paciente/list/paciente-list.component';
 import { PacoteFormComponent } from './components/pacote/form/pacote-form.component';
 import { PacoteListComponent } from './components/pacote/list/pacote-list.component';
-import { AuthGuard } from './components/security/auth.guard';
-import { LoginComponent } from './components/security/login/login.component';
+import { AuthGuard } from './components/auth/auth.guard';
+import { LoginComponent } from './components/login/login.component';
 import { UsuarioFormComponent } from './components/usuario/form/usuario-form.component';
 import { UsuarioListComponent } from './components/usuario/list/usuario-list.component';
-import { AlterarSenhaComponent } from './components/usuario/password/alterar-senha.component';
+import { AlterarSenhaComponent } from './components/password/alterar-senha.component';
 import { PerfilEnum } from './components/shared/model/enum/perfil.enum';
 
 export const ROUTES: Routes = [
@@ -36,12 +36,12 @@ export const ROUTES: Routes = [
   },
   {
     path: 'usuario-list',
-    component: UsuarioListComponent, data: { role: PerfilEnum.Administrador },
+    component: UsuarioListComponent, data: { role: PerfilEnum.ADMINISTRADOR },
     canActivate: [AuthGuard]
   },
   {
     path: 'usuario-form',
-    component: UsuarioFormComponent, data: { role: PerfilEnum.Administrador },
+    component: UsuarioFormComponent, data: { role: PerfilEnum.ADMINISTRADOR },
     canActivate: [AuthGuard]
   },
   {
@@ -233,7 +233,7 @@ export const ROUTES: Routes = [
   },
   {
     path: 'controle-caixa-list',
-    component: ControleCaixaListComponent, data: { role: PerfilEnum.Administrador },
+    component: ControleCaixaListComponent, data: { role: PerfilEnum.ADMINISTRADOR },
     canActivate: [AuthGuard]
   },
   {
@@ -248,12 +248,12 @@ export const ROUTES: Routes = [
   },
   {
     path: 'controle-caixa-form-saida',
-    component: ControleCaixaSaidaComponent, data: { role: PerfilEnum.Administrador },
+    component: ControleCaixaSaidaComponent, data: { role: PerfilEnum.ADMINISTRADOR },
     canActivate: [AuthGuard]
   },
   {
     path: 'controle-caixa-form-saida/:id',
-    component: ControleCaixaSaidaComponent, data: { role: PerfilEnum.Administrador },
+    component: ControleCaixaSaidaComponent, data: { role: PerfilEnum.ADMINISTRADOR },
     canActivate: [AuthGuard]
   },
   {

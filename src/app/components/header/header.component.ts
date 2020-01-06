@@ -2,14 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { SharedService } from '../security/service/shared.service';
+import { AuthGuard } from '../auth/auth.guard';
 import { ModalGerenciarCategoriaLancamentoComponent } from '../shared/modais/modal-gerenciar-categoria-lancamento/modal-gerenciar-categoria-lancamento.component';
 import { ModalGerenciarLocalidadeComponent } from '../shared/modais/modal-gerenciar-localidade/modal-gerenciar-localidade.component';
 import { ModalGerenciarMedidaComponent } from '../shared/modais/modal-gerenciar-medidas/modal-gerenciar-medida.component';
 import { ModalGerenciarProfissaoComponent } from '../shared/modais/modal-gerenciar-profissao/modal-gerenciar-profissao.component';
 import { ModalGerenciarUfComponent } from '../shared/modais/modal-gerenciar-uf/modal-gerenciar-uf.component';
+import { PerfilEnum } from '../shared/model/enum/perfil.enum';
 import { Usuario } from '../shared/model/model/usuario.model';
-import { UsuarioService } from '../usuario/service/usuario.service';
+import { SharedService } from '../shared/services/shared.service';
+import { UsuarioService } from '../shared/services/usuario.service';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +19,7 @@ import { UsuarioService } from '../usuario/service/usuario.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
+  public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
   public usuario = new Usuario();
   public subscription: Subscription;
 
@@ -24,7 +27,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private usuarioService: UsuarioService,
     private modalService: BsModalService,
     private router: Router,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    public authGuardService: AuthGuard
   ) {
     this.subscription = this.usuarioService.getUsuario().subscribe(usuario => {
       this.usuario = usuario;

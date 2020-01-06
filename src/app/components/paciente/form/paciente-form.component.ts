@@ -14,7 +14,7 @@ import { ProfissaoService } from '../../shared/services/profissao.service';
 import { SexoService } from '../../shared/services/sexo.service';
 import { UfService } from '../../shared/services/uf.service';
 import Util from '../../shared/util/util';
-import { PacienteService } from '../service/paciente.service';
+import { PacienteService } from '../../shared/services/paciente.service';
 
 @Component({
   selector: 'app-paciente-form',
@@ -120,7 +120,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
   public onClickLocalidade(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.enderecoLocalidadeUFId.value) {
-      this.messageService.sendMessageWarning(Messages.SELECIONE_ESTADO);
+      this.messageService.sendMessageWarning(Messages.MSG00010);
     }
   }
 
@@ -147,7 +147,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       const dataNascimento = this.form.value.dataNascimento;
       if (dataNascimento && !Util.isDataValida(dataNascimento)) {
-        this.messageService.sendMessageError(Messages.DATA_NASCIMENTO_INVALIDA);
+        this.messageService.sendMessageError(Messages.MSG00018);
         return;
       }
       const formValue: Atendimento = {

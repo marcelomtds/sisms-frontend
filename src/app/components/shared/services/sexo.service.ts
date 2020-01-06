@@ -8,7 +8,7 @@ import { BaseService } from './base.service';
 })
 export class SexoService extends BaseService<Sexo, {}> {
 
-  constructor(http: HttpClient) {
+  public constructor(http: HttpClient) {
     super(http, '/api/sexo');
   }
 

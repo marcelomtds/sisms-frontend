@@ -11,4 +11,5 @@ export class TipoAtendimentoService extends BaseService<TipoAtendimento, {}> {
   constructor(http: HttpClient) {
     super(http, '/api/tipoAtendimento');
   }
+
 }

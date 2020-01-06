@@ -2,9 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PacienteService } from '../../paciente/service/paciente.service';
 import { TipoLancamentoEnum } from '../../shared/model/enum/tipo-lancamento.enum';
-import { PageableFilter } from '../../shared/model/filter/filter.filter';
 import { LancamentoFilter } from '../../shared/model/filter/lancamento.filter';
 import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
 import { CategoriaLancamento } from '../../shared/model/model/categoria-lancamento.model';
@@ -17,17 +15,18 @@ import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model
 import { TipoLancamento } from '../../shared/model/model/tipo-lancamento.model';
 import { Usuario } from '../../shared/model/model/usuario.model';
 import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
-import Pageable from '../../shared/pageable/pageable';
-import Page from '../../shared/pagination/page';
+import { PageableFilter } from '../../shared/pageable/filter.filter';
+import Page from '../../shared/pageable/page';
 import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
 import { CategoriaLancamentoService } from '../../shared/services/categoria-lancamento.service';
 import { FormaPagamentoService } from '../../shared/services/forma-pagamento.service';
+import { LancamentoService } from '../../shared/services/lancamento.service';
 import { MessageService } from '../../shared/services/message.service';
+import { PacienteService } from '../../shared/services/paciente.service';
 import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
 import { TipoLancamentoService } from '../../shared/services/tipo-lancamento.service';
+import { UsuarioService } from '../../shared/services/usuario.service';
 import Util from '../../shared/util/util';
-import { UsuarioService } from '../../usuario/service/usuario.service';
-import { LancamentoService } from '../../shared/services/lancamento.service';
 
 @Component({
   selector: 'app-controle-caixa-list',
@@ -102,6 +101,12 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
     return this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.SAIDA || !this.form.controls.tipoLancamentoId.value;
   }
 
+  public onChangeTipoLancamento(): void {
+    const tipoLancamentoId = this.form.controls.tipoLancamentoId.value;
+    this.onCreateForm();
+    this.form.controls.tipoLancamentoId.setValue(tipoLancamentoId);
+  }
+
   public onLoadCombos(): void {
     this.usuarioService.findAll().subscribe(response => {
       this.usuarios = response.result;
@@ -115,7 +120,7 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
     this.categoriaAtendimentoService.findAll().subscribe(response => {
       this.categoriasAtendimento = response.result;
     });
-    this.pacienteService.findAllActive().subscribe(response => {
+    this.pacienteService.findAll().subscribe(response => {
       this.pacientes = response.result;
     });
     this.formaPagamentoService.findAll().subscribe(response => {
@@ -132,7 +137,9 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
 
   public onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
-    this.filtro = new Pageable();
+    this.filtro = new PageableFilter();
+    this.filtro.orderBy = 'data';
+    this.filtro.direction = 'DESC';
     this.filtro = {
       ...this.filtro,
       filter: {

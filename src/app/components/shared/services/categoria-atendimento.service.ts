@@ -12,5 +12,4 @@ export class CategoriaAtendimentoService extends BaseService<CategoriaAtendiment
     super(http, '/api/categoriaAtendimento');
   }
 
-
 }

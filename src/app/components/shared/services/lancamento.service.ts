@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { PageableFilter } from '../model/filter/filter.filter';
+import { PageableFilter } from '../pageable/filter.filter';
 import { LancamentoFilter } from '../model/filter/lancamento.filter';
 import { LancamentoTotal } from '../model/model/lancamento-total.model';
 import { Lancamento } from '../model/model/lancamento.model';

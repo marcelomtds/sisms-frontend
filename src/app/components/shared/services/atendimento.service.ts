@@ -11,7 +11,7 @@ import { BaseService } from './base.service';
 })
 export class AtendimentoService extends BaseService<Atendimento, AtendimentoFilter> {
 
-  constructor(http: HttpClient) {
+  public constructor(http: HttpClient) {
     super(http, '/api/atendimento');
   }
 

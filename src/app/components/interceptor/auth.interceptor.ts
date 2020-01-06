@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SharedService } from './service/shared.service';
+import { SharedService } from '../shared/services/shared.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

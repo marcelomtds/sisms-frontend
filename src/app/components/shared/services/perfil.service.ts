@@ -11,4 +11,5 @@ export class PerfilService extends BaseService<Perfil, {}> {
   constructor(http: HttpClient) {
     super(http, '/api/perfil');
   }
+
 }

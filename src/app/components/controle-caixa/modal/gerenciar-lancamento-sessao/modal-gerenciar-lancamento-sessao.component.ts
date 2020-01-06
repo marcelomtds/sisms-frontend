@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AtendimentoService } from 'src/app/components/shared/services/atendimento.service';
-import { SharedService } from 'src/app/components/security/service/shared.service';
+import { SharedService } from 'src/app/components/shared/services/shared.service';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalConfirmacaoComponent } from 'src/app/components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { PerfilEnum } from 'src/app/components/shared/model/enum/perfil.enum';
-import { PageableFilter } from 'src/app/components/shared/model/filter/filter.filter';
+import { PageableFilter } from 'src/app/components/shared/pageable/filter.filter';
 import { LancamentoFilter } from 'src/app/components/shared/model/filter/lancamento.filter';
 import { Atendimento } from 'src/app/components/shared/model/model/atendimento.model';
 import { FormaPagamento } from 'src/app/components/shared/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/components/shared/model/model/lancamento.model';
 import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
 import { IActionOrderBy } from 'src/app/components/shared/page-order-by/iaction-orderby';
-import Page from 'src/app/components/shared/pagination/page';
+import Page from 'src/app/components/shared/pageable/page';
 import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import Util from 'src/app/components/shared/util/util';
@@ -85,7 +85,7 @@ export class ModalGerenciarLancamentoSessaoComponent implements OnInit, IActionO
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isDataValida(this.form.controls.data.value)) {
-        this.messageService.sendMessageError(Messages.DATA_INVALIDA);
+        this.messageService.sendMessageError(Messages.MSG00015);
         return;
       }
       const formValue: Lancamento = {
@@ -114,7 +114,7 @@ export class ModalGerenciarLancamentoSessaoComponent implements OnInit, IActionO
   }
 
   public get isAdministrador(): boolean {
-    return this.currentUser.perfilRole === PerfilEnum.Administrador;
+    return this.currentUser.perfilRole === PerfilEnum.ADMINISTRADOR;
   }
 
   private onUpdate(): void {

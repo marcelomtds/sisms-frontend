@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
-import { PacienteService } from '../../paciente/service/paciente.service';
+import { PacienteService } from '../../shared/services/paciente.service';
 import { Messages } from '../../shared/message/messages';
 import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
@@ -86,7 +86,7 @@ export class PacoteFormComponent implements OnInit {
           this.router.navigate(['/pacote-list']);
         });
       } else {
-        const modalRef = this.modalService.show(ModalConfirmacaoComponent, { keyboard: false, backdrop: 'static' });
+        const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
         modalRef.content.titulo = 'Confirmação de Criação de Pacote';
         modalRef.content.corpo = 'Ao criar um novo pacote o anterior será encerrado automaticamente. Deseja continuar?';
         modalRef.content.onClose.subscribe(result => {

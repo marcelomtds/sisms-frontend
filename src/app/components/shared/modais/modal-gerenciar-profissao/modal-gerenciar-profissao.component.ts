@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
 import { Messages } from '../../message/messages';
-import { PageableFilter } from '../../model/filter/filter.filter';
+import { PageableFilter } from '../../pageable/filter.filter';
 import { Profissao } from '../../model/model/profissao.model';
-import Page from '../../pagination/page';
+import Page from '../../pageable/page';
 import { MessageService } from '../../services/message.service';
 import { ProfissaoService } from '../../services/profissao.service';
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from '../security/service/shared.service';
-import { AuthGuard } from '../security/auth.guard';
+import { SharedService } from '../shared/services/shared.service';
+import { AuthGuard } from '../auth/auth.guard';
 import { Usuario } from '../shared/model/model/usuario.model';
 import { PerfilEnum } from '../shared/model/enum/perfil.enum';
 
@@ -11,7 +11,7 @@ import { PerfilEnum } from '../shared/model/enum/perfil.enum';
 export class MenuComponent implements OnInit {
 
   public currentUser = new Usuario();
-  public permissaoAdministrador = PerfilEnum.Administrador;
+  public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
 
   public constructor(
     private sharedService: SharedService,

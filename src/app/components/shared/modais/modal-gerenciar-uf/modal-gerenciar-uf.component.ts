@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Messages } from '../../message/messages';
-import { PageableFilter } from '../../model/filter/filter.filter';
+import { PageableFilter } from '../../pageable/filter.filter';
 import { UF } from '../../model/model/uf.model';
-import Page from '../../pagination/page';
+import Page from '../../pageable/page';
 import { UfService } from '../../services/uf.service';
 import { MessageService } from '../../services/message.service';
 

@@ -50,7 +50,7 @@ export class ModalCriarPacoteComponent implements OnInit {
       pacienteId: this.form.controls.pacienteId.value,
       categoriaAtendimentoId: this.form.controls.categoriaAtendimentoId.value
     };
-    const modalRef = this.modalService.show(ModalConfirmacaoComponent, { keyboard: false, backdrop: 'static' });
+    const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
     modalRef.content.titulo = 'Confirmação de Criação de Pacote';
     modalRef.content.corpo = 'Ao criar um novo pacote o anterior será encerrado automaticamente. Deseja continuar?';
     modalRef.content.onClose.subscribe((result: boolean) => {

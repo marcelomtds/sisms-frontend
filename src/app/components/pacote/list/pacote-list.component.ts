@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
-import { PacienteService } from '../../paciente/service/paciente.service';
-import { AuthGuard } from '../../security/auth.guard';
-import { SharedService } from '../../security/service/shared.service';
+import { PacienteService } from '../../shared/services/paciente.service';
+import { AuthGuard } from '../../auth/auth.guard';
+import { SharedService } from '../../shared/services/shared.service';
 import { Messages } from '../../shared/message/messages';
 import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalVisualizarPacoteComponent } from '../../shared/modais/modal-visualizar-pacote/modal-visualizar-pacote.component';
 import { PerfilEnum } from '../../shared/model/enum/perfil.enum';
-import { PageableFilter } from '../../shared/model/filter/filter.filter';
+import { PageableFilter } from '../../shared/pageable/filter.filter';
 import { PacoteFilter } from '../../shared/model/filter/pacote.filter';
 import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
 import { Paciente } from '../../shared/model/model/paciente.model';
 import { Pacote } from '../../shared/model/model/pacote.model';
 import { Usuario } from '../../shared/model/model/usuario.model';
 import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
-import Page from '../../shared/pagination/page';
+import Page from '../../shared/pageable/page';
 import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
 import { MessageService } from '../../shared/services/message.service';
 import { PacoteService } from '../../shared/services/pacote.service';
 import Util from '../../shared/util/util';
-import { UsuarioService } from '../../usuario/service/usuario.service';
+import { UsuarioService } from '../../shared/services/usuario.service';
 
 @Component({
   selector: 'app-pacote-list',
@@ -34,7 +34,7 @@ export class PacoteListComponent implements OnInit, IActionOrderBy {
   public filtro = new PageableFilter<PacoteFilter>();
   public dados = new Page<Array<Pacote>>();
   public currentUser = new Usuario();
-  public permissaoAdministrador = PerfilEnum.Administrador;
+  public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
   public form: FormGroup;
   public showNoRecords = false;
 
@@ -105,11 +105,11 @@ export class PacoteListComponent implements OnInit, IActionOrderBy {
     const dataInicio = this.form.value.dataInicio;
     const dataFim = this.form.value.dataFim;
     if (dataInicio && !Util.isDataValida(dataInicio)) {
-      this.messageService.sendMessageError(Messages.DATA_INICIO_INVALIDA);
+      this.messageService.sendMessageError(Messages.MSG00013);
       return;
     }
     if (dataFim && !Util.isDataValida(dataFim)) {
-      this.messageService.sendMessageError(Messages.DATA_FIM_INVALIDA);
+      this.messageService.sendMessageError(Messages.MSG00014);
       return;
     }
     this.filtro = new PageableFilter<PacoteFilter>();

@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
-import { PageableFilter } from '../model/filter/filter.filter';
+import { environment } from '../../../../environments/environment.prod';
+import { PageableFilter } from '../pageable/filter.filter';
+import Page from '../pageable/page';
 import { Response } from '../pageable/response.model';
-import Page from '../pagination/page';
 
-export class BaseService<M, F> {
+export abstract class BaseService<M, F> {
 
   protected apiBaseUrl: string;
   protected http: HttpClient;

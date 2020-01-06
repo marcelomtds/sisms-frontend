@@ -11,6 +11,10 @@ ng-select.ng-disable:not(form)  {
   background-color: rgb(136, 136, 139);
 }
 
+.ng-select.ng-select-disabled>.ng-select-container {
+  background-color: #eee;
+}
+
 .invalid-feedback {
   color: #BD362F;
   margin-top: 5px;

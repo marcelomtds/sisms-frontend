@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { CarouselConfig } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { SharedService } from './components/security/service/shared.service';
-import { Messages } from './components/shared/message/messages';
+import { SharedService } from './components/shared/services/shared.service';
 
 @Component({
   selector: 'app-root',
@@ -21,8 +20,8 @@ export class AppComponent implements OnInit {
     private carouselConfig: CarouselConfig
   ) {
     this.carouselConfig.interval = 0;
-    ngSelectConfig.placeholder = Messages.PLACEHOLDER_NG_SELECT;
-    ngSelectConfig.notFoundText = Messages.VAZIO_NG_SELECT;
+    ngSelectConfig.placeholder = 'Todos';
+    ngSelectConfig.notFoundText = 'Nenhum registro encontrado.';
     this.subscription = this.sharedService.updateTemplateGet().subscribe(response => {
       this.showTemplate = response;
     });

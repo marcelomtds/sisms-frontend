@@ -15,7 +15,7 @@
                 <div class="form-group">
                   <label for="tipoLancamento">Tipo de Lançamento</label>
                   <ng-select id="tipoLancamento" formControlName="tipoLancamentoId" [items]="tiposLancamento"
-                    bindLabel="descricao" bindValue="id">
+                    bindLabel="descricao" bindValue="id" (change)="onChangeTipoLancamento()">
                   </ng-select>
                 </div>
               </div>

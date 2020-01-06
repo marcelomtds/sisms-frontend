@@ -36,7 +36,7 @@
                     <em class="fa fa-users text-aqua"></em> Gerenciar Cidades
                   </a>
                 </li>
-                <li>
+                <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)">
                   <a style="cursor: pointer;" (click)="onClickOpenModal('categoriaLancamento')">
                     <em class="fa fa-users text-aqua"></em> Gerenciar Categorias de Lançamento
                   </a>

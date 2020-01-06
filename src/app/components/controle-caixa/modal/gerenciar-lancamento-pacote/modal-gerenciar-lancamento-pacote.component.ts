@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { SharedService } from 'src/app/components/security/service/shared.service';
+import { SharedService } from 'src/app/components/shared/services/shared.service';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalConfirmacaoComponent } from 'src/app/components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { PerfilEnum } from 'src/app/components/shared/model/enum/perfil.enum';
-import { PageableFilter } from 'src/app/components/shared/model/filter/filter.filter';
+import { PageableFilter } from 'src/app/components/shared/pageable/filter.filter';
 import { LancamentoFilter } from 'src/app/components/shared/model/filter/lancamento.filter';
 import { FormaPagamento } from 'src/app/components/shared/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/components/shared/model/model/lancamento.model';
 import { Pacote } from 'src/app/components/shared/model/model/pacote.model';
 import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
-import Page from 'src/app/components/shared/pagination/page';
+import Page from 'src/app/components/shared/pageable/page';
 import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
 import { LancamentoService } from 'src/app/components/shared/services/lancamento.service';
 import { MessageService } from 'src/app/components/shared/services/message.service';
@@ -65,7 +65,7 @@ export class ModalGerenciarLancamentoPacoteComponent implements OnInit {
   }
 
   public get isAdministrador(): boolean {
-    return this.currentUser.perfilRole === PerfilEnum.Administrador;
+    return this.currentUser.perfilRole === PerfilEnum.ADMINISTRADOR;
   }
 
   private onLoadComboFormaPagamento(): void {
@@ -89,7 +89,7 @@ export class ModalGerenciarLancamentoPacoteComponent implements OnInit {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isDataValida(this.form.controls.data.value)) {
-        this.messageService.sendMessageError(Messages.DATA_INVALIDA);
+        this.messageService.sendMessageError(Messages.MSG00015);
         return;
       }
       const formValue: Lancamento = {

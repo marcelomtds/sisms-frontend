@@ -65,12 +65,18 @@
                 <thead>
                   <tr>
                     <th>Opções</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('nomeCompleto')">Nome</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('cpf')">CPF</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('dataNascimento')">Data de Nascimetno</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('perfil.descricao')">Perfil</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('sexo.descricao')">Sexo</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('ativo')">Status</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('nomeCompleto')"><em
+                        [class]="getIconOrderBy('nomeCompleto')"></em>&nbsp;Nome</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('cpf')"><em
+                        [class]="getIconOrderBy('cpf')"></em>&nbsp;CPF</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('dataNascimento')"><em
+                        [class]="getIconOrderBy('dataNascimento')"></em>&nbsp;Data de Nascimetno</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('perfil.descricao')"><em
+                        [class]="getIconOrderBy('perfil.descricao')"></em>&nbsp;Perfil</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('sexo.descricao')"><em
+                        [class]="getIconOrderBy('sexo.descricao')"></em>&nbsp;Sexo</th>
+                    <th style="cursor: pointer" (click)="onClickOrderBy('ativo')"><em
+                        [class]="getIconOrderBy('ativo')"></em>&nbsp;Status</th>
                   </tr>
                 </thead>
                 <tbody>

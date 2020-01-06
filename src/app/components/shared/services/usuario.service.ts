@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { PacienteUsuarioFilter } from '../../shared/model/filter/paciente-usuario.filter';
-import { Response } from '../../shared/pageable/response.model';
-import { Usuario } from '../../shared/model/model/usuario.model';
-import { BaseService } from '../../shared/services/base.service';
+import { PacienteUsuarioFilter } from '../model/filter/paciente-usuario.filter';
+import { Senha } from '../model/model/senha.model';
+import { Usuario } from '../model/model/usuario.model';
+import { Response } from '../pageable/response.model';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class UsuarioService extends BaseService<Usuario, PacienteUsuarioFilter> 
     return this.subject.asObservable();
   }
 
-  public updatePassword(formValue: any): Observable<Response<Usuario>> {
+  public updatePassword(formValue: Senha): Observable<Response<Usuario>> {
     return this.http.put<Response<Usuario>>(`${this.apiBaseUrl}/updatePassword`, formValue);
   }
 

@@ -1,4 +1,4 @@
 export enum PerfilEnum {
-    Administrador = 'ROLE_ADMINISTRADOR',
-    Usuario = 'ROLE_USUARIO'
+    ADMINISTRADOR = 'ROLE_ADMINISTRADOR',
+    USUARIO = 'ROLE_USUARIO'
 }
