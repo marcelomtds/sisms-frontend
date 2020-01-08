@@ -120,7 +120,7 @@
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
-                  <label for="senhaConfirmacao">Senha Confirmação</label>
+                  <label for="senhaConfirmacao">Confirmar Senha</label>
                   <div class="input-group">
                     <input id="senhaConfirmacao" maxlength="20"
                       type="{{ isShowSenhaConfirmacao ? 'text' : 'password' }}" formControlName="senhaConfirmacao"
@@ -200,9 +200,8 @@
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="uf">Estado</label>
-                  <ng-select id="uf" maxlength="50" formControlName="enderecoLocalidadeUFId"
-                    (change)="onChangeUf(true)" [items]="ufs" bindLabel="descricao" bindValue="id"
-                    placeholder="Selecione">
+                  <ng-select id="uf" maxlength="50" formControlName="enderecoLocalidadeUFId" (change)="onChangeUf(true)"
+                    [items]="ufs" bindLabel="descricao" bindValue="id" placeholder="Selecione">
                   </ng-select>
                   <app-message-required [isInvalidForm]="isInvalidForm"
                     [controlComponent]="form.get('enderecoLocalidadeUFId')">
@@ -232,28 +231,28 @@
             <div class="row">
               <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
-                  <label for="celular">Nº Celular</label>
+                  <label for="celular">Nº Tel. Celular</label>
                   <input id="celular" [validation]="false" mask="(00) 00000-0000" type="text"
                     formControlName="contatoCelular" class="form-control" />
                 </div>
               </div>
               <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
-                  <label for="celularRecado">Nº Celular Recado</label>
+                  <label for="celularRecado">Nº Tel. Celular Recado</label>
                   <input id="celularRecado" [validation]="false" mask="(00) 00000-0000" type="text"
                     formControlName="contatoCelularRecado" class="form-control" />
                 </div>
               </div>
               <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
-                  <label for="residencial">Nº Residencial</label>
+                  <label for="residencial">Nº Tel. Residencial</label>
                   <input id="residencial" [validation]="false" mask="(00) 0000-0000" type="text"
                     formControlName="contatoResidencial" class="form-control" />
                 </div>
               </div>
               <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
-                  <label for="comercial">Nº Comercial</label>
+                  <label for="comercial">Nº Tel. Comercial</label>
                   <input id="comercial" [validation]="false" mask="(00) 0000-0000" type="text"
                     formControlName="contatoComercial" class="form-control" />
                 </div>

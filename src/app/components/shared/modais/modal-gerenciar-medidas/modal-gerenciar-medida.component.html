@@ -19,16 +19,14 @@
               </app-message-required>
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-top: 25px;">
-            <div class="form-group">
-              <button class="btn btn-primary" (click)="onClickFormSubmit()"><em
-                  class="fa fa-save"></em>&nbsp;Salvar</button>
-              <button class="btn btn-danger" (click)="onClickCancelar()" style="margin-left: 15px;"><em
-                  class="fa fa-ban"></em>&nbsp;Cancelar</button>
-            </div>
-          </div>
         </div>
       </form>
+    </div>
+    <div class="box-footer">
+      <button class="btn btn-primary pull-right" (click)="onClickFormSubmit()" style="margin-left: 15px;"><em
+          class="fa fa-save"></em>&nbsp;Salvar</button>
+      <button class="btn btn-danger pull-right" (click)="onClickCancelar()"><em
+          class="fa fa-ban"></em>&nbsp;Cancelar</button>
     </div>
   </div>
   <div *ngIf="dados?.content?.length > 0" class="box box-primary">
@@ -44,7 +42,8 @@
         <table id="example2" class="table table-bordered table-hover">
           <thead>
             <tr>
-              <th style="cursor: pointer" (click)="onClickOrderBy('descricao')">Descrição</th>
+              <th style="cursor: pointer" (click)="onClickOrderBy('descricao')"><em
+                  [class]="getIconOrderBy('descricao')"></em>&nbsp;Descrição</th>
               <th>Opção</th>
             </tr>
           </thead>

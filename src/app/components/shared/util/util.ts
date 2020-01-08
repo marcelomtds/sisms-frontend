@@ -100,6 +100,8 @@ export default class Util {
                 case 11: return 'Novembro';
                 case 12: return 'Dezembro';
             }
+        } else {
+            return null;
         }
     }
 

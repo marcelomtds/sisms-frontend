@@ -7,12 +7,13 @@ import { Profissao } from '../../model/model/profissao.model';
 import Page from '../../pageable/page';
 import { MessageService } from '../../services/message.service';
 import { ProfissaoService } from '../../services/profissao.service';
+import { IActionOrderBy } from '../../page-order-by/iaction-orderby';
 
 @Component({
   selector: 'app-modal-gerenciar-profissao',
   templateUrl: './modal-gerenciar-profissao.component.html'
 })
-export class ModalGerenciarProfissaoComponent implements OnInit {
+export class ModalGerenciarProfissaoComponent implements OnInit, IActionOrderBy {
 
   public dados = new Page<Array<Profissao>>();
   public form: FormGroup;
@@ -29,7 +30,13 @@ export class ModalGerenciarProfissaoComponent implements OnInit {
 
   public ngOnInit(): void {
     this.onCreateForm();
+    this.initFilterValue();
     this.searchByFilter();
+  }
+
+  private initFilterValue(): void {
+    this.filtro.orderBy = 'descricao';
+    this.filtro.direction = 'ASC';
   }
 
   private onCreateForm(): void {
@@ -95,9 +102,23 @@ export class ModalGerenciarProfissaoComponent implements OnInit {
 
   public onClickOrderBy(descricao: string): void {
     this.messageService.clearAllMessages();
-    this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    if (this.filtro.orderBy === descricao) {
+      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    } else {
+      this.filtro.direction = 'ASC';
+    }
     this.filtro.orderBy = descricao;
     this.searchByFilter();
+  }
+
+  public getIconOrderBy(param: string): string {
+    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-asc';
+    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-desc';
+    } else {
+      return 'fa fa-sort';
+    }
   }
 
 }

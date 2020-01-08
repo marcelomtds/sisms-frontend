@@ -17,12 +17,13 @@ import { LancamentoService } from 'src/app/components/shared/services/lancamento
 import { MessageService } from 'src/app/components/shared/services/message.service';
 import { PacoteService } from 'src/app/components/shared/services/pacote.service';
 import Util from 'src/app/components/shared/util/util';
+import { IActionOrderBy } from 'src/app/components/shared/page-order-by/iaction-orderby';
 
 @Component({
   selector: 'app-modal-gerenciar-lancamento-pacote',
   templateUrl: './modal-gerenciar-lancamento-pacote.component.html'
 })
-export class ModalGerenciarLancamentoPacoteComponent implements OnInit {
+export class ModalGerenciarLancamentoPacoteComponent implements OnInit, IActionOrderBy {
 
   public dados = new Page<Array<Lancamento>>();
   public form: FormGroup;

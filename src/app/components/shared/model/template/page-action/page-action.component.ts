@@ -23,8 +23,6 @@ export class PageActionComponent {
 
   onChangePageSize(): void {
     this.filtro.currentPage = 0;
-    this.filtro.orderBy = '';
-    this.filtro.direction = 'ASC';
     this.searchByFilter.emit();
   }
 

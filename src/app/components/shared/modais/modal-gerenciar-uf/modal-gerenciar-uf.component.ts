@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { Messages } from '../../message/messages';
-import { PageableFilter } from '../../pageable/filter.filter';
 import { UF } from '../../model/model/uf.model';
+import { IActionOrderBy } from '../../page-order-by/iaction-orderby';
+import { PageableFilter } from '../../pageable/filter.filter';
 import Page from '../../pageable/page';
-import { UfService } from '../../services/uf.service';
 import { MessageService } from '../../services/message.service';
+import { UfService } from '../../services/uf.service';
 
 @Component({
   selector: 'app-modal-gerenciar-uf',
   templateUrl: './modal-gerenciar-uf.component.html'
 })
-export class ModalGerenciarUfComponent implements OnInit {
+export class ModalGerenciarUfComponent implements OnInit, IActionOrderBy {
 
   public dados = new Page<Array<UF>>();
   public form: FormGroup;
@@ -30,7 +30,13 @@ export class ModalGerenciarUfComponent implements OnInit {
 
   public ngOnInit(): void {
     this.onCreateForm();
+    this.initFilterValue();
     this.searchByFilter();
+  }
+
+  private initFilterValue(): void {
+    this.filtro.orderBy = 'descricao';
+    this.filtro.direction = 'ASC';
   }
 
   private onCreateForm(): void {
@@ -96,9 +102,23 @@ export class ModalGerenciarUfComponent implements OnInit {
 
   public onClickOrderBy(descricao: string): void {
     this.messageService.clearAllMessages();
-    this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    if (this.filtro.orderBy === descricao) {
+      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    } else {
+      this.filtro.direction = 'ASC';
+    }
     this.filtro.orderBy = descricao;
     this.searchByFilter();
+  }
+
+  public getIconOrderBy(param: string): string {
+    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-asc';
+    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-desc';
+    } else {
+      return 'fa fa-sort';
+    }
   }
 
 }

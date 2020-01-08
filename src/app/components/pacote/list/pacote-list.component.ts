@@ -152,7 +152,11 @@ export class PacoteListComponent implements OnInit, IActionOrderBy {
 
   public onClickOrderBy(descricao: string): void {
     this.messageService.clearAllMessages();
-    this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    if (this.filtro.orderBy === descricao) {
+      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    } else {
+      this.filtro.direction = 'ASC';
+    }
     this.filtro.orderBy = descricao;
     this.searchByFilter();
   }

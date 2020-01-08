@@ -1,3 +1,33 @@
-<p>
-  home works!
-</p>
+<section class="content-header">
+  <h1>Home</h1>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Aniversariantes do Mês de {{ mes }} - Pacientes</h3>
+        </div>
+        <div class="box-body">
+          <div *ngFor="let paciente of pacientes" class="callout callout-success">
+            <h4>{{ paciente.nomeCompleto }} - {{ paciente.dataNascimento | idade }}</h4>
+            <p>{{ paciente.dataNascimento | date : 'dd/MM/yyyy' }}</p>
+          </div>
+          <p *ngIf="!pacientes.length">Nenhum paciente faz aniverário no mês de {{ mes }}.</p>
+        </div>
+      </div>
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Aniversariantes do Mês de {{ mes }} - Usuários</h3>
+        </div>
+        <div class="box-body">
+          <div *ngFor="let usuario of usuarios" class="callout callout-success">
+            <h4>{{ usuario.nomeCompleto }} - {{ usuario.dataNascimento | idade }}</h4>
+            <p>{{ usuario.dataNascimento | date : 'dd/MM/yyyy' }}</p>
+          </div>
+          <p *ngIf="!usuarios.length">Nenhum usuário faz aniverário no mês de {{ mes }}.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

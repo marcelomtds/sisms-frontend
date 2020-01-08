@@ -30,4 +30,8 @@ export class UsuarioService extends BaseService<Usuario, PacienteUsuarioFilter> 
     return this.http.put<Response<Usuario>>(`${this.apiBaseUrl}/updatePassword`, formValue);
   }
 
+  public findAllBirthdaysMonth(): Observable<Response<Array<Usuario>>> {
+    return this.http.get<Response<Array<Usuario>>>(`${this.apiBaseUrl}/findAllBirthdaysMonth`);
+  }
+
 }

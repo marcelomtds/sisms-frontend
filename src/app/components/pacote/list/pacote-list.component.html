@@ -52,7 +52,7 @@
                     <ng-template ng-option-tmp let-item="item">
                       {{ item.nomeCompleto }}
                       <br />
-                      <small>{{ item.cpf | cpf }}</small>
+                      <small>CPF: {{ item.cpf | cpf }}</small>
                     </ng-template>
                   </ng-select>
                 </div>
@@ -66,7 +66,7 @@
                     <ng-template ng-option-tmp let-item="item">
                       {{ item.nomeCompleto }}
                       <br />
-                      <small>{{ item.cpf | cpf }}</small>
+                      <small>CPF: {{ item.cpf | cpf }}</small>
                     </ng-template>
                   </ng-select>
                 </div>
@@ -83,7 +83,7 @@
 
         <div *ngIf="dados?.content?.length > 0" class="col-md-12" style="padding: 0px">
           <div class="box box-primary">
-            <div class="box-header">
+            <div class="box-header with-border">
               <div class="row">
                 <div class="col-xs-8">
                   <h3 class="box-title">Pacotes</h3>
@@ -96,15 +96,23 @@
                   <thead>
                     <tr>
                       <th>Opções</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')">Paciente</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')">Usuário</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('dataCriacao')">Data Criação</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('categoriaAtendimento.descricao')">Categoria
+                      <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
+                          [class]="getIconOrderBy('paciente.nomeCompleto')"></em>&nbsp;Paciente</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')"><em
+                          [class]="getIconOrderBy('usuario.nomeCompleto')"></em>&nbsp;Usuário</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('dataCriacao')"><em
+                          [class]="getIconOrderBy('dataCriacao')"></em>&nbsp;Data de Criação</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('categoriaAtendimento.descricao')"><em
+                          [class]="getIconOrderBy('categoriaAtendimento.descricao')"></em>&nbsp;Categoria
                         de Atendimento</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('valor')">Valor</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('numero')">Número</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('aberto')">Status</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('quantidadeAtendimentos')">Quantidade de
+                      <th style="cursor: pointer" (click)="onClickOrderBy('valor')"><em
+                          [class]="getIconOrderBy('valor')"></em>&nbsp;Valor</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('numero')"><em
+                          [class]="getIconOrderBy('numero')"></em>&nbsp;Número</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('aberto')"><em
+                          [class]="getIconOrderBy('aberto')"></em>&nbsp;Status</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('quantidadeAtendimentos')"><em
+                          [class]="getIconOrderBy('quantidadeAtendimentos')"></em>&nbsp;Quantidade de
                         Atendimentos</th>
                     </tr>
                   </thead>

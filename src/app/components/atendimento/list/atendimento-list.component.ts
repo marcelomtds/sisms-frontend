@@ -7,26 +7,27 @@ import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalVisualizarAtendimentoComponent } from 'src/app/components/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
 import { PerfilEnum } from 'src/app/components/shared/model/enum/perfil.enum';
 import { AtendimentoFilter } from 'src/app/components/shared/model/filter/atendimento.filter';
-import { PageableFilter } from 'src/app/components/shared/pageable/filter.filter';
 import { Atendimento } from 'src/app/components/shared/model/model/atendimento.model';
 import { CategoriaAtendimentoRouting } from 'src/app/components/shared/model/model/categoria-atendimento-routing.model';
-import { Response } from 'src/app/components/shared/pageable/response.model';
 import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
+import { PageableFilter } from 'src/app/components/shared/pageable/filter.filter';
+import { Response } from 'src/app/components/shared/pageable/response.model';
 import { MessageService } from 'src/app/components/shared/services/message.service';
-import Util from 'src/app/components/shared/util/util';
 import { UsuarioService } from 'src/app/components/shared/services/usuario.service';
-import { PacienteService } from '../../shared/services/paciente.service';
+import Util from 'src/app/components/shared/util/util';
 import { Paciente } from '../../shared/model/model/paciente.model';
 import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model';
+import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
 import Page from '../../shared/pageable/page';
-import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
 import { AtendimentoService } from '../../shared/services/atendimento.service';
+import { PacienteService } from '../../shared/services/paciente.service';
+import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
 
 @Component({
   selector: 'app-atendimento-list',
   templateUrl: './atendimento-list.component.html'
 })
-export class AtendimentoListComponent implements OnInit {
+export class AtendimentoListComponent implements OnInit, IActionOrderBy {
 
   public pacientes = new Array<Paciente>();
   public usuarios = new Array<Usuario>();
@@ -159,9 +160,23 @@ export class AtendimentoListComponent implements OnInit {
 
   public onClickOrderBy(descricao: string): void {
     this.messageService.clearAllMessages();
-    this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    if (this.filtro.orderBy === descricao) {
+      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
+    } else {
+      this.filtro.direction = 'ASC';
+    }
     this.filtro.orderBy = descricao;
     this.searchByFilter();
+  }
+
+  public getIconOrderBy(param: string): string {
+    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-asc';
+    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
+      return 'fa fa-sort-desc';
+    } else {
+      return 'fa fa-sort';
+    }
   }
 
 }

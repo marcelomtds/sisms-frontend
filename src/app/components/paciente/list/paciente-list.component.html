@@ -20,7 +20,7 @@
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
-                  <label for="nome">Nome</label>
+                  <label for="nome">Nome Completo</label>
                   <input type="text" trim="blur" class="form-control" maxlength="200" id="nome"
                     formControlName="nomeCompleto">
                 </div>
@@ -46,28 +46,28 @@
             <div class="row">
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                  <label for="celular">Celular</label>
+                  <label for="celular">Nº Tel. Celular</label>
                   <input type="text" [validation]="false" class="form-control" id="celular" formControlName="celular"
                     mask="(00) 00000-0000">
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                  <label for="celularRecado">Celular Recado</label>
+                  <label for="celularRecado">Nº Tel. Celular Recado</label>
                   <input type="text" [validation]="false" class="form-control" id="celularRecado"
                     formControlName="celularRecado" mask="(00) 00000-0000">
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                  <label for="residencial">Residencial</label>
+                  <label for="residencial">Nº Tel. Residencial</label>
                   <input type="text" [validation]="false" class="form-control" id="residencial"
                     formControlName="residencial" mask="(00) 0000-0000">
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                  <label for="comercial">Comercial</label>
+                  <label for="comercial">Nº Tel. Comercial</label>
                   <input type="text" [validation]="false" class="form-control" id="comercial"
                     formControlName="comercial" mask="(00) 0000-0000">
                 </div>
@@ -116,7 +116,7 @@
                   <tr>
                     <th>Opções</th>
                     <th style="cursor: pointer" (click)="onClickOrderBy('nomeCompleto')"><em
-                        [class]="getIconOrderBy('nomeCompleto')"></em>&nbsp;Nome</th>
+                        [class]="getIconOrderBy('nomeCompleto')"></em>&nbsp;Nome Completo</th>
                     <th style="cursor: pointer" (click)="onClickOrderBy('cpf')"><em
                         [class]="getIconOrderBy('cpf')"></em>&nbsp;CPF</th>
                     <th style="cursor: pointer" (click)="onClickOrderBy('dataNascimento')"><em
@@ -134,7 +134,7 @@
                     <td>
                       <button title="{{ paciente.ativo ? 'Inativar' : 'Ativar' }}"
                         (click)="onClickUpdateStatus(paciente)"
-                        class="btn btn-{{ paciente.ativo ? 'danger' : 'success' }} btn-left"><em
+                        class="btn btn-{{ paciente.ativo ? 'danger' : 'success' }}"><em
                           class="fa fa-{{ paciente.ativo ? 'ban' : 'check' }}"></em></button>
                       <button title="Visualizar" (click)="onClickOpenModalVisualizar(paciente)"
                         class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
