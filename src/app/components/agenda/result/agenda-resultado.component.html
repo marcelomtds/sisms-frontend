@@ -1,0 +1,53 @@
+<div *ngIf="dados?.length > 0" class="col-md-12" style="padding: 0px">
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <div class="row">
+        <div class="col-xs-8">
+          <h3 class="box-title">Resultado</h3>
+        </div>
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="table-roll">
+        <table id="example2" class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Opções</th>
+              <th>Horário Inicial</th>
+              <th>Horário Final</th>
+              <th>Paciente</th>
+              <th>Tipo de Atendimento</th>
+              <th>Categoria de Atendimento</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of getDados">
+              <td>
+                <button title="Editar" *ngIf="form.controls.id.value !== row.id" class="btn btn-primary"
+                  (click)="onClickEditar(row)"><em class="fa fa-pencil"></em></button>
+                <button title="Excluir" class="btn btn-danger {{ form.controls.id.value !== row.id ? 'btn-left' : '' }}"
+                  (click)="onClickExcluir(row.id)"><em class="fa fa-trash"></em></button>
+              </td>
+              <td>
+                {{ row.horarioInicio }}
+              </td>
+              <td>
+                {{ row.horarioFim }}
+              </td>
+              <td>
+                {{ row.pacienteNomeCompleto }}
+              </td>
+              <td>
+                {{ row.tipoAtendimentoDescricao }}
+              </td>
+              <td>
+                {{ row.categoriaAtendimentoDescricao }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<app-no-records *ngIf="!dados?.length"></app-no-records>
