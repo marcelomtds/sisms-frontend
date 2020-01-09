@@ -16,6 +16,6 @@ export enum Messages {
     MSG00023 = 'Existe algum arquivo com tamanho inválido. Tamanho aceito: até 10MB.',
     MSG00024 = 'É permitido adicionar no máximo 10 imagens.',
     MSG00025 = 'É permitido adicionar no máximo 10 campos de outra medida.',
-    MSG00026 = 'Este atendimento está em aberto.',
+    MSG00026 = 'Ocorreu um erro de comunicação com servidor. Contate o administrador do Sistema.',
     MSG00027 = 'Atendimento não encontrado.'
 }

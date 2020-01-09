@@ -708,7 +708,7 @@ a:focus {
   .sidebar-mini:not(.sidebar-mini-expand-feature).sidebar-collapse .sidebar-menu>li:hover>.treeview-menu {
     display: block !important;
     position: absolute;
-    width: 180px;
+    width: 225px;
     left: 50px
   }
 
@@ -723,7 +723,7 @@ a:focus {
     position: relative !important;
     float: right;
     width: auto !important;
-    left: 180px !important;
+    left: 230px !important;
     top: -22px !important;
     z-index: 900
   }
@@ -2025,7 +2025,8 @@ a:focus {
   display: inline-block;
   font-size: 18px;
   margin: 0;
-  line-height: 1
+  line-height: 1;
+  color: black;
 }
 
 .box-header>.fa,

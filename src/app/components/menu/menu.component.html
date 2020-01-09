@@ -1,6 +1,25 @@
 <aside class="main-sidebar" style="position: fixed;">
   <section class="sidebar" style="height: auto;">
     <ul class="sidebar-menu" data-widget="tree">
+      <li class="treeview" [routerLink]="[ '/' ]">
+        <a style="cursor: pointer;">
+          <em class="fa fa-home icon-size icon-item-menu"></em>
+          <span>Página Principal</span>
+        </a>
+      </li>
+      <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)" class="treeview">
+        <a style="cursor: pointer;">
+          <em class="fa fa-calendar icon-size icon-item-menu"></em>
+          <span>Agenda</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/agenda-list' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/agenda-form' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
+        </ul>
+      </li>
       <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)" class="treeview">
         <a style="cursor: pointer;">
           <em class="fa fa-users icon-size icon-item-menu"></em>

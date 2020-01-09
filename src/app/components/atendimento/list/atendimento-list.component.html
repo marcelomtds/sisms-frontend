@@ -95,8 +95,9 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                     <tr>
-                      <th>Alerta</th>
                       <th>Opções</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('aberto')"><em
+                          [class]="getIconOrderBy('aberto')"></em>&nbsp;Status</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
                           [class]="getIconOrderBy('paciente.nomeCompleto')"></em>&nbsp;Paciente</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')"><em
@@ -113,24 +114,18 @@
                           [class]="getIconOrderBy('pacote.numero')"></em>&nbsp;Número do Pacote</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('numero')"><em
                           [class]="getIconOrderBy('numero')"></em>&nbsp;Número da Sessão</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('aberto')"><em
-                          [class]="getIconOrderBy('aberto')"></em>&nbsp;Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let atendimento of dados?.content">
                       <td>
-                        <button *ngIf="atendimento.aberto" (click)="onClickSendMessageWarning()" title="Alerta"
-                          class="btn btn-warning"><em class="fa fa-warning"></em></button>
-                        <div *ngIf="!atendimento.aberto">
-                          {{ '-' }}
-                        </div>
-                      </td>
-                      <td>
                         <button title="Editar" (click)="onClickEditar(atendimento.id)" class="btn btn-primary"><em
                             class="fa fa-pencil"></em></button>
                         <button title="Visualizar" (click)="onClickOpenModalVisualizar(atendimento.id)"
                           class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
+                      </td>
+                      <td [ngStyle]="{'color': atendimento.aberto ? 'red' : 'green', 'font-weight': 'bold'}">
+                        {{ atendimento.aberto ? 'Em Aberto' : 'Encerrado' }}
                       </td>
                       <td>
                         {{ atendimento.pacienteNomeCompleto }}
@@ -158,9 +153,6 @@
                       </td>
                       <td>
                         {{ atendimento.numero}}
-                      </td>
-                      <td>
-                        {{ atendimento.aberto ? 'Em Aberto' : 'Encerrado' }}
                       </td>
                     </tr>
                   </tbody>

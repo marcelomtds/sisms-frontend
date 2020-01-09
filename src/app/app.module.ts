@@ -17,6 +17,8 @@ import { NgxUpperCaseDirectiveModule } from 'ngx-upper-case-directive';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
+import { AgendaFormComponent } from './components/agenda/form/agenda-form.component';
+import { AgendaListComponent } from './components/agenda/list/agenda-list.component';
 import { AtendimentoFormComponent } from './components/atendimento/form/atendimento-form.component';
 import { AtendimentoListComponent } from './components/atendimento/list/atendimento-list.component';
 import { AuthGuard } from './components/auth/auth.guard';
@@ -31,6 +33,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthInterceptor } from './components/interceptor/auth.interceptor';
 import { ServerErrorsInterceptor } from './components/interceptor/server-errors.interceptor';
+import { SpinnerInterceptor } from './components/interceptor/spinner.interceptor';
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { PacienteFormComponent } from './components/paciente/form/paciente-form.component';
@@ -59,7 +62,8 @@ import { TelefonePipe } from './components/shared/pipe/telefone.pipe';
 import { SharedService } from './components/shared/services/shared.service';
 import { UsuarioFormComponent } from './components/usuario/form/usuario-form.component';
 import { UsuarioListComponent } from './components/usuario/list/usuario-list.component';
-import { SpinnerInterceptor } from './components/interceptor/spinner.interceptor';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { AgendaResultadoComponent } from './components/agenda/result/agenda-resultado.component';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -75,6 +79,7 @@ registerLocaleData(localePt);
     NgSelectModule,
     NgxSpinnerModule,
     NgxCurrencyModule,
+    TabsModule.forRoot(),
     CarouselModule.forRoot(),
     ModalModule.forRoot(),
     NgxMaskModule.forRoot(),
@@ -128,6 +133,8 @@ registerLocaleData(localePt);
     LoginComponent,
     HomeComponent,
     UsuarioListComponent,
+    AgendaListComponent,
+    AgendaFormComponent,
     CpfPipe,
     CepPipe,
     IdadePipe,
@@ -160,7 +167,8 @@ registerLocaleData(localePt);
     NoRecordsComponent,
     MessageRequiredComponent,
     ModalGerenciarLancamentoSessaoComponent,
-    ModalGerenciarLancamentoPacoteComponent
+    ModalGerenciarLancamentoPacoteComponent,
+    AgendaResultadoComponent
   ],
 })
 export class AppModule { }

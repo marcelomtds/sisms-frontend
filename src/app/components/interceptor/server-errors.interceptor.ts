@@ -39,6 +39,9 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                         case 500:
                             this.messageService.sendMessageError(Messages.MSG00019);
                             break;
+                        case 0:
+                            this.messageService.sendMessageError(Messages.MSG00026);
+                            break;
                         default:
                             break;
                     }

@@ -122,11 +122,6 @@ export class AtendimentoListComponent implements OnInit, IActionOrderBy {
     this.searchByFilter();
   }
 
-  public onClickSendMessageWarning(): void {
-    this.messageService.clearAllMessages();
-    this.messageService.sendMessageWarning(Messages.MSG00026);
-  }
-
   public searchByFilter(): void {
     this.messageService.clearAllMessages();
     this.service.findByFilter(this.filtro).subscribe(response => {

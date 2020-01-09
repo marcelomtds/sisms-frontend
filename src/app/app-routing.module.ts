@@ -1,23 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
+import { AgendaFormComponent } from './components/agenda/form/agenda-form.component';
+import { AgendaListComponent } from './components/agenda/list/agenda-list.component';
 import { AtendimentoFormComponent } from './components/atendimento/form/atendimento-form.component';
 import { AtendimentoListComponent } from './components/atendimento/list/atendimento-list.component';
+import { AuthGuard } from './components/auth/auth.guard';
 import { ControleCaixaEntradaPacoteComponent } from './components/controle-caixa/form/entrada/pacote/controle-caixa-entrada-pacote.component';
 import { ControleCaixaEntradaSessaoComponent } from './components/controle-caixa/form/entrada/sessao/controle-caixa-entrada-sessao.component';
 import { ControleCaixaSaidaComponent } from './components/controle-caixa/form/saida/controle-caixa-saida.component';
 import { ControleCaixaListComponent } from './components/controle-caixa/list/controle-caixa-list.component';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
 import { PacienteFormComponent } from './components/paciente/form/paciente-form.component';
 import { PacienteListComponent } from './components/paciente/list/paciente-list.component';
 import { PacoteFormComponent } from './components/pacote/form/pacote-form.component';
 import { PacoteListComponent } from './components/pacote/list/pacote-list.component';
-import { AuthGuard } from './components/auth/auth.guard';
-import { LoginComponent } from './components/login/login.component';
-import { UsuarioFormComponent } from './components/usuario/form/usuario-form.component';
-import { UsuarioListComponent } from './components/usuario/list/usuario-list.component';
 import { AlterarSenhaComponent } from './components/password/alterar-senha.component';
 import { PerfilEnum } from './components/shared/model/enum/perfil.enum';
+import { UsuarioFormComponent } from './components/usuario/form/usuario-form.component';
+import { UsuarioListComponent } from './components/usuario/list/usuario-list.component';
 
 export const ROUTES: Routes = [
   {
@@ -32,6 +34,21 @@ export const ROUTES: Routes = [
   {
     path: 'acesso-negado',
     component: AcessoNegadoComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'agenda-list',
+    component: AgendaListComponent, data: { role: PerfilEnum.ADMINISTRADOR },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'agenda-form',
+    component: AgendaFormComponent, data: { role: PerfilEnum.ADMINISTRADOR },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'agenda-form/:id',
+    component: AgendaFormComponent, data: { role: PerfilEnum.ADMINISTRADOR },
     canActivate: [AuthGuard]
   },
   {
