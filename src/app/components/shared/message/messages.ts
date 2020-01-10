@@ -17,5 +17,7 @@ export enum Messages {
     MSG00024 = 'É permitido adicionar no máximo 10 imagens.',
     MSG00025 = 'É permitido adicionar no máximo 10 campos de outra medida.',
     MSG00026 = 'Ocorreu um erro de comunicação com servidor. Contate o administrador do Sistema.',
-    MSG00027 = 'Atendimento não encontrado.'
+    MSG00027 = 'Atendimento não encontrado.',
+    MSG00062 = 'O horário inicial é inválido.',
+    MSG00063 = 'O horário final é inválido.'
 }

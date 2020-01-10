@@ -5,5 +5,5 @@ export enum DiaSemanaEnum {
     QUINTA_FEIRA = 4,
     SEXTA_FEIRA = 5,
     SABADO = 6,
-    DOMINGO = 7
+    DOMINGO = 0
 }

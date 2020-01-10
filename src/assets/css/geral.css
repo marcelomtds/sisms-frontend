@@ -7,7 +7,7 @@ ng-select.ng-invalid:not(form) {
   border-left: none;
 }
 
-ng-select.ng-disable:not(form)  {
+ng-select.ng-disable:not(form) {
   background-color: rgb(136, 136, 139);
 }
 
@@ -19,6 +19,16 @@ ng-select.ng-disable:not(form)  {
   color: #BD362F;
   margin-top: 5px;
   font-size: 13px;
+}
+
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
+.nav-tabs>li.active>a:hover {
+  color: black;
+  cursor: default;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
 }
 
 td {

@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalService } from 'ngx-bootstrap';
 import { Messages } from '../../shared/message/messages';
+import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { DiaSemanaEnum } from '../../shared/model/enum/dia-semana.enum';
 import { Agenda } from '../../shared/model/model/agenda.model';
 import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
 import { DiaSemana } from '../../shared/model/model/dia-semana.model';
 import { Paciente } from '../../shared/model/model/paciente.model';
+import { Tabset } from '../../shared/model/model/tabset.model';
 import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model';
 import { AgendaService } from '../../shared/services/agenda.service';
 import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
@@ -12,6 +16,7 @@ import { DiaSemanaService } from '../../shared/services/dia-semana.service';
 import { MessageService } from '../../shared/services/message.service';
 import { PacienteService } from '../../shared/services/paciente.service';
 import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
+import Util from '../../shared/util/util';
 
 @Component({
   selector: 'app-agenda-form',
@@ -26,8 +31,36 @@ export class AgendaFormComponent implements OnInit {
   public diasSemana = new Array<DiaSemana>();
   public form: FormGroup;
   public isInvalidForm = false;
-  
-  //public readonly segundaFeira = DiaSemanaEnum.
+  public tabset: Tabset[] = [
+    {
+      titulo: 'Segunda - Feira',
+      diaSemanaId: DiaSemanaEnum.SEGUNDA_FEIRA
+    },
+    {
+      titulo: 'Terça - Feira',
+      diaSemanaId: DiaSemanaEnum.TERCA_FEIRA
+    },
+    {
+      titulo: 'Quarta - Feira',
+      diaSemanaId: DiaSemanaEnum.QUARTA_FEIRA
+    },
+    {
+      titulo: 'Quinta - Feira',
+      diaSemanaId: DiaSemanaEnum.QUINTA_FEIRA
+    },
+    {
+      titulo: 'Sexta - Feira',
+      diaSemanaId: DiaSemanaEnum.SEXTA_FEIRA
+    },
+    {
+      titulo: 'Sábado',
+      diaSemanaId: DiaSemanaEnum.SABADO
+    },
+    {
+      titulo: 'Domingo',
+      diaSemanaId: DiaSemanaEnum.DOMINGO
+    },
+  ];
 
   public constructor(
     private formBuilder: FormBuilder,
@@ -36,6 +69,7 @@ export class AgendaFormComponent implements OnInit {
     private pacienteService: PacienteService,
     private categoriaAtendimentoService: CategoriaAtendimentoService,
     private tipoAtendimentoService: TipoAtendimentoService,
+    private modalService: BsModalService,
     private diaSemanaService: DiaSemanaService
   ) { }
 
@@ -43,6 +77,10 @@ export class AgendaFormComponent implements OnInit {
     this.onCreateForm();
     this.onLoadCombos();
     this.findAll();
+  }
+
+  public getDados(diaSemana: number): Array<Agenda> {
+    return this.dados.filter(x => x.diaSemanaId === diaSemana);
   }
 
   private findAll(): void {
@@ -61,6 +99,21 @@ export class AgendaFormComponent implements OnInit {
       pacienteId: row.pacienteId,
       tipoAtendimentoId: row.tipoAtendimentoId,
       categoriaAtendimentoId: row.categoriaAtendimentoId
+    });
+  }
+
+  public onClickExcluir(id: number): void {
+    this.messageService.clearAllMessages();
+    const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
+    modalRef.content.titulo = 'Confirmação de Exclusão';
+    modalRef.content.corpo = 'Deseja excluir esse registro?';
+    modalRef.content.onClose.subscribe((result: boolean) => {
+      if (result) {
+        this.service.delete(id).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.onUpdate();
+        });
+      }
     });
   }
 
@@ -94,6 +147,14 @@ export class AgendaFormComponent implements OnInit {
   public onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
+      if (!Util.isHorarioValido(this.form.controls.horarioInicio.value)) {
+        this.messageService.sendMessageError(Messages.MSG00062);
+        return;
+      }
+      if (!Util.isHorarioValido(this.form.controls.horarioFim.value)) {
+        this.messageService.sendMessageError(Messages.MSG00063);
+        return;
+      }
       const formValue: Agenda = {
         ...this.form.value
       };

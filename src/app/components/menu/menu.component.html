@@ -16,8 +16,7 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a [routerLink]="[ '/agenda-list' ]"><em class="fa fa-search"></em>Buscar</a></li>
-          <li><a [routerLink]="[ '/agenda-form' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
+          <li><a [routerLink]="[ '/agenda-form' ]"><em class="fa fa-pencil"></em>Gerenciar</a></li>
         </ul>
       </li>
       <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)" class="treeview">
@@ -138,9 +137,9 @@
         <ul class="treeview-menu">
           <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a
               [routerLink]="[ '/controle-caixa-list' ]"><em class="fa fa-search"></em>Buscar</a></li>
-          <li><a [routerLink]="[ '/controle-caixa-form-entrada-sessao' ]"><em class="fa fa-plus"></em>Gerenciar Entrada
+          <li><a [routerLink]="[ '/controle-caixa-form-entrada-sessao' ]"><em class="fa fa-pencil"></em>Gerenciar Entrada
               - Sessão</a></li>
-          <li><a [routerLink]="[ '/controle-caixa-form-entrada-pacote' ]"><em class="fa fa-plus"></em>Gerenciar Entrada
+          <li><a [routerLink]="[ '/controle-caixa-form-entrada-pacote' ]"><em class="fa fa-pencil"></em>Gerenciar Entrada
               - Pacote</a></li>
           <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a
               [routerLink]="[ '/controle-caixa-form-saida' ]"><em class="fa fa-plus"></em>Cadastrar Saída</a></li>

@@ -177,7 +177,8 @@ h6,
 }
 
 a {
-  color: #3c8dbc
+  color: #3c8dbc;
+  font-weight: bold;
 }
 
 a:hover,
@@ -1079,7 +1080,6 @@ a:focus {
 .navbar-nav>.notifications-menu>.dropdown-menu,
 .navbar-nav>.messages-menu>.dropdown-menu,
 .navbar-nav>.tasks-menu>.dropdown-menu {
-  width: 280px;
   padding: 0 0 0 0;
   margin: 0;
   top: 100%
@@ -1140,7 +1140,6 @@ a:focus {
 .navbar-nav>.notifications-menu>.dropdown-menu>li .menu,
 .navbar-nav>.messages-menu>.dropdown-menu>li .menu,
 .navbar-nav>.tasks-menu>.dropdown-menu>li .menu {
-  max-height: 200px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1779,7 +1778,10 @@ a:focus {
 }
 
 .box.box-primary {
-  border-top-color: #3c8dbc
+  border-top-color: #3c8dbc;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 .box.box-info {

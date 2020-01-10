@@ -1,5 +1,5 @@
-<div *ngIf="dados?.length > 0" class="col-md-12" style="padding: 0px">
-  <div class="box box-primary">
+<div *ngIf="dados.length" class="col-md-12" style="padding: 0px">
+  <div class="box box-primary" style="border-top: 0px;">
     <div class="box-header with-border">
       <div class="row">
         <div class="col-xs-8">
@@ -21,7 +21,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of getDados">
+            <tr *ngFor="let row of dados">
               <td>
                 <button title="Editar" *ngIf="form.controls.id.value !== row.id" class="btn btn-primary"
                   (click)="onClickEditar(row)"><em class="fa fa-pencil"></em></button>
@@ -29,10 +29,10 @@
                   (click)="onClickExcluir(row.id)"><em class="fa fa-trash"></em></button>
               </td>
               <td>
-                {{ row.horarioInicio }}
+                {{ row.horarioInicio | horario }}
               </td>
               <td>
-                {{ row.horarioFim }}
+                {{ row.horarioFim | horario }}
               </td>
               <td>
                 {{ row.pacienteNomeCompleto }}

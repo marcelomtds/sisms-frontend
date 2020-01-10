@@ -56,6 +56,10 @@ export default class Util {
         return moment(data, 'DDMMYYYY', true).isValid();
     }
 
+    static isHorarioValido(horario: string): boolean {
+        return new RegExp(/^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/).test(horario);
+    }
+
     static isDataHoraValida(data: string): boolean {
         return moment(data, 'DDMMYYYYHHmm', true).isValid();
     }

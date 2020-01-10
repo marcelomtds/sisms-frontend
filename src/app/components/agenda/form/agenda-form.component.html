@@ -86,18 +86,12 @@
               class="fa fa-save"></em>&nbsp;Salvar</button>
         </div>
       </div>
-
       <div>
         <tabset>
-          <tab heading="Segunda - Feira" id="tab1">
-            <app-agenda-resultado [diaSemana]="1" [dados]="dados" [form]="form" (editEmitter)="onClickEditar($event)"></app-agenda-resultado>
+          <tab *ngFor="let item of tabset" heading="{{ item.titulo }}" id="tab1">
+            <app-agenda-resultado [dados]="getDados(item.diaSemanaId)" [form]="form"
+              (editEmitter)="onClickEditar($event)" (removeEmitter)="onClickExcluir($event)"></app-agenda-resultado>
           </tab>
-          <tab heading="Terça - Feira" id="tab1">Basic content</tab>
-          <tab heading="Quarta - Feira" id="tab1">Basic content</tab>
-          <tab heading="Quinta - Feira" id="tab1">Basic content</tab>
-          <tab heading="Sexta - Feira" id="tab1">Basic content</tab>
-          <tab heading="Sábado" id="tab1">Basic content</tab>
-          <tab heading="Domingo" id="tab1">Basic content</tab>
         </tabset>
       </div>
 

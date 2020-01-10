@@ -10,15 +10,15 @@ export class AgendaResultadoComponent {
 
   @Input() dados: Array<Agenda>;
   @Input() form: FormGroup;
-  @Input() diaSemana: number;
   @Output() editEmitter = new EventEmitter<Agenda>();
+  @Output() removeEmitter = new EventEmitter<number>();
 
   public onClickEditar(value: Agenda): void {
     this.editEmitter.emit(value);
   }
 
-  public get getDados(): Array<Agenda> {
-    return this.dados.filter(x => x.diaSemanaId === this.diaSemana);
+  public onClickExcluir(value: number): void {
+    this.removeEmitter.emit(value);
   }
 
 }

@@ -9,6 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { InputTrimModule } from 'ng2-trim-directive';
 import { ModalModule } from 'ngx-bootstrap';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { NgxMaskModule } from 'ngx-mask';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -18,7 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
 import { AgendaFormComponent } from './components/agenda/form/agenda-form.component';
-import { AgendaListComponent } from './components/agenda/list/agenda-list.component';
+import { AgendaResultadoComponent } from './components/agenda/result/agenda-resultado.component';
 import { AtendimentoFormComponent } from './components/atendimento/form/atendimento-form.component';
 import { AtendimentoListComponent } from './components/atendimento/list/atendimento-list.component';
 import { AuthGuard } from './components/auth/auth.guard';
@@ -57,13 +58,12 @@ import { NoRecordsComponent } from './components/shared/model/template/no-record
 import { PageActionComponent } from './components/shared/model/template/page-action/page-action.component';
 import { CepPipe } from './components/shared/pipe/cep.pipe';
 import { CpfPipe } from './components/shared/pipe/cpf.pipe';
+import { HorarioPipe } from './components/shared/pipe/horario.pipe';
 import { IdadePipe } from './components/shared/pipe/idade.pipe';
 import { TelefonePipe } from './components/shared/pipe/telefone.pipe';
 import { SharedService } from './components/shared/services/shared.service';
 import { UsuarioFormComponent } from './components/usuario/form/usuario-form.component';
 import { UsuarioListComponent } from './components/usuario/list/usuario-list.component';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { AgendaResultadoComponent } from './components/agenda/result/agenda-resultado.component';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -133,12 +133,12 @@ registerLocaleData(localePt);
     LoginComponent,
     HomeComponent,
     UsuarioListComponent,
-    AgendaListComponent,
     AgendaFormComponent,
     CpfPipe,
     CepPipe,
     IdadePipe,
     TelefonePipe,
+    HorarioPipe,
     ModalGerenciarProfissaoComponent,
     UsuarioFormComponent,
     ModalConfirmacaoComponent,

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
 import { AgendaFormComponent } from './components/agenda/form/agenda-form.component';
-import { AgendaListComponent } from './components/agenda/list/agenda-list.component';
 import { AtendimentoFormComponent } from './components/atendimento/form/atendimento-form.component';
 import { AtendimentoListComponent } from './components/atendimento/list/atendimento-list.component';
 import { AuthGuard } from './components/auth/auth.guard';
@@ -37,17 +36,7 @@ export const ROUTES: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'agenda-list',
-    component: AgendaListComponent, data: { role: PerfilEnum.ADMINISTRADOR },
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'agenda-form',
-    component: AgendaFormComponent, data: { role: PerfilEnum.ADMINISTRADOR },
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'agenda-form/:id',
     component: AgendaFormComponent, data: { role: PerfilEnum.ADMINISTRADOR },
     canActivate: [AuthGuard]
   },
