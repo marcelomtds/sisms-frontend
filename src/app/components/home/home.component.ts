@@ -19,7 +19,6 @@ export class HomeComponent implements OnInit {
   public dadosAgenda = new Array<Agenda>();
   public mes: string;
   public interval;
-  public date: Date;
 
   public constructor(
     private pacienteService: PacienteService,
@@ -27,7 +26,6 @@ export class HomeComponent implements OnInit {
     private usuarioService: UsuarioService
   ) {
     this.interval = setInterval(() => {
-      this.date = new Date();
     }, 1000);
   }
 
