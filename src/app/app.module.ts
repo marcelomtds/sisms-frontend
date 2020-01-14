@@ -64,6 +64,9 @@ import { TelefonePipe } from './components/shared/pipe/telefone.pipe';
 import { SharedService } from './components/shared/services/shared.service';
 import { UsuarioFormComponent } from './components/usuario/form/usuario-form.component';
 import { UsuarioListComponent } from './components/usuario/list/usuario-list.component';
+import { ExameFormComponent } from './components/exame/form/exame-form.component';
+import { ExameListComponent } from './components/exame/list/exame-list.component';
+import { ModalGerenciarCategoriaExameComponent } from './components/shared/modais/modal-gerenciar-categoria-exame/modal-gerenciar-categoria-exame.component';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -123,7 +126,8 @@ registerLocaleData(localePt);
     ModalGerenciarUfComponent,
     ModalGerenciarLocalidadeComponent,
     ModalVisualizarPacienteUsuarioComponent,
-    ModalVisualizarPacoteComponent
+    ModalVisualizarPacoteComponent,
+    ModalGerenciarCategoriaExameComponent
   ],
   declarations: [
     AppComponent,
@@ -168,7 +172,10 @@ registerLocaleData(localePt);
     MessageRequiredComponent,
     ModalGerenciarLancamentoSessaoComponent,
     ModalGerenciarLancamentoPacoteComponent,
-    AgendaResultadoComponent
+    AgendaResultadoComponent,
+    ExameFormComponent,
+    ExameListComponent,
+    ModalGerenciarCategoriaExameComponent
   ],
 })
 export class AppModule { }

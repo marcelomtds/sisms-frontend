@@ -181,4 +181,8 @@ export class AgendaFormComponent implements OnInit {
     this.isInvalidForm = false;
   }
 
+  public onClickCancel(): void {
+    this.onUpdate();
+  }
+
 }

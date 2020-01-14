@@ -51,7 +51,7 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
     }
 
     private showMessages(response: Response<any>): void {
-        if (response && response.errors.length) {
+        if (response && response.errors && response.errors.length) {
             this.messageService.sendMessageError(response.errors[0]);
         } else if (response && response.message) {
             this.messageService.sendMessageError(response.message);

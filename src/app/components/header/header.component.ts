@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { AuthGuard } from '../auth/auth.guard';
+import { ModalGerenciarCategoriaExameComponent } from '../shared/modais/modal-gerenciar-categoria-exame/modal-gerenciar-categoria-exame.component';
 import { ModalGerenciarCategoriaLancamentoComponent } from '../shared/modais/modal-gerenciar-categoria-lancamento/modal-gerenciar-categoria-lancamento.component';
 import { ModalGerenciarLocalidadeComponent } from '../shared/modais/modal-gerenciar-localidade/modal-gerenciar-localidade.component';
 import { ModalGerenciarMedidaComponent } from '../shared/modais/modal-gerenciar-medidas/modal-gerenciar-medida.component';
@@ -51,6 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       case 'localidade': return ModalGerenciarLocalidadeComponent;
       case 'medida': return ModalGerenciarMedidaComponent;
       case 'categoriaLancamento': return ModalGerenciarCategoriaLancamentoComponent;
+      case 'categoriaExame': return ModalGerenciarCategoriaExameComponent;
       default: return;
     }
   }

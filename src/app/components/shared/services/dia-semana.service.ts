@@ -11,4 +11,5 @@ export class DiaSemanaService extends BaseService<DiaSemana, {}> {
   public constructor(http: HttpClient) {
     super(http, '/api/diaSemana');
   }
+  
 }

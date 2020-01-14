@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Paciente } from '../shared/model/model/paciente.model';
-import { PacienteService } from '../shared/services/paciente.service';
-import Util from '../shared/util/util';
-import { UsuarioService } from '../shared/services/usuario.service';
-import { Usuario } from '../shared/model/model/usuario.model';
-import { Agenda } from '../shared/model/model/agenda.model';
-import { AgendaService } from '../shared/services/agenda.service';
 import * as moment from 'moment';
+import { Agenda } from '../shared/model/model/agenda.model';
+import { Paciente } from '../shared/model/model/paciente.model';
+import { Usuario } from '../shared/model/model/usuario.model';
+import { AgendaService } from '../shared/services/agenda.service';
+import { PacienteService } from '../shared/services/paciente.service';
+import { UsuarioService } from '../shared/services/usuario.service';
+import Util from '../shared/util/util';
 
 @Component({
   selector: 'app-home',
@@ -68,9 +68,9 @@ export class HomeComponent implements OnInit {
     if (this.isAfter(horarioInicial, horarioFinal)) {
       return 'Encerrado';
     } else if (this.isBetween(horarioInicial, horarioFinal)) {
-      return 'Em Atendimento';
+      return 'Em Atedimento';
     } else {
-      return 'À Atender';
+      return 'Não Iniciado';
     }
   }
 
@@ -82,6 +82,10 @@ export class HomeComponent implements OnInit {
   private isAfter(horarioInicial: string, horarioFinal: string): boolean {
     return moment().isAfter(`${moment(new Date()).format('YYYY-MM-DD')}T${horarioInicial}`)
       && moment().isAfter(`${moment(new Date()).format('YYYY-MM-DD')}T${horarioFinal}`);
+  }
+
+  public get getWeekDay(): string {
+    return Util.diaSemana(new Date().getDay());
   }
 
 }
