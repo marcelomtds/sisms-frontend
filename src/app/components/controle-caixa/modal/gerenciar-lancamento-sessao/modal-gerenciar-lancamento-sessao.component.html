@@ -166,7 +166,7 @@
               <td>
                 <ng-container *ngIf="isAdministrador || lancamento.usuarioId === currentUser.id; else hidden">
                   <button title="Editar" *ngIf="form.controls.id.value !== lancamento.id" class="btn btn-primary"
-                    (click)="onClickEditar(lancamento)"><em class="fa fa-pencil"></em></button>
+                    (click)="onClickEditar(lancamento.id)"><em class="fa fa-pencil"></em></button>
                   <button title="Excluir"
                     class="btn btn-danger {{ form.controls.id.value !== lancamento.id ? 'btn-left' : '' }}"
                     (click)="onClickExcluir(lancamento.id)"><em class="fa fa-trash"></em></button>

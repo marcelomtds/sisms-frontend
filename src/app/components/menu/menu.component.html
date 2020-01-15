@@ -1,4 +1,4 @@
-<aside class="main-sidebar" style="position: fixed;">
+<aside class="main-sidebar">
   <section class="sidebar" style="height: auto;">
     <ul class="sidebar-menu" data-widget="tree">
       <li class="treeview" [routerLink]="[ '/' ]">
@@ -114,6 +114,20 @@
       </li>
       <li class="treeview">
         <a href="#">
+          <em class="fa fa-plus-square icon-item-menu"></em>
+          <span>Exame</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/exame-list' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/exame-form' ]"><em class="fa fa-plus"></em>Cadastrar</a>
+          </li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
           <em class="fa fa-suitcase icon-item-menu"></em>
           <span>Pacote</span>
           <span class="pull-right-container">
@@ -137,9 +151,11 @@
         <ul class="treeview-menu">
           <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a
               [routerLink]="[ '/controle-caixa-list' ]"><em class="fa fa-search"></em>Buscar</a></li>
-          <li><a [routerLink]="[ '/controle-caixa-form-entrada-sessao' ]"><em class="fa fa-pencil"></em>Gerenciar Entrada
+          <li><a [routerLink]="[ '/controle-caixa-form-entrada-sessao' ]"><em class="fa fa-pencil"></em>Gerenciar
+              Entrada
               - Sessão</a></li>
-          <li><a [routerLink]="[ '/controle-caixa-form-entrada-pacote' ]"><em class="fa fa-pencil"></em>Gerenciar Entrada
+          <li><a [routerLink]="[ '/controle-caixa-form-entrada-pacote' ]"><em class="fa fa-pencil"></em>Gerenciar
+              Entrada
               - Pacote</a></li>
           <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a
               [routerLink]="[ '/controle-caixa-form-saida' ]"><em class="fa fa-plus"></em>Cadastrar Saída</a></li>

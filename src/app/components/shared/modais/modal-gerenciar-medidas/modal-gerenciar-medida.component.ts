@@ -77,9 +77,11 @@ export class ModalGerenciarMedidaComponent implements OnInit, IActionOrderBy {
     this.isInvalidForm = false;
   }
 
-  public onClickEditar(outraMedida: OutraMedida): void {
+  public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.form.patchValue(outraMedida);
+    this.service.findById(id).subscribe(response => {
+      this.form.patchValue(response.result);
+    });
   }
 
   public searchByFilter(): void {

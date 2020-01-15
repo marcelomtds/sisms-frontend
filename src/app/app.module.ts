@@ -29,6 +29,8 @@ import { ControleCaixaSaidaComponent } from './components/controle-caixa/form/sa
 import { ControleCaixaListComponent } from './components/controle-caixa/list/controle-caixa-list.component';
 import { ModalGerenciarLancamentoPacoteComponent } from './components/controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
 import { ModalGerenciarLancamentoSessaoComponent } from './components/controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
+import { ExameFormComponent } from './components/exame/form/exame-form.component';
+import { ExameListComponent } from './components/exame/list/exame-list.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
@@ -45,12 +47,14 @@ import { AlterarSenhaComponent } from './components/password/alterar-senha.compo
 import { MessageRequiredComponent } from './components/shared/message-required/message-required.component';
 import { ModalConfirmacaoComponent } from './components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalCriarPacoteComponent } from './components/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
+import { ModalGerenciarCategoriaExameComponent } from './components/shared/modais/modal-gerenciar-categoria-exame/modal-gerenciar-categoria-exame.component';
 import { ModalGerenciarCategoriaLancamentoComponent } from './components/shared/modais/modal-gerenciar-categoria-lancamento/modal-gerenciar-categoria-lancamento.component';
 import { ModalGerenciarLocalidadeComponent } from './components/shared/modais/modal-gerenciar-localidade/modal-gerenciar-localidade.component';
 import { ModalGerenciarMedidaComponent } from './components/shared/modais/modal-gerenciar-medidas/modal-gerenciar-medida.component';
 import { ModalGerenciarProfissaoComponent } from './components/shared/modais/modal-gerenciar-profissao/modal-gerenciar-profissao.component';
 import { ModalGerenciarUfComponent } from './components/shared/modais/modal-gerenciar-uf/modal-gerenciar-uf.component';
 import { ModalVisualizarAtendimentoComponent } from './components/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
+import { ModalVisualizarExameComponent } from './components/shared/modais/modal-visualizar-exame/modal-visualizar-exame.component';
 import { ModalVisualizarImagensComponent } from './components/shared/modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
 import { ModalVisualizarPacienteUsuarioComponent } from './components/shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
 import { ModalVisualizarPacoteComponent } from './components/shared/modais/modal-visualizar-pacote/modal-visualizar-pacote.component';
@@ -64,9 +68,6 @@ import { TelefonePipe } from './components/shared/pipe/telefone.pipe';
 import { SharedService } from './components/shared/services/shared.service';
 import { UsuarioFormComponent } from './components/usuario/form/usuario-form.component';
 import { UsuarioListComponent } from './components/usuario/list/usuario-list.component';
-import { ExameFormComponent } from './components/exame/form/exame-form.component';
-import { ExameListComponent } from './components/exame/list/exame-list.component';
-import { ModalGerenciarCategoriaExameComponent } from './components/shared/modais/modal-gerenciar-categoria-exame/modal-gerenciar-categoria-exame.component';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -127,7 +128,8 @@ registerLocaleData(localePt);
     ModalGerenciarLocalidadeComponent,
     ModalVisualizarPacienteUsuarioComponent,
     ModalVisualizarPacoteComponent,
-    ModalGerenciarCategoriaExameComponent
+    ModalGerenciarCategoriaExameComponent,
+    ModalVisualizarExameComponent
   ],
   declarations: [
     AppComponent,
@@ -175,7 +177,8 @@ registerLocaleData(localePt);
     AgendaResultadoComponent,
     ExameFormComponent,
     ExameListComponent,
-    ModalGerenciarCategoriaExameComponent
+    ModalGerenciarCategoriaExameComponent,
+    ModalVisualizarExameComponent
   ],
 })
 export class AppModule { }

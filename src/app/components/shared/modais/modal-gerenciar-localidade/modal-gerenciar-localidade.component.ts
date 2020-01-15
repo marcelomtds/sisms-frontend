@@ -89,9 +89,11 @@ export class ModalGerenciarLocalidadeComponent implements OnInit, IActionOrderBy
     this.isInvalidForm = false;
   }
 
-  public onClickEditar(localidade: Localidade): void {
+  public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.form.patchValue(localidade);
+    this.service.findById(id).subscribe(response => {
+      this.form.patchValue(response.result);
+    });
   }
 
   public searchByFilter(): void {

@@ -78,9 +78,11 @@ export class ModalGerenciarCategoriaLancamentoComponent implements OnInit, IActi
     this.isInvalidForm = false;
   }
 
-  public onClickEditar(categoriaLancamento: CategoriaLancamento): void {
+  public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.form.patchValue(categoriaLancamento);
+    this.service.findById(id).subscribe(response => {
+      this.form.patchValue(response.result);
+    });
   }
 
   public searchByFilter(): void {

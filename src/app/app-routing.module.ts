@@ -9,6 +9,8 @@ import { ControleCaixaEntradaPacoteComponent } from './components/controle-caixa
 import { ControleCaixaEntradaSessaoComponent } from './components/controle-caixa/form/entrada/sessao/controle-caixa-entrada-sessao.component';
 import { ControleCaixaSaidaComponent } from './components/controle-caixa/form/saida/controle-caixa-saida.component';
 import { ControleCaixaListComponent } from './components/controle-caixa/list/controle-caixa-list.component';
+import { ExameFormComponent } from './components/exame/form/exame-form.component';
+import { ExameListComponent } from './components/exame/list/exame-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { PacienteFormComponent } from './components/paciente/form/paciente-form.component';
@@ -265,6 +267,21 @@ export const ROUTES: Routes = [
   {
     path: 'alterar-senha',
     component: AlterarSenhaComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'exame-list',
+    component: ExameListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'exame-form',
+    component: ExameFormComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'exame-form/:id',
+    component: ExameFormComponent,
     canActivate: [AuthGuard]
   },
   {

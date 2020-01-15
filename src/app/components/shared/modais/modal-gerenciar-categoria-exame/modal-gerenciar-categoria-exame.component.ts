@@ -77,9 +77,11 @@ export class ModalGerenciarCategoriaExameComponent implements OnInit, IActionOrd
     this.isInvalidForm = false;
   }
 
-  public onClickEditar(categoriaExame: CategoriaExame): void {
+  public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.form.patchValue(categoriaExame);
+    this.service.findById(id).subscribe(response => {
+      this.form.patchValue(response.result);
+    });
   }
 
   public searchByFilter(): void {

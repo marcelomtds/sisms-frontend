@@ -77,9 +77,11 @@ export class ModalGerenciarUfComponent implements OnInit, IActionOrderBy {
     this.isInvalidForm = false;
   }
 
-  public onClickEditar(uf: UF): void {
+  public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.form.patchValue(uf);
+    this.service.findById(id).subscribe(response => {
+      this.form.patchValue(response.result);
+    });
   }
 
   public searchByFilter(): void {

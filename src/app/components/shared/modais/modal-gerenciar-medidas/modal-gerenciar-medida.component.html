@@ -5,7 +5,7 @@
   </div>
   <div class="box box-primary">
     <div class="box-header with-border">
-      <h3 class="box-title">{{ form.controls.id.value ? 'Alterar' : 'Cadastrar' }}</h3>
+      <h3 class="box-title">{{ form.controls.id.value ? 'Alterar' : 'Cadastrar' }} Outra Medida</h3>
     </div>
     <div class="box-body">
       <form [formGroup]="form">
@@ -53,8 +53,12 @@
                 {{ outraMedida.descricao }}
               </td>
               <td>
-                <button title="Editar" *ngIf="form.controls.id.value !== outraMedida.id" class="btn btn-primary"
-                  (click)="onClickEditar(outraMedida)"><em class="fa fa-pencil"></em>&nbsp;</button>
+                <button title="Editar" *ngIf="form.controls.id.value !== outraMedida.id; else hidden"
+                  class="btn btn-primary" (click)="onClickEditar(outraMedida.id)"><em
+                    class="fa fa-pencil"></em>&nbsp;</button>
+                <ng-template #hidden>
+                  {{ '-' }}
+                </ng-template>
               </td>
             </tr>
           </tbody>

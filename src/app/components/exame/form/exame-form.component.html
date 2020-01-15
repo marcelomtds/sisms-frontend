@@ -1,3 +1,104 @@
-<p>
-  exame-form works!
-</p>
+<section class="content-header">
+  <h1>{{ form.value.id ? 'Editar' : 'Cadastar' }} Exame</h1>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Dados do Exame</h3>
+          <div class="box-body">
+          </div>
+          <form [formGroup]="form">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="form-group">
+                  <label for="paciente">Paciente</label>
+                  <ng-select id="paciente" placeholder="Selecione" formControlName="pacienteId" [items]="pacientes"
+                    bindLabel="nomeCompleto" bindValue="id">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.nomeCompleto }}
+                      <br />
+                      <small>CPF: {{ item.cpf | cpf }}</small>
+                    </ng-template>
+                  </ng-select>
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('pacienteId')">
+                  </app-message-required>
+                </div>
+              </div>
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="categoriaExame">Categoria de Exame</label>
+                  <ng-select id="categoriaExame" placeholder="Selecione" formControlName="categoriaExameId"
+                    [items]="categoriasExame" bindLabel="descricao" bindValue="id">
+                  </ng-select>
+                  <app-message-required [isInvalidForm]="isInvalidForm"
+                    [controlComponent]="form.get('categoriaExameId')">
+                  </app-message-required>
+                </div>
+              </div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                  <label for="data">Data de Realização</label>
+                  <input id="data" type="text" [validation]="false" mask="00/00/0000" formControlName="data"
+                    class="form-control" />
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('data')">
+                  </app-message-required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="observacao">Observação</label>
+                  <textarea trim="blur" style="resize: none" id="conduta" maxlength="1000" type="text" rows="8"
+                    formControlName="observacao" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+            <legend class="legend-default">Imagens</legend>
+            <div class="row">
+              <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                <div class="form-group">
+                  <div class="fileUpload btn btn-primary">
+                    <span><em class="fa fa-plus"></em>&nbsp;Adicionar Imagens</span>
+                    <input title="Adicionar Imagens" #inputImage id="imagem" type="file" multiple class="upload"
+                      (change)="onChangeImage($event.target.files)" (click)="inputImage.value=null" />
+                  </div>
+                  <button title="Visualizar Imagens" class="btn btn-primary" *ngIf="form.controls.imagens.value?.length"
+                    style="margin-left: 15px;" (click)="onClickOpenModalVisualizarImagens()"><em
+                      class="fa fa-eye"></em>&nbsp;Visualizar
+                    Imagens</button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+                *ngFor="let imagem of form.controls.imagens.value; let i = index">
+                <div class="form-group" style="text-align: end;">
+                  <button title="Remover Imagem" class="btn btn-danger" type="button"
+                    (click)="onClickRemoverImagem(imagem.index)"><em class="fa fa-close"></em></button>
+                </div>
+                <div class="form-group">
+                  <img alt="Imagem" [src]="imagem.imagem" id="image{{ i }}" width="100%" height="100%">
+                  <div style="margin-top: 10px; margin-bottom: 10px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="observacaoImagem{{ i }}">Observacão</label>
+                  <textarea trim="blur" style="resize: none;" id="observacaoImagem{{ i }}"
+                    [(ngModel)]="imagem.observacao" [ngModelOptions]="{standalone: true}" id="observacaoImagem"
+                    maxlength="200" type="text" rows="4" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="box-footer">
+          <button class="btn btn-primary pull-right" (click)="onClickFormSubmit()"><em
+              class="fa fa-save"></em>&nbsp;Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

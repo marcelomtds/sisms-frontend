@@ -141,7 +141,13 @@ export class AgendaFormComponent implements OnInit {
     });
     this.diaSemanaService.findAll().subscribe(response => {
       this.diasSemana = response.result;
+      this.orderWeekDay();
     });
+  }
+
+  private orderWeekDay(): void {
+    this.diasSemana.push(this.diasSemana[0]);
+    this.diasSemana.splice(0, 1);
   }
 
   public onClickFormSubmit(): void {

@@ -77,9 +77,11 @@ export class ModalGerenciarProfissaoComponent implements OnInit, IActionOrderBy 
     this.isInvalidForm = false;
   }
 
-  public onClickEditar(profissao: Profissao): void {
+  public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.form.patchValue(profissao);
+    this.service.findById(id).subscribe(response => {
+      this.form.patchValue(response.result);
+    });
   }
 
   public searchByFilter(): void {

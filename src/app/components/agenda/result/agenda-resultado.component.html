@@ -1,4 +1,4 @@
-<div *ngIf="dados.length" class="col-md-12" style="padding: 0px">
+<div class="col-md-12" style="padding: 0px">
   <div class="box box-primary" style="border-top: 0px;">
     <div class="box-header with-border">
       <div class="row">
@@ -7,7 +7,7 @@
         </div>
       </div>
     </div>
-    <div class="box-body">
+    <div *ngIf="dados.length" class="box-body">
       <div class="table-roll">
         <table id="example2" class="table table-bordered table-hover">
           <thead>
@@ -48,6 +48,8 @@
         </table>
       </div>
     </div>
+    <div *ngIf="!dados?.length" class="box-body">
+      Nenhum registro encontrado.
+    </div>
   </div>
 </div>
-<app-no-records *ngIf="!dados?.length"></app-no-records>

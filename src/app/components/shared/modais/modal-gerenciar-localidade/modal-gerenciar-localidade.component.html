@@ -5,7 +5,7 @@
   </div>
   <div class="box box-primary">
     <div class="box-header with-border">
-      <h3 class="box-title">{{ form.controls.id.value ? 'Alterar' : 'Cadastrar' }}</h3>
+      <h3 class="box-title">{{ form.controls.id.value ? 'Alterar' : 'Cadastrar' }} Cidade</h3>
     </div>
     <div class="box-body">
       <form [formGroup]="form">
@@ -68,8 +68,11 @@
                 {{ localidade.ufDescricao }}
               </td>
               <td>
-                <button title="Editar" *ngIf="form.controls.id.value !== localidade.id" class="btn btn-primary"
-                  (click)="onClickEditar(localidade)"><em class="fa fa-pencil"></em>&nbsp;</button>
+                <button title="Editar" *ngIf="form.controls.id.value !== localidade.id; else hidden"
+                  class="btn btn-primary" (click)="onClickEditar(localidade.id)"><em
+                    class="fa fa-pencil"></em>&nbsp;</button>
+                <ng-template #hidden>{{ '-' }}</ng-template>
+
               </td>
             </tr>
           </tbody>

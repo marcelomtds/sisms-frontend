@@ -147,13 +147,15 @@ export class ModalGerenciarLancamentoPacoteComponent implements OnInit, IActionO
   public onClickEditar(lancamento: Lancamento): void {
     this.messageService.clearAllMessages();
     this.valorSelecionado = lancamento.valor;
-    this.form.setValue({
-      id: lancamento.id,
-      data: Util.convertDateToString(lancamento.data),
-      valor: lancamento.valor,
-      observacao: lancamento.observacao || null,
-      pacoteId: lancamento.pacoteId,
-      formaPagamentoId: lancamento.formaPagamentoId
+    this.service.findById(lancamento.id).subscribe(response => {
+      this.form.setValue({
+        id: response.result.id,
+        data: Util.convertDateToString(response.result.data),
+        valor: response.result.valor,
+        observacao: response.result.observacao || null,
+        pacoteId: response.result.pacoteId,
+        formaPagamentoId: response.result.formaPagamentoId
+      });
     });
   }
 

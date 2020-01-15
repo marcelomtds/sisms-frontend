@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { AtendimentoService } from 'src/app/components/shared/services/atendimento.service';
-import { SharedService } from 'src/app/components/shared/services/shared.service';
 import { Messages } from 'src/app/components/shared/message/messages';
 import { ModalConfirmacaoComponent } from 'src/app/components/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { PerfilEnum } from 'src/app/components/shared/model/enum/perfil.enum';
-import { PageableFilter } from 'src/app/components/shared/pageable/filter.filter';
 import { LancamentoFilter } from 'src/app/components/shared/model/filter/lancamento.filter';
 import { Atendimento } from 'src/app/components/shared/model/model/atendimento.model';
 import { FormaPagamento } from 'src/app/components/shared/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/components/shared/model/model/lancamento.model';
 import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
 import { IActionOrderBy } from 'src/app/components/shared/page-order-by/iaction-orderby';
+import { PageableFilter } from 'src/app/components/shared/pageable/filter.filter';
 import Page from 'src/app/components/shared/pageable/page';
+import { AtendimentoService } from 'src/app/components/shared/services/atendimento.service';
 import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
 import { MessageService } from 'src/app/components/shared/services/message.service';
+import { SharedService } from 'src/app/components/shared/services/shared.service';
 import Util from 'src/app/components/shared/util/util';
 import { LancamentoService } from '../../../shared/services/lancamento.service';
 
@@ -126,15 +126,17 @@ export class ModalGerenciarLancamentoSessaoComponent implements OnInit, IActionO
     this.isInvalidForm = false;
   }
 
-  public onClickEditar(lancamento: Lancamento): void {
+  public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.form.setValue({
-      id: lancamento.id,
-      data: Util.convertDateToString(lancamento.data),
-      valor: lancamento.valor,
-      observacao: lancamento.observacao || null,
-      atendimentoId: lancamento.atendimentoId,
-      formaPagamentoId: lancamento.formaPagamentoId
+    this.service.findById(id).subscribe(response => {
+      this.form.setValue({
+        id: response.result.id,
+        data: Util.convertDateToString(response.result.data),
+        valor: response.result.valor,
+        observacao: response.result.observacao || null,
+        atendimentoId: response.result.atendimentoId,
+        formaPagamentoId: response.result.formaPagamentoId
+      });
     });
   }
 
