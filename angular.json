@@ -19,6 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
+              "src/icon.ico",
               "src/assets"
             ],
             "styles": [
@@ -83,6 +84,7 @@
             ],
             "scripts": [],
             "assets": [
+              "src/icon.ico",
               "src/assets"
             ]
           }
