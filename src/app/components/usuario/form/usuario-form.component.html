@@ -19,14 +19,16 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="col-xs-6 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group fileUpload btn btn-primary">
+                  <span><em class="fa fa-search"></em>&nbsp;Procurar imagem</span>
+                  <input title="" #inputImage id="imagem" type="file" class="upload"
+                    (change)="onChangeImage($event.target.files[0])" (click)="inputImage.value=null" />
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-12 col-md-12 col-lg-12">
                 <div class="form-group">
-                  <div class="fileUpload btn btn-primary">
-                    <span><em class="fa fa-search"></em>&nbsp;Procurar imagem</span>
-                    <input title="" #inputImage id="imagem" type="file" class="upload"
-                      (change)="onChangeImage($event.target.files[0])" (click)="inputImage.value=null" />
-                  </div>
-                  <button class="btn btn-danger" *ngIf="form.value.imagem" style="margin-left: 15px;"
+                  <button class="btn btn-danger" *ngIf="form.value.imagem"
                     (click)="onClickRemoveImage()"><em class="fa fa-remove"></em>&nbsp;Remover imagem</button>
                 </div>
               </div>
@@ -39,7 +41,7 @@
           </div>
           <div class="box-body">
             <div class="row">
-              <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+              <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
                 <div class="form-group">
                   <label for="nomeCompleto">Nome Completo</label>
                   <input id="nomeCompleto" trim="blur" maxlength="200" type="text" formControlName="nomeCompleto"
@@ -48,7 +50,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="dataNascimento">Data de Nascimento</label>
                   <input id="dataNascimento" [validation]="false" mask="00/00/0000" type="text"
@@ -57,7 +59,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="sexo">Sexo</label>
                   <ng-select id="sexo" maxlength="50" formControlName="sexoId" [items]="sexos" bindLabel="descricao"
@@ -69,7 +71,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="cpf">CPF</label>
                   <input id="cpf" [validation]="false" mask="000.000.000-00" type="text" formControlName="cpf"
@@ -78,14 +80,14 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="rg">RG</label>
                   <input id="rg" [validation]="false" upperCase mask="A{15}" type="text" formControlName="rg"
                     class="form-control" />
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="profissao">Profissão</label>
                   <ng-select id="profissao" maxlength="50" formControlName="profissaoId" [items]="profissoes"
@@ -104,7 +106,7 @@
           </div>
           <div class="box-body">
             <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="senha">Senha</label>
                   <div class="input-group">
@@ -118,7 +120,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="senhaConfirmacao">Confirmar Senha</label>
                   <div class="input-group">
@@ -144,7 +146,7 @@
           </div>
           <div class="box-body">
             <div class="row">
-              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
                   <label for="cep">CEP</label>
                   <input id="cep" type="text" [validation]="false" mask="00.000-000" formControlName="enderecoCep"
@@ -153,7 +155,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="logradouro">Logradouro</label>
                   <input id="logradouro" trim="blur" type="text" maxlength="200" formControlName="enderecoLogradouro"
@@ -163,7 +165,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
                   <label for="numero">Número</label>
                   <input id="numero" type="text" mask="0{10}" [validation]="false" formControlName="enderecoNumero"
@@ -172,7 +174,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="complemento">Complemento</label>
                   <input id="complemento" trim="blur" type="text" maxlength="200" formControlName="enderecoComplemento"
@@ -181,7 +183,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="bairro">Bairro</label>
                   <input id="bairro" trim="blur" type="text" maxlength="100" formControlName="enderecoBairro"
@@ -190,14 +192,14 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="pontoReferencia">Ponto de Referência</label>
                   <input id="pontoReferencia" trim="blur" type="text" maxlength="200"
                     formControlName="enderecoPontoReferencia" class="form-control" />
                 </div>
               </div>
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="uf">Estado</label>
                   <ng-select id="uf" maxlength="50" formControlName="enderecoLocalidadeUFId" (change)="onChangeUf(true)"
@@ -208,7 +210,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="localidade">Cidade</label>
                   <ng-select id="localidade" (click)="onClickLocalidade()" maxlength="50"
@@ -229,35 +231,35 @@
           </div>
           <div class="box-body">
             <div class="row">
-              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
                   <label for="celular">Nº Tel. Celular</label>
                   <input id="celular" [validation]="false" mask="(00) 00000-0000" type="text"
                     formControlName="contatoCelular" class="form-control" />
                 </div>
               </div>
-              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
                   <label for="celularRecado">Nº Tel. Celular Recado</label>
                   <input id="celularRecado" [validation]="false" mask="(00) 00000-0000" type="text"
                     formControlName="contatoCelularRecado" class="form-control" />
                 </div>
               </div>
-              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
                   <label for="residencial">Nº Tel. Residencial</label>
                   <input id="residencial" [validation]="false" mask="(00) 0000-0000" type="text"
                     formControlName="contatoResidencial" class="form-control" />
                 </div>
               </div>
-              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
                   <label for="comercial">Nº Tel. Comercial</label>
                   <input id="comercial" [validation]="false" mask="(00) 0000-0000" type="text"
                     formControlName="contatoComercial" class="form-control" />
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="email">E-mail</label>
                   <input id="email" trim="blur" type="text" maxlength="100" formControlName="contatoEmail"
