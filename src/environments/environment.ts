@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  apiBaseUrl: 'https://sisms-backend.herokuapp.com/',
+  apiBaseUrl: 'http://localhost:8080',
   production: false
 };
 /*
