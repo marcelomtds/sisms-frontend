@@ -1,16 +1,22 @@
-//Importa as dependências que acabamos de instalar
 const express = require('express');
-const path = require('path');
-
 const app = express();
+const path = require('path');
+const port = process.env.PORT || 8000;
+const server = require('http').Server(app);
 
-// Serve os arquivos estáticos da pasta dist (gerada pelo ng build)
-app.use(express.static(__dirname + '/dist/sisms-frontend'));
+app.use(express.static(__dirname, 'dist', {index: false}));
 
-app.get('/*', function(req,res) {
-    
-res.sendFile(path.join(__dirname+'/dist/sisms-frontend/index.html'));
+
+server.listen(port, function() {
+    console.log("App running on port " + port);
+})
+
+// PathLocationStrategy
+
+app.get('', function(req, res) {
+    res.sendFile(path.join(__dirname, 'src', 'index.html'));
 });
 
-// Inicia a aplicação pela porta configurada
-app.listen(process.env.PORT || 8080);
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'src', 'index.html'));
+});
