@@ -22,7 +22,7 @@ import Util from '../../shared/util/util';
 })
 export class ExameFormComponent implements OnInit, OnDestroy {
 
-  @ViewChild('inputImage') inputImage: ElementRef;
+  @ViewChild('inputImage', { static: true }) inputImage: ElementRef;
 
   public pacientes = new Array<Paciente>();
   public categoriasExame = new Array<CategoriaExame>();

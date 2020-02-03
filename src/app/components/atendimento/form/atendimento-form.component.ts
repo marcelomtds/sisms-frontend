@@ -34,7 +34,7 @@ import { AtendimentoService } from '../../shared/services/atendimento.service';
 })
 export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
-  @ViewChild('inputImage') inputImage: ElementRef;
+  @ViewChild('inputImage', { static: false }) inputImage: ElementRef;
 
   public form: FormGroup;
   public tiposAtendimento = new Array<TipoAtendimento>();

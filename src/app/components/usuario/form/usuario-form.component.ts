@@ -25,7 +25,7 @@ import { UsuarioService } from '../../shared/services/usuario.service';
 })
 export class UsuarioFormComponent implements OnInit, OnDestroy {
 
-  @ViewChild('inputImage') inputImage: ElementRef;
+  @ViewChild('inputImage', { static: false }) inputImage: ElementRef;
 
   public form: FormGroup;
   public sexos = new Array<Sexo>();
