@@ -1,0 +1,94 @@
+<header class="main-header" style="position: fixed; width: -webkit-fill-available;">
+  <a [routerLink]="['/home']" class="logo">
+    <span class="logo-mini"><strong>S</strong>M</span>
+    <span class="logo-lg"><strong>Sis</strong>Ms</span>
+  </a>
+  <nav class="navbar navbar-static-top">
+    <a href="#" class="sidebar-toggle" id="testeste" data-toggle="push-menu" role="button">
+      <span class="sr-only">Toggle navigation</span>
+    </a>
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <li class="dropdown notifications-menu" title="Configurações">
+          <a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">
+            <em class="fa fa-gears"></em>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <ul class="menu">
+                <li>
+                  <a style="cursor: pointer;" (click)="onClickOpenModal('profissao')">
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Profissões
+                  </a>
+                </li>
+                <li>
+                  <a style="cursor: pointer;" (click)="onClickOpenModal('medida')">
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Medidas
+                  </a>
+                </li>
+                <li>
+                  <a style="cursor: pointer;" (click)="onClickOpenModal('uf')">
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Estados
+                  </a>
+                </li>
+                <li>
+                  <a style="cursor: pointer;" (click)="onClickOpenModal('localidade')">
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Cidades
+                  </a>
+                </li>
+                <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)">
+                  <a style="cursor: pointer;" (click)="onClickOpenModal('categoriaLancamento')">
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Categorias de Lançamento
+                  </a>
+                </li>
+                <li>
+                  <a style="cursor: pointer;" (click)="onClickOpenModal('categoriaExame')">
+                    <em class="fa fa-users text-aqua"></em> Gerenciar Categorias de Exame
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown user user-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="{{ usuario.imagem || '../../../../assets/img/sem-foto.jpg' }}" class="user-image"
+              alt="Foto do Perfil">
+            <span class="hidden-xs">{{ usuario.nomeCompleto }}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="user-header">
+              <img src="{{ usuario.imagem || '../../../../assets/img/sem-foto.jpg' }}" class="img-circle"
+                alt="Foto do Perfil">
+              <p>
+                {{ usuario.nomeCompleto }} <br>
+                <small>CPF: {{ usuario.perfilDescricao }}</small>
+              </p>
+            </li>
+            <li class="user-body">
+              <div class="row">
+                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                  <button title="Aterar Dados Cadastrais" (click)="onClickAlterarDados(usuario.id)"
+                    class="btn btn-primary">Alterar
+                    Dados
+                    Cadastrais</button>
+                </div>
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                  <button title="Alterar
+                      Senha" (click)="onClickAlterarSenha()" class="btn btn-primary pull-right">Alterar
+                    Senha</button>
+                </div>
+              </div>
+            </li>
+            <li class="user-footer">
+              <div class="pull-right">
+                <button title="Sair" (click)="signOut()" class="btn btn-danger pull-right"
+                  style="margin-left: 15px;"><em class="fa fa-power-off"></em>&nbsp;Sair</button>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

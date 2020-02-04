@@ -84,7 +84,7 @@
                 <tbody>
                   <tr *ngFor="let exame of dados.content">
                     <td>
-                      <button title="Editar" [routerLink]="['/exame-form', exame.id]" class="btn btn-primary"><em
+                      <button title="Editar" [routerLink]="['/exame/alterar', exame.id]" class="btn btn-primary"><em
                           class="fa fa-pencil"></em></button>
                       <button title="Visualizar" (click)="onClickOpenModalVisualizar(exame.id)"
                         class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>

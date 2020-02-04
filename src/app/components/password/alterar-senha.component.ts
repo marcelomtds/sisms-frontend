@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Messages } from '../shared/message/messages';
-import { Senha } from '../shared/model/model/senha.model';
-import { MessageService } from '../shared/services/message.service';
-import { UsuarioService } from '../shared/services/usuario.service';
+import { Messages } from '../../shared/messages/messages';
+import { Senha } from '../../core/model/model/senha.model';
+import { MessageService } from '../../core/services/message.service';
+import { UsuarioService } from '../../core/services/usuario.service';
 
 @Component({
   selector: 'app-alterar-senha',

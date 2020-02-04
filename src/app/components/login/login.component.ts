@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Messages } from '../shared/message/messages';
-import { Autenticacao } from '../shared/model/model/autenticacao.model';
-import { MessageService } from '../shared/services/message.service';
-import { AuthService } from '../shared/services/auth.service';
-import { SharedService } from '../shared/services/shared.service';
+import { Messages } from '../../shared/messages/messages';
+import { Autenticacao } from '../../core/model/model/autenticacao.model';
+import { MessageService } from '../../core/services/message.service';
+import { AuthService } from '../../core/services/auth.service';
+import { SharedService } from '../../core/services/shared.service';
 
 @Component({
   selector: 'app-login',

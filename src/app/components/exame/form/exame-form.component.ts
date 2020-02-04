@@ -5,16 +5,16 @@ import { BsModalService } from 'ngx-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
-import { Messages } from '../../shared/message/messages';
-import { ModalVisualizarImagensComponent } from '../../shared/modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
-import { CategoriaExame } from '../../shared/model/model/categoria-exame.model';
-import { Exame } from '../../shared/model/model/exame.model';
-import { Paciente } from '../../shared/model/model/paciente.model';
-import { CategoriaExameService } from '../../shared/services/categoria-exame.service';
-import { ExameService } from '../../shared/services/exame.service';
-import { MessageService } from '../../shared/services/message.service';
-import { PacienteService } from '../../shared/services/paciente.service';
-import Util from '../../shared/util/util';
+import { Messages } from '../../../shared/messages/messages';
+import { ModalVisualizarImagensComponent } from '../../../shared/modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
+import { CategoriaExame } from '../../../core/model/model/categoria-exame.model';
+import { Exame } from '../../../core/model/model/exame.model';
+import { Paciente } from '../../../core/model/model/paciente.model';
+import { CategoriaExameService } from '../../../core/services/categoria-exame.service';
+import { ExameService } from '../../../core/services/exame.service';
+import { MessageService } from '../../../core/services/message.service';
+import { PacienteService } from '../../../core/services/paciente.service';
+import Util from '../../../shared/util/util';
 
 @Component({
   selector: 'app-exame-form',
@@ -71,6 +71,11 @@ export class ExameFormComponent implements OnInit, OnDestroy {
       });
       this.form.controls.pacienteId.disable();
       this.form.controls.pacienteId.updateValueAndValidity();
+      if (this.form.controls.imagens.value) {
+        this.form.controls.imagens.value.forEach(element => {
+          element.index = this.gerarIndex(this.form.controls.imagens.value);
+        });
+      }
     });
   }
 
@@ -185,12 +190,12 @@ export class ExameFormComponent implements OnInit, OnDestroy {
       if (formValue.id) {
         this.service.update(formValue.id, formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.router.navigate(['/exame-list']);
+          this.router.navigate(['/exame']);
         });
       } else {
         this.service.create(formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.router.navigate(['/exame-list']);
+          this.router.navigate(['/exame']);
         });
       }
     } else {

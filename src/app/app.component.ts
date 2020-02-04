@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { CarouselConfig } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { SharedService } from './components/shared/services/shared.service';
+import { SharedService } from './core/services/shared.service';
 
 @Component({
   selector: 'app-root',

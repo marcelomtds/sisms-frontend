@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
-import { PacienteService } from '../../shared/services/paciente.service';
-import { Messages } from '../../shared/message/messages';
-import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
-import { Paciente } from '../../shared/model/model/paciente.model';
-import { Pacote } from '../../shared/model/model/pacote.model';
-import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
-import { MessageService } from '../../shared/services/message.service';
-import { PacoteService } from '../../shared/services/pacote.service';
+import { PacienteService } from '../../../core/services/paciente.service';
+import { Messages } from '../../../shared/messages/messages';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { CategoriaAtendimento } from '../../../core/model/model/categoria-atendimento.model';
+import { Paciente } from '../../../core/model/model/paciente.model';
+import { Pacote } from '../../../core/model/model/pacote.model';
+import { CategoriaAtendimentoService } from '../../../core/services/categoria-atendimento.service';
+import { MessageService } from '../../../core/services/message.service';
+import { PacoteService } from '../../../core/services/pacote.service';
 
 @Component({
   selector: 'app-pacote-form',
@@ -83,7 +83,7 @@ export class PacoteFormComponent implements OnInit {
         this.service.update(formValue.id, formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
           this.onCreateForm();
-          this.router.navigate(['/pacote-list']);
+          this.router.navigate(['/pacote']);
         });
       } else {
         const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
@@ -94,7 +94,7 @@ export class PacoteFormComponent implements OnInit {
             this.service.create(formValue).subscribe(response => {
               this.messageService.sendMessageSuccess(response.message);
               this.onCreateForm();
-              this.router.navigate(['/pacote-list']);
+              this.router.navigate(['/pacote']);
             });
           }
         });

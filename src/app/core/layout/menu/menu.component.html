@@ -1,0 +1,166 @@
+<aside class="main-sidebar">
+  <section class="sidebar" style="height: auto;">
+    <ul class="sidebar-menu" data-widget="tree">
+      <li class="treeview" [routerLink]="[ '/home' ]">
+        <a style="cursor: pointer;">
+          <em class="fa fa-home icon-size icon-item-menu"></em>
+          <span>Página Principal</span>
+        </a>
+      </li>
+      <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)" class="treeview">
+        <a style="cursor: pointer;">
+          <em class="fa fa-calendar icon-size icon-item-menu"></em>
+          <span>Agenda</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/agenda/gerenciar' ]"><em class="fa fa-pencil"></em>Gerenciar</a></li>
+        </ul>
+      </li>
+      <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)" class="treeview">
+        <a style="cursor: pointer;">
+          <em class="fa fa-users icon-size icon-item-menu"></em>
+          <span>Usuário</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/usuario' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/usuario/incluir' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a style="cursor: pointer;">
+          <em class="fa fa-user-md icon-item-menu"></em>
+          <span>Paciente</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/paciente' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/paciente/incluir' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a style="cursor: pointer;">
+          <em class="fa fa-line-chart icon-item-menu"></em>
+          <span>Drenagem Linfática</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ 'atendimento/drenagem' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ 'atendimento/drenagem/incluir' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a style="cursor: pointer;">
+          <em class="fa fa-heartbeat icon-item-menu"></em>
+          <span>Fisioterapia</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/atendimento/fisioterapia' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/atendimento/fisioterapia/incluir' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <em class="fa fa-male icon-item-menu"></em>
+          <span>RPG</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/atendimento/rpg' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/atendimento/rpg/incluir' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <em class="fa fa-child icon-item-menu"></em>
+          <span>Pilates</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/atendimento/pilates' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/atendimento/pilates/incluir' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <em class="fa fa-leaf icon-item-menu"></em>
+          <span>Massagem Relaxante</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/atendimento/massagem-relaxante' ]"><em class="fa fa-search"></em>Buscar</a>
+          </li>
+          <li><a [routerLink]="[ '/atendimento/massagem-relaxante/incluir' ]"><em class="fa fa-plus"></em>Cadastrar</a>
+          </li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <em class="fa fa-plus-square icon-item-menu"></em>
+          <span>Exame</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/exame' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/exame/incluir' ]"><em class="fa fa-plus"></em>Cadastrar</a>
+          </li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <em class="fa fa-suitcase icon-item-menu"></em>
+          <span>Pacote</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a [routerLink]="[ '/pacote' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/pacote/incluir' ]"><em class="fa fa-plus"></em>Cadastrar</a>
+          </li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <em class="fa fa-dollar icon-item-menu"></em>
+          <span>Controle de Caixa</span>
+          <span class="pull-right-container">
+            <em class="fa fa-angle-left pull-right"></em>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a [routerLink]="[ '/controle-caixa' ]"><em
+                class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/controle-caixa/entrada-sessao' ]"><em class="fa fa-pencil"></em>Gerenciar
+              Entrada
+              - Sessão</a></li>
+          <li><a [routerLink]="[ '/controle-caixa/entrada-pacote' ]"><em class="fa fa-pencil"></em>Gerenciar
+              Entrada
+              - Pacote</a></li>
+          <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a
+              [routerLink]="[ '/controle-caixa/saida' ]"><em class="fa fa-plus"></em>Cadastrar Saída</a></li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</aside>

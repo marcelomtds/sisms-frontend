@@ -2,31 +2,31 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { TipoLancamentoEnum } from '../../shared/model/enum/tipo-lancamento.enum';
-import { LancamentoFilter } from '../../shared/model/filter/lancamento.filter';
-import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
-import { CategoriaLancamento } from '../../shared/model/model/categoria-lancamento.model';
-import { FormaPagamento } from '../../shared/model/model/forma-pagamento.model';
-import { LancamentoTotal } from '../../shared/model/model/lancamento-total.model';
-import { Lancamento } from '../../shared/model/model/lancamento.model';
-import { Paciente } from '../../shared/model/model/paciente.model';
-import { Periodo } from '../../shared/model/model/periodo';
-import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model';
-import { TipoLancamento } from '../../shared/model/model/tipo-lancamento.model';
-import { Usuario } from '../../shared/model/model/usuario.model';
-import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
-import { PageableFilter } from '../../shared/pageable/filter.filter';
-import Page from '../../shared/pageable/page';
-import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
-import { CategoriaLancamentoService } from '../../shared/services/categoria-lancamento.service';
-import { FormaPagamentoService } from '../../shared/services/forma-pagamento.service';
-import { LancamentoService } from '../../shared/services/lancamento.service';
-import { MessageService } from '../../shared/services/message.service';
-import { PacienteService } from '../../shared/services/paciente.service';
-import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
-import { TipoLancamentoService } from '../../shared/services/tipo-lancamento.service';
-import { UsuarioService } from '../../shared/services/usuario.service';
-import Util from '../../shared/util/util';
+import { TipoLancamentoEnum } from '../../../core/model/enum/tipo-lancamento.enum';
+import { LancamentoFilter } from '../../../core/model/filter/lancamento.filter';
+import { CategoriaAtendimento } from '../../../core/model/model/categoria-atendimento.model';
+import { CategoriaLancamento } from '../../../core/model/model/categoria-lancamento.model';
+import { FormaPagamento } from '../../../core/model/model/forma-pagamento.model';
+import { LancamentoTotal } from '../../../core/model/model/lancamento-total.model';
+import { Lancamento } from '../../../core/model/model/lancamento.model';
+import { Paciente } from '../../../core/model/model/paciente.model';
+import { Periodo } from '../../../core/model/model/periodo.model';
+import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
+import { TipoLancamento } from '../../../core/model/model/tipo-lancamento.model';
+import { Usuario } from '../../../core/model/model/usuario.model';
+import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
+import { PageableFilter } from '../../../core/model/filter/filter.filter';
+import Page from '../../../core/model/model/page.model';
+import { CategoriaAtendimentoService } from '../../../core/services/categoria-atendimento.service';
+import { CategoriaLancamentoService } from '../../../core/services/categoria-lancamento.service';
+import { FormaPagamentoService } from '../../../core/services/forma-pagamento.service';
+import { LancamentoService } from '../../../core/services/lancamento.service';
+import { MessageService } from '../../../core/services/message.service';
+import { PacienteService } from '../../../core/services/paciente.service';
+import { TipoAtendimentoService } from '../../../core/services/tipo-atendimento.service';
+import { TipoLancamentoService } from '../../../core/services/tipo-lancamento.service';
+import { UsuarioService } from '../../../core/services/usuario.service';
+import Util from '../../../shared/util/util';
 
 @Component({
   selector: 'app-controle-caixa-list',
@@ -199,7 +199,7 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
 
   public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.router.navigate([`/controle-caixa-form-saida/${id}`]);
+    this.router.navigate([`/controle-caixa/saida/alterar/${id}`]);
   }
 
   public getIconOrderBy(param: string): string {

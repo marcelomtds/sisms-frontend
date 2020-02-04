@@ -2,21 +2,21 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { Messages } from '../../shared/message/messages';
-import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { ModalVisualizarExameComponent } from '../../shared/modais/modal-visualizar-exame/modal-visualizar-exame.component';
-import { ExameFilter } from '../../shared/model/filter/exame.filter';
-import { CategoriaExame } from '../../shared/model/model/categoria-exame.model';
-import { Exame } from '../../shared/model/model/exame.model';
-import { Paciente } from '../../shared/model/model/paciente.model';
-import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
-import { PageableFilter } from '../../shared/pageable/filter.filter';
-import Page from '../../shared/pageable/page';
-import { CategoriaExameService } from '../../shared/services/categoria-exame.service';
-import { ExameService } from '../../shared/services/exame.service';
-import { MessageService } from '../../shared/services/message.service';
-import { PacienteService } from '../../shared/services/paciente.service';
-import Util from '../../shared/util/util';
+import { Messages } from '../../../shared/messages/messages';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { ModalVisualizarExameComponent } from '../../../shared/modais/modal-visualizar-exame/modal-visualizar-exame.component';
+import { ExameFilter } from '../../../core/model/filter/exame.filter';
+import { CategoriaExame } from '../../../core/model/model/categoria-exame.model';
+import { Exame } from '../../../core/model/model/exame.model';
+import { Paciente } from '../../../core/model/model/paciente.model';
+import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
+import { PageableFilter } from '../../../core/model/filter/filter.filter';
+import Page from '../../../core/model/model/page.model';
+import { CategoriaExameService } from '../../../core/services/categoria-exame.service';
+import { ExameService } from '../../../core/services/exame.service';
+import { MessageService } from '../../../core/services/message.service';
+import { PacienteService } from '../../../core/services/paciente.service';
+import Util from '../../../shared/util/util';
 
 @Component({
   selector: 'app-exame-list',

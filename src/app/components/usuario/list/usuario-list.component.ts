@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
-import { AuthGuard } from '../../auth/auth.guard';
-import { SharedService } from '../../shared/services/shared.service';
-import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { ModalVisualizarPacienteUsuarioComponent } from '../../shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
-import { PerfilEnum } from '../../shared/model/enum/perfil.enum';
-import { SexoEnum } from '../../shared/model/enum/sexo.enum';
-import { PageableFilter } from '../../shared/pageable/filter.filter';
-import { PacienteUsuarioFilter } from '../../shared/model/filter/paciente-usuario.filter';
-import { Sexo } from '../../shared/model/model/sexo.model';
-import { Usuario } from '../../shared/model/model/usuario.model';
-import Page from '../../shared/pageable/page';
-import { MessageService } from '../../shared/services/message.service';
-import { SexoService } from '../../shared/services/sexo.service';
-import { UsuarioService } from '../../shared/services/usuario.service';
-import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
+import { AuthGuard } from '../../../core/guards/auth.guard';
+import { SharedService } from '../../../core/services/shared.service';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { ModalVisualizarPacienteUsuarioComponent } from '../../../shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
+import { PerfilEnum } from '../../../core/model/enum/perfil.enum';
+import { SexoEnum } from '../../../core/model/enum/sexo.enum';
+import { PageableFilter } from '../../../core/model/filter/filter.filter';
+import { PacienteUsuarioFilter } from '../../../core/model/filter/paciente-usuario.filter';
+import { Sexo } from '../../../core/model/model/sexo.model';
+import { Usuario } from '../../../core/model/model/usuario.model';
+import Page from '../../../core/model/model/page.model';
+import { MessageService } from '../../../core/services/message.service';
+import { SexoService } from '../../../core/services/sexo.service';
+import { UsuarioService } from '../../../core/services/usuario.service';
+import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
 
 @Component({
   selector: 'app-usuario-list',
