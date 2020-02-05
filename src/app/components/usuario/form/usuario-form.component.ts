@@ -136,7 +136,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
   public onClickLocalidade(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.enderecoLocalidadeUFId.value) {
-      this.messageService.sendMessageWarning(Messages.MSG00010);
+      this.messageService.sendMessageWarning(Messages.MSG0010);
     }
   }
 
@@ -173,7 +173,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       const dataNascimento = this.form.value.dataNascimento;
       if (dataNascimento && !Util.isDataValida(dataNascimento)) {
-        this.messageService.sendMessageError(Messages.MSG00018);
+        this.messageService.sendMessageError(Messages.MSG0018);
         return;
       }
       const formValue: Usuario = {
@@ -209,11 +209,11 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     if (imagem) {
       try {
         if (!Util.isFormatoImagemValido(imagem)) {
-          this.messageService.sendMessageError(Messages.MSG00020);
+          this.messageService.sendMessageError(Messages.MSG0020);
           return;
         }
-        if (!Util.isTamanhoImagemValido(imagem)) {
-          this.messageService.sendMessageError(Messages.MSG00022);
+        if (!Util.isTamanhoArquivoValido(imagem)) {
+          this.messageService.sendMessageError(Messages.MSG0022);
           return;
         }
         const reader = new FileReader();
@@ -226,7 +226,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
           });
         };
       } catch {
-        this.messageService.sendMessageError(Messages.MSG00011);
+        this.messageService.sendMessageError(Messages.MSG0011);
         this.spinnerService.hide();
       }
     }

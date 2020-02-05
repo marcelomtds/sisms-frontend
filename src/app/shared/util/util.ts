@@ -3,13 +3,22 @@ import { Periodo } from '../../core/model/model/periodo.model';
 
 export default class Util {
 
+    static readonly IMAGEFORMATS = ['jpeg', 'jpg', 'png'];
+    static readonly ATTACHMENTFORMATS = ['doc', 'docx', 'pdf', 'jpg', 'jpeg', 'png', 'xlsx', 'xls', 'txt'];
+    static readonly FILESIZE = 10485760;
+
     static isFormatoImagemValido(imagem: File): boolean {
-        const formatos = ['image/jpeg', 'image/jpg', 'image/png'];
-        return formatos.find(x => x === imagem.type) ? true : false;
+        const array = imagem.name.split('.');
+        return this.IMAGEFORMATS.findIndex(x => x.toLocaleLowerCase() === array[array.length - 1].toLocaleLowerCase()) >= 0;
     }
 
-    static isTamanhoImagemValido(imagem: File): boolean {
-        return imagem.size < 10000000;
+    static isFormatoAnexoValido(anexo: File): boolean {
+        const array = anexo.name.split('.');
+        return this.ATTACHMENTFORMATS.findIndex(x => x.toLocaleLowerCase() === array[array.length - 1].toLocaleLowerCase()) >= 0;
+    }
+
+    static isTamanhoArquivoValido(arquivo: File): boolean {
+        return arquivo.size < this.FILESIZE;
     }
 
     static calcularIdadeAno(data: Date): number {

@@ -120,7 +120,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
   public onClickLocalidade(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.enderecoLocalidadeUFId.value) {
-      this.messageService.sendMessageWarning(Messages.MSG00010);
+      this.messageService.sendMessageWarning(Messages.MSG0010);
     }
   }
 
@@ -147,7 +147,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       const dataNascimento = this.form.value.dataNascimento;
       if (dataNascimento && !Util.isDataValida(dataNascimento)) {
-        this.messageService.sendMessageError(Messages.MSG00018);
+        this.messageService.sendMessageError(Messages.MSG0018);
         return;
       }
       const formValue: Atendimento = {

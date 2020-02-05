@@ -105,11 +105,11 @@ export class ControleCaixaEntradaPacoteComponent implements OnInit, IActionOrder
     const dataInicio = this.form.value.dataInicio;
     const dataFim = this.form.value.dataFim;
     if (dataInicio && !Util.isDataValida(dataInicio)) {
-      this.messageService.sendMessageError(Messages.MSG00013);
+      this.messageService.sendMessageError(Messages.MSG0013);
       return;
     }
     if (dataFim && !Util.isDataValida(dataFim)) {
-      this.messageService.sendMessageError(Messages.MSG00014);
+      this.messageService.sendMessageError(Messages.MSG0014);
       return;
     }
     this.filtro = new PageableFilter<PacoteFilter>();

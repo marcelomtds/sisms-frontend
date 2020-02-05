@@ -154,11 +154,11 @@ export class AgendaFormComponent implements OnInit {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isHorarioValido(this.form.controls.horarioInicio.value)) {
-        this.messageService.sendMessageError(Messages.MSG00062);
+        this.messageService.sendMessageError(Messages.MSG0062);
         return;
       }
       if (!Util.isHorarioValido(this.form.controls.horarioFim.value)) {
-        this.messageService.sendMessageError(Messages.MSG00063);
+        this.messageService.sendMessageError(Messages.MSG0063);
         return;
       }
       const formValue: Agenda = {

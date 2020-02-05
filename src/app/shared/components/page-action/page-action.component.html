@@ -1,5 +1,5 @@
 <label for="registro">Registros por Página</label>
-<div class="col-xs-2">
+<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
   <div class="form-group">
     <ng-select id="registro" [(ngModel)]="filtro.pageSize" [ngModelOptions]="{standalone: true}" [searchable]="false"
       [multiple]="false" [clearable]="false" (change)="onChangePageSize()">
@@ -10,18 +10,18 @@
     </ng-select>
   </div>
 </div>
-<div class="col-md-12">
-  <div class="col-xs-4">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
     <button class="btn btn-primary pull-left" [disabled]="filtro.currentPage === 0" (click)="onChangePage(0)"><em
         class="fa fa-angle-double-left"></em>&nbsp;Primeira</button>
     <button class="btn btn-primary pull-left" [disabled]="filtro.currentPage === 0"
       (click)="onChangePage(filtro.currentPage - 1)" style="margin-left: 10px;"><em
         class="fa fa-angle-left"></em>&nbsp;Anterior</button>
   </div>
-  <div class="col-xs-4" style="text-align: center">
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="text-align: center">
     <span>{{ showInfo() }}</span>
   </div>
-  <div class="col-xs-4">
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
     <button class="btn btn-primary pull-right" (click)="onChangePage(dados.totalPages - 1)"
       [disabled]="filtro.currentPage + 1 === dados.totalPages" style="margin-left: 10px;">Última&nbsp;<em
         class="fa fa-angle-double-right"></em></button>

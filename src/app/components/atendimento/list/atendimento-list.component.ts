@@ -101,11 +101,11 @@ export class AtendimentoListComponent implements OnInit, IActionOrderBy {
     const dataInicio = this.form.value.preAtendimentoData;
     const dataFim = this.form.value.posAtendimentoData;
     if (dataInicio && !Util.isDataHoraValida(dataInicio)) {
-      this.messageService.sendMessageError(Messages.MSG00016);
+      this.messageService.sendMessageError(Messages.MSG0016);
       return;
     }
     if (dataFim && !Util.isDataHoraValida(dataFim)) {
-      this.messageService.sendMessageError(Messages.MSG00017);
+      this.messageService.sendMessageError(Messages.MSG0017);
       return;
     }
     this.filtro = new PageableFilter<AtendimentoFilter>();
@@ -141,7 +141,7 @@ export class AtendimentoListComponent implements OnInit, IActionOrderBy {
 
   public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.router.navigate([`/atendimento-form/${this.categoriaAtendimentoRouting.rota}/${id}`]);
+    this.router.navigate([`/atendimento/${this.categoriaAtendimentoRouting.rota}/alterar/${id}`]);
   }
 
   public async onClickOpenModalVisualizar(id: number): Promise<void> {

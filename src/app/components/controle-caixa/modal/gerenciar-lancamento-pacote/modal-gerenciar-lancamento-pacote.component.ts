@@ -90,7 +90,7 @@ export class ModalGerenciarLancamentoPacoteComponent implements OnInit, IActionO
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isDataValida(this.form.controls.data.value)) {
-        this.messageService.sendMessageError(Messages.MSG00015);
+        this.messageService.sendMessageError(Messages.MSG0015);
         return;
       }
       const formValue: Lancamento = {

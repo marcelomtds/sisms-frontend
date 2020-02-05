@@ -95,7 +95,7 @@ export class PacienteListComponent implements OnInit, OnDestroy, IActionOrderBy 
   public onClickLocalidade(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.ufId.value) {
-      this.messageService.sendMessageWarning(Messages.MSG00010);
+      this.messageService.sendMessageWarning(Messages.MSG0010);
     }
   }
 

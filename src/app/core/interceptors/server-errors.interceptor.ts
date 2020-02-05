@@ -34,13 +34,13 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                             this.route.navigate(['/acesso-negado']);
                             break;
                         case 404:
-                            this.messageService.sendMessageError(Messages.MSG00019);
+                            this.messageService.sendMessageError(Messages.MSG0019);
                             break;
                         case 500:
-                            this.messageService.sendMessageError(Messages.MSG00019);
+                            this.messageService.sendMessageError(Messages.MSG0019);
                             break;
                         case 0:
-                            this.messageService.sendMessageError(Messages.MSG00026);
+                            this.messageService.sendMessageError(Messages.MSG0026);
                             break;
                         default:
                             break;

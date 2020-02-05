@@ -1,3 +1,4 @@
+import { AnexoExame } from './anexo-exame.model';
 
 export class Exame {
 
@@ -8,7 +9,7 @@ export class Exame {
         public pacienteNomeCompleto?: string,
         public categoriaExameId?: number,
         public categoriaExameDescricao?: string,
-        public imagens?: Array<string>,
+        public anexos?: Array<AnexoExame>,
         public observacao?: string
     ) { }
 
