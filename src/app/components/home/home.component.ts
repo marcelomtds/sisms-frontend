@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { Agenda } from '../shared/model/model/agenda.model';
-import { Paciente } from '../shared/model/model/paciente.model';
-import { Usuario } from '../shared/model/model/usuario.model';
-import { AgendaService } from '../shared/services/agenda.service';
-import { PacienteService } from '../shared/services/paciente.service';
-import { UsuarioService } from '../shared/services/usuario.service';
-import Util from '../shared/util/util';
+import { Agenda } from '../../core/model/model/agenda.model';
+import { Paciente } from '../../core/model/model/paciente.model';
+import { Usuario } from '../../core/model/model/usuario.model';
+import { AgendaService } from '../../core/services/agenda.service';
+import { PacienteService } from '../../core/services/paciente.service';
+import { UsuarioService } from '../../core/services/usuario.service';
+import Util from '../../shared/util/util';
 
 @Component({
   selector: 'app-home',

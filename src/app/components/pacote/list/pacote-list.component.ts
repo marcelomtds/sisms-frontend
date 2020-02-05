@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
-import { PacienteService } from '../../shared/services/paciente.service';
-import { AuthGuard } from '../../auth/auth.guard';
-import { SharedService } from '../../shared/services/shared.service';
-import { Messages } from '../../shared/message/messages';
-import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { ModalVisualizarPacoteComponent } from '../../shared/modais/modal-visualizar-pacote/modal-visualizar-pacote.component';
-import { PerfilEnum } from '../../shared/model/enum/perfil.enum';
-import { PageableFilter } from '../../shared/pageable/filter.filter';
-import { PacoteFilter } from '../../shared/model/filter/pacote.filter';
-import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
-import { Paciente } from '../../shared/model/model/paciente.model';
-import { Pacote } from '../../shared/model/model/pacote.model';
-import { Usuario } from '../../shared/model/model/usuario.model';
-import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
-import Page from '../../shared/pageable/page';
-import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
-import { MessageService } from '../../shared/services/message.service';
-import { PacoteService } from '../../shared/services/pacote.service';
-import Util from '../../shared/util/util';
-import { UsuarioService } from '../../shared/services/usuario.service';
+import { PacienteService } from '../../../core/services/paciente.service';
+import { AuthGuard } from '../../../core/guards/auth.guard';
+import { SharedService } from '../../../core/services/shared.service';
+import { Messages } from '../../../shared/messages/messages';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { ModalVisualizarPacoteComponent } from '../../../shared/modais/modal-visualizar-pacote/modal-visualizar-pacote.component';
+import { PerfilEnum } from '../../../core/model/enum/perfil.enum';
+import { PageableFilter } from '../../../core/model/filter/filter.filter';
+import { PacoteFilter } from '../../../core/model/filter/pacote.filter';
+import { CategoriaAtendimento } from '../../../core/model/model/categoria-atendimento.model';
+import { Paciente } from '../../../core/model/model/paciente.model';
+import { Pacote } from '../../../core/model/model/pacote.model';
+import { Usuario } from '../../../core/model/model/usuario.model';
+import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
+import Page from '../../../core/model/model/page.model';
+import { CategoriaAtendimentoService } from '../../../core/services/categoria-atendimento.service';
+import { MessageService } from '../../../core/services/message.service';
+import { PacoteService } from '../../../core/services/pacote.service';
+import Util from '../../../shared/util/util';
+import { UsuarioService } from '../../../core/services/usuario.service';
 
 @Component({
   selector: 'app-pacote-list',
@@ -105,11 +105,11 @@ export class PacoteListComponent implements OnInit, IActionOrderBy {
     const dataInicio = this.form.value.dataInicio;
     const dataFim = this.form.value.dataFim;
     if (dataInicio && !Util.isDataValida(dataInicio)) {
-      this.messageService.sendMessageError(Messages.MSG00013);
+      this.messageService.sendMessageError(Messages.MSG0013);
       return;
     }
     if (dataFim && !Util.isDataValida(dataFim)) {
-      this.messageService.sendMessageError(Messages.MSG00014);
+      this.messageService.sendMessageError(Messages.MSG0014);
       return;
     }
     this.filtro = new PageableFilter<PacoteFilter>();

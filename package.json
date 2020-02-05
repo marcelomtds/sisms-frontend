@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -11,17 +11,17 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~7.1.0",
-    "@angular/common": "~7.1.0",
-    "@angular/compiler": "~7.1.0",
-    "@angular/core": "~7.1.0",
-    "@angular/forms": "~7.1.0",
-    "@angular/platform-browser": "~7.1.0",
-    "@angular/platform-browser-dynamic": "~7.1.0",
-    "@angular/router": "~7.1.0",
+    "@angular/animations": "~8.2.14",
+    "@angular/common": "~8.2.14",
+    "@angular/compiler": "~8.2.14",
+    "@angular/core": "~8.2.14",
+    "@angular/forms": "~8.2.14",
+    "@angular/platform-browser": "~8.2.14",
+    "@angular/platform-browser-dynamic": "~8.2.14",
+    "@angular/router": "~8.2.14",
     "@ng-select/ng-select": "^2.16.3",
+    "blob-util": "^2.0.2",
     "core-js": "^2.5.4",
-    "express": "^4.17.1",
     "jspdf": "^1.5.3",
     "moment": "^2.24.0",
     "ng2-trim-directive": "^2.3.2",
@@ -32,21 +32,20 @@
     "ngx-spinner": "^7.0.0",
     "ngx-toastr": "^10.0.2",
     "ngx-upper-case-directive": "^1.0.3",
-    "path": "^0.12.7",
     "resize-base64": "git+https://github.com/hendrik-scholz/resize-base64.git#master",
-    "rxjs": "~6.3.3",
+    "rxjs": "~6.5.4",
     "tslib": "^1.9.0",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.13.7",
-    "@angular/cli": "~7.1.1",
-    "@angular/compiler-cli": "^7.2.11",
-    "@angular/language-service": "~7.1.0",
+    "@angular-devkit/build-angular": "~0.803.24",
+    "@angular/cli": "~8.3.24",
+    "@angular/compiler-cli": "^8.2.14",
+    "@angular/language-service": "~8.2.14",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
-    "codelyzer": "~4.5.0",
+    "codelyzer": "^5.0.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.1.1",
@@ -57,10 +56,6 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.1.6"
-  },
-  "engines": {
-    "node": "~12.10.0",
-    "npm": "~6.10.3"
+    "typescript": "~3.5.3"
   }
 }

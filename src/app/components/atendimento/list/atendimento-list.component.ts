@@ -2,26 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
-import { AuthGuard } from 'src/app/components/auth/auth.guard';
-import { Messages } from 'src/app/components/shared/message/messages';
-import { ModalVisualizarAtendimentoComponent } from 'src/app/components/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
-import { PerfilEnum } from 'src/app/components/shared/model/enum/perfil.enum';
-import { AtendimentoFilter } from 'src/app/components/shared/model/filter/atendimento.filter';
-import { Atendimento } from 'src/app/components/shared/model/model/atendimento.model';
-import { CategoriaAtendimentoRouting } from 'src/app/components/shared/model/model/categoria-atendimento-routing.model';
-import { Usuario } from 'src/app/components/shared/model/model/usuario.model';
-import { PageableFilter } from 'src/app/components/shared/pageable/filter.filter';
-import { Response } from 'src/app/components/shared/pageable/response.model';
-import { MessageService } from 'src/app/components/shared/services/message.service';
-import { UsuarioService } from 'src/app/components/shared/services/usuario.service';
-import Util from 'src/app/components/shared/util/util';
-import { Paciente } from '../../shared/model/model/paciente.model';
-import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model';
-import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
-import Page from '../../shared/pageable/page';
-import { AtendimentoService } from '../../shared/services/atendimento.service';
-import { PacienteService } from '../../shared/services/paciente.service';
-import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
+import { AuthGuard } from 'src/app/core/guards/auth.guard';
+import { Messages } from 'src/app/shared/messages/messages';
+import { ModalVisualizarAtendimentoComponent } from 'src/app/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
+import { PerfilEnum } from 'src/app/core/model/enum/perfil.enum';
+import { AtendimentoFilter } from 'src/app/core/model/filter/atendimento.filter';
+import { Atendimento } from 'src/app/core/model/model/atendimento.model';
+import { CategoriaAtendimentoRouting } from 'src/app/core/model/model/categoria-atendimento-routing.model';
+import { Usuario } from 'src/app/core/model/model/usuario.model';
+import { PageableFilter } from 'src/app/core/model/filter/filter.filter';
+import { Response } from 'src/app/core/model/model/response.model';
+import { MessageService } from 'src/app/core/services/message.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
+import Util from 'src/app/shared/util/util';
+import { Paciente } from '../../../core/model/model/paciente.model';
+import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
+import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
+import Page from '../../../core/model/model/page.model';
+import { AtendimentoService } from '../../../core/services/atendimento.service';
+import { PacienteService } from '../../../core/services/paciente.service';
+import { TipoAtendimentoService } from '../../../core/services/tipo-atendimento.service';
 
 @Component({
   selector: 'app-atendimento-list',
@@ -101,11 +101,11 @@ export class AtendimentoListComponent implements OnInit, IActionOrderBy {
     const dataInicio = this.form.value.preAtendimentoData;
     const dataFim = this.form.value.posAtendimentoData;
     if (dataInicio && !Util.isDataHoraValida(dataInicio)) {
-      this.messageService.sendMessageError(Messages.MSG00016);
+      this.messageService.sendMessageError(Messages.MSG0016);
       return;
     }
     if (dataFim && !Util.isDataHoraValida(dataFim)) {
-      this.messageService.sendMessageError(Messages.MSG00017);
+      this.messageService.sendMessageError(Messages.MSG0017);
       return;
     }
     this.filtro = new PageableFilter<AtendimentoFilter>();
@@ -141,7 +141,7 @@ export class AtendimentoListComponent implements OnInit, IActionOrderBy {
 
   public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
-    this.router.navigate([`/atendimento-form/${this.categoriaAtendimentoRouting.rota}/${id}`]);
+    this.router.navigate([`/atendimento/${this.categoriaAtendimentoRouting.rota}/alterar/${id}`]);
   }
 
   public async onClickOpenModalVisualizar(id: number): Promise<void> {

@@ -2,15 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Messages } from 'src/app/components/shared/message/messages';
-import { CategoriaLancamento } from 'src/app/components/shared/model/model/categoria-lancamento.model';
-import { FormaPagamento } from 'src/app/components/shared/model/model/forma-pagamento.model';
-import { Lancamento } from 'src/app/components/shared/model/model/lancamento.model';
-import { CategoriaLancamentoService } from 'src/app/components/shared/services/categoria-lancamento.service';
-import { FormaPagamentoService } from 'src/app/components/shared/services/forma-pagamento.service';
-import { MessageService } from 'src/app/components/shared/services/message.service';
-import Util from 'src/app/components/shared/util/util';
-import { LancamentoService } from '../../../shared/services/lancamento.service';
+import { CategoriaLancamento } from 'src/app/core/model/model/categoria-lancamento.model';
+import { FormaPagamento } from 'src/app/core/model/model/forma-pagamento.model';
+import { Lancamento } from 'src/app/core/model/model/lancamento.model';
+import { CategoriaLancamentoService } from 'src/app/core/services/categoria-lancamento.service';
+import { FormaPagamentoService } from 'src/app/core/services/forma-pagamento.service';
+import { MessageService } from 'src/app/core/services/message.service';
+import { Messages } from 'src/app/shared/messages/messages';
+import Util from 'src/app/shared/util/util';
+import { LancamentoService } from '../../../../core/services/lancamento.service';
 
 @Component({
   selector: 'app-controle-caixa-saida',
@@ -99,7 +99,7 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isDataValida(this.form.controls.data.value)) {
-        this.messageService.sendMessageError(Messages.MSG00015);
+        this.messageService.sendMessageError(Messages.MSG0015);
         return;
       }
       const formValue: Lancamento = {
@@ -109,25 +109,18 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
       if (formValue.id) {
         this.service.update(formValue.id, formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.clearValues();
+          this.router.navigate(['/controle-caixa']);
         });
       } else {
         this.service.create(formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.clearValues();
+          this.router.navigate(['/controle-caixa']);
         });
       }
     } else {
       this.isInvalidForm = true;
       this.messageService.sendMessageError(Messages.MSG0004);
     }
-  }
-
-  private clearValues(): void {
-    this.onCreateForm();
-    this.isInvalidForm = false;
-    //TODO VERIFICAR URL
-    //this.router.navigateByUrl('asd');
   }
 
 }

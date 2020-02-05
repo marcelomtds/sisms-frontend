@@ -138,7 +138,7 @@
                           class="fa fa-{{ paciente.ativo ? 'ban' : 'check' }}"></em></button>
                       <button title="Visualizar" (click)="onClickOpenModalVisualizar(paciente)"
                         class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
-                      <button title="Editar" [routerLink]="['/paciente-form', paciente.id]"
+                      <button title="Editar" [routerLink]="['/paciente/alterar', paciente.id]"
                         class="btn btn-primary btn-left"><em class="fa fa-pencil"></em></button>
                     </td>
                     <td>

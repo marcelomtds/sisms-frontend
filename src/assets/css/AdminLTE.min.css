@@ -345,7 +345,7 @@ a:focus {
 
 .content-header {
   position: relative;
-  padding: 15px 15px 0 15px
+  padding: 0px 15px 0 15px
 }
 
 .content-header>h1 {

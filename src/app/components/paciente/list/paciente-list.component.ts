@@ -2,22 +2,22 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { Messages } from '../../shared/message/messages';
-import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { ModalVisualizarPacienteUsuarioComponent } from '../../shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
-import { PacienteUsuarioFilter } from '../../shared/model/filter/paciente-usuario.filter';
-import { Localidade } from '../../shared/model/model/localidade.model';
-import { Paciente } from '../../shared/model/model/paciente.model';
-import { Sexo } from '../../shared/model/model/sexo.model';
-import { UF } from '../../shared/model/model/uf.model';
-import { IActionOrderBy } from '../../shared/page-order-by/iaction-orderby';
-import { PageableFilter } from '../../shared/pageable/filter.filter';
-import Page from '../../shared/pageable/page';
-import { LocalidadeService } from '../../shared/services/localidade.service';
-import { MessageService } from '../../shared/services/message.service';
-import { PacienteService } from '../../shared/services/paciente.service';
-import { SexoService } from '../../shared/services/sexo.service';
-import { UfService } from '../../shared/services/uf.service';
+import { Messages } from '../../../shared/messages/messages';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { ModalVisualizarPacienteUsuarioComponent } from '../../../shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
+import { PacienteUsuarioFilter } from '../../../core/model/filter/paciente-usuario.filter';
+import { Localidade } from '../../../core/model/model/localidade.model';
+import { Paciente } from '../../../core/model/model/paciente.model';
+import { Sexo } from '../../../core/model/model/sexo.model';
+import { UF } from '../../../core/model/model/uf.model';
+import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
+import { PageableFilter } from '../../../core/model/filter/filter.filter';
+import Page from '../../../core/model/model/page.model';
+import { LocalidadeService } from '../../../core/services/localidade.service';
+import { MessageService } from '../../../core/services/message.service';
+import { PacienteService } from '../../../core/services/paciente.service';
+import { SexoService } from '../../../core/services/sexo.service';
+import { UfService } from '../../../core/services/uf.service';
 
 @Component({
   selector: 'app-paciente-list',
@@ -95,7 +95,7 @@ export class PacienteListComponent implements OnInit, OnDestroy, IActionOrderBy 
   public onClickLocalidade(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.ufId.value) {
-      this.messageService.sendMessageWarning(Messages.MSG00010);
+      this.messageService.sendMessageWarning(Messages.MSG0010);
     }
   }
 

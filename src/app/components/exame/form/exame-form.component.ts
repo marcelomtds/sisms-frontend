@@ -1,20 +1,20 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { base64StringToBlob } from 'blob-util';
 import { BsModalService } from 'ngx-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
-import { Messages } from '../../shared/message/messages';
-import { ModalVisualizarImagensComponent } from '../../shared/modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
-import { CategoriaExame } from '../../shared/model/model/categoria-exame.model';
-import { Exame } from '../../shared/model/model/exame.model';
-import { Paciente } from '../../shared/model/model/paciente.model';
-import { CategoriaExameService } from '../../shared/services/categoria-exame.service';
-import { ExameService } from '../../shared/services/exame.service';
-import { MessageService } from '../../shared/services/message.service';
-import { PacienteService } from '../../shared/services/paciente.service';
-import Util from '../../shared/util/util';
+import { CategoriaExame } from '../../../core/model/model/categoria-exame.model';
+import { Exame } from '../../../core/model/model/exame.model';
+import { Paciente } from '../../../core/model/model/paciente.model';
+import { CategoriaExameService } from '../../../core/services/categoria-exame.service';
+import { ExameService } from '../../../core/services/exame.service';
+import { MessageService } from '../../../core/services/message.service';
+import { PacienteService } from '../../../core/services/paciente.service';
+import { Messages } from '../../../shared/messages/messages';
+import Util from '../../../shared/util/util';
 
 @Component({
   selector: 'app-exame-form',
@@ -22,7 +22,7 @@ import Util from '../../shared/util/util';
 })
 export class ExameFormComponent implements OnInit, OnDestroy {
 
-  @ViewChild('inputImage') inputImage: ElementRef;
+  @ViewChild('inputImage', { static: true }) inputImage: ElementRef;
 
   public pacientes = new Array<Paciente>();
   public categoriasExame = new Array<CategoriaExame>();
@@ -66,11 +66,16 @@ export class ExameFormComponent implements OnInit, OnDestroy {
         pacienteId: response.result.pacienteId,
         categoriaExameId: response.result.categoriaExameId,
         data: Util.convertDateToString(response.result.data),
-        imagens: response.result.imagens || [],
+        anexos: response.result.anexos || [],
         observacao: response.result.observacao
       });
       this.form.controls.pacienteId.disable();
       this.form.controls.pacienteId.updateValueAndValidity();
+      if (this.form.controls.anexos.value) {
+        this.form.controls.anexos.value.forEach(element => {
+          element.index = this.gerarIndex(this.form.controls.anexos.value);
+        });
+      }
     });
   }
 
@@ -80,46 +85,74 @@ export class ExameFormComponent implements OnInit, OnDestroy {
       pacienteId: [null, Validators.required],
       categoriaExameId: [null, Validators.required],
       data: [null, Validators.required],
-      imagens: [[]],
+      anexos: [[]],
       observacao: [null]
     });
   }
 
-  public onChangeImage(images: File[]): void {
+  public onChangeAnexo(anexos: File[]): void {
     this.messageService.clearAllMessages();
-    if (this.form.value.imagens.length + images.length > 10) {
-      this.messageService.sendMessageError(Messages.MSG00024);
+    if (this.form.value.anexos.length + anexos.length > 10) {
+      this.messageService.sendMessageError(Messages.MSG0073);
       return;
     }
-    if (images && images.length) {
+    if (anexos && anexos.length) {
       try {
-        if (!this.validarFormatoImagem(images)) {
-          this.messageService.sendMessageError(images.length > 1 ? Messages.MSG00021 : Messages.MSG00020);
+        if (!this.validarFormatoAnexo(anexos)) {
+          this.messageService.sendMessageError(anexos.length > 1 ? Messages.MSG0068 : Messages.MSG0067);
           return;
         }
-        if (!this.validarTamanhoImagem(images)) {
-          this.messageService.sendMessageError(images.length > 1 ? Messages.MSG00023 : Messages.MSG00022);
+        if (!this.validarTamanhoAnexo(anexos)) {
+          this.messageService.sendMessageError(anexos.length > 1 ? Messages.MSG0070 : Messages.MSG0022);
           return;
         }
-        for (const image of images) {
+        this.spinnerService.show();
+        for (const anexo of anexos) {
           const reader = new FileReader();
-          reader.readAsDataURL(image);
+          reader.readAsDataURL(anexo);
           reader.onload = () => {
-            this.spinnerService.show();
-            resizeBase64ForMaxWidthAndMaxHeight(reader.result, 1024, 768, (resizedImage) => {
-              this.form.value.imagens.push({
-                index: this.gerarIndex(this.form.value.imagens),
-                imagem: resizedImage,
+            if (Util.isFormatoImagemValido(anexo)) {
+              resizeBase64ForMaxWidthAndMaxHeight(reader.result, 1024, 768, (resizedImage) => {
+                this.form.value.anexos.push({
+                  index: this.gerarIndex(this.form.value.anexos),
+                  anexo: resizedImage,
+                  nome: anexo.name,
+                  observacao: null
+                });
+              });
+            } else {
+              this.form.value.anexos.push({
+                index: this.gerarIndex(this.form.value.anexos),
+                anexo: reader.result,
+                nome: anexo.name,
                 observacao: null
               });
-              this.spinnerService.hide();
-            });
+            }
+            this.spinnerService.hide();
           };
         }
       } catch {
-        this.messageService.sendMessageError(images.length > 1 ? Messages.MSG00012 : Messages.MSG00011);
+        this.messageService.sendMessageError(anexos.length > 1 ? Messages.MSG0072 : Messages.MSG0071);
         this.spinnerService.hide();
       }
+    }
+  }
+
+  public onClickDownloadFile(index: number): void {
+    this.messageService.clearAllMessages();
+    this.spinnerService.show();
+    try {
+      const anexo = this.form.controls.anexos.value.find(x => x.index === index);
+      const array = anexo.anexo.toString().split(';base64,');
+      const blob = base64StringToBlob(array[array.length - 1]);
+      const elemento = document.createElement('a');
+      elemento.href = window.URL.createObjectURL(blob);
+      elemento.download = anexo.nome;
+      elemento.click();
+      elemento.remove();
+      this.spinnerService.hide();
+    } catch {
+      this.spinnerService.hide();
     }
   }
 
@@ -132,28 +165,28 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private validarFormatoImagem(imagens: File[]): boolean {
-    for (const image of imagens) {
-      if (!Util.isFormatoImagemValido(image)) {
+  private validarFormatoAnexo(anexos: File[]): boolean {
+    for (const anexo of anexos) {
+      if (!Util.isFormatoAnexoValido(anexo)) {
         return false;
       }
     }
     return true;
   }
 
-  private validarTamanhoImagem(imagens: File[]): boolean {
-    for (const image of imagens) {
-      if (!Util.isTamanhoImagemValido(image)) {
+  private validarTamanhoAnexo(anexos: File[]): boolean {
+    for (const anexo of anexos) {
+      if (!Util.isTamanhoArquivoValido(anexo)) {
         return false;
       }
     }
     return true;
   }
 
-  public onClickRemoverImagem(index: number): void {
-    const result = this.form.value.imagens.findIndex(x => x.index === index);
+  public onClickRemoverAnexo(index: number): void {
+    const result = this.form.value.anexos.findIndex(x => x.index === index);
     if (result !== -1) {
-      this.form.value.imagens.splice(result, 1);
+      this.form.value.anexos.splice(result, 1);
     }
   }
 
@@ -174,7 +207,7 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isDataValida(this.form.controls.data.value)) {
-        this.messageService.sendMessageError(Messages.MSG00015);
+        this.messageService.sendMessageError(Messages.MSG0015);
         return;
       }
       const formValue: Exame = {
@@ -185,26 +218,18 @@ export class ExameFormComponent implements OnInit, OnDestroy {
       if (formValue.id) {
         this.service.update(formValue.id, formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.router.navigate(['/exame-list']);
+          this.router.navigate(['/exame']);
         });
       } else {
         this.service.create(formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.router.navigate(['/exame-list']);
+          this.router.navigate(['/exame']);
         });
       }
     } else {
       this.isInvalidForm = true;
       this.messageService.sendMessageError(Messages.MSG0004);
     }
-  }
-
-  public onClickOpenModalVisualizarImagens(): void {
-    this.messageService.clearAllMessages();
-    const initialState = {
-      imagens: this.form.value.imagens
-    };
-    this.modalService.show(ModalVisualizarImagensComponent, { initialState, backdrop: 'static' });
   }
 
 }

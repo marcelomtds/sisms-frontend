@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
-import { Messages } from '../../shared/message/messages';
-import { ModalConfirmacaoComponent } from '../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { DiaSemanaEnum } from '../../shared/model/enum/dia-semana.enum';
-import { Agenda } from '../../shared/model/model/agenda.model';
-import { CategoriaAtendimento } from '../../shared/model/model/categoria-atendimento.model';
-import { DiaSemana } from '../../shared/model/model/dia-semana.model';
-import { Paciente } from '../../shared/model/model/paciente.model';
-import { Tabset } from '../../shared/model/model/tabset.model';
-import { TipoAtendimento } from '../../shared/model/model/tipo-atendimento.model';
-import { AgendaService } from '../../shared/services/agenda.service';
-import { CategoriaAtendimentoService } from '../../shared/services/categoria-atendimento.service';
-import { DiaSemanaService } from '../../shared/services/dia-semana.service';
-import { MessageService } from '../../shared/services/message.service';
-import { PacienteService } from '../../shared/services/paciente.service';
-import { TipoAtendimentoService } from '../../shared/services/tipo-atendimento.service';
-import Util from '../../shared/util/util';
+import { Messages } from '../../../shared/messages/messages';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { DiaSemanaEnum } from '../../../core/model/enum/dia-semana.enum';
+import { Agenda } from '../../../core/model/model/agenda.model';
+import { CategoriaAtendimento } from '../../../core/model/model/categoria-atendimento.model';
+import { DiaSemana } from '../../../core/model/model/dia-semana.model';
+import { Paciente } from '../../../core/model/model/paciente.model';
+import { Tabset } from '../../../core/model/model/tabset.model';
+import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
+import { AgendaService } from '../../../core/services/agenda.service';
+import { CategoriaAtendimentoService } from '../../../core/services/categoria-atendimento.service';
+import { DiaSemanaService } from '../../../core/services/dia-semana.service';
+import { MessageService } from '../../../core/services/message.service';
+import { PacienteService } from '../../../core/services/paciente.service';
+import { TipoAtendimentoService } from '../../../core/services/tipo-atendimento.service';
+import Util from '../../../shared/util/util';
 
 @Component({
   selector: 'app-agenda-form',
@@ -154,11 +154,11 @@ export class AgendaFormComponent implements OnInit {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isHorarioValido(this.form.controls.horarioInicio.value)) {
-        this.messageService.sendMessageError(Messages.MSG00062);
+        this.messageService.sendMessageError(Messages.MSG0062);
         return;
       }
       if (!Util.isHorarioValido(this.form.controls.horarioFim.value)) {
-        this.messageService.sendMessageError(Messages.MSG00063);
+        this.messageService.sendMessageError(Messages.MSG0063);
         return;
       }
       const formValue: Agenda = {

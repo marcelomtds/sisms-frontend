@@ -5,28 +5,29 @@ import { BsModalService } from 'ngx-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
-import { Messages } from 'src/app/components/shared/message/messages';
-import { ModalConfirmacaoComponent } from 'src/app/components/shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { ModalCriarPacoteComponent } from 'src/app/components/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
-import { ModalVisualizarImagensComponent } from 'src/app/components/shared/modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
-import { CategoriaAtendimentoEnum } from 'src/app/components/shared/model/enum/categoria-atendimento.enum';
-import { TipoAtendimentoEnum } from 'src/app/components/shared/model/enum/tipo-atendimento.enum';
-import { Atendimento } from 'src/app/components/shared/model/model/atendimento.model';
-import { CategoriaAtendimentoRouting } from 'src/app/components/shared/model/model/categoria-atendimento-routing.model';
-import { OutraMedidaSelecionada } from 'src/app/components/shared/model/model/outra-medida-selecionada.model';
-import { OutraMedida } from 'src/app/components/shared/model/model/outra-medida.model';
-import { Paciente } from 'src/app/components/shared/model/model/paciente.model';
-import { Pacote } from 'src/app/components/shared/model/model/pacote.model';
-import { PosAtendimentoOutraMedida } from 'src/app/components/shared/model/model/pos-atendimento-outra-medida.model';
-import { PreAtendimentoOutraMedida } from 'src/app/components/shared/model/model/pre-atendimento-outra-medida.model';
-import { TipoAtendimento } from 'src/app/components/shared/model/model/tipo-atendimento.model';
-import { MessageService } from 'src/app/components/shared/services/message.service';
-import { OutraMedidaService } from 'src/app/components/shared/services/outra-medida.service';
-import { PacienteService } from 'src/app/components/shared/services/paciente.service';
-import { PacoteService } from 'src/app/components/shared/services/pacote.service';
-import { TipoAtendimentoService } from 'src/app/components/shared/services/tipo-atendimento.service';
-import Util from 'src/app/components/shared/util/util';
-import { AtendimentoService } from '../../shared/services/atendimento.service';
+import { Messages } from 'src/app/shared/messages/messages';
+import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { ModalCriarPacoteComponent } from 'src/app/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
+import { ModalVisualizarImagensComponent } from 'src/app/shared/modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
+import { CategoriaAtendimentoEnum } from 'src/app/core/model/enum/categoria-atendimento.enum';
+import { TipoAtendimentoEnum } from 'src/app/core/model/enum/tipo-atendimento.enum';
+import { Atendimento } from 'src/app/core/model/model/atendimento.model';
+import { CategoriaAtendimentoRouting } from 'src/app/core/model/model/categoria-atendimento-routing.model';
+import { OutraMedidaSelecionada } from 'src/app/core/model/model/outra-medida-selecionada.model';
+import { OutraMedida } from 'src/app/core/model/model/outra-medida.model';
+import { Paciente } from 'src/app/core/model/model/paciente.model';
+import { Pacote } from 'src/app/core/model/model/pacote.model';
+import { PosAtendimentoOutraMedida } from 'src/app/core/model/model/pos-atendimento-outra-medida.model';
+import { PreAtendimentoOutraMedida } from 'src/app/core/model/model/pre-atendimento-outra-medida.model';
+import { TipoAtendimento } from 'src/app/core/model/model/tipo-atendimento.model';
+import { MessageService } from 'src/app/core/services/message.service';
+import { OutraMedidaService } from 'src/app/core/services/outra-medida.service';
+import { PacienteService } from 'src/app/core/services/paciente.service';
+import { PacoteService } from 'src/app/core/services/pacote.service';
+import { TipoAtendimentoService } from 'src/app/core/services/tipo-atendimento.service';
+import Util from 'src/app/shared/util/util';
+import { AtendimentoService } from '../../../core/services/atendimento.service';
+import { base64StringToBlob } from 'blob-util';
 
 @Component({
   selector: 'app-atendimento-form',
@@ -34,7 +35,7 @@ import { AtendimentoService } from '../../shared/services/atendimento.service';
 })
 export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
-  @ViewChild('inputImage') inputImage: ElementRef;
+  @ViewChild('inputImage', { static: false }) inputImage: ElementRef;
 
   public form: FormGroup;
   public tiposAtendimento = new Array<TipoAtendimento>();
@@ -114,7 +115,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   private findById(id: number): void {
     this.service.findById(id).subscribe(response => {
       if (!this.isTipoAtendimentoIgual(response.result.categoriaAtendimentoId)) {
-        this.messageService.sendMessageError(Messages.MSG00027);
+        this.messageService.sendMessageError(Messages.MSG0027);
         this.router.navigate(['/']);
       }
       this.form.setValue({
@@ -147,6 +148,11 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       this.form.controls.pacienteId.disable();
       this.form.controls.pacienteId.updateValueAndValidity();
       this.isCadastrarPosAtendimento = true;
+      if (this.form.controls.imagens.value) {
+        this.form.controls.imagens.value.forEach(element => {
+          element.index = this.gerarIndex(this.form.controls.anexos.value);
+        });
+      }
       const listaPre: PreAtendimentoOutraMedida[] = response.result.preAtendimentoOutrasMedidas;
       const listaPos: PosAtendimentoOutraMedida[] = response.result.posAtendimentoOutrasMedidas;
       for (let i = 0; i < listaPre.length; i++) {
@@ -165,6 +171,24 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  public onClickDownloadFile(index: number): void {
+    this.messageService.clearAllMessages();
+    this.spinnerService.show();
+    try {
+      const imagem = this.form.controls.imagens.value.find(x => x.index === index);
+      const array = imagem.imagem.toString().split(';base64,');
+      const blob = base64StringToBlob(array[array.length - 1]);
+      const elemento = document.createElement('a');
+      elemento.href = window.URL.createObjectURL(blob);
+      elemento.download = imagem.nome;
+      elemento.click();
+      elemento.remove();
+      this.spinnerService.hide();
+    } catch {
+      this.spinnerService.hide();
+    }
   }
 
   private onLoadCategoriaAtendimento(): void {
@@ -327,7 +351,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         valorPos: 0
       });
     } else {
-      this.messageService.sendMessageError(Messages.MSG00025);
+      this.messageService.sendMessageError(Messages.MSG0025);
     }
   }
 
@@ -341,17 +365,17 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   public onChangeImage(images: File[]): void {
     this.messageService.clearAllMessages();
     if (this.form.value.imagens.length + images.length > 10) {
-      this.messageService.sendMessageError(Messages.MSG00024);
+      this.messageService.sendMessageError(Messages.MSG0024);
       return;
     }
     if (images && images.length) {
       try {
         if (!this.validarFormatoImagem(images)) {
-          this.messageService.sendMessageError(images.length > 1 ? Messages.MSG00021 : Messages.MSG00020);
+          this.messageService.sendMessageError(images.length > 1 ? Messages.MSG0021 : Messages.MSG0020);
           return;
         }
         if (!this.validarTamanhoImagem(images)) {
-          this.messageService.sendMessageError(images.length > 1 ? Messages.MSG00023 : Messages.MSG00022);
+          this.messageService.sendMessageError(images.length > 1 ? Messages.MSG0023 : Messages.MSG0022);
           return;
         }
         for (const image of images) {
@@ -362,6 +386,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
             resizeBase64ForMaxWidthAndMaxHeight(reader.result, 1024, 768, (resizedImage) => {
               this.form.value.imagens.push({
                 index: this.gerarIndex(this.form.value.imagens),
+                nome: image.name,
                 imagem: resizedImage,
                 observacao: null
               });
@@ -370,7 +395,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
           };
         }
       } catch {
-        this.messageService.sendMessageError(images.length > 1 ? Messages.MSG00012 : Messages.MSG00011);
+        this.messageService.sendMessageError(images.length > 1 ? Messages.MSG0012 : Messages.MSG0011);
         this.spinnerService.hide();
       }
     }
@@ -396,7 +421,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   private validarTamanhoImagem(imagens: File[]): boolean {
     for (const image of imagens) {
-      if (!Util.isTamanhoImagemValido(image)) {
+      if (!Util.isTamanhoArquivoValido(image)) {
         return false;
       }
     }
@@ -424,11 +449,11 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       const preAtendimentoData = this.form.value.preAtendimentoData;
       const posAtendimentoData = this.form.value.posAtendimentoData;
       if (preAtendimentoData && !Util.isDataHoraValida(preAtendimentoData)) {
-        this.messageService.sendMessageError(Messages.MSG00016);
+        this.messageService.sendMessageError(Messages.MSG0016);
         return;
       }
       if (posAtendimentoData && !Util.isDataHoraValida(posAtendimentoData)) {
-        this.messageService.sendMessageError(Messages.MSG00017);
+        this.messageService.sendMessageError(Messages.MSG0017);
         return;
       }
       this.form.value.preAtendimentoOutrasMedidas = [];
@@ -461,12 +486,12 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       if (formValue.id) {
         this.service.update(formValue.id, formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.router.navigate([`/atendimento-list/${this.categoriaAtendimentoRouting.rota}`]);
+          this.router.navigate([`/atendimento/${this.categoriaAtendimentoRouting.rota}`]);
         });
       } else {
         this.service.create(formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.router.navigate([`/atendimento-list/${this.categoriaAtendimentoRouting.rota}`]);
+          this.router.navigate([`/atendimento/${this.categoriaAtendimentoRouting.rota}`]);
         });
       }
     } else {

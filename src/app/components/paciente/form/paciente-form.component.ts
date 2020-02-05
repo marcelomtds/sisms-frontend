@@ -2,19 +2,19 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Messages } from '../../shared/message/messages';
-import { Atendimento } from '../../shared/model/model/atendimento.model';
-import { Localidade } from '../../shared/model/model/localidade.model';
-import { Profissao } from '../../shared/model/model/profissao.model';
-import { Sexo } from '../../shared/model/model/sexo.model';
-import { UF } from '../../shared/model/model/uf.model';
-import { LocalidadeService } from '../../shared/services/localidade.service';
-import { MessageService } from '../../shared/services/message.service';
-import { ProfissaoService } from '../../shared/services/profissao.service';
-import { SexoService } from '../../shared/services/sexo.service';
-import { UfService } from '../../shared/services/uf.service';
-import Util from '../../shared/util/util';
-import { PacienteService } from '../../shared/services/paciente.service';
+import { Messages } from '../../../shared/messages/messages';
+import { Atendimento } from '../../../core/model/model/atendimento.model';
+import { Localidade } from '../../../core/model/model/localidade.model';
+import { Profissao } from '../../../core/model/model/profissao.model';
+import { Sexo } from '../../../core/model/model/sexo.model';
+import { UF } from '../../../core/model/model/uf.model';
+import { LocalidadeService } from '../../../core/services/localidade.service';
+import { MessageService } from '../../../core/services/message.service';
+import { ProfissaoService } from '../../../core/services/profissao.service';
+import { SexoService } from '../../../core/services/sexo.service';
+import { UfService } from '../../../core/services/uf.service';
+import Util from '../../../shared/util/util';
+import { PacienteService } from '../../../core/services/paciente.service';
 
 @Component({
   selector: 'app-paciente-form',
@@ -120,7 +120,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
   public onClickLocalidade(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.enderecoLocalidadeUFId.value) {
-      this.messageService.sendMessageWarning(Messages.MSG00010);
+      this.messageService.sendMessageWarning(Messages.MSG0010);
     }
   }
 
@@ -147,7 +147,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       const dataNascimento = this.form.value.dataNascimento;
       if (dataNascimento && !Util.isDataValida(dataNascimento)) {
-        this.messageService.sendMessageError(Messages.MSG00018);
+        this.messageService.sendMessageError(Messages.MSG0018);
         return;
       }
       const formValue: Atendimento = {
@@ -157,12 +157,12 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
       if (formValue.id) {
         this.service.update(formValue.id, formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.router.navigate(['/paciente-list']);
+          this.router.navigate(['/paciente']);
         });
       } else {
         this.service.create(formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.router.navigate(['/paciente-list']);
+          this.router.navigate(['/paciente']);
         });
       }
     } else {

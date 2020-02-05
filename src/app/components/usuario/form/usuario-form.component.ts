@@ -4,20 +4,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
-import { SharedService } from '../../shared/services/shared.service';
-import { Messages } from '../../shared/message/messages';
-import { Localidade } from '../../shared/model/model/localidade.model';
-import { Profissao } from '../../shared/model/model/profissao.model';
-import { Sexo } from '../../shared/model/model/sexo.model';
-import { UF } from '../../shared/model/model/uf.model';
-import { Usuario } from '../../shared/model/model/usuario.model';
-import { LocalidadeService } from '../../shared/services/localidade.service';
-import { MessageService } from '../../shared/services/message.service';
-import { ProfissaoService } from '../../shared/services/profissao.service';
-import { SexoService } from '../../shared/services/sexo.service';
-import { UfService } from '../../shared/services/uf.service';
-import Util from '../../shared/util/util';
-import { UsuarioService } from '../../shared/services/usuario.service';
+import { SharedService } from '../../../core/services/shared.service';
+import { Messages } from '../../../shared/messages/messages';
+import { Localidade } from '../../../core/model/model/localidade.model';
+import { Profissao } from '../../../core/model/model/profissao.model';
+import { Sexo } from '../../../core/model/model/sexo.model';
+import { UF } from '../../../core/model/model/uf.model';
+import { Usuario } from '../../../core/model/model/usuario.model';
+import { LocalidadeService } from '../../../core/services/localidade.service';
+import { MessageService } from '../../../core/services/message.service';
+import { ProfissaoService } from '../../../core/services/profissao.service';
+import { SexoService } from '../../../core/services/sexo.service';
+import { UfService } from '../../../core/services/uf.service';
+import Util from '../../../shared/util/util';
+import { UsuarioService } from '../../../core/services/usuario.service';
 
 @Component({
   selector: 'app-usuario-form',
@@ -25,7 +25,7 @@ import { UsuarioService } from '../../shared/services/usuario.service';
 })
 export class UsuarioFormComponent implements OnInit, OnDestroy {
 
-  @ViewChild('inputImage') inputImage: ElementRef;
+  @ViewChild('inputImage', { static: false }) inputImage: ElementRef;
 
   public form: FormGroup;
   public sexos = new Array<Sexo>();
@@ -136,7 +136,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
   public onClickLocalidade(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.enderecoLocalidadeUFId.value) {
-      this.messageService.sendMessageWarning(Messages.MSG00010);
+      this.messageService.sendMessageWarning(Messages.MSG0010);
     }
   }
 
@@ -173,7 +173,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       const dataNascimento = this.form.value.dataNascimento;
       if (dataNascimento && !Util.isDataValida(dataNascimento)) {
-        this.messageService.sendMessageError(Messages.MSG00018);
+        this.messageService.sendMessageError(Messages.MSG0018);
         return;
       }
       const formValue: Usuario = {
@@ -209,11 +209,11 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     if (imagem) {
       try {
         if (!Util.isFormatoImagemValido(imagem)) {
-          this.messageService.sendMessageError(Messages.MSG00020);
+          this.messageService.sendMessageError(Messages.MSG0020);
           return;
         }
-        if (!Util.isTamanhoImagemValido(imagem)) {
-          this.messageService.sendMessageError(Messages.MSG00022);
+        if (!Util.isTamanhoArquivoValido(imagem)) {
+          this.messageService.sendMessageError(Messages.MSG0022);
           return;
         }
         const reader = new FileReader();
@@ -226,7 +226,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
           });
         };
       } catch {
-        this.messageService.sendMessageError(Messages.MSG00011);
+        this.messageService.sendMessageError(Messages.MSG0011);
         this.spinnerService.hide();
       }
     }

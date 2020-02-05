@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Agenda } from '../../shared/model/model/agenda.model';
+import { Agenda } from '../../../core/model/model/agenda.model';
 
 @Component({
   selector: 'app-agenda-resultado',
