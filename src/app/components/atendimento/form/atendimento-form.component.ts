@@ -150,7 +150,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       this.isCadastrarPosAtendimento = true;
       if (this.form.controls.imagens.value) {
         this.form.controls.imagens.value.forEach(element => {
-          element.index = this.gerarIndex(this.form.controls.anexos.value);
+          element.index = this.gerarIndex(this.form.controls.imagens.value);
         });
       }
       const listaPre: PreAtendimentoOutraMedida[] = response.result.preAtendimentoOutrasMedidas;

@@ -6,26 +6,26 @@
   <div class="box box-primary">
     <div class="box-header with-border">
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <h3 class="box-title">Dados do Atendimento</h3>
         </div>
       </div>
     </div>
     <div class="box-body">
       <div class="row">
-        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
           <div class="form-group">
             <label>Paciente</label>
             <p>{{ atendimento.pacienteNomeCompleto }}</p>
           </div>
         </div>
-        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
           <div class="form-group">
             <label>Usuário</label>
             <p>{{ atendimento.usuarioNomeCompleto }}</p>
           </div>
         </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
           <div class="form-group">
             <label>Duração</label>
             <p>{{ calcularTempo(atendimento.preAtendimentoData, atendimento?.posAtendimentoData) }}</p>
@@ -33,25 +33,25 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Categoria de Atendimento</label>
             <p>{{ atendimento.categoriaAtendimentoDescricao }}</p>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Tipo de Atendimento</label>
             <p>{{ atendimento.tipoAtendimentoDescricao }}</p>
           </div>
         </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
           <div class="form-group">
             <label>Número</label>
             <p>{{ atendimento.numero }}</p>
           </div>
         </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
           <div class="form-group">
             <label>Status</label>
             <p>{{ atendimento.aberto ? 'Em Aberto' : 'Encerrado' }}</p>
@@ -77,19 +77,19 @@
     </div>
     <div class="box-body">
       <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Usuário</label>
             <p>{{ pacote.usuarioNomeCompleto }}</p>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Data de Criação</label>
             <p>{{ pacote.dataCriacao | date : 'dd/MM/yyyy' }}</p>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Valor</label>
             <p>{{ pacote.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
@@ -97,19 +97,19 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Status</label>
             <p>{{ pacote.aberto ? 'Em Aberto' : 'Encerrado' }}</p>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Número</label>
             <p>{{ pacote.numero }}</p>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Quantidade de Atendimentos</label>
             <p>{{ pacote.quantidadeAtendimentos }}</p>
@@ -122,14 +122,14 @@
   <div class="box box-primary">
     <div class="box-header with-border">
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <h3 class="box-title">Dados do Pré-atendimento</h3>
         </div>
       </div>
     </div>
     <div class="box-body">
       <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Data e Hora</label>
             <p>{{ atendimento.preAtendimentoData | date: 'dd/MM/yyyy HH:mm' }}</p>
@@ -137,7 +137,7 @@
         </div>
 
         <ng-container *ngIf="isDrenagem() || isFisioterapia()">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
               <label>Pressão Arterial</label>
               <p>{{ atendimento.preAtendimentoPressaoArterial || '-' }}</p>
@@ -146,7 +146,7 @@
         </ng-container>
 
         <ng-container *ngIf="isDrenagem()">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
               <label>Peso</label>
               <p>{{ formatKG(atendimento.preAtendimentoPeso) }}</p>
@@ -157,19 +157,19 @@
       </div>
       <ng-container *ngIf="isDrenagem()">
         <div class="row">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
               <label>Supra Umbilical</label>
               <p>{{ formatCM(atendimento.preAtendimentoSupraUmbilical) }}</p>
             </div>
           </div>
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
               <label>Linha Umbilical</label>
               <p>{{ formatCM(atendimento.preAtendimentoLinhaUmbilical) }}</p>
             </div>
           </div>
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
               <label>Infra Umbilical</label>
               <p>{{ formatCM(atendimento.preAtendimentoInfraUmbilical) }}</p>
@@ -179,7 +179,7 @@
         <legend class="legend-default">Outras Medidas</legend>
         <ng-container *ngIf="atendimento?.preAtendimentoOutrasMedidas?.length; else hiddenOMPre">
           <div class="row">
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
               *ngFor="let medida of atendimento?.preAtendimentoOutrasMedidas; let i = index">
               <div class="form-group">
                 <label for="outraMedidaPre{{ i }}">{{ medida.outraMedidaDescricao }}</label>
@@ -206,21 +206,21 @@
   <div *ngIf="!atendimento.aberto" class="box box-primary">
     <div class="box-header with-border">
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <h3 class="box-title">Dados do Pós-atendimento</h3>
         </div>
       </div>
     </div>
     <div class="box-body">
       <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Data e Hora</label>
             <p>{{ atendimento.posAtendimentoData | date: 'dd/MM/yyyy HH:mm' }}</p>
           </div>
         </div>
         <ng-container *ngIf="isDrenagem() || isFisioterapia()">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
               <label>Pressão Arterial</label>
               <p>{{ atendimento.posAtendimentoPressaoArterial || '-' }}</p>
@@ -228,7 +228,7 @@
           </div>
         </ng-container>
         <ng-container *ngIf="isDrenagem()">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
               <label>Peso</label>
               <p>{{ formatKG(atendimento.posAtendimentoPeso) }}</p>
@@ -238,19 +238,19 @@
       </div>
       <ng-container *ngIf="isDrenagem()">
         <div class="row">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
               <label>Supra Umbilical</label>
               <p>{{ formatCM(atendimento.posAtendimentoSupraUmbilical) }}</p>
             </div>
           </div>
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
               <label>Linha Umbilical</label>
               <p>{{ formatCM(atendimento.posAtendimentoLinhaUmbilical) }}</p>
             </div>
           </div>
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
               <label>Infra Umbilical</label>
               <p>{{ formatCM(atendimento.posAtendimentoInfraUmbilical) }}</p>
@@ -260,7 +260,7 @@
         <legend class="legend-default">Outras Medidas</legend>
         <ng-container *ngIf="atendimento?.posAtendimentoOutrasMedidas?.length; else hiddenOMPos">
           <div class="row">
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
               *ngFor="let medida of atendimento?.posAtendimentoOutrasMedidas; let i = index">
               <div class="form-group">
                 <label for="outraMedidaPos{{ i }}">{{ medida.outraMedidaDescricao }}</label>
@@ -290,27 +290,27 @@
     </div>
     <div class="box-body">
       <div class="row">
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
           <div class="form-group">
             <label>Peso</label>
             <p>{{ calcularKG(atendimento?.preAtendimentoPeso, atendimento?.posAtendimentoPeso) }}</p>
           </div>
         </div>
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
           <div class="form-group">
             <label>Supra Umbilical</label>
             <p>{{ calcularCM(atendimento?.preAtendimentoSupraUmbilical, atendimento?.posAtendimentoSupraUmbilical) }}
             </p>
           </div>
         </div>
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
           <div class="form-group">
             <label>Linha Umbilical</label>
             <p>{{ calcularCM(atendimento?.preAtendimentoLinhaUmbilical, atendimento?.posAtendimentoLinhaUmbilical) }}
             </p>
           </div>
         </div>
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
           <div class="form-group">
             <label>Infra Umbilical</label>
             <p>{{ calcularCM(atendimento?.preAtendimentoInfraUmbilical, atendimento?.posAtendimentoInfraUmbilical) }}
@@ -322,7 +322,7 @@
       <ng-container *ngIf="atendimento?.preAtendimentoOutrasMedidas?.length; else hiddenOM">
         <div class="row">
           <div *ngFor="let medida of atendimento?.preAtendimentoOutrasMedidas; let i = index;"
-            class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
             <div class="form-group">
               <label>{{ medida.outraMedidaDescricao }}</label>
               <p>{{ calcularCM(medida.valor, atendimento?.posAtendimentoOutrasMedidas[i].valor) }}
