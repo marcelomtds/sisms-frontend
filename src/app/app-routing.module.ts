@@ -64,6 +64,11 @@ export const ROUTES: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'reserva',
+    loadChildren: () => import('./components/reserva/reserva.module').then(m => m.ReservaModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     canActivate: [AuthGuard],
     redirectTo: 'home'

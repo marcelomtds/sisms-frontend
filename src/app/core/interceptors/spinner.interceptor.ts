@@ -11,7 +11,6 @@ export class SpinnerInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    window.scrollTo(0, 0);
     this.showLoader();
     return next.handle(req).pipe(tap((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) {

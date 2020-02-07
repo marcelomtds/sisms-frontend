@@ -92,7 +92,7 @@
         <tabset>
           <tab *ngFor="let item of tabset" heading="{{ item.titulo }}" id="tab1">
             <app-agenda-resultado [dados]="getDados(item.diaSemanaId)" [form]="form"
-              (editEmitter)="onClickEditar($event)" (removeEmitter)="onClickExcluir($event)"></app-agenda-resultado>
+              (editEmitter)="onClickEditar($event.id)" (removeEmitter)="onClickExcluir($event)"></app-agenda-resultado>
           </tab>
         </tabset>
       </div>

@@ -89,16 +89,17 @@ export class AgendaFormComponent implements OnInit {
     });
   }
 
-  public onClickEditar(row: Agenda): void {
+  public async onClickEditar(id: number): Promise<void> {
     this.messageService.clearAllMessages();
+    const response = await this.service.findById(id).toPromise();
     this.form.setValue({
-      id: row.id,
-      diaSemanaId: row.diaSemanaId,
-      horarioInicio: row.horarioInicio,
-      horarioFim: row.horarioFim,
-      pacienteId: row.pacienteId,
-      tipoAtendimentoId: row.tipoAtendimentoId,
-      categoriaAtendimentoId: row.categoriaAtendimentoId
+      id: response.result.id,
+      diaSemanaId: response.result.diaSemanaId,
+      horarioInicio: response.result.horarioInicio,
+      horarioFim: response.result.horarioFim,
+      pacienteId: response.result.pacienteId,
+      tipoAtendimentoId: response.result.tipoAtendimentoId,
+      categoriaAtendimentoId: response.result.categoriaAtendimentoId
     });
   }
 

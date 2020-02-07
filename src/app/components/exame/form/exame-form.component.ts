@@ -2,7 +2,6 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { base64StringToBlob } from 'blob-util';
-import { BsModalService } from 'ngx-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
@@ -36,7 +35,6 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private messageService: MessageService,
-    private modalService: BsModalService,
     private pacienteService: PacienteService,
     private categoriaExameService: CategoriaExameService,
     private spinnerService: NgxSpinnerService

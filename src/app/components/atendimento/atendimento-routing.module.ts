@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AtendimentoFormComponent } from './form/atendimento-form.component';
 import { AtendimentoListComponent } from './list/atendimento-list.component';
+import { AtendimentoResolver } from './resolver/AtendimentoResolver.resolver';
 
 const routes: Routes = [
   {
@@ -28,6 +29,9 @@ const routes: Routes = [
       id: 1,
       descricao: 'Drenagem Linfática',
       rota: 'drenagem'
+    },
+    resolve: {
+      response: AtendimentoResolver
     },
     component: AtendimentoFormComponent
   },
@@ -56,6 +60,9 @@ const routes: Routes = [
       descricao: 'Fisioterapia',
       rota: 'fisioterapia'
     },
+    resolve: {
+      response: AtendimentoResolver
+    },
     component: AtendimentoFormComponent
   },
   {
@@ -82,6 +89,9 @@ const routes: Routes = [
       id: 3,
       descricao: 'Reeducação Postural Global',
       rota: 'rpg'
+    },
+    resolve: {
+      response: AtendimentoResolver
     },
     component: AtendimentoFormComponent
   },
@@ -110,6 +120,9 @@ const routes: Routes = [
       descricao: 'Pilates',
       rota: 'pilates'
     },
+    resolve: {
+      response: AtendimentoResolver
+    },
     component: AtendimentoFormComponent
   },
   {
@@ -137,12 +150,16 @@ const routes: Routes = [
       descricao: 'Massagem Relaxante',
       rota: 'massagem-relaxante'
     },
+    resolve: {
+      response: AtendimentoResolver
+    },
     component: AtendimentoFormComponent
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AtendimentoResolver]
 })
 export class AtendimentoRoutingModule { }

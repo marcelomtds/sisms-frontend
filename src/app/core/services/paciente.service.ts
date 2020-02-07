@@ -19,4 +19,8 @@ export class PacienteService extends BaseService<Paciente, PacienteUsuarioFilter
     return this.http.get<Response<Array<Paciente>>>(`${this.apiBaseUrl}/findAllBirthdaysMonth`);
   }
 
+  public findAllWithoutBondWithReservation(): Observable<Response<Array<Paciente>>> {
+    return this.http.get<Response<Array<Paciente>>>(`${this.apiBaseUrl}/findAllWithoutBondWithReservation`);
+  }
+
 }

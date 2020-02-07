@@ -1,14 +1,11 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { base64StringToBlob } from 'blob-util';
 import { BsModalService } from 'ngx-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
-import { Messages } from 'src/app/shared/messages/messages';
-import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { ModalCriarPacoteComponent } from 'src/app/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
-import { ModalVisualizarImagensComponent } from 'src/app/shared/modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
 import { CategoriaAtendimentoEnum } from 'src/app/core/model/enum/categoria-atendimento.enum';
 import { TipoAtendimentoEnum } from 'src/app/core/model/enum/tipo-atendimento.enum';
 import { Atendimento } from 'src/app/core/model/model/atendimento.model';
@@ -19,15 +16,19 @@ import { Paciente } from 'src/app/core/model/model/paciente.model';
 import { Pacote } from 'src/app/core/model/model/pacote.model';
 import { PosAtendimentoOutraMedida } from 'src/app/core/model/model/pos-atendimento-outra-medida.model';
 import { PreAtendimentoOutraMedida } from 'src/app/core/model/model/pre-atendimento-outra-medida.model';
+import { Response } from 'src/app/core/model/model/response.model';
 import { TipoAtendimento } from 'src/app/core/model/model/tipo-atendimento.model';
 import { MessageService } from 'src/app/core/services/message.service';
 import { OutraMedidaService } from 'src/app/core/services/outra-medida.service';
 import { PacienteService } from 'src/app/core/services/paciente.service';
 import { PacoteService } from 'src/app/core/services/pacote.service';
 import { TipoAtendimentoService } from 'src/app/core/services/tipo-atendimento.service';
+import { Messages } from 'src/app/shared/messages/messages';
+import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { ModalCriarPacoteComponent } from 'src/app/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
+import { ModalVisualizarImagensComponent } from 'src/app/shared/modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
 import Util from 'src/app/shared/util/util';
 import { AtendimentoService } from '../../../core/services/atendimento.service';
-import { base64StringToBlob } from 'blob-util';
 
 @Component({
   selector: 'app-atendimento-form',
@@ -79,7 +80,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     this.onLoadCategoriaAtendimento();
     const id = +this.route.snapshot.params.id;
     if (id) {
-      this.findById(id);
+      this.findById();
     }
     this.onLoadCombos();
   }
@@ -108,16 +109,9 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     return this.categoriaAtendimentoRouting.id !== CategoriaAtendimentoEnum.MASSAGEM_RELAXANTE;
   }
 
-  private isTipoAtendimentoIgual(categoriaAtendimentoId: number): boolean {
-    return categoriaAtendimentoId === this.categoriaAtendimentoRouting.id;
-  }
-
-  private findById(id: number): void {
-    this.service.findById(id).subscribe(response => {
-      if (!this.isTipoAtendimentoIgual(response.result.categoriaAtendimentoId)) {
-        this.messageService.sendMessageError(Messages.MSG0027);
-        this.router.navigate(['/']);
-      }
+  private findById(): void {
+    this.route.data.subscribe(dados => {
+      const response: Response<Atendimento> = dados.response;
       this.form.setValue({
         id: response.result.id,
         pacoteId: response.result.pacoteId || null,
@@ -132,7 +126,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         preAtendimentoObservacao: response.result.preAtendimentoObservacao || null,
         preAtendimentoOutrasMedidas: [],
         posAtendimentoId: response.result.posAtendimentoId || null,
-        posAtendimentoData: response.result.posAtendimentoData ? Util.convertDateTimeToString(new Date(response.result.posAtendimentoData)) : null,
+        posAtendimentoData: Util.convertDateTimeToString(new Date(response.result.posAtendimentoData || null)),
         posAtendimentoPressaoArterial: response.result.posAtendimentoPressaoArterial || null,
         posAtendimentoPeso: response.result.posAtendimentoPeso || 0,
         posAtendimentoSupraUmbilical: response.result.posAtendimentoSupraUmbilical || 0,
@@ -150,7 +144,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       this.isCadastrarPosAtendimento = true;
       if (this.form.controls.imagens.value) {
         this.form.controls.imagens.value.forEach(element => {
-          element.index = this.gerarIndex(this.form.controls.anexos.value);
+          element.index = this.gerarIndex(this.form.controls.imagens.value);
         });
       }
       const listaPre: PreAtendimentoOutraMedida[] = response.result.preAtendimentoOutrasMedidas;

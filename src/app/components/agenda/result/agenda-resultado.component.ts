@@ -10,11 +10,11 @@ export class AgendaResultadoComponent {
 
   @Input() dados: Array<Agenda>;
   @Input() form: FormGroup;
-  @Output() editEmitter = new EventEmitter<Agenda>();
+  @Output() editEmitter = new EventEmitter<number>();
   @Output() removeEmitter = new EventEmitter<number>();
 
-  public onClickEditar(value: Agenda): void {
-    this.editEmitter.emit(value);
+  public onClickEditar(id: number): void {
+    this.editEmitter.emit(id);
   }
 
   public onClickExcluir(value: number): void {

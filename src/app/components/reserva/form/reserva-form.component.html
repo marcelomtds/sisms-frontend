@@ -1,0 +1,50 @@
+<section class="content-header">
+  <h1>{{ form.value.id ? 'Editar' : 'Cadastar' }} Reserva</h1>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Dados da Reserva</h3>
+        </div>
+        <div class="box-body">
+          <form [formGroup]="form">
+            <div class="row">
+              <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                <div class="form-group">
+                  <label for="paciente">Paciente</label>
+                  <ng-select id="paciente" placeholder="Selecione" formControlName="pacienteId" [items]="pacientes"
+                    bindLabel="nomeCompleto" bindValue="id">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.nomeCompleto }}
+                      <br />
+                      <small>CPF: {{ item.cpf | cpf }}</small>
+                    </ng-template>
+                  </ng-select>
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('pacienteId')">
+                  </app-message-required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="observacao">Observação</label>
+                  <textarea trim="blur" style="resize: none" id="observacao" maxlength="1000" type="text" rows="8"
+                    formControlName="observacao" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="box-footer">
+          <button class="btn btn-primary pull-right" style="margin-left: 15px;" (click)="onClickFormSubmit()"><em
+              class="fa fa-save"></em>&nbsp;Salvar</button>
+          <button class="btn btn-danger pull-right" [routerLink]="['/reserva']"><em
+              class="fa fa-ban"></em>&nbsp;Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

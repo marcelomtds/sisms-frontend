@@ -68,7 +68,7 @@
                 </div>
               </div>
             </div>
-            <legend class="legend-default"></legend>
+            <legend *ngIf="form.controls.anexos.value.length" class="legend-default"></legend>
             <div class="row">
               <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"
                 *ngFor="let anexo of form.controls.anexos.value; let i = index">
@@ -92,8 +92,10 @@
           </form>
         </div>
         <div class="box-footer">
-          <button class="btn btn-primary pull-right" (click)="onClickFormSubmit()"><em
+          <button class="btn btn-primary pull-right" style="margin-left: 15px;" (click)="onClickFormSubmit()"><em
               class="fa fa-save"></em>&nbsp;Salvar</button>
+          <button class="btn btn-danger pull-right" [routerLink]="['/exame']"><em
+              class="fa fa-ban"></em>&nbsp;Cancelar</button>
         </div>
       </div>
     </div>
