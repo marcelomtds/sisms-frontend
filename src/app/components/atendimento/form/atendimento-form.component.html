@@ -12,7 +12,7 @@
           </div>
           <div class="box-body">
             <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                 <div class="form-group">
                   <label for="tipoAtendimento">Tipo de Atendimento</label>
                   <ng-select id="tipoAtendimento" [disabled]="form.controls.id.value" maxlength="50"
@@ -24,7 +24,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                 <div class="form-group">
                   <label for="paciente">Paciente</label>
                   <ng-select id="paciente" maxlength="50" (change)="onChangePaciente()" formControlName="pacienteId"
@@ -41,13 +41,13 @@
                 </div>
               </div>
               <ng-container *ngIf="form.controls.pacienteId.value || form.controls.id.value">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg3">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                   <div class="form-group">
                     <label for="numeroSessao">Número da Sessão</label>
                     <input [value]="quantidadeSessao" id="numeroSessao" readonly type="text" class="form-control" />
                   </div>
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                   <div class="form-group">
                     <label for="aberto">Cadastrar o Pós-atendimento?</label>
                     <ng-select id="aberto" maxlength="50" [ngModelOptions]="{standalone: true}"
@@ -82,7 +82,7 @@
           <div class="box-body">
             <div *ngIf="!form.controls.id.value && form.controls.pacienteId.value && checkTipoAtendimentoPacote()"
               class="row">
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <button title="Adicionar Medida" (click)="onOpenModalCriarPacote(false)"
                     class="btn btn-primary"><span><em class="fa fa-plus"></em>&nbsp;Criar Pacote
@@ -91,19 +91,19 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="usuario">Usuário</label>
                   <p id="usuario">{{ pacote.usuarioNomeCompleto }}</p>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="dataCriacao">Data de Criação</label>
                   <p id="dataCriacao">{{ pacote.dataCriacao | date : 'dd/MM/yyyy' }}</p>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="valor">Valor</label>
                   <p id="valor">{{ pacote.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
@@ -111,19 +111,19 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label>Status</label>
                   <p>{{ pacote.aberto ? 'Em Aberto' : 'Encerrado' }}</p>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label>Número</label>
                   <p>{{ pacote.numero }}</p>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label>Quantidade de Atendimentos</label>
                   <p>{{ pacote.quantidadeAtendimentos }}</p>
@@ -139,7 +139,7 @@
             </div>
             <div class="box-body">
               <div class="row">
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                   <div class="form-group">
                     <label for="preAtendimentoData">Data e Hora</label>
                     <input id="preAtendimentoData" (focus)="setDataHoraAtual('preAtendimentoData')" type="text"
@@ -151,7 +151,7 @@
                   </div>
                 </div>
                 <ng-container *ngIf="isDrenagem() || isFisioterapia()">
-                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <div class="form-group">
                       <label for="preAtendimentoPressaoArterial">Pressão Arterial</label>
                       <input [dropSpecialCharacters]="false" [validation]="false" mask="000/000"
@@ -162,7 +162,7 @@
                 </ng-container>
 
                 <ng-container *ngIf="isDrenagem()">
-                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <div class="form-group">
                       <label for="preAtendimentoPeso">Peso (kg)</label>
                       <input currencyMask
@@ -171,7 +171,7 @@
                         class="form-control" />
                     </div>
                   </div>
-                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <div class="form-group">
                       <label for="preAtendimentoSupraUmbilical">Supra Umbilical (cm)</label>
                       <input currencyMask
@@ -180,7 +180,7 @@
                         formControlName="preAtendimentoSupraUmbilical" class="form-control" />
                     </div>
                   </div>
-                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <div class="form-group">
                       <label for="preAtendimentoLinhaUmbilical">Linha Umbilical (cm)</label>
                       <input currencyMask
@@ -189,7 +189,7 @@
                         formControlName="preAtendimentoLinhaUmbilical" class="form-control" />
                     </div>
                   </div>
-                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <div class="form-group">
                       <label for="preAtendimentoInfraUmbilical">Infra Umbilical (cm)</label>
                       <input currencyMask
@@ -206,7 +206,7 @@
                   <legend class="legend-default">Outras Medidas</legend>
                 </div>
                 <div class="row">
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                  <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <div class="form-group">
                       <button title="Adicionar Medida" (click)="onClickAdicionarMedida()"
                         class="btn btn-primary"><span><em class="fa fa-plus"></em>&nbsp;Adicionar Medida</span></button>
@@ -214,7 +214,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+                  <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
                     *ngFor="let medida of outrasMedidasSelecionadas; let i = index">
                     <div class="form-group" style="text-align: end;">
                       <button title="Remover Medida" class="btn btn-danger" type="button"
@@ -258,7 +258,7 @@
             </div>
             <div class="box-body">
               <div class="row">
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                   <div class="form-group">
                     <label for="posAtendimentoData">Data e Hora</label>
                     <input id="posAtendimentoData" (focus)="setDataHoraAtual('posAtendimentoData')" type="text"
@@ -270,7 +270,7 @@
                   </div>
                 </div>
                 <ng-container *ngIf="isDrenagem() || isFisioterapia()">
-                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <div class="form-group">
                       <label for="posAtendimentoPressaoArterial">Pressão Arterial</label>
                       <input [dropSpecialCharacters]="false" [validation]="false" mask="000/000"
@@ -280,7 +280,7 @@
                   </div>
                 </ng-container>
                 <ng-container *ngIf="isDrenagem()">
-                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <div class="form-group">
                       <label for="posAtendimentoPeso">Peso (kg)</label>
                       <input currencyMask
@@ -289,7 +289,7 @@
                         formControlName="posAtendimentoPeso" class="form-control" />
                     </div>
                   </div>
-                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <div class="form-group">
                       <label for="posAtendimentoSupraUmbilical">Supra Umbilical (cm)</label>
                       <input id="posAtendimentoSupraUmbilical" currencyMask
@@ -297,7 +297,7 @@
                         maxlength="5" type="text" formControlName="posAtendimentoSupraUmbilical" class="form-control" />
                     </div>
                   </div>
-                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <div class="form-group">
                       <label for="posAtendimentoLinhaUmbilical">Linha Umbilical (cm)</label>
                       <input id="posAtendimentoLinhaUmbilical" currencyMask
@@ -305,7 +305,7 @@
                         maxlength="5" type="text" formControlName="posAtendimentoLinhaUmbilical" class="form-control" />
                     </div>
                   </div>
-                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <div class="form-group">
                       <label for="posAtendimentoInfraUmbilical">Infra Umbilical (cm)</label>
                       <input id="posAtendimentoInfraUmbilical" currencyMask
@@ -320,7 +320,7 @@
                   <legend class="legend-default">Outras Medidas</legend>
                 </div>
                 <div class="row">
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                  <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <div class="form-group">
                       <button title="Adicionar Medida" (click)="onClickAdicionarMedida()"
                         class="btn btn-primary"><span><em class="fa fa-plus"></em>&nbsp;Adicionar Medida</span></button>
@@ -328,7 +328,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+                  <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
                     *ngFor="let medida of outrasMedidasSelecionadas; let i = index">
                     <div class="form-group" style="text-align: end;">
                       <button title="Remover Medida" class="btn btn-danger" type="button"
@@ -372,7 +372,7 @@
             </div>
             <div class="box-body">
               <div class="row">
-                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
                   <div class="form-group">
                     <div class="fileUpload btn btn-primary">
                       <span><em class="fa fa-plus"></em>&nbsp;Adicionar Imagens</span>
@@ -390,7 +390,7 @@
                 <legend class="legend-default"></legend>
               </div>
               <div class="row">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
                   *ngFor="let imagem of form.controls.imagens.value; let i = index">
                   <div class="form-group" style="text-align: end;">
                     <button title="Baixar Imagem" (click)="onClickDownloadFile(imagem.index)"

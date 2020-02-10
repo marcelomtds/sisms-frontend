@@ -11,7 +11,7 @@
         <div class="box-body">
           <form [formGroup]="form">
             <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="diaSemana">Dia da Semana</label>
                   <ng-select id="diaSemana" placeholder="Selecione" formControlName="diaSemanaId" [items]="diasSemana"
@@ -21,7 +21,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="horarioInicio">Horário Inicial</label>
                   <input [dropSpecialCharacters]="false" [validation]="false" mask="00:00" id="horarioInicio"
@@ -30,7 +30,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="horarioFim">Horário Final</label>
                   <input [dropSpecialCharacters]="false" [validation]="false" mask="00:00" id="horarioFim" maxlength="5"
@@ -41,7 +41,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                 <div class="form-group">
                   <label for="paciente">Paciente</label>
                   <ng-select id="paciente" placeholder="Selecione" formControlName="pacienteId" [items]="pacientes"
@@ -56,7 +56,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="tipoAtendimento">Tipo de Atendimento</label>
                   <ng-select id="tipoAtendimento" placeholder="Selecione" formControlName="tipoAtendimentoId"
@@ -67,7 +67,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="categoriaAtendimento">Categoria de Atendimento</label>
                   <ng-select id="categoriaAtendimento" placeholder="Selecione" formControlName="categoriaAtendimentoId"
