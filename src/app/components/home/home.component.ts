@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit {
     } else if (this.isBetween(horarioInicial, horarioFinal)) {
       return 'green';
     } else {
-      return 'red';
+      return '#ff8115';
     }
   }
 

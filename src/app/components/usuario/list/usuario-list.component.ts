@@ -1,32 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
+import { Pagination } from 'src/app/shared/components/pagination/pagination';
 import { AuthGuard } from '../../../core/guards/auth.guard';
-import { SharedService } from '../../../core/services/shared.service';
-import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { ModalVisualizarPacienteUsuarioComponent } from '../../../shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
 import { PerfilEnum } from '../../../core/model/enum/perfil.enum';
 import { SexoEnum } from '../../../core/model/enum/sexo.enum';
 import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import { PacienteUsuarioFilter } from '../../../core/model/filter/paciente-usuario.filter';
+import Page from '../../../core/model/model/page.model';
 import { Sexo } from '../../../core/model/model/sexo.model';
 import { Usuario } from '../../../core/model/model/usuario.model';
-import Page from '../../../core/model/model/page.model';
 import { MessageService } from '../../../core/services/message.service';
 import { SexoService } from '../../../core/services/sexo.service';
+import { SharedService } from '../../../core/services/shared.service';
 import { UsuarioService } from '../../../core/services/usuario.service';
-import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { ModalVisualizarPacienteUsuarioComponent } from '../../../shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
 
 @Component({
   selector: 'app-usuario-list',
   templateUrl: './usuario-list.component.html'
 })
-export class UsuarioListComponent implements OnInit, IActionOrderBy {
+export class UsuarioListComponent extends Pagination<PacienteUsuarioFilter> implements OnInit {
 
   public sexos = new Array<Sexo>();
   public dados = new Page<Array<Usuario>>();
   public form: FormGroup;
-  public filtro = new PageableFilter<PacienteUsuarioFilter>();
   public currentUser = new Usuario();
   public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
   public showNoRecords = false;
@@ -37,9 +36,10 @@ export class UsuarioListComponent implements OnInit, IActionOrderBy {
     private sharedService: SharedService,
     private sexoService: SexoService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService,
+    messageService: MessageService,
     public authGuardService: AuthGuard
   ) {
+    super(messageService);
   }
 
   public ngOnInit(): void {
@@ -72,6 +72,8 @@ export class UsuarioListComponent implements OnInit, IActionOrderBy {
     this.filtro = new PageableFilter<PacienteUsuarioFilter>();
     this.filtro = {
       ...this.filtro,
+      orderBy: 'nomeCompleto',
+      direction: 'ASC',
       filter: {
         ...this.form.value
       }
@@ -116,27 +118,6 @@ export class UsuarioListComponent implements OnInit, IActionOrderBy {
       dados: (await this.service.findById(id).toPromise()).result
     };
     this.modalService.show(ModalVisualizarPacienteUsuarioComponent, { initialState, backdrop: 'static', class: 'gray modal-lg' });
-  }
-
-  public onClickOrderBy(descricao: string): void {
-    this.messageService.clearAllMessages();
-    if (this.filtro.orderBy === descricao) {
-      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
-    } else {
-      this.filtro.direction = 'ASC';
-    }
-    this.filtro.orderBy = descricao;
-    this.searchByFilter();
-  }
-
-  public getIconOrderBy(param: string): string {
-    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-asc';
-    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-desc';
-    } else {
-      return 'fa fa-sort';
-    }
   }
 
 }

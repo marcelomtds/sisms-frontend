@@ -153,7 +153,7 @@
           </li>
         </ul>
       </li>
-      <li class="treeview">
+      <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)" class="treeview">
         <a href="#">
           <em class="fa fa-dollar icon-item-menu"></em>
           <span>Controle de Caixa</span>
@@ -162,16 +162,8 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a [routerLink]="[ '/controle-caixa' ]"><em
-                class="fa fa-search"></em>Buscar</a></li>
-          <li><a [routerLink]="[ '/controle-caixa/entrada-sessao' ]"><em class="fa fa-pencil"></em>Gerenciar
-              Entrada
-              - Sessão</a></li>
-          <li><a [routerLink]="[ '/controle-caixa/entrada-pacote' ]"><em class="fa fa-pencil"></em>Gerenciar
-              Entrada
-              - Pacote</a></li>
-          <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)"><a
-              [routerLink]="[ '/controle-caixa/saida' ]"><em class="fa fa-plus"></em>Cadastrar Saída</a></li>
+          <li><a [routerLink]="[ '/controle-caixa' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/controle-caixa/saida' ]"><em class="fa fa-plus"></em>Cadastrar Saída</a></li>
         </ul>
       </li>
     </ul>

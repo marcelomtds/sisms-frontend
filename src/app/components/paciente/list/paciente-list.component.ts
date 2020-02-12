@@ -2,35 +2,34 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { Messages } from '../../../shared/messages/messages';
-import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { ModalVisualizarPacienteUsuarioComponent } from '../../../shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
+import { Pagination } from 'src/app/shared/components/pagination/pagination';
+import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import { PacienteUsuarioFilter } from '../../../core/model/filter/paciente-usuario.filter';
 import { Localidade } from '../../../core/model/model/localidade.model';
 import { Paciente } from '../../../core/model/model/paciente.model';
+import Page from '../../../core/model/model/page.model';
 import { Sexo } from '../../../core/model/model/sexo.model';
 import { UF } from '../../../core/model/model/uf.model';
-import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
-import { PageableFilter } from '../../../core/model/filter/filter.filter';
-import Page from '../../../core/model/model/page.model';
 import { LocalidadeService } from '../../../core/services/localidade.service';
 import { MessageService } from '../../../core/services/message.service';
 import { PacienteService } from '../../../core/services/paciente.service';
 import { SexoService } from '../../../core/services/sexo.service';
 import { UfService } from '../../../core/services/uf.service';
+import { Messages } from '../../../shared/messages/messages';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { ModalVisualizarPacienteUsuarioComponent } from '../../../shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
 
 @Component({
   selector: 'app-paciente-list',
   templateUrl: './paciente-list.component.html'
 })
-export class PacienteListComponent implements OnInit, OnDestroy, IActionOrderBy {
+export class PacienteListComponent extends Pagination<PacienteUsuarioFilter> implements OnInit, OnDestroy {
 
   public sexos = new Array<Sexo>();
   public localidades = new Array<Localidade>();
   public ufs = new Array<UF>();
   public dados = new Page<Array<Paciente>>();
   public form: FormGroup;
-  public filtro = new PageableFilter<PacienteUsuarioFilter>();
   public subscription: Subscription;
   public showNoRecords = false;
 
@@ -41,8 +40,9 @@ export class PacienteListComponent implements OnInit, OnDestroy, IActionOrderBy 
     private localidadeService: LocalidadeService,
     private ufService: UfService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    messageService: MessageService
   ) {
+    super(messageService);
     this.subscription = this.ufService.getUF().subscribe(() => {
       this.onLoadComboUF();
     });
@@ -121,6 +121,8 @@ export class PacienteListComponent implements OnInit, OnDestroy, IActionOrderBy 
     this.messageService.clearAllMessages();
     this.filtro = {
       ...this.filtro,
+      orderBy: 'nomeCompleto',
+      direction: 'ASC',
       filter: {
         ...this.form.value
       }
@@ -166,27 +168,6 @@ export class PacienteListComponent implements OnInit, OnDestroy, IActionOrderBy 
       dados: paciente
     };
     this.modalService.show(ModalVisualizarPacienteUsuarioComponent, { initialState, backdrop: 'static', class: 'gray modal-lg' });
-  }
-
-  public onClickOrderBy(descricao: string): void {
-    this.messageService.clearAllMessages();
-    if (this.filtro.orderBy === descricao) {
-      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
-    } else {
-      this.filtro.direction = 'ASC';
-    }
-    this.filtro.orderBy = descricao;
-    this.searchByFilter();
-  }
-
-  public getIconOrderBy(param: string): string {
-    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-asc';
-    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-desc';
-    } else {
-      return 'fa fa-sort';
-    }
   }
 
 }

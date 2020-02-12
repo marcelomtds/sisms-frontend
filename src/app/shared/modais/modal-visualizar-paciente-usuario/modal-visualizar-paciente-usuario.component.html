@@ -28,7 +28,7 @@
     </div>
     <div class="box-body">
       <div class="row">
-        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
             <label>Nome Completo</label>
             <p>{{ dados.nomeCompleto }}</p>
@@ -40,7 +40,7 @@
             <p>{{ dados.dataNascimento | date : 'dd/MM/yyyy' }}</p>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
           <div class="form-group">
             <label>Idade</label>
             <p>{{ dados.dataNascimento | idade }}</p>
@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
           <div class="form-group">
             <label>Profissão</label>
             <p>{{ dados?.profissaoDescricao || '-' }}</p>
@@ -80,7 +80,7 @@
             <p>{{ dados.ativo ? 'Ativo' : 'Inativo' }}</p>
           </div>
         </div>
-        <div *ngIf="dados?.dataCadastro" class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div *ngIf="dados?.dataCadastro" class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
           <div class="form-group">
             <label>Data de Cadastro</label>
             <p>{{ dados.dataCadastro | date : 'dd/MM/yyyy' }}</p>
@@ -164,27 +164,29 @@
     </div>
     <div class="box-body">
       <div class="row">
-        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <label>Celular</label>
+            <label>Nº Tel. Celular</label>
             <p>{{ dados?.contatoCelular ? (dados.contatoCelular | telefone) : '-' }}</p>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <label>Celular Recado</label>
+            <label>Nº Tel. Celular Recado</label>
             <p>{{ dados?.contatoCelularRecado ? (dados.contatoCelularRecado | telefone) : '-' }}</p>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <label>Residencial</label>
+            <label>Nº Tel. Residencial</label>
             <p>{{ dados?.contatoResidencial ? (dados.contatoResidencial | telefone) : '-' }}</p>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <label>Comercial</label>
+            <label>Nº Tel. Comercial</label>
             <p>{{ dados?.contatoComercial ? (dados.contatoComercial | telefone) : '-' }}</p>
           </div>
         </div>
@@ -193,7 +195,7 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="form-group">
             <label>E-mail</label>
-            <p>{{ dados?.contatoEmail ? (dados.contatoEmail || '-') : '-' }}</p>
+            <p>{{ dados?.contatoEmail || '-' }}</p>
           </div>
         </div>
       </div>

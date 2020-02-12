@@ -1,23 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
-import { Messages } from '../../messages/messages';
-import { PageableFilter } from '../../../core/model/filter/filter.filter';
-import { Profissao } from '../../../core/model/model/profissao.model';
 import Page from '../../../core/model/model/page.model';
+import { Profissao } from '../../../core/model/model/profissao.model';
 import { MessageService } from '../../../core/services/message.service';
 import { ProfissaoService } from '../../../core/services/profissao.service';
-import { IActionOrderBy } from '../../interfaces/iaction-orderby';
+import { Pagination } from '../../components/pagination/pagination';
+import { Messages } from '../../messages/messages';
 
 @Component({
   selector: 'app-modal-gerenciar-profissao',
   templateUrl: './modal-gerenciar-profissao.component.html'
 })
-export class ModalGerenciarProfissaoComponent implements OnInit, IActionOrderBy {
+export class ModalGerenciarProfissaoComponent extends Pagination<{}> implements OnInit {
 
   public dados = new Page<Array<Profissao>>();
   public form: FormGroup;
-  public filtro = new PageableFilter();
   public isInvalidForm = false;
   public showNoRecords = false;
 
@@ -25,8 +23,10 @@ export class ModalGerenciarProfissaoComponent implements OnInit, IActionOrderBy 
     private bsModalRef: BsModalRef,
     private service: ProfissaoService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
-  ) { }
+    messageService: MessageService
+  ) {
+    super(messageService);
+  }
 
   public ngOnInit(): void {
     this.onCreateForm();
@@ -100,27 +100,6 @@ export class ModalGerenciarProfissaoComponent implements OnInit, IActionOrderBy 
 
   public onClickCloseModal(): void {
     this.bsModalRef.hide();
-  }
-
-  public onClickOrderBy(descricao: string): void {
-    this.messageService.clearAllMessages();
-    if (this.filtro.orderBy === descricao) {
-      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
-    } else {
-      this.filtro.direction = 'ASC';
-    }
-    this.filtro.orderBy = descricao;
-    this.searchByFilter();
-  }
-
-  public getIconOrderBy(param: string): string {
-    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-asc';
-    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-desc';
-    } else {
-      return 'fa fa-sort';
-    }
   }
 
 }

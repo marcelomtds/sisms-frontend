@@ -2,61 +2,75 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
-import { Messages } from 'src/app/shared/messages/messages';
-import { ModalVisualizarAtendimentoComponent } from 'src/app/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
 import { PerfilEnum } from 'src/app/core/model/enum/perfil.enum';
+import { TipoAtendimentoEnum } from 'src/app/core/model/enum/tipo-atendimento.enum';
 import { AtendimentoFilter } from 'src/app/core/model/filter/atendimento.filter';
+import { PageableFilter } from 'src/app/core/model/filter/filter.filter';
 import { Atendimento } from 'src/app/core/model/model/atendimento.model';
 import { CategoriaAtendimentoRouting } from 'src/app/core/model/model/categoria-atendimento-routing.model';
-import { Usuario } from 'src/app/core/model/model/usuario.model';
-import { PageableFilter } from 'src/app/core/model/filter/filter.filter';
 import { Response } from 'src/app/core/model/model/response.model';
+import { Usuario } from 'src/app/core/model/model/usuario.model';
+import { LancamentoService } from 'src/app/core/services/lancamento.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { Pagination } from 'src/app/shared/components/pagination/pagination';
+import { Messages } from 'src/app/shared/messages/messages';
+import { ModalVisualizarAtendimentoComponent } from 'src/app/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
 import Util from 'src/app/shared/util/util';
 import { Paciente } from '../../../core/model/model/paciente.model';
-import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
-import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
 import Page from '../../../core/model/model/page.model';
+import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
 import { AtendimentoService } from '../../../core/services/atendimento.service';
 import { PacienteService } from '../../../core/services/paciente.service';
 import { TipoAtendimentoService } from '../../../core/services/tipo-atendimento.service';
+import { ModalGerenciarLancamentoSessaoComponent } from '../../controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 
 @Component({
   selector: 'app-atendimento-list',
   templateUrl: './atendimento-list.component.html'
 })
-export class AtendimentoListComponent implements OnInit, IActionOrderBy {
+export class AtendimentoListComponent extends Pagination<AtendimentoFilter> implements OnInit {
 
   public pacientes = new Array<Paciente>();
   public usuarios = new Array<Usuario>();
   public tiposAtendimento = new Array<TipoAtendimento>();
   public categoriaAtendimentoRouting = new CategoriaAtendimentoRouting();
-  public filtro = new PageableFilter<AtendimentoFilter>();
   public dados = new Page<Array<Atendimento>>();
   public currentUser = new Usuario();
   public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
   public form: FormGroup;
   public showNoRecords = false;
+  public subscription: Subscription;
 
   public constructor(
     private formBuilder: FormBuilder,
     private service: AtendimentoService,
-    public messageService: MessageService,
+    messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
     private pacienteService: PacienteService,
     private tipoAtendimentoService: TipoAtendimentoService,
     private usuarioService: UsuarioService,
     public authGuardService: AuthGuard,
-    private modalService: BsModalService
-  ) { }
+    private modalService: BsModalService,
+    private lancamentoService: LancamentoService,
+  ) {
+    super(messageService);
+    this.subscription = this.lancamentoService.getLancamento().subscribe(() => {
+      this.searchByFilter();
+    });
+  }
 
   public ngOnInit(): void {
     this.onCreateForm();
     this.onLoadCombos();
     this.onLoadCategoriaAtendimento();
+  }
+
+  public isSessao(value: number): boolean {
+    return TipoAtendimentoEnum.SESSAO === value;
   }
 
   public calcularTempo(dataInicio: any, dataFim: any): string {
@@ -123,7 +137,6 @@ export class AtendimentoListComponent implements OnInit, IActionOrderBy {
   }
 
   public searchByFilter(): void {
-    this.messageService.clearAllMessages();
     this.service.findByFilter(this.filtro).subscribe(response => {
       this.showNoRecords = true;
       this.dados = response.result;
@@ -153,25 +166,12 @@ export class AtendimentoListComponent implements OnInit, IActionOrderBy {
     this.modalService.show(ModalVisualizarAtendimentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
-  public onClickOrderBy(descricao: string): void {
+  public onClickOpenModalGerenciarLancamentos(id: number): void {
     this.messageService.clearAllMessages();
-    if (this.filtro.orderBy === descricao) {
-      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
-    } else {
-      this.filtro.direction = 'ASC';
-    }
-    this.filtro.orderBy = descricao;
-    this.searchByFilter();
-  }
-
-  public getIconOrderBy(param: string): string {
-    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-asc';
-    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-desc';
-    } else {
-      return 'fa fa-sort';
-    }
+    const initialState = {
+      atendimentoId: id
+    };
+    this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
 }

@@ -4,52 +4,53 @@
 <section class="content">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div *ngIf="dados?.length > 0" class="col-md-12" style="padding: 0px">
-        <div class="box box-primary">
-          <div class="box-header with-border">
-            <div class="row">
-              <div class="col-xs-12">
-                <h3 class="box-title">Resultado</h3>
-              </div>
-            </div>
-          </div>
-          <div class="box-body">
-            <div class="table-roll">
-              <table id="example2" class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th>Opções</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
-                        [class]="getIconOrderBy('paciente.nomeCompleto')"></em>&nbsp;Paciente</th>
-                    <th style="cursor: pointer" (click)="onClickOrderBy('observacao')"><em
-                        [class]="getIconOrderBy('observacao')"></em>&nbsp;Observação</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let reserva of dados">
-                    <td>
-                      <button title="Editar" [routerLink]="['/reserva/alterar', reserva.id]" class="btn btn-primary"><em
-                          class="fa fa-pencil"></em></button>
-                      <button title="Excluir" (click)="onClickExcluir(reserva.id)" class="btn btn-danger btn-left"><em
-                          class="fa fa-trash"></em></button>
-                      <button title="Visualizar Paciente"
-                        (click)="onClickOpenModalVisualizarPaciente(reserva.pacienteId)"
-                        class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
-                    </td>
-                    <td>
-                      {{ reserva.pacienteNomeCompleto }}
-                    </td>
-                    <td style=" white-space: pre-wrap;">
-                      {{ reserva?.observacao?.length > 40 ? (reserva?.observacao | slice: 0 : 40) + '...' : reserva.observacao || '-' }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+      <div *ngIf="dados?.content?.length > 0" class="box box-primary">
+        <div class="box-header with-border">
+          <div class="row">
+            <div class="col-xs-8">
+              <h3 class="box-title">Resultado</h3>
             </div>
           </div>
         </div>
+        <div class="box-body">
+          <div class="table-roll">
+            <table id="example2" class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Opções</th>
+                  <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
+                      [class]="getIconOrderBy('paciente.nomeCompleto')"></em>&nbsp;Paciente</th>
+                  <th style="cursor: pointer" (click)="onClickOrderBy('observacao')"><em
+                      [class]="getIconOrderBy('observacao')"></em>&nbsp;Observação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reserva of dados.content">
+                  <td>
+                    <button title="Editar" [routerLink]="['/reserva/alterar', reserva.id]" class="btn btn-primary"><em
+                        class="fa fa-pencil"></em></button>
+                    <button title="Excluir" (click)="onClickExcluir(reserva.id)" class="btn btn-danger btn-left"><em
+                        class="fa fa-trash"></em></button>
+                    <button title="Visualizar Paciente" (click)="onClickOpenModalVisualizarPaciente(reserva.pacienteId)"
+                      class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
+                  </td>
+                  <td>
+                    {{ reserva.pacienteNomeCompleto }}
+                  </td>
+                  <td style=" white-space: pre-wrap;">
+                    {{ reserva?.observacao?.length > 40 ? (reserva?.observacao | slice: 0 : 40) + '...' : reserva.observacao || '-' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="box-footer">
+            <app-page-action [dados]="dados" [filtro]="filtro" (searchByFilter)="searchByFilter()">
+            </app-page-action>
+          </div>
+        </div>
       </div>
-      <app-no-records *ngIf="!dados?.length"></app-no-records>
+      <app-no-records *ngIf="showNoRecords && !dados.content?.length"></app-no-records>
     </div>
   </div>
 </section>

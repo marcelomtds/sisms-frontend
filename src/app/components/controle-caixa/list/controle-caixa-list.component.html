@@ -179,7 +179,7 @@
                 <tbody>
                   <tr *ngFor="let lancamento of dados.content">
                     <td>
-                      <ng-container *ngIf="saida === lancamento.tipoLancamentoId; else elseSaida">
+                      <ng-container *ngIf="showEditButton(lancamento.tipoLancamentoId); else elseSaida">
                         <button title="Editar" (click)="onClickEditar(lancamento.id)" class="btn btn-primary"><em
                             class="fa fa-pencil"></em></button>
                       </ng-container>

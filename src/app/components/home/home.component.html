@@ -63,8 +63,8 @@
         </div>
         <div class="box-body">
           <div *ngFor="let paciente of pacientes" class="callout callout-success">
-            <h5>{{ paciente.nomeCompleto }} - {{ paciente.dataNascimento | idade }}</h5>
-            <p>{{ paciente.dataNascimento | date : 'dd/MM/yyyy' }}</p>
+            <h4>{{ paciente.nomeCompleto }} - {{ paciente.dataNascimento | idade }}</h4>
+            <strong>{{ paciente.dataNascimento | date : 'dd/MM/yyyy' }}</strong>
           </div>
           <p *ngIf="!pacientes.length">Nenhum registro encontrado.</p>
         </div>
@@ -77,8 +77,8 @@
         </div>
         <div class="box-body">
           <div *ngFor="let usuario of usuarios" class="callout callout-success">
-            <h5>{{ usuario.nomeCompleto }} - {{ usuario.dataNascimento | idade }}</h5>
-            <p>{{ usuario.dataNascimento | date : 'dd/MM/yyyy' }}</p>
+            <h4>{{ usuario.nomeCompleto }} - {{ usuario.dataNascimento | idade }}</h4>
+            <strong>{{ usuario.dataNascimento | date : 'dd/MM/yyyy' }}</strong>
           </div>
           <p *ngIf="!usuarios.length">Nenhum registro encontrado.</p>
         </div>

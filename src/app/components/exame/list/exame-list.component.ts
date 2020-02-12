@@ -2,31 +2,30 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { Messages } from '../../../shared/messages/messages';
-import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { ModalVisualizarExameComponent } from '../../../shared/modais/modal-visualizar-exame/modal-visualizar-exame.component';
+import { Pagination } from 'src/app/shared/components/pagination/pagination';
 import { ExameFilter } from '../../../core/model/filter/exame.filter';
+import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import { CategoriaExame } from '../../../core/model/model/categoria-exame.model';
 import { Exame } from '../../../core/model/model/exame.model';
 import { Paciente } from '../../../core/model/model/paciente.model';
-import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
-import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import Page from '../../../core/model/model/page.model';
 import { CategoriaExameService } from '../../../core/services/categoria-exame.service';
 import { ExameService } from '../../../core/services/exame.service';
 import { MessageService } from '../../../core/services/message.service';
 import { PacienteService } from '../../../core/services/paciente.service';
+import { Messages } from '../../../shared/messages/messages';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { ModalVisualizarExameComponent } from '../../../shared/modais/modal-visualizar-exame/modal-visualizar-exame.component';
 import Util from '../../../shared/util/util';
 
 @Component({
   selector: 'app-exame-list',
   templateUrl: './exame-list.component.html'
 })
-export class ExameListComponent implements OnInit, IActionOrderBy, OnDestroy {
+export class ExameListComponent extends Pagination<ExameFilter> implements OnInit, OnDestroy {
 
   public dados = new Page<Array<Exame>>();
   public form: FormGroup;
-  public filtro = new PageableFilter<ExameFilter>();
   public categoriasExame = new Array<CategoriaExame>();
   public pacientes = new Array<Paciente>();
   public showNoRecords = false;
@@ -38,8 +37,9 @@ export class ExameListComponent implements OnInit, IActionOrderBy, OnDestroy {
     private categoriaExameService: CategoriaExameService,
     private pacienteService: PacienteService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    messageService: MessageService
   ) {
+    super(messageService);
     this.subscription = this.categoriaExameService.getCategoriaExame().subscribe(() => {
       this.onLoadComboCategoriaExame();
     });
@@ -149,27 +149,6 @@ export class ExameListComponent implements OnInit, IActionOrderBy, OnDestroy {
       return texto.length > 40 ? texto.substring(0, 40) + '...' : texto;
     } else {
       return '-';
-    }
-  }
-
-  public onClickOrderBy(descricao: string): void {
-    this.messageService.clearAllMessages();
-    if (this.filtro.orderBy === descricao) {
-      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
-    } else {
-      this.filtro.direction = 'ASC';
-    }
-    this.filtro.orderBy = descricao;
-    this.searchByFilter();
-  }
-
-  public getIconOrderBy(param: string): string {
-    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-asc';
-    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-desc';
-    } else {
-      return 'fa fa-sort';
     }
   }
 

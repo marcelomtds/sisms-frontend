@@ -96,6 +96,8 @@
                   <thead>
                     <tr>
                       <th>Opções</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('totalPago')"><em
+                          [class]="getIconOrderBy('totalPago')"></em>&nbsp;Total Pago</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('aberto')"><em
                           [class]="getIconOrderBy('aberto')"></em>&nbsp;Status</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
@@ -123,7 +125,19 @@
                             class="fa fa-pencil"></em></button>
                         <button title="Visualizar" (click)="onClickOpenModalVisualizar(atendimento.id)"
                           class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
+                        <button title="Gerenciar Lançamentos" *ngIf="isSessao(atendimento.tipoAtendimentoId)"
+                          (click)="onClickOpenModalGerenciarLancamentos(atendimento.id)"
+                          class="btn btn-success btn-left"><em class="fa fa-usd"></em></button>
                       </td>
+                      <td [ngStyle]="{'color': !atendimento.totalPago ? 'red' : 'green', 'font-weight': 'bold'}"
+                        *ngIf="isSessao(atendimento.tipoAtendimentoId); else pacote">
+                        {{ atendimento.totalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
+                      </td>
+                      <ng-template #pacote>
+                        <td>
+                          {{ '-' }}
+                        </td>
+                      </ng-template>
                       <td [ngStyle]="{'color': atendimento.aberto ? 'red' : 'green', 'font-weight': 'bold'}">
                         {{ atendimento.aberto ? 'Em Aberto' : 'Encerrado' }}
                       </td>

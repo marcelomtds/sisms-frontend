@@ -2,7 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Pagination } from 'src/app/shared/components/pagination/pagination';
 import { TipoLancamentoEnum } from '../../../core/model/enum/tipo-lancamento.enum';
+import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import { LancamentoFilter } from '../../../core/model/filter/lancamento.filter';
 import { CategoriaAtendimento } from '../../../core/model/model/categoria-atendimento.model';
 import { CategoriaLancamento } from '../../../core/model/model/categoria-lancamento.model';
@@ -10,13 +12,11 @@ import { FormaPagamento } from '../../../core/model/model/forma-pagamento.model'
 import { LancamentoTotal } from '../../../core/model/model/lancamento-total.model';
 import { Lancamento } from '../../../core/model/model/lancamento.model';
 import { Paciente } from '../../../core/model/model/paciente.model';
+import Page from '../../../core/model/model/page.model';
 import { Periodo } from '../../../core/model/model/periodo.model';
 import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
 import { TipoLancamento } from '../../../core/model/model/tipo-lancamento.model';
 import { Usuario } from '../../../core/model/model/usuario.model';
-import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
-import { PageableFilter } from '../../../core/model/filter/filter.filter';
-import Page from '../../../core/model/model/page.model';
 import { CategoriaAtendimentoService } from '../../../core/services/categoria-atendimento.service';
 import { CategoriaLancamentoService } from '../../../core/services/categoria-lancamento.service';
 import { FormaPagamentoService } from '../../../core/services/forma-pagamento.service';
@@ -32,7 +32,7 @@ import Util from '../../../shared/util/util';
   selector: 'app-controle-caixa-list',
   templateUrl: './controle-caixa-list.component.html'
 })
-export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrderBy {
+export class ControleCaixaListComponent extends Pagination<LancamentoFilter> implements OnInit, OnDestroy {
 
   public pacientes = new Array<Paciente>();
   public usuarios = new Array<Usuario>();
@@ -43,10 +43,8 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
   public formasPagamento = new Array<FormaPagamento>();
   public mesAnoList = new Array<Periodo>();
   public form: FormGroup;
-  public filtro = new PageableFilter<LancamentoFilter>();
   public dados = new Page<Array<Lancamento>>();
   public showNoRecords = false;
-  public saida = TipoLancamentoEnum.SAIDA;
   public lancamentoTotal = new LancamentoTotal;
   public mesAno: Periodo;
   public subscription: Subscription;
@@ -62,8 +60,9 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
     private tipoAtendimentoService: TipoAtendimentoService,
     private service: LancamentoService,
     private router: Router,
-    private messageService: MessageService
+    messageService: MessageService
   ) {
+    super(messageService);
     this.subscription = this.categoriaLancamentoService.getCategoriaLancamento().subscribe(() => {
       this.onLoadComboCategoriaLancamento();
     });
@@ -99,6 +98,10 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
 
   public get isSaida(): boolean {
     return this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.SAIDA || !this.form.controls.tipoLancamentoId.value;
+  }
+
+  public showEditButton(tipoLancamentoId: number): boolean {
+    return TipoLancamentoEnum.SAIDA === tipoLancamentoId;
   }
 
   public onChangeTipoLancamento(): void {
@@ -186,30 +189,9 @@ export class ControleCaixaListComponent implements OnInit, OnDestroy, IActionOrd
     this.mesAnoList = Util.mesAno();
   }
 
-  public onClickOrderBy(descricao: string): void {
-    this.messageService.clearAllMessages();
-    if (this.filtro.orderBy === descricao) {
-      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
-    } else {
-      this.filtro.direction = 'ASC';
-    }
-    this.filtro.orderBy = descricao;
-    this.searchByFilter();
-  }
-
   public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
     this.router.navigate([`/controle-caixa/saida/alterar/${id}`]);
-  }
-
-  public getIconOrderBy(param: string): string {
-    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-asc';
-    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-desc';
-    } else {
-      return 'fa fa-sort';
-    }
   }
 
 }

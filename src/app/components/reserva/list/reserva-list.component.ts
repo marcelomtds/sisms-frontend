@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
+import Page from 'src/app/core/model/model/page.model';
 import { Reserva } from 'src/app/core/model/model/reserva.model';
 import { MessageService } from 'src/app/core/services/message.service';
 import { PacienteService } from 'src/app/core/services/paciente.service';
 import { ReservaService } from 'src/app/core/services/reserva.service';
+import { Pagination } from 'src/app/shared/components/pagination/pagination';
 import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalVisualizarPacienteUsuarioComponent } from 'src/app/shared/modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
 
@@ -11,25 +13,33 @@ import { ModalVisualizarPacienteUsuarioComponent } from 'src/app/shared/modais/m
   selector: 'app-reserva-list',
   templateUrl: './reserva-list.component.html'
 })
-export class ReservaListComponent implements OnInit {
+export class ReservaListComponent extends Pagination<{}> implements OnInit {
 
-  public dados = new Array<Reserva>();
-  public direction = 'ASC';
-  public field = 'paciente.nomeCompleto';
+  public dados = new Page<Array<Reserva>>();
+  public showNoRecords = false;
 
   constructor(
     private pacienteService: PacienteService,
     private service: ReservaService,
-    private messageService: MessageService,
+    messageService: MessageService,
     private modalService: BsModalService
-  ) { }
-
-  ngOnInit() {
-    this.findAll();
+  ) {
+    super(messageService);
   }
 
-  private findAll(): void {
-    this.service.findAll().subscribe(response => {
+  ngOnInit() {
+    this.initFilterValue();
+    this.searchByFilter();
+  }
+
+  private initFilterValue(): void {
+    this.filtro.orderBy = 'paciente.nomeCompleto';
+    this.filtro.direction = 'ASC';
+  }
+
+  public searchByFilter(): void {
+    this.service.findByFilter(this.filtro).subscribe(response => {
+      this.showNoRecords = true;
       this.dados = response.result;
     });
   }
@@ -43,7 +53,7 @@ export class ReservaListComponent implements OnInit {
       if (result) {
         this.service.delete(id).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.findAll();
+          this.searchByFilter();
         });
       }
     });
@@ -55,35 +65,6 @@ export class ReservaListComponent implements OnInit {
       dados: (await this.pacienteService.findById(id).toPromise()).result
     };
     this.modalService.show(ModalVisualizarPacienteUsuarioComponent, { initialState, backdrop: 'static' });
-  }
-
-  public onClickOrderBy(descricao: string): void {
-    this.messageService.clearAllMessages();
-    if (this.field === descricao) {
-      this.direction === 'ASC' ? this.direction = 'DESC' : this.direction = 'ASC';
-    } else {
-      this.direction = 'ASC';
-    }
-    this.field = descricao;
-    this.orderBy();
-  }
-
-  private orderBy(): void {
-    if (this.direction === 'ASC') {
-      this.dados.sort((a, b) => a.pacienteNomeCompleto.localeCompare(b.pacienteNomeCompleto));
-    } else {
-      this.dados.sort((b, a) => a.pacienteNomeCompleto.localeCompare(b.pacienteNomeCompleto));
-    }
-  }
-
-  public getIconOrderBy(param: string): string {
-    if (this.direction === 'ASC' && this.field === param) {
-      return 'fa fa-sort-asc';
-    } else if (this.direction === 'DESC' && this.field === param) {
-      return 'fa fa-sort-desc';
-    } else {
-      return 'fa fa-sort';
-    }
   }
 
 }

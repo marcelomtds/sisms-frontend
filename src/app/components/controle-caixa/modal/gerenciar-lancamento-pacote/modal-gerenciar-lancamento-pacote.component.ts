@@ -1,35 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { SharedService } from 'src/app/core/services/shared.service';
-import { Messages } from 'src/app/shared/messages/messages';
-import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { PerfilEnum } from 'src/app/core/model/enum/perfil.enum';
-import { PageableFilter } from 'src/app/core/model/filter/filter.filter';
 import { LancamentoFilter } from 'src/app/core/model/filter/lancamento.filter';
 import { FormaPagamento } from 'src/app/core/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/core/model/model/lancamento.model';
 import { Pacote } from 'src/app/core/model/model/pacote.model';
-import { Usuario } from 'src/app/core/model/model/usuario.model';
 import Page from 'src/app/core/model/model/page.model';
+import { Usuario } from 'src/app/core/model/model/usuario.model';
 import { FormaPagamentoService } from 'src/app/core/services/forma-pagamento.service';
 import { LancamentoService } from 'src/app/core/services/lancamento.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { PacoteService } from 'src/app/core/services/pacote.service';
+import { SharedService } from 'src/app/core/services/shared.service';
+import { Pagination } from 'src/app/shared/components/pagination/pagination';
+import { Messages } from 'src/app/shared/messages/messages';
+import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import Util from 'src/app/shared/util/util';
-import { IActionOrderBy } from 'src/app/shared/interfaces/iaction-orderby';
 
 @Component({
   selector: 'app-modal-gerenciar-lancamento-pacote',
   templateUrl: './modal-gerenciar-lancamento-pacote.component.html'
 })
-export class ModalGerenciarLancamentoPacoteComponent implements OnInit, IActionOrderBy {
+export class ModalGerenciarLancamentoPacoteComponent extends Pagination<LancamentoFilter> implements OnInit {
 
   public dados = new Page<Array<Lancamento>>();
   public form: FormGroup;
   public pacote = new Pacote();
   public formasPagamento = new Array<FormaPagamento>();
-  public filtro = new PageableFilter<LancamentoFilter>();
   public isInvalidForm = false;
   public showNoRecords = false;
   public pacoteId: number;
@@ -44,8 +42,10 @@ export class ModalGerenciarLancamentoPacoteComponent implements OnInit, IActionO
     private formaPagamentoService: FormaPagamentoService,
     private pacoteService: PacoteService,
     private modalService: BsModalService,
-    private messageService: MessageService
-  ) { }
+    messageService: MessageService
+  ) {
+    super(messageService);
+  }
 
   public ngOnInit(): void {
     this.onCreateForm();
@@ -204,27 +204,6 @@ export class ModalGerenciarLancamentoPacoteComponent implements OnInit, IActionO
 
   public onClickCloseModal(): void {
     this.bsModalRef.hide();
-  }
-
-  public onClickOrderBy(descricao: string): void {
-    this.messageService.clearAllMessages();
-    if (this.filtro.orderBy === descricao) {
-      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
-    } else {
-      this.filtro.direction = 'ASC';
-    }
-    this.filtro.orderBy = descricao;
-    this.searchByFilter();
-  }
-
-  public getIconOrderBy(param: string): string {
-    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-asc';
-    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-desc';
-    } else {
-      return 'fa fa-sort';
-    }
   }
 
 }

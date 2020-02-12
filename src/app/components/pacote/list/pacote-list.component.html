@@ -80,7 +80,6 @@
                 class="fa fa-eraser"></em>&nbsp;Limpar</button>
           </div>
         </div>
-
         <div *ngIf="dados?.content?.length > 0" class="col-md-12" style="padding: 0px">
           <div class="box box-primary">
             <div class="box-header with-border">
@@ -96,6 +95,11 @@
                   <thead>
                     <tr>
                       <th>Opções</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('valor')"><em
+                          [class]="getIconOrderBy('valor')"></em>&nbsp;Valor do Pacote</th>
+                      <th style="cursor: pointer" xxxx (click)="onClickOrderBy('totalPago')"><em
+                          [class]="getIconOrderBy('totalPago')"></em>&nbsp;Total Pago</th>
+                      <th>Total à Pagar</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
                           [class]="getIconOrderBy('paciente.nomeCompleto')"></em>&nbsp;Paciente</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')"><em
@@ -127,6 +131,17 @@
                         <button title="Visualizar" (click)="onClickOpenModalVisualizar(pacote)"
                           class="btn btn-primary {{ pacote?.aberto ? 'btn-left' : '' }}"><em
                             class="fa fa-eye"></em></button>
+                        <button title="Gerenciar Lançamentos" (click)="onClickOpenModalGerenciarLancamentos(pacote.id)"
+                          class="btn btn-success btn-left"><em class="fa fa-usd"></em></button>
+                      </td>
+                      <td>
+                        {{ pacote.valor || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
+                      </td>
+                      <td [ngStyle]="{'color': !pacote.totalPago || pacote.totalPago < pacote.valor ? 'red' : 'green', 'font-weight': 'bold'}">
+                        {{ pacote.totalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
+                      </td>
+                      <td>
+                        {{ pacote.valor - pacote.totalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
                       </td>
                       <td>
                         {{ pacote.pacienteNomeCompleto }}

@@ -1,54 +1,63 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
-import { PacienteService } from '../../../core/services/paciente.service';
+import { Subscription } from 'rxjs';
+import { LancamentoService } from 'src/app/core/services/lancamento.service';
+import { Pagination } from 'src/app/shared/components/pagination/pagination';
 import { AuthGuard } from '../../../core/guards/auth.guard';
-import { SharedService } from '../../../core/services/shared.service';
-import { Messages } from '../../../shared/messages/messages';
-import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
-import { ModalVisualizarPacoteComponent } from '../../../shared/modais/modal-visualizar-pacote/modal-visualizar-pacote.component';
 import { PerfilEnum } from '../../../core/model/enum/perfil.enum';
 import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import { PacoteFilter } from '../../../core/model/filter/pacote.filter';
 import { CategoriaAtendimento } from '../../../core/model/model/categoria-atendimento.model';
 import { Paciente } from '../../../core/model/model/paciente.model';
 import { Pacote } from '../../../core/model/model/pacote.model';
-import { Usuario } from '../../../core/model/model/usuario.model';
-import { IActionOrderBy } from '../../../shared/interfaces/iaction-orderby';
 import Page from '../../../core/model/model/page.model';
+import { Usuario } from '../../../core/model/model/usuario.model';
 import { CategoriaAtendimentoService } from '../../../core/services/categoria-atendimento.service';
 import { MessageService } from '../../../core/services/message.service';
+import { PacienteService } from '../../../core/services/paciente.service';
 import { PacoteService } from '../../../core/services/pacote.service';
-import Util from '../../../shared/util/util';
+import { SharedService } from '../../../core/services/shared.service';
 import { UsuarioService } from '../../../core/services/usuario.service';
+import { Messages } from '../../../shared/messages/messages';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
+import { ModalVisualizarPacoteComponent } from '../../../shared/modais/modal-visualizar-pacote/modal-visualizar-pacote.component';
+import Util from '../../../shared/util/util';
+import { ModalGerenciarLancamentoPacoteComponent } from '../../controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
 
 @Component({
   selector: 'app-pacote-list',
   templateUrl: './pacote-list.component.html'
 })
-export class PacoteListComponent implements OnInit, IActionOrderBy {
+export class PacoteListComponent extends Pagination<PacoteFilter> implements OnInit {
 
   public pacientes = new Array<Paciente>();
   public usuarios = new Array<Usuario>();
   public categoriasAtendimento = new Array<CategoriaAtendimento>();
-  public filtro = new PageableFilter<PacoteFilter>();
   public dados = new Page<Array<Pacote>>();
   public currentUser = new Usuario();
   public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
   public form: FormGroup;
   public showNoRecords = false;
+  public subscription: Subscription;
 
   public constructor(
     private formBuilder: FormBuilder,
     private service: PacoteService,
-    public messageService: MessageService,
+    messageService: MessageService,
     private pacienteService: PacienteService,
     private modalService: BsModalService,
     private categoriaAtendimentoService: CategoriaAtendimentoService,
     private usuarioService: UsuarioService,
     private sharedService: SharedService,
-    public authGuardService: AuthGuard
-  ) { }
+    public authGuardService: AuthGuard,
+    private lancamentoService: LancamentoService
+  ) {
+    super(messageService);
+    this.subscription = this.lancamentoService.getLancamento().subscribe(() => {
+      this.searchByFilter();
+    });
+  }
 
   public ngOnInit(): void {
     this.onCreateForm();
@@ -127,7 +136,6 @@ export class PacoteListComponent implements OnInit, IActionOrderBy {
   }
 
   public searchByFilter(): void {
-    this.messageService.clearAllMessages();
     this.service.findByFilter(this.filtro).subscribe(response => {
       this.showNoRecords = true;
       this.dados = response.result;
@@ -150,25 +158,12 @@ export class PacoteListComponent implements OnInit, IActionOrderBy {
     this.modalService.show(ModalVisualizarPacoteComponent, { initialState, backdrop: 'static', class: 'gray modal-lg' });
   }
 
-  public onClickOrderBy(descricao: string): void {
+  public onClickOpenModalGerenciarLancamentos(id: number): void {
     this.messageService.clearAllMessages();
-    if (this.filtro.orderBy === descricao) {
-      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
-    } else {
-      this.filtro.direction = 'ASC';
-    }
-    this.filtro.orderBy = descricao;
-    this.searchByFilter();
-  }
-
-  public getIconOrderBy(param: string): string {
-    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-asc';
-    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-desc';
-    } else {
-      return 'fa fa-sort';
-    }
+    const initialState = {
+      pacoteId: id
+    };
+    this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
 }

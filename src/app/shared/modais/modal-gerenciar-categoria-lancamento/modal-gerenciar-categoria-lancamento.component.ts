@@ -1,24 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
-import { Messages } from '../../messages/messages';
 import { CategoriaLancamento } from '../../../core/model/model/categoria-lancamento.model';
 import { Lancamento } from '../../../core/model/model/lancamento.model';
-import { IActionOrderBy } from '../../interfaces/iaction-orderby';
-import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import Page from '../../../core/model/model/page.model';
 import { CategoriaLancamentoService } from '../../../core/services/categoria-lancamento.service';
 import { MessageService } from '../../../core/services/message.service';
+import { Pagination } from '../../components/pagination/pagination';
+import { Messages } from '../../messages/messages';
 
 @Component({
   selector: 'app-modal-gerenciar-categoria-lancamento',
   templateUrl: './modal-gerenciar-categoria-lancamento.component.html'
 })
-export class ModalGerenciarCategoriaLancamentoComponent implements OnInit, IActionOrderBy {
+export class ModalGerenciarCategoriaLancamentoComponent extends Pagination<{}> implements OnInit {
 
   public dados = new Page<Array<CategoriaLancamento>>();
   public form: FormGroup;
-  public filtro = new PageableFilter();
   public isInvalidForm = false;
   public showNoRecords = false;
 
@@ -26,8 +24,10 @@ export class ModalGerenciarCategoriaLancamentoComponent implements OnInit, IActi
     private bsModalRef: BsModalRef,
     private service: CategoriaLancamentoService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
-  ) { }
+    messageService: MessageService
+  ) {
+    super(messageService);
+  }
 
   public ngOnInit(): void {
     this.onCreateForm();
@@ -101,27 +101,6 @@ export class ModalGerenciarCategoriaLancamentoComponent implements OnInit, IActi
 
   public onClickCloseModal(): void {
     this.bsModalRef.hide();
-  }
-
-  public onClickOrderBy(descricao: string): void {
-    this.messageService.clearAllMessages();
-    if (this.filtro.orderBy === descricao) {
-      this.filtro.direction === 'ASC' ? this.filtro.direction = 'DESC' : this.filtro.direction = 'ASC';
-    } else {
-      this.filtro.direction = 'ASC';
-    }
-    this.filtro.orderBy = descricao;
-    this.searchByFilter();
-  }
-
-  public getIconOrderBy(param: string): string {
-    if (this.filtro.direction === 'ASC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-asc';
-    } else if (this.filtro.direction === 'DESC' && this.filtro.orderBy === param) {
-      return 'fa fa-sort-desc';
-    } else {
-      return 'fa fa-sort';
-    }
   }
 
 }
