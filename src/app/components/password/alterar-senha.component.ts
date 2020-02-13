@@ -70,4 +70,9 @@ export class AlterarSenhaComponent implements OnInit {
     this.isShowNovaSenhaConfirmacao = false;
   }
 
+  public onClickCancelar(): void {
+    this.messageService.clearAllMessages();
+    window.history.back();
+  }
+
 }

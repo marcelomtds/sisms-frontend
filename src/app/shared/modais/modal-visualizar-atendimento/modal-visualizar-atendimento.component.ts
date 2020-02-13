@@ -5,7 +5,10 @@ import { Pacote } from '../../../core/model/model/pacote.model';
 import { PacoteService } from '../../../core/services/pacote.service';
 import Util from '../../util/util';
 import { CategoriaAtendimentoEnum } from '../../../core/model/enum/categoria-atendimento.enum';
-
+import { MessageService } from 'src/app/core/services/message.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { base64StringToBlob } from 'blob-util';
+import { Messages } from '../../messages/messages';
 @Component({
   selector: 'app-modal-visualizar-atendimento',
   templateUrl: './modal-visualizar-atendimento.component.html'
@@ -17,7 +20,9 @@ export class ModalVisualizarAtendimentoComponent implements OnInit {
 
   public constructor(
     private bsModalRef: BsModalRef,
-    private pacoteService: PacoteService
+    private pacoteService: PacoteService,
+    private messageService: MessageService,
+    private spinnerService: NgxSpinnerService
   ) { }
 
   public ngOnInit(): void {
@@ -62,6 +67,25 @@ export class ModalVisualizarAtendimentoComponent implements OnInit {
 
   public isFisioterapia(): boolean {
     return this.atendimento.categoriaAtendimentoId === CategoriaAtendimentoEnum.FISIOTERAPIA;
+  }
+
+  public onClickDownloadImage(id: number): void {
+    this.messageService.clearAllMessages();
+    this.spinnerService.show();
+    try {
+      const imagem = this.atendimento.imagens.find(x => x.id === id);
+      const array = imagem.imagem.toString().split(';base64,');
+      const blob = base64StringToBlob(array[array.length - 1]);
+      const elemento = document.createElement('a');
+      elemento.href = window.URL.createObjectURL(blob);
+      elemento.download = imagem.nome;
+      elemento.click();
+      elemento.remove();
+      this.spinnerService.hide();
+    } catch {
+      this.messageService.sendMessageError(Messages.MSG0011);
+      this.spinnerService.hide();
+    }
   }
 
 }

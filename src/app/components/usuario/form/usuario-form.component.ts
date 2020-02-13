@@ -4,8 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
-import { SharedService } from '../../../core/services/shared.service';
-import { Messages } from '../../../shared/messages/messages';
 import { Localidade } from '../../../core/model/model/localidade.model';
 import { Profissao } from '../../../core/model/model/profissao.model';
 import { Sexo } from '../../../core/model/model/sexo.model';
@@ -15,9 +13,11 @@ import { LocalidadeService } from '../../../core/services/localidade.service';
 import { MessageService } from '../../../core/services/message.service';
 import { ProfissaoService } from '../../../core/services/profissao.service';
 import { SexoService } from '../../../core/services/sexo.service';
+import { SharedService } from '../../../core/services/shared.service';
 import { UfService } from '../../../core/services/uf.service';
-import Util from '../../../shared/util/util';
 import { UsuarioService } from '../../../core/services/usuario.service';
+import { Messages } from '../../../shared/messages/messages';
+import Util from '../../../shared/util/util';
 
 @Component({
   selector: 'app-usuario-form',
@@ -184,7 +184,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
         this.service.update(formValue.id, formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
           this.service.setUsuario(response.result);
-          this.router.navigate(['/']);
+          window.history.back();
         });
       } else {
         this.service.create(formValue).subscribe(response => {
@@ -196,6 +196,11 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
       this.isInvalidForm = true;
       this.messageService.sendMessageError(Messages.MSG0004);
     }
+  }
+
+  public onClickCancelar(): void {
+    this.messageService.clearAllMessages();
+    window.history.back();
   }
 
   public onClickRemoveImage(): void {

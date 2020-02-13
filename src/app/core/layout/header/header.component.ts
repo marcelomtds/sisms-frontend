@@ -74,4 +74,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     window.location.reload();
   }
 
+  public get getNome(): string {
+    return this.usuario.nomeCompleto.split(' ')[0];
+  }
+
 }

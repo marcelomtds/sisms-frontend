@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
-import { Messages } from '../../../shared/messages/messages';
-import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { DiaSemanaEnum } from '../../../core/model/enum/dia-semana.enum';
 import { Agenda } from '../../../core/model/model/agenda.model';
 import { CategoriaAtendimento } from '../../../core/model/model/categoria-atendimento.model';
@@ -16,6 +14,8 @@ import { DiaSemanaService } from '../../../core/services/dia-semana.service';
 import { MessageService } from '../../../core/services/message.service';
 import { PacienteService } from '../../../core/services/paciente.service';
 import { TipoAtendimentoService } from '../../../core/services/tipo-atendimento.service';
+import { Messages } from '../../../shared/messages/messages';
+import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
 import Util from '../../../shared/util/util';
 
 @Component({
@@ -189,6 +189,7 @@ export class AgendaFormComponent implements OnInit {
   }
 
   public onClickCancel(): void {
+    this.messageService.clearAllMessages();
     this.onUpdate();
   }
 

@@ -1254,8 +1254,8 @@ a:focus {
 
 .navbar-nav>.user-menu>.dropdown-menu>li.user-header>img {
   z-index: 5;
-  height: 90px;
-  width: 90px;
+  height: 100px;
+  width: 100px;
   border: 3px solid;
   border-color: transparent;
   border-color: rgba(255, 255, 255, 0.2)
@@ -1264,14 +1264,13 @@ a:focus {
 .navbar-nav>.user-menu>.dropdown-menu>li.user-header>p {
   z-index: 5;
   color: #fff;
-  color: rgba(255, 255, 255, 0.8);
   font-size: 17px;
-  margin-top: 10px
+  margin-top: 10px;
+  font-weight: bold;
 }
 
 .navbar-nav>.user-menu>.dropdown-menu>li.user-header>p>small {
-  display: block;
-  font-size: 12px
+  font-size: 14px
 }
 
 .navbar-nav>.user-menu>.dropdown-menu>.user-body {
@@ -1328,11 +1327,11 @@ a:focus {
 
 .navbar-nav>.user-menu .user-image {
   float: left;
-  width: 25px;
-  height: 25px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   margin-right: 10px;
-  margin-top: -2px
+  margin-top: -10px;
 }
 
 @media (max-width:767px) {

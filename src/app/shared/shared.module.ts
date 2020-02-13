@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
-import { AppComponent } from '../app.component';
 import { ModalGerenciarLancamentoPacoteComponent } from '../components/controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
 import { ModalGerenciarLancamentoSessaoComponent } from '../components/controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 import { SismsCommonsModule } from '../components/sisms-commons.module';
-import { HeaderComponent } from '../core/layout/header/header.component';
-import { MenuComponent } from '../core/layout/menu/menu.component';
 import { MessageRequiredComponent } from './components/message-required/message-required.component';
 import { NoRecordsComponent } from './components/no-records/no-records.component';
 import { PageActionComponent } from './components/page-action/page-action.component';
@@ -18,7 +15,6 @@ import { ModalGerenciarProfissaoComponent } from './modais/modal-gerenciar-profi
 import { ModalGerenciarUfComponent } from './modais/modal-gerenciar-uf/modal-gerenciar-uf.component';
 import { ModalVisualizarAtendimentoComponent } from './modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
 import { ModalVisualizarExameComponent } from './modais/modal-visualizar-exame/modal-visualizar-exame.component';
-import { ModalVisualizarImagensComponent } from './modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
 import { ModalVisualizarPacienteUsuarioComponent } from './modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
 import { ModalVisualizarPacoteComponent } from './modais/modal-visualizar-pacote/modal-visualizar-pacote.component';
 import { PipeModule } from './pipe/pipe.module';
@@ -40,7 +36,6 @@ import { PipeModule } from './pipe/pipe.module';
     ModalGerenciarLancamentoSessaoComponent,
     ModalVisualizarAtendimentoComponent,
     ModalCriarPacoteComponent,
-    ModalVisualizarImagensComponent,
     ModalGerenciarProfissaoComponent,
     ModalConfirmacaoComponent,
     ModalGerenciarMedidaComponent,
@@ -60,7 +55,6 @@ import { PipeModule } from './pipe/pipe.module';
     ModalGerenciarLancamentoSessaoComponent,
     ModalVisualizarAtendimentoComponent,
     ModalCriarPacoteComponent,
-    ModalVisualizarImagensComponent,
     ModalGerenciarProfissaoComponent,
     ModalConfirmacaoComponent,
     ModalGerenciarMedidaComponent,

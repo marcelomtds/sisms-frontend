@@ -26,7 +26,6 @@ import { TipoAtendimentoService } from 'src/app/core/services/tipo-atendimento.s
 import { Messages } from 'src/app/shared/messages/messages';
 import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalCriarPacoteComponent } from 'src/app/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
-import { ModalVisualizarImagensComponent } from 'src/app/shared/modais/modal-visualizar-imagens/modal-visualizar-imagens.component';
 import Util from 'src/app/shared/util/util';
 import { AtendimentoService } from '../../../core/services/atendimento.service';
 
@@ -167,6 +166,11 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  public onClickCancelar(): void {
+    this.messageService.clearAllMessages();
+    window.history.back();
+  }
+
   public onClickDownloadFile(index: number): void {
     this.messageService.clearAllMessages();
     this.spinnerService.show();
@@ -181,6 +185,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       elemento.remove();
       this.spinnerService.hide();
     } catch {
+      this.messageService.sendMessageError(Messages.MSG0011);
       this.spinnerService.hide();
     }
   }
@@ -505,14 +510,6 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   public isFisioterapia(): boolean {
     return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.FISIOTERAPIA;
-  }
-
-  public onClickOpenModalVisualizarImagens(): void {
-    this.messageService.clearAllMessages();
-    const initialState = {
-      imagens: this.form.value.imagens
-    };
-    this.modalService.show(ModalVisualizarImagensComponent, { initialState, backdrop: 'static' });
   }
 
 }

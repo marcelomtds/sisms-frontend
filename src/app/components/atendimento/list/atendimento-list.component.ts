@@ -25,6 +25,7 @@ import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.mode
 import { AtendimentoService } from '../../../core/services/atendimento.service';
 import { PacienteService } from '../../../core/services/paciente.service';
 import { TipoAtendimentoService } from '../../../core/services/tipo-atendimento.service';
+import { ModalGerenciarLancamentoPacoteComponent } from '../../controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
 import { ModalGerenciarLancamentoSessaoComponent } from '../../controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 
 @Component({
@@ -71,6 +72,10 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
 
   public isSessao(value: number): boolean {
     return TipoAtendimentoEnum.SESSAO === value;
+  }
+
+  public isPacote(value: number): boolean {
+    return TipoAtendimentoEnum.PACOTE === value;
   }
 
   public calcularTempo(dataInicio: any, dataFim: any): string {
@@ -166,12 +171,20 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
     this.modalService.show(ModalVisualizarAtendimentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
-  public onClickOpenModalGerenciarLancamentos(id: number): void {
+  public onClickOpenModalGerenciarLancamentoSessao(id: number): void {
     this.messageService.clearAllMessages();
     const initialState = {
       atendimentoId: id
     };
     this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+  }
+
+  public onClickOpenModalGerenciarLancamentoPacote(id: number): void {
+    this.messageService.clearAllMessages();
+    const initialState = {
+      pacoteId: id
+    };
+    this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
 }

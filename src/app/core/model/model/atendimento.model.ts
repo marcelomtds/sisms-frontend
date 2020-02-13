@@ -8,6 +8,8 @@ export class Atendimento {
         public id?: number,
         public pacoteId?: number,
         public pacoteNumero?: number,
+        public pacoteValor?: number,
+        public pacoteTotalPago?: number,
         public usuarioId?: number,
         public usuarioNomeCompleto?: string,
         public pacienteId?: number,

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { CarouselConfig } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { SharedService } from './core/services/shared.service';
 
@@ -16,10 +15,8 @@ export class AppComponent implements OnInit {
 
   public constructor(
     private sharedService: SharedService,
-    public ngSelectConfig: NgSelectConfig,
-    private carouselConfig: CarouselConfig
+    public ngSelectConfig: NgSelectConfig
   ) {
-    this.carouselConfig.interval = 0;
     ngSelectConfig.placeholder = 'Todos';
     ngSelectConfig.notFoundText = 'Nenhum registro encontrado.';
     this.subscription = this.sharedService.updateTemplateGet().subscribe(response => {

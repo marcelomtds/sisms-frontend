@@ -18,7 +18,7 @@ export class MessageService {
 
   public sendMessageSuccess(message: string): void {
     this.toastrService.success(message, null, {
-      timeOut: 5000
+      timeOut: 3000
     });
   }
 

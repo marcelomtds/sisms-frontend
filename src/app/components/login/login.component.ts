@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
 
   public ngOnInit(): void {
     if (this.sharedService.isLoggedIn()) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/home']);
     } else {
       this.onCreateForm();
     }

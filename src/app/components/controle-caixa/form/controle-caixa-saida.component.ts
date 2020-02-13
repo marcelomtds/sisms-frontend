@@ -52,6 +52,11 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  public onClickCancelar(): void {
+    this.messageService.clearAllMessages();
+    window.history.back();
+  }
+
   private onLoadComboCategoriaLancamento(): void {
     this.categoriaLancamentoService.findAll().subscribe(response => {
       this.categoriasLancamento = response.result;

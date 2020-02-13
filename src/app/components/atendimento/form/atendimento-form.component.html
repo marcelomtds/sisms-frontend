@@ -379,15 +379,11 @@
                       <input title="Adicionar Imagens" #inputImage id="imagem" type="file" multiple class="upload"
                         (change)="onChangeImage($event.target.files)" (click)="inputImage.value=null" />
                     </div>
-                    <button title="Visualizar Imagens" class="btn btn-primary"
-                      *ngIf="form.controls.imagens.value?.length" style="margin-left: 15px;"
-                      (click)="onClickOpenModalVisualizarImagens()"><em class="fa fa-eye"></em>&nbsp;Visualizar
-                      Imagens</button>
                   </div>
                 </div>
               </div>
               <div>
-                <legend class="legend-default"></legend>
+                <legend *ngIf="form.controls.imagens.value?.length" class="legend-default"></legend>
               </div>
               <div class="row">
                 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
@@ -413,8 +409,10 @@
           </div>
           <div class="box box-primary">
             <div class="box-footer">
-              <button class="btn btn-primary pull-right" (click)="onClickFormSubmit()"><em
+              <button class="btn btn-primary pull-right" style="margin-left: 15px;" (click)="onClickFormSubmit()"><em
                   class="fa fa-save"></em>&nbsp;Salvar</button>
+              <button class="btn btn-danger pull-right" (click)="onClickCancelar()"><em
+                  class="fa fa-ban"></em>&nbsp;Cancelar</button>
             </div>
           </div>
         </ng-container>

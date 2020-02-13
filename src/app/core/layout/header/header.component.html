@@ -18,32 +18,32 @@
               <ul class="menu">
                 <li>
                   <a style="cursor: pointer;" (click)="onClickOpenModal('profissao')">
-                    <em class="fa fa-users text-aqua"></em> Gerenciar Profissões
+                    <em class="fa fa-pencil text-aqua"></em> Gerenciar Profissões
                   </a>
                 </li>
                 <li>
                   <a style="cursor: pointer;" (click)="onClickOpenModal('medida')">
-                    <em class="fa fa-users text-aqua"></em> Gerenciar Medidas
+                    <em class="fa fa-pencil text-aqua"></em> Gerenciar Medidas
                   </a>
                 </li>
                 <li>
                   <a style="cursor: pointer;" (click)="onClickOpenModal('uf')">
-                    <em class="fa fa-users text-aqua"></em> Gerenciar Estados
+                    <em class="fa fa-pencil text-aqua"></em> Gerenciar Estados
                   </a>
                 </li>
                 <li>
                   <a style="cursor: pointer;" (click)="onClickOpenModal('localidade')">
-                    <em class="fa fa-users text-aqua"></em> Gerenciar Cidades
+                    <em class="fa fa-pencil text-aqua"></em> Gerenciar Cidades
                   </a>
                 </li>
                 <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)">
                   <a style="cursor: pointer;" (click)="onClickOpenModal('categoriaLancamento')">
-                    <em class="fa fa-users text-aqua"></em> Gerenciar Categorias de Lançamento
+                    <em class="fa fa-pencil text-aqua"></em> Gerenciar Categorias de Lançamento
                   </a>
                 </li>
                 <li>
                   <a style="cursor: pointer;" (click)="onClickOpenModal('categoriaExame')">
-                    <em class="fa fa-users text-aqua"></em> Gerenciar Categorias de Exame
+                    <em class="fa fa-pencil text-aqua"></em> Gerenciar Categorias de Exame
                   </a>
                 </li>
               </ul>
@@ -54,7 +54,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="{{ usuario.imagem || '../../../../assets/img/sem-foto.jpg' }}" class="user-image"
               alt="Foto do Perfil">
-            <span class="hidden-xs">{{ usuario.nomeCompleto }}</span>
+            <span class="hidden-xs">{{ getNome }}</span>
           </a>
           <ul class="dropdown-menu">
             <li class="user-header">
@@ -62,7 +62,7 @@
                 alt="Foto do Perfil">
               <p>
                 {{ usuario.nomeCompleto }} <br>
-                <small>CPF: {{ usuario.perfilDescricao }}</small>
+                <small>Perfil: {{ usuario.perfilDescricao }}</small>
               </p>
             </li>
             <li class="user-body">

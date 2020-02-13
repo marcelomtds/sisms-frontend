@@ -231,4 +231,9 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onClickCancelar(): void {
+    this.messageService.clearAllMessages();
+    window.history.back();
+  }
+
 }

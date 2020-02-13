@@ -91,7 +91,7 @@
           <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <div class="form-group">
               <label for="data">Data</label>
-              <input id="data" mask="d0/m0/0000" [validation]="false" type="text" formControlName="data"
+              <input id="data" mask="00/00/0000" [validation]="false" type="text" formControlName="data"
                 class="form-control" (focus)="getDataAtual()" />
               <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('data')">
               </app-message-required>
