@@ -126,7 +126,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         preAtendimentoObservacao: response.result.preAtendimentoObservacao || null,
         preAtendimentoOutrasMedidas: [],
         posAtendimentoId: response.result.posAtendimentoId || null,
-        posAtendimentoData: Util.convertDateTimeToString(new Date(response.result.posAtendimentoData || null)),
+        posAtendimentoData: Util.convertDateTimeToString(response.result.posAtendimentoData ? new Date(response.result.posAtendimentoData) : null),
         posAtendimentoPressaoArterial: response.result.posAtendimentoPressaoArterial || null,
         posAtendimentoPeso: response.result.posAtendimentoPeso || 0,
         posAtendimentoSupraUmbilical: response.result.posAtendimentoSupraUmbilical || 0,

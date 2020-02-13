@@ -4,6 +4,7 @@ import { Exame } from '../../../core/model/model/exame.model';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { base64StringToBlob } from 'blob-util';
+import { Messages } from '../../messages/messages';
 
 @Component({
   selector: 'app-modal-visualizar-exame',
@@ -37,6 +38,7 @@ export class ModalVisualizarExameComponent {
       elemento.remove();
       this.spinnerService.hide();
     } catch {
+      this.messageService.sendMessageError(Messages.MSG0071);
       this.spinnerService.hide();
     }
   }

@@ -63,14 +63,14 @@
               <div class="col-xs-2 col-sm-2 col-md-4 col-lg-2">
                 <div class="form-group">
                   <label for="dataInicio">Data Inicial</label>
-                  <input [readonly]="mesAno" id="dataInicio" type="text" [validation]="false" mask="d0/M0/0000"
+                  <input [readonly]="mesAno" id="dataInicio" type="text" [validation]="false" mask="00/00/0000"
                     formControlName="dataInicio" class="form-control" />
                 </div>
               </div>
               <div class="col-xs-2 col-sm-2 col-md-4 col-lg-2">
                 <div class="form-group">
                   <label for="dataFim">Data Fim</label>
-                  <input [readonly]="mesAno" id="dataFim" type="text" [validation]="false" mask="d0/M0/0000"
+                  <input [readonly]="mesAno" id="dataFim" type="text" [validation]="false" mask="00/00/0000"
                     formControlName="dataFim" class="form-control" />
                 </div>
               </div>
@@ -179,13 +179,20 @@
                 <tbody>
                   <tr *ngFor="let lancamento of dados.content">
                     <td>
-                      <ng-container *ngIf="showEditButton(lancamento.tipoLancamentoId); else elseSaida">
-                        <button title="Editar" (click)="onClickEditar(lancamento.id)" class="btn btn-primary"><em
-                            class="fa fa-pencil"></em></button>
+                      <ng-container *ngIf="showEditButtonSaida(lancamento.tipoLancamentoId)">
+                        <button title="Editar Saída" [routerLink]="['/controle-caixa/saida/alterar', lancamento.id]"
+                          class="btn btn-primary"><em class="fa fa-pencil"></em></button>
                       </ng-container>
-                      <ng-template #elseSaida>
-                        {{ '-' }}
-                      </ng-template>
+                      <ng-container
+                        *ngIf="showEditButtonEntradaSessao(lancamento.tipoLancamentoId, lancamento.tipoAtendimentoId)">
+                        <button (click)="onClickOpenModalGerenciarLancamentoSessao(lancamento.atendimentoId)"
+                          title="Gerenciar Pagamento" class="btn btn-primary"><em class="fa fa-pencil"></em></button>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="showEditButtonEntradaPacote(lancamento.tipoLancamentoId, lancamento.tipoAtendimentoId)">
+                        <button (click)="onClickOpenModalGerenciarLancamentoPacote(lancamento.pacoteId)"
+                          title="Gerenciar Pagamento" class="btn btn-primary"><em class="fa fa-pencil"></em></button>
+                      </ng-container>
                     </td>
                     <td>
                       {{ lancamento.atendimentoPacienteNomeCompleto || lancamento.pacotePacienteNomeCompleto || '-' }}

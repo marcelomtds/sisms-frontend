@@ -52,9 +52,10 @@ export class LoginComponent implements OnInit {
         ...this.form.value
       };
       this.service.login(formValue).subscribe(response => {
-        this.sharedService.setUserAndTokenSession(response.result.usuario, response.result.token);
+        this.sharedService.setUserSession(response.result.usuario);
+        this.sharedService.setTokenSession(response.result.token);
         this.sharedService.updateTemplateSet(true);
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
       });
     } else {
       this.isInvalidForm = true;

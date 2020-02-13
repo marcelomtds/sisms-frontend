@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { AuthGuard } from '../../guards/auth.guard';
 import { ModalGerenciarCategoriaExameComponent } from '../../../shared/modais/modal-gerenciar-categoria-exame/modal-gerenciar-categoria-exame.component';
 import { ModalGerenciarCategoriaLancamentoComponent } from '../../../shared/modais/modal-gerenciar-categoria-lancamento/modal-gerenciar-categoria-lancamento.component';
 import { ModalGerenciarLocalidadeComponent } from '../../../shared/modais/modal-gerenciar-localidade/modal-gerenciar-localidade.component';
 import { ModalGerenciarMedidaComponent } from '../../../shared/modais/modal-gerenciar-medidas/modal-gerenciar-medida.component';
 import { ModalGerenciarProfissaoComponent } from '../../../shared/modais/modal-gerenciar-profissao/modal-gerenciar-profissao.component';
 import { ModalGerenciarUfComponent } from '../../../shared/modais/modal-gerenciar-uf/modal-gerenciar-uf.component';
+import { AuthGuard } from '../../guards/auth.guard';
 import { PerfilEnum } from '../../model/enum/perfil.enum';
 import { Usuario } from '../../model/model/usuario.model';
 import { SharedService } from '../../services/shared.service';
@@ -71,8 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public signOut(): void {
     this.sharedService.removeUserAndTokenSession();
-    this.sharedService.updateTemplateSet(false);
-    this.router.navigate(['/login']);
+    window.location.reload();
   }
 
 }

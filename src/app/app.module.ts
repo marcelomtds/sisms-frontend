@@ -2,7 +2,6 @@ import { registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localePt from '@angular/common/locales/pt';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -32,7 +31,9 @@ registerLocaleData(localePt);
     AppRoutingModule,
     ToastrModule.forRoot(
       {
-        positionClass: 'toast-top-full-width'
+        positionClass: 'toast-top-full-width',
+        maxOpened: 1,
+        preventDuplicates: true
       }
     )
   ],

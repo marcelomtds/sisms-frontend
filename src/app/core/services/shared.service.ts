@@ -10,7 +10,7 @@ export class SharedService {
   public subject = new Subject<boolean>();
 
   public isLoggedIn(): boolean {
-    return sessionStorage.getItem('token') && sessionStorage.getItem('usuario') ? true : false;
+    return this.getUserSession() && this.getTokenSession() ? true : false;
   }
 
   public updateTemplateGet(): Observable<boolean> {
@@ -29,9 +29,8 @@ export class SharedService {
     return sessionStorage.getItem('token');
   }
 
-  public setUserAndTokenSession(usuario: Usuario, token: string): void {
+  public setTokenSession(token: string): void {
     sessionStorage.setItem('token', token);
-    sessionStorage.setItem('usuario', JSON.stringify(usuario));
   }
 
   public setUserSession(usuario: Usuario): void {
@@ -41,7 +40,6 @@ export class SharedService {
   public removeUserAndTokenSession(): void {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('usuario');
-    this.updateTemplateSet(false);
   }
 
 }

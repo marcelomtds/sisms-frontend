@@ -150,6 +150,7 @@ export class ExameFormComponent implements OnInit, OnDestroy {
       elemento.remove();
       this.spinnerService.hide();
     } catch {
+      this.messageService.sendMessageError(Messages.MSG0071);
       this.spinnerService.hide();
     }
   }

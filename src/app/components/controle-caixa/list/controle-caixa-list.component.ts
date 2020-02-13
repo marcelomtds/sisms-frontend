@@ -1,8 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
+import { TipoAtendimentoEnum } from 'src/app/core/model/enum/tipo-atendimento.enum';
 import { Pagination } from 'src/app/shared/components/pagination/pagination';
+import { Messages } from 'src/app/shared/messages/messages';
 import { TipoLancamentoEnum } from '../../../core/model/enum/tipo-lancamento.enum';
 import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import { LancamentoFilter } from '../../../core/model/filter/lancamento.filter';
@@ -27,6 +30,8 @@ import { TipoAtendimentoService } from '../../../core/services/tipo-atendimento.
 import { TipoLancamentoService } from '../../../core/services/tipo-lancamento.service';
 import { UsuarioService } from '../../../core/services/usuario.service';
 import Util from '../../../shared/util/util';
+import { ModalGerenciarLancamentoPacoteComponent } from '../modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
+import { ModalGerenciarLancamentoSessaoComponent } from '../modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 
 @Component({
   selector: 'app-controle-caixa-list',
@@ -60,11 +65,15 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     private tipoAtendimentoService: TipoAtendimentoService,
     private service: LancamentoService,
     private router: Router,
-    messageService: MessageService
+    messageService: MessageService,
+    private modalService: BsModalService
   ) {
     super(messageService);
     this.subscription = this.categoriaLancamentoService.getCategoriaLancamento().subscribe(() => {
       this.onLoadComboCategoriaLancamento();
+    });
+    this.subscription = this.service.getLancamento().subscribe(() => {
+      this.searchByFilter();
     });
   }
 
@@ -100,8 +109,16 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     return this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.SAIDA || !this.form.controls.tipoLancamentoId.value;
   }
 
-  public showEditButton(tipoLancamentoId: number): boolean {
+  public showEditButtonSaida(tipoLancamentoId: number): boolean {
     return TipoLancamentoEnum.SAIDA === tipoLancamentoId;
+  }
+
+  public showEditButtonEntradaSessao(tipoLancamentoId: number, tipoAtendimentoId: number): boolean {
+    return TipoLancamentoEnum.ENTRADA === tipoLancamentoId && TipoAtendimentoEnum.SESSAO === tipoAtendimentoId;
+  }
+
+  public showEditButtonEntradaPacote(tipoLancamentoId: number, tipoAtendimentoId: number): boolean {
+    return TipoLancamentoEnum.ENTRADA === tipoLancamentoId && TipoAtendimentoEnum.PACOTE === tipoAtendimentoId;
   }
 
   public onChangeTipoLancamento(): void {
@@ -140,6 +157,16 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
 
   public onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
+    const dataInicio = this.form.controls.dataInicio.value;
+    const dataFim = this.form.controls.dataFim.value;
+    if (dataInicio && !Util.isDataValida(dataInicio)) {
+      this.messageService.sendMessageError(Messages.MSG0013);
+      return;
+    }
+    if (dataFim && !Util.isDataValida(dataFim)) {
+      this.messageService.sendMessageError(Messages.MSG0014);
+      return;
+    }
     this.filtro = new PageableFilter();
     this.filtro.orderBy = 'data';
     this.filtro.direction = 'DESC';
@@ -147,8 +174,8 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
       ...this.filtro,
       filter: {
         ...this.form.value,
-        dataInicio: Util.convertStringToDate(this.form.controls.dataInicio.value),
-        dataFim: Util.convertStringToDate(this.form.controls.dataFim.value)
+        dataInicio: Util.convertStringToDate(dataInicio),
+        dataFim: Util.convertStringToDate(dataFim)
       },
     };
     this.searchByFilter();
@@ -192,6 +219,22 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
   public onClickEditar(id: number): void {
     this.messageService.clearAllMessages();
     this.router.navigate([`/controle-caixa/saida/alterar/${id}`]);
+  }
+
+  public onClickOpenModalGerenciarLancamentoSessao(id: number): void {
+    this.messageService.clearAllMessages();
+    const initialState = {
+      atendimentoId: id
+    };
+    this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+  }
+
+  public onClickOpenModalGerenciarLancamentoPacote(id: number): void {
+    this.messageService.clearAllMessages();
+    const initialState = {
+      pacoteId: id
+    };
+    this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
 }

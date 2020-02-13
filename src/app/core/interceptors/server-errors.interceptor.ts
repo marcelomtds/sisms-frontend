@@ -55,6 +55,8 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
             this.messageService.sendMessageError(response.errors[0]);
         } else if (response && response.message) {
             this.messageService.sendMessageError(response.message);
+        } else {
+            this.messageService.sendMessageError(Messages.MSG0019);
         }
     }
 
