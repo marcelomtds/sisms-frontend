@@ -5,9 +5,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod",
-    "postbuild": "npm run deploy",
-    "predeploy": "rimraf ../sisms-backend/src/main/resources/static && mkdirp ../sisms-backend/src/main/resources/static",
-    "deploy": "copyfiles -f dist/** ../sisms-backend/src/main/resources/static && copyfiles -up 1 src/assets/** ../sisms-backend/src/main/resources/static/assets",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
