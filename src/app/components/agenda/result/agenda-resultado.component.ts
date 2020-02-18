@@ -14,6 +14,7 @@ export class AgendaResultadoComponent {
   @Output() removeEmitter = new EventEmitter<number>();
 
   public onClickEditar(id: number): void {
+    window.scroll(0, 0);
     this.editEmitter.emit(id);
   }
 
