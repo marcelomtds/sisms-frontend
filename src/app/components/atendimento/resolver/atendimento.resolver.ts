@@ -4,11 +4,10 @@ import { Atendimento } from 'src/app/core/model/model/atendimento.model';
 import { Response } from 'src/app/core/model/model/response.model';
 import { AtendimentoService } from 'src/app/core/services/atendimento.service';
 import { MessageService } from 'src/app/core/services/message.service';
-import { PacienteService } from 'src/app/core/services/paciente.service';
-import { Messages } from 'src/app/shared/messages/messages';
-import { Observable, forkJoin } from 'rxjs';
 import { OutraMedidaService } from 'src/app/core/services/outra-medida.service';
+import { PacienteService } from 'src/app/core/services/paciente.service';
 import { TipoAtendimentoService } from 'src/app/core/services/tipo-atendimento.service';
+import { Messages } from 'src/app/shared/messages/messages';
 
 @Injectable()
 export class AtendimentoResolver implements Resolve<any> {

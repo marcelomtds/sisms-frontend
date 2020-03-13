@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AtendimentoFormComponent } from './form/atendimento-form.component';
 import { AtendimentoListComponent } from './list/atendimento-list.component';
-import { AtendimentoResolver } from './resolver/AtendimentoResolver.resolver';
+import { AtendimentoResolver } from './resolver/atendimento.resolver';
 
 const routes: Routes = [
   {
@@ -31,7 +31,7 @@ const routes: Routes = [
       rota: 'drenagem'
     },
     resolve: {
-      response: AtendimentoResolver
+      resolve: AtendimentoResolver
     },
     component: AtendimentoFormComponent
   },
@@ -61,7 +61,7 @@ const routes: Routes = [
       rota: 'fisioterapia'
     },
     resolve: {
-      response: AtendimentoResolver
+      resolve: AtendimentoResolver
     },
     component: AtendimentoFormComponent
   },
@@ -91,7 +91,7 @@ const routes: Routes = [
       rota: 'rpg'
     },
     resolve: {
-      response: AtendimentoResolver
+      resolve: AtendimentoResolver
     },
     component: AtendimentoFormComponent
   },
@@ -121,7 +121,7 @@ const routes: Routes = [
       rota: 'pilates'
     },
     resolve: {
-      response: AtendimentoResolver
+      resolve: AtendimentoResolver
     },
     component: AtendimentoFormComponent
   },
@@ -151,7 +151,7 @@ const routes: Routes = [
       rota: 'massagem-relaxante'
     },
     resolve: {
-      response: AtendimentoResolver
+      resolve: AtendimentoResolver
     },
     component: AtendimentoFormComponent
   }

@@ -13,7 +13,6 @@ import { LocalidadeService } from '../../../core/services/localidade.service';
 import { MessageService } from '../../../core/services/message.service';
 import { ProfissaoService } from '../../../core/services/profissao.service';
 import { SexoService } from '../../../core/services/sexo.service';
-import { SharedService } from '../../../core/services/shared.service';
 import { UfService } from '../../../core/services/uf.service';
 import { UsuarioService } from '../../../core/services/usuario.service';
 import { Messages } from '../../../shared/messages/messages';
@@ -47,14 +46,13 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     private profissaoService: ProfissaoService,
     private sexoService: SexoService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService,
-    private sharedService: SharedService
+    private messageService: MessageService
   ) {
     this.subscription = this.profissaoService.getProfissao().subscribe(() => {
-      this.onLoadComboProfissao();
+      this.onRefreshComboProfissao();
     });
     this.subscription = this.ufService.getUF().subscribe(() => {
-      this.onLoadComboUF();
+      this.onRefreshComboUF();
     });
     this.subscription = this.localidadeService.getLocalidade().subscribe(() => {
       this.onChangeUf();
@@ -65,13 +63,8 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     this.onCreateForm();
     this.onLoadCombos();
     const id = +this.route.snapshot.params['id'];
-    const currentUser: Usuario = this.sharedService.getUserSession();
     if (id) {
-      if (id === currentUser.id) {
-        this.findById(id);
-      } else {
-        this.router.navigate(['/acesso-negado']);
-      }
+      this.findById(id);
     }
   }
 
@@ -86,20 +79,32 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
   }
 
   private onLoadComboProfissao(): void {
-    this.profissaoService.findAll().subscribe(response => {
-      this.profissoes = response.result;
-    });
-  }
-
-  private onLoadComboSexo(): void {
-    this.sexoService.findAll().subscribe(response => {
-      this.sexos = response.result;
+    this.route.data.subscribe(response => {
+      this.profissoes = response.resolve.profissoes.result;
     });
   }
 
   private onLoadComboUF(): void {
+    this.route.data.subscribe(response => {
+      this.ufs = response.resolve.ufs.result;
+    });
+  }
+
+  private onLoadComboSexo(): void {
+    this.route.data.subscribe(response => {
+      this.sexos = response.resolve.sexos.result;
+    });
+  }
+
+  private onRefreshComboUF(): void {
     this.ufService.findAll().subscribe(response => {
       this.ufs = response.result;
+    });
+  }
+
+  private onRefreshComboProfissao(): void {
+    this.profissaoService.findAll().subscribe(response => {
+      this.profissoes = response.result;
     });
   }
 

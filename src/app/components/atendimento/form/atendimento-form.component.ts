@@ -201,19 +201,19 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   private onLoadComboTipoAtendimento(): void {
     this.route.data.subscribe(response => {
-      this.tiposAtendimento = response.response.tiposAtendimento.result;
+      this.tiposAtendimento = response.resolve.tiposAtendimento.result;
     });
   }
 
   private onLoadComboPaciente(): void {
     this.route.data.subscribe(response => {
-      this.pacientes = response.response.pacientes.result;
+      this.pacientes = response.resolve.pacientes.result;
     });
   }
 
   private onLoadComboOutraMedida(): void {
     this.route.data.subscribe(response => {
-      this.outrasMedidas = response.response.outrasMedidas.result;
+      this.outrasMedidas = response.resolve.outrasMedidas.result;
     });
   }
 

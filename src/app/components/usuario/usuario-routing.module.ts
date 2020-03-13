@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PerfilEnum } from '../../core/model/enum/perfil.enum';
 import { UsuarioFormComponent } from './form/usuario-form.component';
 import { UsuarioListComponent } from './list/usuario-list.component';
+import { UsuarioResolver } from './resolver/usuario.resolver';
 
 
 const routes: Routes = [
@@ -18,12 +19,16 @@ const routes: Routes = [
   },
   {
     path: 'alterar/:id',
-    component: UsuarioFormComponent
+    component: UsuarioFormComponent,
+    resolve: {
+      resolve: UsuarioResolver
+    },
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [UsuarioResolver]
 })
 export class UsuarioRoutingModule { }
