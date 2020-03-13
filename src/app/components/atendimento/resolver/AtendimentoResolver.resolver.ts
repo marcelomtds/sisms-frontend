@@ -3,28 +3,40 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Atendimento } from 'src/app/core/model/model/atendimento.model';
 import { Response } from 'src/app/core/model/model/response.model';
 import { AtendimentoService } from 'src/app/core/services/atendimento.service';
-import { Messages } from 'src/app/shared/messages/messages';
 import { MessageService } from 'src/app/core/services/message.service';
+import { PacienteService } from 'src/app/core/services/paciente.service';
+import { Messages } from 'src/app/shared/messages/messages';
+import { Observable, forkJoin } from 'rxjs';
+import { OutraMedidaService } from 'src/app/core/services/outra-medida.service';
+import { TipoAtendimentoService } from 'src/app/core/services/tipo-atendimento.service';
 
 @Injectable()
-export class AtendimentoResolver implements Resolve<Promise<Response<Atendimento>>> {
+export class AtendimentoResolver implements Resolve<any> {
 
     constructor(
         private atendimentoService: AtendimentoService,
         private messageService: MessageService,
-        private router: Router
+        private router: Router,
+        private pacienteService: PacienteService,
+        private tipoAtendimentoService: TipoAtendimentoService,
+        private outraMedidaService: OutraMedidaService
     ) { }
 
-    async resolve(route: ActivatedRouteSnapshot): Promise<Response<Atendimento>> {
+    async resolve(route: ActivatedRouteSnapshot): Promise<any> {
         const id = +route.params.id;
         const categoriaAtendimentoId = +route.data.id;
-        const response: Response<Atendimento> = await this.atendimentoService.findById(id).toPromise();
-        if (categoriaAtendimentoId !== response.result.categoriaAtendimentoId) {
+        const atendimento: Response<Atendimento> = await this.atendimentoService.findById(id).toPromise();
+        if (categoriaAtendimentoId !== atendimento.result.categoriaAtendimentoId) {
             this.messageService.sendMessageError(Messages.MSG0027);
             this.router.navigate(['/home']);
             return;
         }
-        return response;
+        return {
+            atendimento: atendimento,
+            pacientes: await this.pacienteService.findAllActive().toPromise(),
+            outrasMedidas: await this.outraMedidaService.findAll().toPromise(),
+            tiposAtendimento: await this.tipoAtendimentoService.findAll().toPromise(),
+        };
     }
 
 

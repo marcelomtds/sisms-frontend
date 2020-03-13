@@ -20,9 +20,7 @@ import { Response } from 'src/app/core/model/model/response.model';
 import { TipoAtendimento } from 'src/app/core/model/model/tipo-atendimento.model';
 import { MessageService } from 'src/app/core/services/message.service';
 import { OutraMedidaService } from 'src/app/core/services/outra-medida.service';
-import { PacienteService } from 'src/app/core/services/paciente.service';
 import { PacoteService } from 'src/app/core/services/pacote.service';
-import { TipoAtendimentoService } from 'src/app/core/services/tipo-atendimento.service';
 import { Messages } from 'src/app/shared/messages/messages';
 import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalCriarPacoteComponent } from 'src/app/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
@@ -54,8 +52,6 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   public constructor(
     private formBuilder: FormBuilder,
-    private tipoAtendimentoService: TipoAtendimentoService,
-    private pacienteService: PacienteService,
     private pacotService: PacoteService,
     private service: AtendimentoService,
     private route: ActivatedRoute,
@@ -66,7 +62,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     private outraMedidaService: OutraMedidaService
   ) {
     this.subscription = this.outraMedidaService.getOutrasMedidas().subscribe(() => {
-      this.onLoadComboOutraMedida();
+      this.onRefreshComboOutraMedida();
     });
   }
 
@@ -110,7 +106,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   private findById(): void {
     this.route.data.subscribe(dados => {
-      const response: Response<Atendimento> = dados.response;
+      const response: Response<Atendimento> = dados.response.atendimento;
       this.form.setValue({
         id: response.result.id,
         pacoteId: response.result.pacoteId || null,
@@ -204,18 +200,24 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   }
 
   private onLoadComboTipoAtendimento(): void {
-    this.tipoAtendimentoService.findAll().subscribe(response => {
-      this.tiposAtendimento = response.result;
+    this.route.data.subscribe(response => {
+      this.tiposAtendimento = response.response.tiposAtendimento.result;
     });
   }
 
   private onLoadComboPaciente(): void {
-    this.pacienteService.findAllActive().subscribe(response => {
-      this.pacientes = response.result;
+    this.route.data.subscribe(response => {
+      this.pacientes = response.response.pacientes.result;
     });
   }
 
   private onLoadComboOutraMedida(): void {
+    this.route.data.subscribe(response => {
+      this.outrasMedidas = response.response.outrasMedidas.result;
+    });
+  }
+
+  private onRefreshComboOutraMedida(): void {
     this.outraMedidaService.findAll().subscribe(response => {
       this.outrasMedidas = response.result;
     });
