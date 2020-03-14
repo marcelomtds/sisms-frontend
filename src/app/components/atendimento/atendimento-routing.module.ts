@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AtendimentoFormComponent } from './form/atendimento-form.component';
 import { AtendimentoListComponent } from './list/atendimento-list.component';
-import { AtendimentoResolver } from './resolver/atendimento.resolver';
+import { AtendimentoFormResolver } from './resolver/atendimento-form.resolver';
+import { AtendimentoListResolver } from './resolver/atendimento-list.resolver';
 
 const routes: Routes = [
   {
@@ -12,7 +13,10 @@ const routes: Routes = [
       id: 1,
       descricao: 'Drenagem Linfática',
       rota: 'drenagem'
-    }
+    },
+    resolve: {
+      resolve: AtendimentoListResolver
+    },
   },
   {
     path: 'drenagem/incluir',
@@ -20,6 +24,9 @@ const routes: Routes = [
       id: 1,
       descricao: 'Drenagem Linfática',
       rota: 'drenagem'
+    },
+    resolve: {
+      resolve: AtendimentoFormResolver
     },
     component: AtendimentoFormComponent
   },
@@ -31,7 +38,7 @@ const routes: Routes = [
       rota: 'drenagem'
     },
     resolve: {
-      resolve: AtendimentoResolver
+      resolve: AtendimentoFormResolver
     },
     component: AtendimentoFormComponent
   },
@@ -51,6 +58,9 @@ const routes: Routes = [
       descricao: 'Fisioterapia',
       rota: 'fisioterapia'
     },
+    resolve: {
+      resolve: AtendimentoFormResolver
+    },
     component: AtendimentoFormComponent
   },
   {
@@ -61,7 +71,7 @@ const routes: Routes = [
       rota: 'fisioterapia'
     },
     resolve: {
-      resolve: AtendimentoResolver
+      resolve: AtendimentoFormResolver
     },
     component: AtendimentoFormComponent
   },
@@ -81,6 +91,9 @@ const routes: Routes = [
       descricao: 'Reeducação Postural Global',
       rota: 'rpg'
     },
+    resolve: {
+      resolve: AtendimentoFormResolver
+    },
     component: AtendimentoFormComponent
   },
   {
@@ -91,7 +104,7 @@ const routes: Routes = [
       rota: 'rpg'
     },
     resolve: {
-      resolve: AtendimentoResolver
+      resolve: AtendimentoFormResolver
     },
     component: AtendimentoFormComponent
   },
@@ -111,6 +124,9 @@ const routes: Routes = [
       descricao: 'Pilates',
       rota: 'pilates'
     },
+    resolve: {
+      resolve: AtendimentoFormResolver
+    },
     component: AtendimentoFormComponent
   },
   {
@@ -121,7 +137,7 @@ const routes: Routes = [
       rota: 'pilates'
     },
     resolve: {
-      resolve: AtendimentoResolver
+      resolve: AtendimentoFormResolver
     },
     component: AtendimentoFormComponent
   },
@@ -141,6 +157,9 @@ const routes: Routes = [
       descricao: 'Massagem Relaxante',
       rota: 'massagem-relaxante'
     },
+    resolve: {
+      resolve: AtendimentoFormResolver
+    },
     component: AtendimentoFormComponent
   },
   {
@@ -151,7 +170,7 @@ const routes: Routes = [
       rota: 'massagem-relaxante'
     },
     resolve: {
-      resolve: AtendimentoResolver
+      resolve: AtendimentoFormResolver
     },
     component: AtendimentoFormComponent
   }
@@ -160,6 +179,9 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [AtendimentoResolver]
+  providers: [
+    AtendimentoFormResolver,
+    AtendimentoListResolver
+  ]
 })
 export class AtendimentoRoutingModule { }

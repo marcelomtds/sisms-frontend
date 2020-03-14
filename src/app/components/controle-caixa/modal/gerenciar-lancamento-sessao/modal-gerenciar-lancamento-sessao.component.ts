@@ -30,7 +30,6 @@ export class ModalGerenciarLancamentoSessaoComponent extends Pagination<Lancamen
   public formasPagamento = new Array<FormaPagamento>();
   public isInvalidForm = false;
   public showNoRecords = false;
-  public atendimentoId: number;
   public currentUser = new Usuario();
 
   public constructor(
@@ -50,12 +49,11 @@ export class ModalGerenciarLancamentoSessaoComponent extends Pagination<Lancamen
     this.onCreateForm();
     this.searchByFilter();
     this.onLoadComboFormaPagamento();
-    this.onLoadAtendimento();
     this.getCurrentUser();
   }
 
   private onLoadAtendimento(): void {
-    this.atendimentoService.findById(this.atendimentoId).subscribe(response => {
+    this.atendimentoService.findById(this.atendimento.id).subscribe(response => {
       this.atendimento = response.result;
     });
   }
@@ -76,7 +74,7 @@ export class ModalGerenciarLancamentoSessaoComponent extends Pagination<Lancamen
       data: [null, Validators.required],
       valor: [0, Validators.required],
       observacao: [null],
-      atendimentoId: [this.atendimentoId, Validators.required],
+      atendimentoId: [this.atendimento.id, Validators.required],
       formaPagamentoId: [null, Validators.required]
     });
   }
@@ -166,7 +164,7 @@ export class ModalGerenciarLancamentoSessaoComponent extends Pagination<Lancamen
     this.filtro = {
       ...this.filtro,
       filter: {
-        atendimentoId: this.atendimentoId
+        atendimentoId: this.atendimento.id
       }
     };
     this.service.findByFilter(this.filtro).subscribe(response => {

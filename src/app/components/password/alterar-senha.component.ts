@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Messages } from '../../shared/messages/messages';
 import { Senha } from '../../core/model/model/senha.model';
 import { MessageService } from '../../core/services/message.service';
 import { UsuarioService } from '../../core/services/usuario.service';
+import { Messages } from '../../shared/messages/messages';
 
 @Component({
   selector: 'app-alterar-senha',
@@ -43,7 +43,7 @@ export class AlterarSenhaComponent implements OnInit {
       };
       this.service.updatePassword(formValue).subscribe(response => {
         this.messageService.sendMessageSuccess(response.message);
-        this.onResetValues();
+        window.history.back();
       });
     } else {
       this.isInvalidForm = true;
@@ -60,14 +60,6 @@ export class AlterarSenhaComponent implements OnInit {
     } else if (param === 'novaSenhaConfirmacao') {
       this.isShowNovaSenhaConfirmacao = !this.isShowNovaSenhaConfirmacao;
     }
-  }
-
-  public onResetValues(): void {
-    this.onCreateForm();
-    this.isInvalidForm = false;
-    this.isShowSenhaAtual = false;
-    this.isShowNovaSenha = false;
-    this.isShowNovaSenhaConfirmacao = false;
   }
 
   public onClickCancelar(): void {

@@ -10,7 +10,7 @@ import { TipoAtendimentoService } from 'src/app/core/services/tipo-atendimento.s
 import { Messages } from 'src/app/shared/messages/messages';
 
 @Injectable()
-export class AtendimentoResolver implements Resolve<any> {
+export class AtendimentoFormResolver implements Resolve<any> {
 
     constructor(
         private atendimentoService: AtendimentoService,
@@ -22,13 +22,16 @@ export class AtendimentoResolver implements Resolve<any> {
     ) { }
 
     async resolve(route: ActivatedRouteSnapshot): Promise<any> {
-        const id = +route.params.id;
-        const categoriaAtendimentoId = +route.data.id;
-        const atendimento: Response<Atendimento> = await this.atendimentoService.findById(id).toPromise();
-        if (categoriaAtendimentoId !== atendimento.result.categoriaAtendimentoId) {
-            this.messageService.sendMessageError(Messages.MSG0027);
-            this.router.navigate(['/home']);
-            return;
+        const id = route.params.id;
+        let atendimento: Response<Atendimento>;
+        if (id) {
+            const categoriaAtendimentoId = +route.data.id;
+            atendimento = await this.atendimentoService.findById(+id).toPromise();
+            if (categoriaAtendimentoId !== atendimento.result.categoriaAtendimentoId) {
+                this.messageService.sendMessageError(Messages.MSG0027);
+                this.router.navigate(['/home']);
+                return;
+            }
         }
         return {
             atendimento: atendimento,

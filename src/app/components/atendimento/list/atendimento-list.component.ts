@@ -14,7 +14,6 @@ import { Response } from 'src/app/core/model/model/response.model';
 import { Usuario } from 'src/app/core/model/model/usuario.model';
 import { LancamentoService } from 'src/app/core/services/lancamento.service';
 import { MessageService } from 'src/app/core/services/message.service';
-import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { Pagination } from 'src/app/shared/components/pagination/pagination';
 import { Messages } from 'src/app/shared/messages/messages';
 import { ModalVisualizarAtendimentoComponent } from 'src/app/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
@@ -23,10 +22,9 @@ import { Paciente } from '../../../core/model/model/paciente.model';
 import Page from '../../../core/model/model/page.model';
 import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
 import { AtendimentoService } from '../../../core/services/atendimento.service';
-import { PacienteService } from '../../../core/services/paciente.service';
-import { TipoAtendimentoService } from '../../../core/services/tipo-atendimento.service';
 import { ModalGerenciarLancamentoPacoteComponent } from '../../controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
 import { ModalGerenciarLancamentoSessaoComponent } from '../../controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
+import { PacoteService } from 'src/app/core/services/pacote.service';
 
 @Component({
   selector: 'app-atendimento-list',
@@ -50,10 +48,8 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
     private service: AtendimentoService,
     messageService: MessageService,
     private route: ActivatedRoute,
+    private pacoteService: PacoteService,
     private router: Router,
-    private pacienteService: PacienteService,
-    private tipoAtendimentoService: TipoAtendimentoService,
-    private usuarioService: UsuarioService,
     public authGuardService: AuthGuard,
     private modalService: BsModalService,
     private lancamentoService: LancamentoService,
@@ -102,16 +98,14 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
   }
 
   private onLoadCombos(): void {
-    this.pacienteService.findAll().subscribe(response => {
-      this.pacientes = response.result;
+    this.route.data.subscribe(response => {
+      this.pacientes = response.resolve.pacientes.result;
     });
-    if (this.authGuardService.isPermitido(this.permissaoAdministrador)) {
-      this.usuarioService.findAll().subscribe(response => {
-        this.usuarios = response.result;
-      });
-    }
-    this.tipoAtendimentoService.findAll().subscribe(response => {
-      this.tiposAtendimento = response.result;
+    this.route.data.subscribe(response => {
+      this.usuarios = response.resolve.usuarios.result;
+    });
+    this.route.data.subscribe(response => {
+      this.tiposAtendimento = response.resolve.tiposAtendimento.result;
     });
   }
 
@@ -171,18 +165,18 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
     this.modalService.show(ModalVisualizarAtendimentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
-  public onClickOpenModalGerenciarLancamentoSessao(id: number): void {
+  public async onClickOpenModalGerenciarLancamentoSessao(id: number): Promise<void> {
     this.messageService.clearAllMessages();
     const initialState = {
-      atendimentoId: id
+      atendimento: (await this.service.findById(id).toPromise()).result
     };
     this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
-  public onClickOpenModalGerenciarLancamentoPacote(id: number): void {
+  public async onClickOpenModalGerenciarLancamentoPacote(id: number): Promise<void> {
     this.messageService.clearAllMessages();
     const initialState = {
-      pacoteId: id
+      pacote: (await this.pacoteService.findById(id).toPromise()).result
     };
     this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }

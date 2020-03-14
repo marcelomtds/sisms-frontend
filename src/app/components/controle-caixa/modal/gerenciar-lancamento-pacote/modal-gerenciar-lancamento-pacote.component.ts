@@ -30,7 +30,6 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
   public formasPagamento = new Array<FormaPagamento>();
   public isInvalidForm = false;
   public showNoRecords = false;
-  public pacoteId: number;
   public valorSelecionado = 0;
   public currentUser = new Usuario();
 
@@ -51,12 +50,11 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
     this.onCreateForm();
     this.searchByFilter();
     this.onLoadComboFormaPagamento();
-    this.onLoadPacote();
     this.getCurrentUser();
   }
 
   private onLoadPacote(): void {
-    this.pacoteService.findById(this.pacoteId).subscribe(response => {
+    this.pacoteService.findById(this.pacote.id).subscribe(response => {
       this.pacote = response.result;
     });
   }
@@ -81,7 +79,7 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
       data: [null, Validators.required],
       valor: [0, Validators.required],
       observacao: [null],
-      pacoteId: [this.pacoteId, Validators.required],
+      pacoteId: [this.pacote.id, Validators.required],
       formaPagamentoId: [null, Validators.required]
     });
   }
@@ -185,7 +183,7 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
     this.filtro = {
       ...this.filtro,
       filter: {
-        pacoteId: this.pacoteId
+        pacoteId: this.pacote.id
       }
     };
     this.service.findByFilter(this.filtro).subscribe(response => {

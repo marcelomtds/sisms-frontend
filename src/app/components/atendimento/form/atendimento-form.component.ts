@@ -73,10 +73,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.onCreateForm();
     this.onLoadCategoriaAtendimento();
-    const id = +this.route.snapshot.params.id;
-    if (id) {
-      this.findById();
-    }
+    this.findById();
     this.onLoadCombos();
   }
 
@@ -106,7 +103,10 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   private findById(): void {
     this.route.data.subscribe(dados => {
-      const response: Response<Atendimento> = dados.response.atendimento;
+      const response: Response<Atendimento> = dados.resolve.atendimento;
+      if (!response) {
+        return;
+      }
       this.form.setValue({
         id: response.result.id,
         pacoteId: response.result.pacoteId || null,
