@@ -20,8 +20,7 @@ export const ROUTES: Routes = [
   },
   {
     path: 'usuario',
-    loadChildren: () => import('./components/usuario/usuario.module').then(m => m.UsuarioModule),
-    canActivate: [AuthGuard]
+    loadChildren: () => import('./components/usuario/usuario.module').then(m => m.UsuarioModule)
   },
   {
     path: 'acesso-negado',
