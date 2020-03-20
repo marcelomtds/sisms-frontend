@@ -17,6 +17,10 @@ export class AuthGuard implements CanActivate {
             this.router.navigate(['/login']);
             return false;
         }
+        if (!this.sharedService.isCadastroCompleto()) {
+            this.router.navigate([`/usuario/completar-cadastro/${this.sharedService.getUserSession().id}`]);
+            return false;
+        }
         if (route.data.role && !this.isPermitido(route.data.role)) {
             this.router.navigate(['/acesso-negado']);
             return false;

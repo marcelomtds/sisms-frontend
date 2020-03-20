@@ -4,12 +4,14 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { SismsCommonsModule } from '../sisms-commons.module';
 import { UsuarioFormComponent } from './form/usuario-form.component';
 import { UsuarioListComponent } from './list/usuario-list.component';
+import { PreCadastroComponent } from './pre-cadastro/pre-cadastro.component';
 import { UsuarioRoutingModule } from './usuario-routing.module';
 
 @NgModule({
   declarations: [
     UsuarioListComponent,
-    UsuarioFormComponent
+    UsuarioFormComponent,
+    PreCadastroComponent
   ],
   imports: [
     CommonModule,

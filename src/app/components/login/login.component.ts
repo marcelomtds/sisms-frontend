@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Messages } from '../../shared/messages/messages';
 import { Autenticacao } from '../../core/model/model/autenticacao.model';
-import { MessageService } from '../../core/services/message.service';
 import { AuthService } from '../../core/services/auth.service';
+import { MessageService } from '../../core/services/message.service';
 import { SharedService } from '../../core/services/shared.service';
+import { Messages } from '../../shared/messages/messages';
 
 @Component({
   selector: 'app-login',
@@ -27,11 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    if (this.sharedService.isLoggedIn()) {
-      this.router.navigate(['/home']);
-    } else {
-      this.onCreateForm();
-    }
+    this.onCreateForm();
   }
 
   public showHidePassword(): void {

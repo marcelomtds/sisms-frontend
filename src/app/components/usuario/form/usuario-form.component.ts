@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
+import { Response } from 'src/app/core/model/model/response.model';
+import { SharedService } from 'src/app/core/services/shared.service';
 import { Localidade } from '../../../core/model/model/localidade.model';
 import { Profissao } from '../../../core/model/model/profissao.model';
 import { Sexo } from '../../../core/model/model/sexo.model';
@@ -12,7 +14,6 @@ import { Usuario } from '../../../core/model/model/usuario.model';
 import { LocalidadeService } from '../../../core/services/localidade.service';
 import { MessageService } from '../../../core/services/message.service';
 import { ProfissaoService } from '../../../core/services/profissao.service';
-import { SexoService } from '../../../core/services/sexo.service';
 import { UfService } from '../../../core/services/uf.service';
 import { UsuarioService } from '../../../core/services/usuario.service';
 import { Messages } from '../../../shared/messages/messages';
@@ -44,7 +45,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     private ufService: UfService,
     private service: UsuarioService,
     private profissaoService: ProfissaoService,
-    private sexoService: SexoService,
+    private sharedService: SharedService,
     private formBuilder: FormBuilder,
     private messageService: MessageService
   ) {
@@ -62,10 +63,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.onCreateForm();
     this.onLoadCombos();
-    const id = +this.route.snapshot.params['id'];
-    if (id) {
-      this.findById(id);
-    }
+    this.findById();
   }
 
   public ngOnDestroy(): void {
@@ -163,8 +161,12 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  public get isCadastroCompleto(): boolean {
+    return this.sharedService.getUserSession().cadastroCompleto;
+  }
+
   private removerValidacaoSenhas(): void {
-    if (this.form.controls.id.value) {
+    if (this.isCadastroCompleto) {
       this.form.controls.senha.setValidators([]);
       this.form.controls.senhaConfirmacao.setValidators([]);
       this.form.controls.senha.updateValueAndValidity();
@@ -186,11 +188,21 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
         dataNascimento: Util.convertStringToDate(this.form.value.dataNascimento)
       };
       if (formValue.id) {
-        this.service.update(formValue.id, formValue).subscribe(response => {
-          this.messageService.sendMessageSuccess(response.message);
-          this.service.setUsuario(response.result);
-          window.history.back();
-        });
+        if (this.isCadastroCompleto) {
+          this.service.update(formValue.id, formValue).subscribe(response => {
+            this.messageService.sendMessageSuccess(response.message);
+            this.service.setUsuario(response.result);
+            window.history.back();
+          });
+        } else {
+          this.service.completeRegistration(formValue.id, formValue).subscribe(response => {
+            this.messageService.sendMessageSuccess(response.message);
+            this.service.setUsuario(response.result);
+            this.sharedService.setUserSession(response.result);
+            this.sharedService.updateTemplateSet(true);
+            this.router.navigate(['/home']);
+          });
+        }
       } else {
         this.service.create(formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
@@ -242,8 +254,12 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private findById(id: number): void {
-    this.service.findById(id).subscribe(response => {
+  private findById(): void {
+    this.route.data.subscribe(dados => {
+      const response: Response<Usuario> = dados.resolve.usuario;
+      if (!response) {
+        return;
+      }
       this.form.setValue({
         id: response.result.id,
         senha: null,

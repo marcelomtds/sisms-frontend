@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { SharedService } from '../../services/shared.service';
+import { Component } from '@angular/core';
 import { AuthGuard } from '../../guards/auth.guard';
-import { Usuario } from '../../model/model/usuario.model';
 import { PerfilEnum } from '../../model/enum/perfil.enum';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html'
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
 
-  public currentUser = new Usuario();
   public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
 
   public constructor(
@@ -18,8 +16,8 @@ export class MenuComponent implements OnInit {
     public authGuardService: AuthGuard
   ) { }
 
-  public ngOnInit(): void {
-    this.currentUser = this.sharedService.getUserSession();
+  public get isCadastroCompleto(): boolean {
+    return this.sharedService.getUserSession() && this.sharedService.getUserSession().cadastroCompleto;
   }
 
 }

@@ -78,4 +78,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.usuario.nomeCompleto.split(' ')[0];
   }
 
+  public get isCadastroCompleto(): boolean {
+    return this.usuario.cadastroCompleto;
+  }
+
 }

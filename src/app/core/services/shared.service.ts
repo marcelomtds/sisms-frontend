@@ -10,7 +10,11 @@ export class SharedService {
   public subject = new Subject<boolean>();
 
   public isLoggedIn(): boolean {
-    return this.getUserSession() && this.getTokenSession() ? true : false;
+    return this.getUserSession() !== null && this.getTokenSession() !== null;
+  }
+
+  public isCadastroCompleto(): boolean {
+    return this.getUserSession().cadastroCompleto;
   }
 
   public updateTemplateGet(): Observable<boolean> {

@@ -1,0 +1,65 @@
+<section class="content-header">
+  <h1>Pré-Cadastro</h1>
+</section>
+<section class="content">
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Credenciais de Acesso</h3>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="cpf">CPF</label>
+                  <input id="cpf" [validation]="false" mask="000.000.000-00" type="text" formControlName="cpf"
+                    class="form-control" />
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('cpf')">
+                  </app-message-required>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="senha">Senha</label>
+                  <div class="input-group">
+                    <input id="senha" maxlength="20" type="{{ isShowSenha ? 'text' : 'password' }}"
+                      formControlName="senha" class="form-control" />
+                    <div style="cursor: pointer;" class="input-group-addon" (click)="showHidePassword('senha')">
+                      <em class="{{ isShowSenha ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></em>
+                    </div>
+                  </div>
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('senha')">
+                  </app-message-required>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="senhaConfirmacao">Confirmar Senha</label>
+                  <div class="input-group">
+                    <input id="senhaConfirmacao" maxlength="20"
+                      type="{{ isShowSenhaConfirmacao ? 'text' : 'password' }}" formControlName="senhaConfirmacao"
+                      class="form-control" />
+                    <div style="cursor: pointer;" class="input-group-addon"
+                      (click)="showHidePassword('senhaConfirmacao')">
+                      <em class="{{ isShowSenhaConfirmacao ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></em>
+                    </div>
+                  </div>
+                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('senhaConfirmacao')">
+                  </app-message-required>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="box-footer">
+            <button class="btn btn-primary pull-right" style="margin-left: 15px;" (click)="onClickFormSubmit()"><em
+                class="fa fa-save"></em>&nbsp;Salvar</button>
+            <button class="btn btn-danger pull-right" (click)="onClickCancelar()"><em
+                class="fa fa-ban"></em>&nbsp;Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>

@@ -35,7 +35,8 @@ export class Usuario {
         public contatoCelularRecado?: string,
         public contatoResidencial?: string,
         public contatoComercial?: string,
-        public contatoEmail?: string
-    ) { }
+        public contatoEmail?: string,
+        public cadastroCompleto?: boolean
+        ) { }
 
 }

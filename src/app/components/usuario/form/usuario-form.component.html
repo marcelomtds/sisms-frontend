@@ -1,11 +1,11 @@
 <section class="content-header">
-  <h1>{{ form.controls.id.value ? 'Editar' : 'Cadastar' }}</h1>
+  <h1>{{ isCadastroCompleto ? 'Editar' : 'Completar Cadastro' }}</h1>
 </section>
 <section class="content">
   <form [formGroup]="form">
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div *ngIf="form.controls.id.value" class="box box-primary">
+        <div class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">Imagem do Perfil</h3>
           </div>
@@ -98,7 +98,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!form.controls.id.value" class="box box-primary">
+        <div *ngIf="!isCadastroCompleto" class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">Credenciais do Acesso</h3>
           </div>

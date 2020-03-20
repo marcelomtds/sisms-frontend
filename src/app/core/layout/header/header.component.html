@@ -7,7 +7,7 @@
     <a href="#" class="sidebar-toggle" id="testeste" data-toggle="push-menu" role="button">
       <span class="sr-only">Toggle navigation</span>
     </a>
-    <div class="navbar-custom-menu">
+    <div *ngIf="isCadastroCompleto" class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <li class="dropdown notifications-menu" title="Configurações">
           <a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">

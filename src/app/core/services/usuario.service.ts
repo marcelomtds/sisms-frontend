@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { PacienteUsuarioFilter } from '../model/filter/paciente-usuario.filter';
+import { Response } from '../model/model/response.model';
 import { Senha } from '../model/model/senha.model';
 import { Usuario } from '../model/model/usuario.model';
-import { Response } from '../model/model/response.model';
 import { BaseService } from './base.service';
 
 @Injectable({
@@ -28,6 +28,10 @@ export class UsuarioService extends BaseService<Usuario, PacienteUsuarioFilter> 
 
   public updatePassword(formValue: Senha): Observable<Response<Usuario>> {
     return this.http.put<Response<Usuario>>(`${this.apiBaseUrl}/updatePassword`, formValue);
+  }
+
+  public completeRegistration(id: number, formValue: Usuario): Observable<Response<Usuario>> {
+    return this.http.put<Response<Usuario>>(`${this.apiBaseUrl}/completeRegistration/${id}`, formValue);
   }
 
   public findAllBirthdaysMonth(): Observable<Response<Array<Usuario>>> {
