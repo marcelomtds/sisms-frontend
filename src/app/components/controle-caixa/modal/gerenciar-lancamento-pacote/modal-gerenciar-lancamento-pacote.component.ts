@@ -51,12 +51,12 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
     this.searchByFilter();
     this.onLoadComboFormaPagamento();
     this.getCurrentUser();
+    this.initOrderBy();
   }
 
-  private onLoadPacote(): void {
-    this.pacoteService.findById(this.pacote.id).subscribe(response => {
-      this.pacote = response.result;
-    });
+  private initOrderBy(): void {
+    this.filtro.orderBy = 'data';
+    this.filtro.direction = 'ASC';
   }
 
   private getCurrentUser(): void {
@@ -135,7 +135,6 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
   private onUpdate(): void {
     this.onCreateForm();
     this.searchByFilter();
-    this.onLoadPacote();
     this.service.setLancamento();
     this.valorSelecionado = 0;
     this.showNoRecords = false;

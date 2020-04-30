@@ -8,7 +8,6 @@ import { FormaPagamento } from 'src/app/core/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/core/model/model/lancamento.model';
 import Page from 'src/app/core/model/model/page.model';
 import { Usuario } from 'src/app/core/model/model/usuario.model';
-import { AtendimentoService } from 'src/app/core/services/atendimento.service';
 import { FormaPagamentoService } from 'src/app/core/services/forma-pagamento.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { SharedService } from 'src/app/core/services/shared.service';
@@ -37,7 +36,6 @@ export class ModalGerenciarLancamentoSessaoComponent extends Pagination<Lancamen
     private service: LancamentoService,
     private formBuilder: FormBuilder,
     private formaPagamentoService: FormaPagamentoService,
-    private atendimentoService: AtendimentoService,
     private modalService: BsModalService,
     messageService: MessageService,
     private sharedService: SharedService
@@ -50,12 +48,12 @@ export class ModalGerenciarLancamentoSessaoComponent extends Pagination<Lancamen
     this.searchByFilter();
     this.onLoadComboFormaPagamento();
     this.getCurrentUser();
+    this.initOrderBy();
   }
 
-  private onLoadAtendimento(): void {
-    this.atendimentoService.findById(this.atendimento.id).subscribe(response => {
-      this.atendimento = response.result;
-    });
+  private initOrderBy(): void {
+    this.filtro.orderBy = 'data';
+    this.filtro.direction = 'ASC';
   }
 
   private onLoadComboFormaPagamento(): void {
@@ -118,7 +116,6 @@ export class ModalGerenciarLancamentoSessaoComponent extends Pagination<Lancamen
   private onUpdate(): void {
     this.onCreateForm();
     this.searchByFilter();
-    this.onLoadAtendimento();
     this.service.setLancamento();
     this.showNoRecords = false;
     this.isInvalidForm = false;

@@ -32,6 +32,8 @@ import { UsuarioService } from '../../../core/services/usuario.service';
 import Util from '../../../shared/util/util';
 import { ModalGerenciarLancamentoPacoteComponent } from '../modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
 import { ModalGerenciarLancamentoSessaoComponent } from '../modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
+import { PacoteService } from 'src/app/core/services/pacote.service';
+import { AtendimentoService } from 'src/app/core/services/atendimento.service';
 
 @Component({
   selector: 'app-controle-caixa-list',
@@ -63,6 +65,8 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     private usuarioService: UsuarioService,
     private tipoLancamentoService: TipoLancamentoService,
     private tipoAtendimentoService: TipoAtendimentoService,
+    private pacoteService: PacoteService,
+    private atendimentoService: AtendimentoService,
     private service: LancamentoService,
     private router: Router,
     messageService: MessageService,
@@ -221,18 +225,18 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     this.router.navigate([`/controle-caixa/saida/alterar/${id}`]);
   }
 
-  public onClickOpenModalGerenciarLancamentoSessao(id: number): void {
+  public async onClickOpenModalGerenciarLancamentoSessao(id: number): Promise<void> {
     this.messageService.clearAllMessages();
     const initialState = {
-      atendimentoId: id
+      atendimento: (await this.atendimentoService.findById(id).toPromise()).result
     };
     this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
-  public onClickOpenModalGerenciarLancamentoPacote(id: number): void {
+  public async onClickOpenModalGerenciarLancamentoPacote(id: number): Promise<void> {
     this.messageService.clearAllMessages();
     const initialState = {
-      pacoteId: id
+      pacote: (await this.pacoteService.findById(id).toPromise()).result
     };
     this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
