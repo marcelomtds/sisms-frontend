@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PacienteFormComponent } from './form/paciente-form.component';
 import { PacienteListComponent } from './list/paciente-list.component';
-
+import { PacienteFormResolver } from './resolver/paciente-form.resolver';
 
 const routes: Routes = [
   {
@@ -11,16 +11,23 @@ const routes: Routes = [
   },
   {
     path: 'incluir',
-    component: PacienteFormComponent
+    component: PacienteFormComponent,
+    resolve: {
+      resolve: PacienteFormResolver
+    }
   },
   {
     path: 'alterar/:id',
-    component: PacienteFormComponent
+    component: PacienteFormComponent,
+    resolve: {
+      resolve: PacienteFormResolver
+    }
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [PacienteFormResolver]
 })
 export class PacienteRoutingModule { }

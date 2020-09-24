@@ -23,14 +23,13 @@ export class AtendimentoFormResolver implements Resolve<any> {
 
     async resolve(route: ActivatedRouteSnapshot): Promise<any> {
         const id = route.params.id;
-        let atendimento: Response<Atendimento>;
+        let atendimento = new Response<Atendimento>();
         if (id) {
             const categoriaAtendimentoId = +route.data.id;
             atendimento = await this.atendimentoService.findById(+id).toPromise();
             if (categoriaAtendimentoId !== atendimento.result.categoriaAtendimentoId) {
                 this.messageService.sendMessageError(Messages.MSG0027);
                 this.router.navigate(['/home']);
-                return;
             }
         }
         return {
@@ -40,6 +39,5 @@ export class AtendimentoFormResolver implements Resolve<any> {
             tiposAtendimento: await this.tipoAtendimentoService.findAll().toPromise(),
         };
     }
-
 
 }

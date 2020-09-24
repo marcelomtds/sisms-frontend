@@ -10,7 +10,7 @@
     <div class="box-body">
       <form [formGroup]="form">
         <div class="row">
-          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <div class="form-group">
               <label for="descricao">Descrição</label>
               <input id="descricao" trim="blur" maxlength="100" type="text" formControlName="descricao"
@@ -19,7 +19,7 @@
               </app-message-required>
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <div class="form-group">
               <label for="uf">Estado</label>
               <ng-select id="uf" maxlength="50" formControlName="ufId" [items]="ufs" bindLabel="descricao"

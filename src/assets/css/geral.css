@@ -127,6 +127,20 @@ table th {
   margin-top: 10px;
 }
 
+.pagination>li>a, .pagination>li>span {
+  position: relative;
+    margin-top: 5px;
+    padding: 7px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    text-decoration: none;
+    border: 1px solid #ccc;
+}
+
+.pagination {
+  margin: 20px 0;
+}
+
 /*textarea {
   resize: none;
 }

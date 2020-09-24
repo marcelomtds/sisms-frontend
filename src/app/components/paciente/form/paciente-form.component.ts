@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Messages } from '../../../shared/messages/messages';
+import { Paciente } from 'src/app/core/model/model/paciente.model';
+import { Response } from 'src/app/core/model/model/response.model';
 import { Atendimento } from '../../../core/model/model/atendimento.model';
 import { Localidade } from '../../../core/model/model/localidade.model';
 import { Profissao } from '../../../core/model/model/profissao.model';
@@ -10,11 +11,12 @@ import { Sexo } from '../../../core/model/model/sexo.model';
 import { UF } from '../../../core/model/model/uf.model';
 import { LocalidadeService } from '../../../core/services/localidade.service';
 import { MessageService } from '../../../core/services/message.service';
+import { PacienteService } from '../../../core/services/paciente.service';
 import { ProfissaoService } from '../../../core/services/profissao.service';
 import { SexoService } from '../../../core/services/sexo.service';
 import { UfService } from '../../../core/services/uf.service';
+import { Messages } from '../../../shared/messages/messages';
 import Util from '../../../shared/util/util';
-import { PacienteService } from '../../../core/services/paciente.service';
 
 @Component({
   selector: 'app-paciente-form',
@@ -43,10 +45,14 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
     private messageService: MessageService
   ) {
     this.subscription = this.profissaoService.getProfissao().subscribe(() => {
-      this.onLoadComboProfissao();
+      this.profissaoService.findAll().subscribe(response => {
+        this.profissoes = response.result;
+      });
     });
     this.subscription = this.ufService.getUF().subscribe(() => {
-      this.onLoadComboUF();
+      this.ufService.findAll().subscribe(response => {
+        this.ufs = response.result;
+      });
     });
     this.subscription = this.localidadeService.getLocalidade().subscribe(() => {
       this.onChangeUf();
@@ -56,10 +62,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.onCreateForm();
     this.onLoadCombos();
-    const id = +this.route.snapshot.params['id'];
-    if (id) {
-      this.findById(id);
-    }
+    this.loadDataPage();
   }
 
   public ngOnDestroy(): void {
@@ -73,20 +76,26 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
   }
 
   private onLoadComboProfissao(): void {
-    this.profissaoService.findAll().subscribe(response => {
-      this.profissoes = response.result;
+    this.route.data.subscribe(response => {
+      this.profissoes = response.resolve.profissoes.result;
     });
   }
 
   private onLoadComboSexo(): void {
-    this.sexoService.findAll().subscribe(response => {
-      this.sexos = response.result;
+    this.route.data.subscribe(response => {
+      this.sexos = response.resolve.sexos.result;
     });
   }
 
   private onLoadComboUF(): void {
-    this.ufService.findAll().subscribe(response => {
-      this.ufs = response.result;
+    this.route.data.subscribe(response => {
+      this.ufs = response.resolve.ufs.result;
+    });
+  }
+
+  private onLoadComboLocalidade(): void {
+    this.route.data.subscribe(response => {
+      this.localidades = response.resolve.localidades.result;
     });
   }
 
@@ -124,8 +133,8 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onChangeUf(isclearAllMessages?: boolean): void {
-    if (isclearAllMessages) {
+  public onChangeUf(isClearAllMessages?: boolean): void {
+    if (isClearAllMessages) {
       this.messageService.clearAllMessages();
     }
     const id = this.form.controls.enderecoLocalidadeUFId.value;
@@ -171,8 +180,12 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private findById(id: number): void {
-    this.service.findById(id).subscribe(response => {
+  private loadDataPage(): void {
+    this.route.data.subscribe(dados => {
+      const response: Response<Paciente> = dados.resolve.paciente;
+      if (!response) {
+        return;
+      }
       this.form.setValue({
         id: response.result.id,
         nomeCompleto: response.result.nomeCompleto,
@@ -197,7 +210,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
         contatoComercial: response.result.contatoComercial || null,
         contatoEmail: response.result.contatoEmail || null,
       });
-      this.onChangeUf();
+      this.onLoadComboLocalidade();
       this.isCpfReadonly = response.result.cpf ? true : false;
     });
   }

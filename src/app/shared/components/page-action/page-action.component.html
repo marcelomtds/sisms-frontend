@@ -11,26 +11,13 @@
       </ng-select>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-      <button class="btn btn-primary pull-left" [disabled]="filtro.currentPage === 0" (click)="onChangePage(0)"><em
-          class="fa fa-angle-double-left"></em>&nbsp;Primeira</button>
-      <button class="btn btn-primary pull-left" [disabled]="filtro.currentPage === 0"
-        (click)="onChangePage(filtro.currentPage - 1)" style="margin-left: 10px;"><em
-          class="fa fa-angle-left"></em>&nbsp;Anterior</button>
-    </div>
-    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="text-align: center">
-      <span>{{ showInfo() }}</span>
-    </div>
-    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-      <button class="btn btn-primary pull-right" (click)="onChangePage(dados.totalPages - 1)"
-        [disabled]="filtro.currentPage + 1 === dados.totalPages" style="margin-left: 10px;">Última&nbsp;<em
-          class="fa fa-angle-double-right"></em></button>
-      <button class="btn btn-primary pull-right" (click)="onChangePage(filtro.currentPage + 1)"
-        [disabled]="filtro.currentPage + 1 === dados.totalPages">Próxima&nbsp;<em
-          class="fa fa-angle-right"></em></button>
-    </div>
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="text-align: center;">
+    <pagination (pageChanged)="onChangePage($event.page - 1)" [boundaryLinks]="true" [(ngModel)]="currentPage"
+      [totalItems]="dados.totalElements" [maxSize]="15" [itemsPerPage]="filtro.pageSize" previousText="&lsaquo;"
+      nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination>
+  </div>
+  <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="text-align: right;">
+    <label for="registro">Total de registros: {{ dados.totalElements }}</label>
   </div>
 </div>

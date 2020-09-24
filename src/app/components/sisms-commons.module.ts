@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { InputTrimModule } from 'ng2-trim-directive';
 import { CarouselModule, ModalModule, TabsModule } from 'ngx-bootstrap';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { NgxMaskModule } from 'ngx-mask';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -25,7 +26,8 @@ import { NgxUpperCaseDirectiveModule } from 'ngx-upper-case-directive';
     TabsModule.forRoot(),
     CarouselModule.forRoot(),
     ModalModule.forRoot(),
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    PaginationModule.forRoot()
   ],
   exports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { NgxUpperCaseDirectiveModule } from 'ngx-upper-case-directive';
     CarouselModule,
     ModalModule,
     NgxMaskModule,
-    ToastrModule
+    ToastrModule,
+    PaginationModule
   ]
 })
 export class SismsCommonsModule { }

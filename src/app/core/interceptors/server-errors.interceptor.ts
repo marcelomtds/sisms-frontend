@@ -24,6 +24,7 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                     switch (response.status) {
                         case 400:
                             this.showMessages(response.error);
+                            this.route.navigate(['/home']);
                             break;
                         case 401:
                             this.showMessages(response.error);

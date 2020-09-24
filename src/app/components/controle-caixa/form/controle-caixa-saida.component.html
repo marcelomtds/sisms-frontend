@@ -11,7 +11,7 @@
         <div class="box-body">
           <form [formGroup]="form">
             <div class="row">
-              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                 <div class="form-group">
                   <label for="data">Data</label>
                   <input id="data" mask="00/00/0000" [validation]="false" type="text" formControlName="data"
@@ -20,7 +20,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                 <div class="form-group">
                   <label for="valor">Valor</label>
                   <input id="valor" maxlength="10" currencyMask
@@ -28,7 +28,7 @@
                     type="text" formControlName="valor" class="form-control" />
                 </div>
               </div>
-              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                 <div class="form-group">
                   <label for="formaPagamento">Forma de Pagamento</label>
                   <ng-select id="formaPagamento" formControlName="formaPagamentoId" [items]="formasPagamento"
@@ -39,7 +39,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="categoria">Categoria de Lançamento</label>
                   <ng-select id="categoria" formControlName="categoriaLancamentoId" [items]="categoriasLancamento"
