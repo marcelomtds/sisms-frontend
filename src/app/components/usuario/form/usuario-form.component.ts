@@ -215,11 +215,6 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickCancelar(): void {
-    this.messageService.clearAllMessages();
-    window.history.back();
-  }
-
   public onClickRemoveImage(): void {
     this.messageService.clearAllMessages();
     this.form.controls.imagem.setValue(null);

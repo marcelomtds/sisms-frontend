@@ -60,4 +60,9 @@ export class PreCadastroComponent implements OnInit {
     }
   }
 
+  public onClickCancelar(): void {
+    this.messageService.clearAllMessages();
+    window.history.back();
+  }
+
 }
