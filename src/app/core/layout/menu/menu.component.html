@@ -28,8 +28,8 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a [routerLink]="[ '/reserva' ]"><em class="fa fa-search"></em>Buscar</a></li>
-          <li><a [routerLink]="[ '/reserva/incluir' ]"><em class="fa fa-plus"></em>Incluir</a></li>
+          <li (click)="teste()"><a [routerLink]="[ '/reserva' ]"><em class="fa fa-search"></em>Buscar</a></li>
+          <li><a [routerLink]="[ '/reserva/incluir' ]"><em class="fa fa-plus"></em>Cadastrar</a></li>
         </ul>
       </li>
       <li *ngIf="authGuardService.isPermitido(permissaoAdministrador)" class="treeview">

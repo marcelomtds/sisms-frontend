@@ -290,7 +290,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         const pacienteNomeCompleto = this.getNomePaciente(pacienteId);
         const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
         modalRef.content.titulo = 'Confirmação de Criação de Pacote';
-        modalRef.content.corpo = `Não existe pacote de ${this.categoriaAtendimentoRouting.descricao} em aberto para o paciente ${pacienteNomeCompleto}. Deseja agora?`;
+        modalRef.content.corpo = `Não existe pacote de ${this.categoriaAtendimentoRouting.descricao} em aberto para o paciente ${pacienteNomeCompleto}. Deseja criar agora?`;
         modalRef.content.onClose.subscribe((result: boolean) => {
           if (result) {
             this.onOpenModalCriarPacote(true);

@@ -20,4 +20,11 @@ export class MenuComponent {
     return this.sharedService.getUserSession() && this.sharedService.getUserSession().cadastroCompleto;
   }
 
+  public onClickCollapseSidebar() {
+    const element = document.getElementById('body-app');
+    if (element && element.classList && element.classList.contains('sidebar-open')) {
+      element.classList.remove('sidebar-open');
+    }
+  }
+
 }
