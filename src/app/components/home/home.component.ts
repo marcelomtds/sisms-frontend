@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit {
   }
 
   public get getWeekDay(): string {
-    return Util.diaSemana(new Date().getDay());
+    return `Agenda para ${Util.diaSemana(new Date().getDay())}`;
   }
 
 }

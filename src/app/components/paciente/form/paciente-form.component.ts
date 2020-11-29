@@ -183,7 +183,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
   private loadDataPage(): void {
     this.route.data.subscribe(dados => {
       const response: Response<Paciente> = dados.resolve.paciente;
-      if (!response) {
+      if (!response.result) {
         return;
       }
       this.form.setValue({

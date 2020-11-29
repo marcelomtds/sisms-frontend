@@ -6,7 +6,7 @@
   <nav class="navbar navbar-static-top">
     <a href="#" class="sidebar-toggle" id="testeste" data-toggle="push-menu" role="button">
     </a>
-    <div *ngIf="isCadastroCompleto" class="navbar-custom-menu">
+    <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <li class="dropdown notifications-menu" title="Configurações">
           <a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">
@@ -49,7 +49,7 @@
             </li>
           </ul>
         </li>
-        <li class="dropdown user user-menu">
+        <li *ngIf="isCadastroCompleto" class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="{{ usuario.imagem || '../../../../assets/img/sem-foto.jpg' }}" class="user-image"
               alt="Foto do Perfil">

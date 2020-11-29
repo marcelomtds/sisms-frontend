@@ -135,6 +135,7 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
   private onUpdate(): void {
     this.onCreateForm();
     this.searchByFilter();
+    this.findById();
     this.service.setLancamento();
     this.valorSelecionado = 0;
     this.showNoRecords = false;
@@ -188,6 +189,12 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
     this.service.findByFilter(this.filtro).subscribe(response => {
       this.showNoRecords = true;
       this.dados = response.result;
+    });
+  }
+
+  private findById(): void {
+    this.pacoteService.findById(this.pacote.id).subscribe(response => {
+      this.pacote = response.result;
     });
   }
 

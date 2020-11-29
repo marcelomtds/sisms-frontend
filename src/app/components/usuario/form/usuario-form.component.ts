@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
 import { Response } from 'src/app/core/model/model/response.model';
+import { MenuService } from 'src/app/core/services/menu.service';
 import { SharedService } from 'src/app/core/services/shared.service';
 import { Localidade } from '../../../core/model/model/localidade.model';
 import { Profissao } from '../../../core/model/model/profissao.model';
@@ -47,7 +48,8 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     private profissaoService: ProfissaoService,
     private sharedService: SharedService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private menuService: MenuService
   ) {
     this.subscription = this.profissaoService.getProfissao().subscribe(() => {
       this.onRefreshComboProfissao();
@@ -201,6 +203,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
             this.sharedService.setUserSession(response.result);
             this.sharedService.updateTemplateSet(true);
             this.router.navigate(['/home']);
+            this.menuService.setMenu();
           });
         }
       } else {

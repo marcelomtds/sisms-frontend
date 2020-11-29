@@ -1,20 +1,42 @@
-import { Component } from '@angular/core';
-import { AuthGuard } from '../../guards/auth.guard';
-import { PerfilEnum } from '../../model/enum/perfil.enum';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Menu } from '../../model/model/menu.model';
+import { MenuService } from '../../services/menu.service';
 import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html'
 })
-export class MenuComponent {
+export class MenuComponent implements OnDestroy, OnInit {
 
-  public permissaoAdministrador = PerfilEnum.ADMINISTRADOR;
+  public menus = new Array<Menu>();
+  public subscription: Subscription;
 
   public constructor(
     private sharedService: SharedService,
-    public authGuardService: AuthGuard
-  ) { }
+    public menuService: MenuService
+  ) {
+    this.subscription = this.menuService.getMenu().subscribe(() => {
+      this.onLoadMenu();
+    });
+  }
+
+  public ngOnInit(): void {
+    if (this.isCadastroCompleto) {
+      this.onLoadMenu();
+    }
+  }
+
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  private onLoadMenu(): void {
+    this.menuService.findAll().subscribe(response => {
+      this.menus = response.result;
+    });
+  }
 
   public get isCadastroCompleto(): boolean {
     return this.sharedService.getUserSession() && this.sharedService.getUserSession().cadastroCompleto;

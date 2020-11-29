@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MenuService } from 'src/app/core/services/menu.service';
 import { Autenticacao } from '../../core/model/model/autenticacao.model';
 import { AuthService } from '../../core/services/auth.service';
 import { MessageService } from '../../core/services/message.service';
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private messageService: MessageService,
     private formBuilder: FormBuilder,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private menuService: MenuService,
   ) {
   }
 
@@ -52,6 +54,7 @@ export class LoginComponent implements OnInit {
         this.sharedService.setTokenSession(response.result.token);
         this.sharedService.updateTemplateSet(true);
         this.router.navigate(['/home']);
+        this.menuService.setMenu();
       });
     } else {
       this.isInvalidForm = true;

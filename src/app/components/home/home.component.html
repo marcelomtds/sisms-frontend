@@ -9,7 +9,7 @@
           <div class="box-header with-border">
             <div class="row">
               <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-                <h3 class="box-title">Agenda para {{ getWeekDay }}</h3>
+                <h3 class="box-title">{{ getWeekDay }}</h3>
               </div>
             </div>
           </div>
@@ -54,7 +54,7 @@
           </div>
         </div>
       </div>
-      <app-no-records [title]="'Agenda para ' + getWeekDay" *ngIf="!dadosAgenda?.length"></app-no-records>
+      <app-no-records [title]="getWeekDay" *ngIf="!dadosAgenda?.length"></app-no-records>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
       <div class="box box-primary">

@@ -104,7 +104,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   private findById(): void {
     this.route.data.subscribe(dados => {
       const response: Response<Atendimento> = dados.resolve.atendimento;
-      if (!response) {
+      if (!response.result) {
         return;
       }
       this.form.setValue({
