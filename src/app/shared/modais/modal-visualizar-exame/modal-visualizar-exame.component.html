@@ -6,26 +6,26 @@
   <div class="box box-primary">
     <div class="box-header with-border">
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <h3 class="box-title">Dados do Exame</h3>
         </div>
       </div>
     </div>
     <div class="box-body">
       <div class="row">
-        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
           <div class="form-group">
             <label>Paciente</label>
             <p>{{ dados.pacienteNomeCompleto }}</p>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Categoria de Exame</label>
             <p>{{ dados.categoriaExameDescricao }}</p>
           </div>
         </div>
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
           <div class="form-group">
             <label>Data de Realização</label>
             <p>{{ dados.data | date : 'dd/MM/yyyy' }}</p>

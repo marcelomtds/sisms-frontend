@@ -11,7 +11,7 @@
           </div>
           <div class="box-body">
             <div class="row">
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="categoriaAtendimento">Categoria de Atendimento</label>
                   <ng-select id="categoriaAtendimento" maxlength="50" formControlName="categoriaAtendimentoId"
@@ -19,21 +19,21 @@
                   </ng-select>
                 </div>
               </div>
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="dataInicio">Data Início</label>
                   <input id="dataInicio" type="text" [validation]="false" mask="00/00/0000" formControlName="dataInicio"
                     class="form-control" />
                 </div>
               </div>
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="dataFim">Data Fim</label>
                   <input id="dataFim" type="text" [validation]="false" mask="00/00/0000" formControlName="dataFim"
                     class="form-control" />
                 </div>
               </div>
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="aberto">Status do Pacote</label>
                   <ng-select id="aberto" maxlength="50" formControlName="aberto">
@@ -44,7 +44,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                 <div class="form-group">
                   <label for="paciente">Paciente</label>
                   <ng-select id="paciente" maxlength="50" formControlName="pacienteId" [items]="pacientes"
@@ -58,7 +58,7 @@
                 </div>
               </div>
               <div *ngIf="authGuardService.isPermitido(permissaoAdministrador)"
-                class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                 <div class="form-group">
                   <label for="usuario">Usuário</label>
                   <ng-select id="usuario" maxlength="50" formControlName="usuarioId" [items]="usuarios"
@@ -137,7 +137,8 @@
                       <td>
                         {{ pacote.valor || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
                       </td>
-                      <td [ngStyle]="{'color': !pacote.totalPago || pacote.totalPago < pacote.valor ? 'red' : 'green', 'font-weight': 'bold'}">
+                      <td
+                        [ngStyle]="{'color': !pacote.totalPago || pacote.totalPago < pacote.valor ? 'red' : 'green', 'font-weight': 'bold'}">
                         {{ pacote.totalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
                       </td>
                       <td>

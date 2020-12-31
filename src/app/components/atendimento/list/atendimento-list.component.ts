@@ -14,6 +14,7 @@ import { Response } from 'src/app/core/model/model/response.model';
 import { Usuario } from 'src/app/core/model/model/usuario.model';
 import { LancamentoService } from 'src/app/core/services/lancamento.service';
 import { MessageService } from 'src/app/core/services/message.service';
+import { PacoteService } from 'src/app/core/services/pacote.service';
 import { Pagination } from 'src/app/shared/components/pagination/pagination';
 import { Messages } from 'src/app/shared/messages/messages';
 import { ModalVisualizarAtendimentoComponent } from 'src/app/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
@@ -24,7 +25,6 @@ import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.mode
 import { AtendimentoService } from '../../../core/services/atendimento.service';
 import { ModalGerenciarLancamentoPacoteComponent } from '../../controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
 import { ModalGerenciarLancamentoSessaoComponent } from '../../controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
-import { PacoteService } from 'src/app/core/services/pacote.service';
 
 @Component({
   selector: 'app-atendimento-list',
@@ -99,13 +99,9 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
 
   private onLoadCombos(): void {
     this.route.data.subscribe(response => {
-      this.pacientes = response.resolve.pacientes.result;
-    });
-    this.route.data.subscribe(response => {
-      this.usuarios = response.resolve.usuarios.result;
-    });
-    this.route.data.subscribe(response => {
-      this.tiposAtendimento = response.resolve.tiposAtendimento.result;
+      this.pacientes = response.resolve[0].result;
+      this.usuarios = response.resolve[1].result;
+      this.tiposAtendimento = response.resolve[2].result;
     });
   }
 

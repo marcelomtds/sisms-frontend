@@ -49,6 +49,9 @@ const routes: Routes = [
       descricao: 'Fisioterapia',
       rota: 'fisioterapia'
     },
+    resolve: {
+      resolve: AtendimentoListResolver
+    },
     component: AtendimentoListComponent
   },
   {
@@ -81,6 +84,9 @@ const routes: Routes = [
       id: 3,
       descricao: 'Reeducação Postural Global',
       rota: 'rpg'
+    },
+    resolve: {
+      resolve: AtendimentoListResolver
     },
     component: AtendimentoListComponent
   },
@@ -115,6 +121,9 @@ const routes: Routes = [
       descricao: 'Pilates',
       rota: 'pilates'
     },
+    resolve: {
+      resolve: AtendimentoListResolver
+    },
     component: AtendimentoListComponent
   },
   {
@@ -147,6 +156,9 @@ const routes: Routes = [
       id: 5,
       descricao: 'Massagem Relaxante',
       rota: 'massagem-relaxante'
+    },
+    resolve: {
+      resolve: AtendimentoListResolver
     },
     component: AtendimentoListComponent
   },

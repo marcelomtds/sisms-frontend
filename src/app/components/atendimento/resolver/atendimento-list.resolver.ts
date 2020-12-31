@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+import { forkJoin, Observable } from 'rxjs';
 import { PerfilEnum } from 'src/app/core/model/enum/perfil.enum';
 import { PacienteService } from 'src/app/core/services/paciente.service';
 import { SharedService } from 'src/app/core/services/shared.service';
@@ -7,7 +8,7 @@ import { TipoAtendimentoService } from 'src/app/core/services/tipo-atendimento.s
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Injectable()
-export class AtendimentoListResolver implements Resolve<any> {
+export class AtendimentoListResolver implements Resolve<Observable<any>> {
 
     constructor(
         private pacienteService: PacienteService,
@@ -16,17 +17,16 @@ export class AtendimentoListResolver implements Resolve<any> {
         private sharedService: SharedService
     ) { }
 
-    async resolve(): Promise<any> {
-        return {
-            pacientes: await this.pacienteService.findAllActive().toPromise(),
-            usuarios: this.isAdministrador() ? await this.usuarioService.findAll().toPromise() : null,
-            tiposAtendimento: await this.tipoAtendimentoService.findAll().toPromise(),
-        };
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.pacienteService.findAllActive(),
+            this.isAdministrador() ? this.usuarioService.findAll() : null,
+            this.tipoAtendimentoService.findAll()
+        ]);
     }
 
     private isAdministrador(): boolean {
         return this.sharedService.getUserSession().perfilRole === PerfilEnum.ADMINISTRADOR;
     }
-
 
 }
