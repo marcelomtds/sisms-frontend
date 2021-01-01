@@ -38,6 +38,10 @@ export class MenuComponent implements OnDestroy, OnInit {
     });
   }
 
+  public getRota(menu: string, submenu: string): string {
+    return `${menu}${submenu || ''}`
+  }
+
   public get isCadastroCompleto(): boolean {
     return this.sharedService.getUserSession() && this.sharedService.getUserSession().cadastroCompleto;
   }

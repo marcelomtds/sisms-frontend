@@ -11,7 +11,7 @@
         </a>
         <ul class="treeview-menu">
           <li *ngFor="let submenu of menu.submenus" (click)="onClickCollapseSidebar()"><a
-              [routerLink]="menu.rota + submenu.rota || ''"><em class="{{ submenu.icone }}"></em>{{ submenu.descricao }}</a>
+              [routerLink]="getRota(menu.rota, submenu.rota)"><em class="{{ submenu.icone }}"></em>{{ submenu.descricao }}</a>
           </li>
         </ul>
       </li>
