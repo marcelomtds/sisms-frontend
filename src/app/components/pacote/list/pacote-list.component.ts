@@ -158,10 +158,10 @@ export class PacoteListComponent extends Pagination<PacoteFilter> implements OnI
     this.modalService.show(ModalVisualizarPacoteComponent, { initialState, backdrop: 'static', class: 'gray modal-lg' });
   }
 
-  public onClickOpenModalGerenciarLancamentos(id: number): void {
+  public async onClickOpenModalGerenciarLancamentos(id: number): Promise<void> {
     this.messageService.clearAllMessages();
     const initialState = {
-      pacoteId: id
+      pacote: (await this.service.findById(id).toPromise()).result
     };
     this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
