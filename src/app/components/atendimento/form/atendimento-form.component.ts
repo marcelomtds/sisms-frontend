@@ -35,27 +35,27 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputImage', { static: false }) inputImage: ElementRef;
 
-  public form: FormGroup;
-  public tiposAtendimento = new Array<TipoAtendimento>();
-  public pacientes = new Array<Paciente>();
-  public outrasMedidas = new Array<OutraMedida>();
-  public outrasMedidasSelecionadas = new Array<OutraMedidaSelecionada>();
-  public tipoAtendimentoId = TipoAtendimentoEnum.SESSAO;
-  public categoriaAtendimentoRouting = new CategoriaAtendimentoRouting();
-  public pacote = new Pacote();
-  public quantidadeSessao = 0;
-  public subscription: Subscription;
-  public isCadastrarPosAtendimento = false;
-  public isInvalidForm = false;
-  public isInvalidFormPacienteId = false;
-  public isInvalidFormOutraMedidaDescricao = false;
+  form: FormGroup;
+  tiposAtendimento = new Array<TipoAtendimento>();
+  pacientes = new Array<Paciente>();
+  outrasMedidas = new Array<OutraMedida>();
+  outrasMedidasSelecionadas = new Array<OutraMedidaSelecionada>();
+  tipoAtendimentoId = TipoAtendimentoEnum.SESSAO;
+  categoriaAtendimentoRouting = new CategoriaAtendimentoRouting();
+  pacote = new Pacote();
+  quantidadeSessao = 0;
+  subscription: Subscription;
+  isCadastrarPosAtendimento = true;
+  isInvalidForm = false;
+  isInvalidFormPacienteId = false;
+  isInvalidFormOutraMedidaDescricao = false;
 
-  public constructor(
+  constructor(
     private formBuilder: FormBuilder,
     private pacotService: PacoteService,
     private service: AtendimentoService,
     private route: ActivatedRoute,
-    public messageService: MessageService,
+    private messageService: MessageService,
     private router: Router,
     private spinnerService: NgxSpinnerService,
     private modalService: BsModalService,
@@ -66,38 +66,38 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.onCreateForm();
     this.onLoadCategoriaAtendimento();
     this.findById();
     this.onLoadCombos();
   }
 
-  public checkTipoAtendimentoPacote(): boolean {
+  checkTipoAtendimentoPacote(): boolean {
     return this.tipoAtendimentoId === TipoAtendimentoEnum.PACOTE;
   }
 
-  public checkCategoriaAtendimentoFisioterapia(): boolean {
+  checkCategoriaAtendimentoFisioterapia(): boolean {
     return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.FISIOTERAPIA;
   }
 
-  public checkCategoriaAtendimentoRPG(): boolean {
+  checkCategoriaAtendimentoRPG(): boolean {
     return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.RPG;
   }
 
-  public checkCategoriaAtendimentoPilates(): boolean {
+  checkCategoriaAtendimentoPilates(): boolean {
     return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.PILATES;
   }
 
-  public checkCategoriaAtendimentoMassagem(): boolean {
+  checkCategoriaAtendimentoMassagem(): boolean {
     return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.MASSAGEM_RELAXANTE;
   }
 
-  public get isNotMassagem(): boolean {
+  get isNotMassagem(): boolean {
     return this.categoriaAtendimentoRouting.id !== CategoriaAtendimentoEnum.MASSAGEM_RELAXANTE;
   }
 
@@ -162,12 +162,12 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onClickCancelar(): void {
+  onClickCancelar(): void {
     this.messageService.clearAllMessages();
     window.history.back();
   }
 
-  public onClickDownloadFile(index: number): void {
+  onClickDownloadFile(index: number): void {
     this.messageService.clearAllMessages();
     this.spinnerService.show();
     try {
@@ -215,7 +215,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       pacoteId: [null],
       pacienteId: [null, Validators.required],
       preAtendimentoId: [null],
-      preAtendimentoData: [null, Validators.required],
+      preAtendimentoData: [Util.convertDateTimeToString(new Date()), Validators.required],
       preAtendimentoPressaoArterial: [null],
       preAtendimentoPeso: [0],
       preAtendimentoSupraUmbilical: [0],
@@ -239,13 +239,13 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  public setDataHoraAtual(field: string): void {
+  setDataHoraAtual(field: string): void {
     if (!this.form.controls[field].value) {
       this.form.controls[field].setValue(Util.convertDateTimeToString(new Date()));
     }
   }
 
-  public onChangeTipoAtendimento(): void {
+  onChangeTipoAtendimento(): void {
     this.messageService.clearAllMessages();
     this.onResetValues();
   }
@@ -254,7 +254,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     return this.pacientes.find(x => x.id === id).nomeCompleto;
   }
 
-  public async onChangePaciente(): Promise<void> {
+  async onChangePaciente(): Promise<void> {
     this.messageService.clearAllMessages();
     const pacienteId = this.form.controls.pacienteId.value;
     this.onResetValues();
@@ -304,7 +304,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onOpenModalCriarPacote(isResetValues: boolean): void {
+  onOpenModalCriarPacote(isResetValues: boolean): void {
     const pacienteId = this.form.controls.pacienteId.value;
     const pacienteNomeCompleto = this.getNomePaciente(pacienteId);
     const initialState = {
@@ -337,12 +337,12 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     this.outrasMedidasSelecionadas = new Array<OutraMedidaSelecionada>();
     this.quantidadeSessao = 0;
     this.pacote = new Pacote();
-    this.isCadastrarPosAtendimento = false;
+    this.isCadastrarPosAtendimento = true;
     this.isInvalidFormPacienteId = false;
     this.isInvalidForm = false;
   }
 
-  public onClickAdicionarMedida(): void {
+  onClickAdicionarMedida(): void {
     if (this.outrasMedidasSelecionadas.length < 10) {
       this.outrasMedidasSelecionadas.push({
         index: this.gerarIndex(this.outrasMedidasSelecionadas),
@@ -355,14 +355,14 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickRemoverOutraMedida(index: number): void {
+  onClickRemoverOutraMedida(index: number): void {
     const result = this.outrasMedidasSelecionadas.findIndex(x => x.index === index);
     if (result !== -1) {
       this.outrasMedidasSelecionadas.splice(result, 1);
     }
   }
 
-  public onChangeImage(images: File[]): void {
+  onChangeImage(images: File[]): void {
     this.messageService.clearAllMessages();
     if (this.form.value.imagens.length + images.length > 10) {
       this.messageService.sendMessageError(Messages.MSG0024);
@@ -428,7 +428,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  public onClickRemoverImagem(index: number): void {
+  onClickRemoverImagem(index: number): void {
     const result = this.form.value.imagens.findIndex(x => x.index === index);
     if (result !== -1) {
       this.form.value.imagens.splice(result, 1);
@@ -442,7 +442,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickFormSubmit(): void {
+  onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
     this.removerValidacao();
     if (this.form.valid) {
@@ -505,11 +505,11 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     this.messageService.sendMessageError(Messages.MSG0004);
   }
 
-  public isDrenagem(): boolean {
+  isDrenagem(): boolean {
     return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.DRENAGEM_LINFATICA;
   }
 
-  public isFisioterapia(): boolean {
+  isFisioterapia(): boolean {
     return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.FISIOTERAPIA;
   }
 
