@@ -58,7 +58,8 @@ export class PacoteFormComponent implements OnInit {
       id: [null],
       categoriaAtendimentoId: [null, Validators.required],
       pacienteId: [null, Validators.required],
-      valor: [0, Validators.required]
+      valor: [0, Validators.required],
+      quantidadeSessao: [null]
     });
   }
 

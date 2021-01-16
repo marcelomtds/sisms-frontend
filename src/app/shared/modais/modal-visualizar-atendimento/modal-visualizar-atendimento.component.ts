@@ -1,41 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { base64StringToBlob } from 'blob-util';
 import { BsModalRef } from 'ngx-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { MessageService } from 'src/app/core/services/message.service';
+import { CategoriaAtendimentoEnum } from '../../../core/model/enum/categoria-atendimento.enum';
 import { Atendimento } from '../../../core/model/model/atendimento.model';
 import { Pacote } from '../../../core/model/model/pacote.model';
-import { PacoteService } from '../../../core/services/pacote.service';
-import Util from '../../util/util';
-import { CategoriaAtendimentoEnum } from '../../../core/model/enum/categoria-atendimento.enum';
-import { MessageService } from 'src/app/core/services/message.service';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { base64StringToBlob } from 'blob-util';
 import { Messages } from '../../messages/messages';
+import Util from '../../util/util';
 @Component({
   selector: 'app-modal-visualizar-atendimento',
   templateUrl: './modal-visualizar-atendimento.component.html'
 })
-export class ModalVisualizarAtendimentoComponent implements OnInit {
+export class ModalVisualizarAtendimentoComponent {
 
   public atendimento: Atendimento;
   public pacote: Pacote;
 
   public constructor(
     private bsModalRef: BsModalRef,
-    private pacoteService: PacoteService,
     private messageService: MessageService,
     private spinnerService: NgxSpinnerService
   ) { }
-
-  public ngOnInit(): void {
-    if (this.atendimento.pacoteId) {
-      this.findPacoteById();
-    }
-  }
-
-  private findPacoteById(): void {
-    this.pacoteService.findById(this.atendimento.pacoteId).subscribe(response => {
-      this.pacote = response.result;
-    });
-  }
 
   public onClickCloseModal(): void {
     this.bsModalRef.hide();

@@ -74,64 +74,11 @@
             </ng-container>
           </div>
         </div>
-        <div *ngIf="form.controls.pacienteId.value && checkTipoAtendimentoPacote() && pacote?.id"
-          class="box box-primary">
-          <div class="box-header with-border">
-            <h3 class="box-title">Dados do Pacote</h3>
-          </div>
-          <div class="box-body">
-            <div *ngIf="!form.controls.id.value && form.controls.pacienteId.value && checkTipoAtendimentoPacote()"
-              class="row">
-              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                <div class="form-group">
-                  <button title="Adicionar Medida" (click)="onOpenModalCriarPacote(false)"
-                    class="btn btn-primary"><span><em class="fa fa-plus"></em>&nbsp;Criar Pacote
-                      Novo</span></button>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label for="usuario">Usuário</label>
-                  <p id="usuario">{{ pacote.usuarioNomeCompleto }}</p>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label for="dataCriacao">Data de Criação</label>
-                  <p id="dataCriacao">{{ pacote.dataCriacao | date : 'dd/MM/yyyy' }}</p>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label for="valor">Valor</label>
-                  <p id="valor">{{ pacote.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label>Status</label>
-                  <p>{{ pacote.aberto ? 'Em Aberto' : 'Encerrado' }}</p>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label>Número</label>
-                  <p>{{ pacote.numero }}</p>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label>Quantidade de Atendimentos</label>
-                  <p>{{ pacote.quantidadeAtendimentos }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <app-dados-pacote *ngIf="showDadosPacote()"
+          [pacote]="pacote"
+          [showButtonCreatePackage]="!form.controls.id.value && form.controls.pacienteId.value && checkTipoAtendimentoPacote()"
+          (onOpenModalCriarPacote)="onOpenModalCriarPacote($event)">
+        </app-dados-pacote>
         <ng-container *ngIf="form.controls.pacienteId.value || form.controls.id.value">
           <div class="box box-primary">
             <div class="box-header with-border">

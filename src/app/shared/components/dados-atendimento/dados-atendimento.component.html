@@ -1,0 +1,79 @@
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <h3 class="box-title">Dados do Atendimento</h3>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                <div class="form-group">
+                    <label>Paciente</label>
+                    <p>{{ atendimento.pacienteNomeCompleto }}</p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                <div class="form-group">
+                    <label>Usuário</label>
+                    <p>{{ atendimento.usuarioNomeCompleto }}</p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                    <label>Duração</label>
+                    <p>{{ calcularTempo(atendimento.preAtendimentoData, atendimento?.posAtendimentoData) }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label>Categoria de Atendimento</label>
+                    <p>{{ atendimento.categoriaAtendimentoDescricao }}</p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label>Tipo de Atendimento</label>
+                    <p>{{ atendimento.tipoAtendimentoDescricao }}</p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                    <label>Número</label>
+                    <p>{{ atendimento.numero }}</p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                    <label>Status</label>
+                    <p>{{ atendimento.aberto ? 'Em Aberto' : 'Encerrado' }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label>Data e Hora do Pré-atendimento</label>
+                    <p>{{ atendimento.preAtendimentoData | date: 'dd/MM/yyyy HH:mm' }}</p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label>Data e Hora do Pós-atendimento</label>
+                    <p>{{ atendimento.posAtendimentoData ? (atendimento.posAtendimentoData | date: 'dd/MM/yyyy HH:mm') :
+                        '-' }}
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                    <label for="totalEntrada">Total Pago</label>
+                    <p id="totalEntrada">{{ atendimento.totalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -34,7 +34,8 @@ export class ModalCriarPacoteComponent implements OnInit {
       id: [null],
       categoriaAtendimentoId: [this.dados.categoriaAtendimentoId, Validators.required],
       pacienteId: [this.dados.pacienteId, Validators.required],
-      valor: [0, Validators.required]
+      valor: [0, Validators.required],
+      quantidadeSessao: [null]
     });
   }
 

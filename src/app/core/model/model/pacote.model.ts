@@ -4,6 +4,7 @@ export class Pacote {
     constructor(
         public id?: number,
         public dataCriacao?: string,
+        public dataInicio?: string,
         public valor?: number,
         public pacienteId?: number,
         public pacienteNomeCompleto?: number,
@@ -12,6 +13,7 @@ export class Pacote {
         public categoriaAtendimentoId?: number,
         public categoriaAtendimentoDescricao?: string,
         public numero?: number,
+        public quantidadeSessao?: number,
         public aberto?: boolean,
         public quantidadeAtendimentos?: number,
         public totalPago?: number

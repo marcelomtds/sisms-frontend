@@ -5,6 +5,8 @@ import { CpfPipe } from './cpf.pipe';
 import { HorarioPipe } from './horario.pipe';
 import { IdadePipe } from './idade.pipe';
 import { TelefonePipe } from './telefone.pipe';
+import { ValorPipe } from './valor.pipe';
+import { StatusAtendimentoPipe } from './valor.pipe copy';
 
 @NgModule({
   imports: [
@@ -15,14 +17,18 @@ import { TelefonePipe } from './telefone.pipe';
     IdadePipe,
     CpfPipe,
     CepPipe,
-    TelefonePipe
+    TelefonePipe,
+    ValorPipe,
+    StatusAtendimentoPipe
   ],
   exports: [
     HorarioPipe,
     IdadePipe,
     CpfPipe,
     CepPipe,
-    TelefonePipe
+    TelefonePipe,
+    ValorPipe,
+    StatusAtendimentoPipe
   ]
 })
 export class PipeModule { }

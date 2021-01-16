@@ -22,7 +22,7 @@
                   </app-message-required>
                 </div>
               </div>
-              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                 <div class="form-group">
                   <label for="paciente">Paciente</label>
                   <ng-select id="paciente" placeholder="Selecione" formControlName="pacienteId" [items]="pacientes"
@@ -38,6 +38,13 @@
                 </div>
               </div>
               <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                <div class="form-group">
+                  <label for="quantidadeSessao">Quantidade de Sessão</label>
+                  <input id="quantidadeSessao" type="text" formControlName="quantidadeSessao" class="form-control"
+                    [validation]="false" mask="0{2}" />
+                </div>
+              </div>
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                 <div class="form-group">
                   <label for="valor">Valor</label>
                   <input id="valor" currencyMask

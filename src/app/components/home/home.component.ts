@@ -1,60 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { Agenda } from '../../core/model/model/agenda.model';
 import { Paciente } from '../../core/model/model/paciente.model';
 import { Usuario } from '../../core/model/model/usuario.model';
-import { AgendaService } from '../../core/services/agenda.service';
-import { PacienteService } from '../../core/services/paciente.service';
-import { UsuarioService } from '../../core/services/usuario.service';
 import Util from '../../shared/util/util';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
-  public pacientes = new Array<Paciente>();
-  public usuarios = new Array<Usuario>();
-  public dadosAgenda = new Array<Agenda>();
-  public mes: string;
-  public interval;
+  pacientes = new Array<Paciente>();
+  usuarios = new Array<Usuario>();
+  dadosAgenda = new Array<Agenda>();
+  mes: string;
+  interval;
 
-  public constructor(
-    private pacienteService: PacienteService,
-    private agendaService: AgendaService,
-    private usuarioService: UsuarioService
+  constructor(
+    private route: ActivatedRoute
   ) {
     this.interval = setInterval(() => {
     }, 1000);
   }
 
-  public ngOnInit(): void {
-    this.findAllBirthdaysMonth();
+  ngOnInit(): void {
     this.getMes();
-    this.findAgenda();
+    this.onLoadData();
   }
 
-  private findAgenda(): void {
-    this.agendaService.findAllByWeekDay().subscribe(response => {
-      this.dadosAgenda = response.result;
-    });
+  ngOnDestroy(): void {
+    this.interval = null;
   }
 
-  private findAllBirthdaysMonth(): void {
-    this.pacienteService.findAllBirthdaysMonth().subscribe(response => {
-      this.pacientes = response.result;
-    });
-    this.usuarioService.findAllBirthdaysMonth().subscribe(response => {
-      this.usuarios = response.result;
-    });
-  }
-
-  private getMes(): void {
-    this.mes = Util.mesesAno(new Date().getMonth() + 1);
-  }
-
-  public getColor(horarioInicial: string, horarioFinal: string): any {
+  getColor(horarioInicial: string, horarioFinal: string): any {
     if (this.isAfter(horarioInicial, horarioFinal)) {
       return 'blue';
     } else if (this.isBetween(horarioInicial, horarioFinal)) {
@@ -64,7 +44,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  public getStatus(horarioInicial: string, horarioFinal: string): any {
+  getStatus(horarioInicial: string, horarioFinal: string): any {
     if (this.isAfter(horarioInicial, horarioFinal)) {
       return 'Encerrado';
     } else if (this.isBetween(horarioInicial, horarioFinal)) {
@@ -72,6 +52,18 @@ export class HomeComponent implements OnInit {
     } else {
       return 'Não Iniciado';
     }
+  }
+
+  get getWeekDay(): string {
+    return `Agenda para ${Util.diaSemana(new Date().getDay())}`;
+  }
+
+  private onLoadData(): void {
+    this.route.data.subscribe(response => {
+      this.pacientes = response.resolve[0].result;
+      this.usuarios = response.resolve[1].result;
+      this.dadosAgenda = response.resolve[2].result;
+    });
   }
 
   private isBetween(horarioInicial: string, horarioFinal: string): boolean {
@@ -84,8 +76,8 @@ export class HomeComponent implements OnInit {
       && moment().isAfter(`${moment(new Date()).format('YYYY-MM-DD')}T${horarioFinal}`);
   }
 
-  public get getWeekDay(): string {
-    return `Agenda para ${Util.diaSemana(new Date().getDay())}`;
+  private getMes(): void {
+    this.mes = Util.mesesAno(new Date().getMonth() + 1);
   }
 
 }

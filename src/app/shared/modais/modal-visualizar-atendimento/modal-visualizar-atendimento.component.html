@@ -71,53 +71,7 @@
     </div>
   </div>
 
-  <div *ngIf="pacote?.id" class="box box-primary">
-    <div class="box-header with-border">
-      <h3 class="box-title">Dados do Pacote</h3>
-    </div>
-    <div class="box-body">
-      <div class="row">
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Usuário</label>
-            <p>{{ pacote.usuarioNomeCompleto }}</p>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Data de Criação</label>
-            <p>{{ pacote.dataCriacao | date : 'dd/MM/yyyy' }}</p>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Valor</label>
-            <p>{{ pacote.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Status</label>
-            <p>{{ pacote.aberto ? 'Em Aberto' : 'Encerrado' }}</p>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Número</label>
-            <p>{{ pacote.numero }}</p>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label>Quantidade de Atendimentos</label>
-            <p>{{ pacote.quantidadeAtendimentos }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-dados-pacote *ngIf="pacote" [pacote]="pacote"></app-dados-pacote>
 
   <div class="box box-primary">
     <div class="box-header with-border">

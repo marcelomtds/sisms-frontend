@@ -14,20 +14,27 @@
     <div class="box-body">
       <form [formGroup]="form">
         <div class="row">
-          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
             <div class="form-group">
               <label for="paciente">Paciente</label>
               <input [value]="dados.pacienteNomeCompleto" id="paciente" readonly type="text" class="form-control" />
             </div>
           </div>
-          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
             <div class="form-group">
               <label for="categoriaAtendimento">Categoria de Atendimento</label>
               <input [value]="dados.categoriaAtendimentoDescricao" id="categoriaAtendimento" readonly type="text"
                 class="form-control" />
             </div>
           </div>
-          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="form-group">
+              <label for="quantidadeSessao">Quantidade de Sessão</label>
+              <input id="quantidadeSessao" type="text" formControlName="quantidadeSessao" class="form-control"
+                [validation]="false" mask="0{2}" />
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
             <div class="form-group">
               <label for="valor">Valor</label>
               <input id="valor" currencyMask

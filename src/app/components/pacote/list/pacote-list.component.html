@@ -117,7 +117,10 @@
                           [class]="getIconOrderBy('aberto')"></em>&nbsp;Status</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('quantidadeAtendimentos')"><em
                           [class]="getIconOrderBy('quantidadeAtendimentos')"></em>&nbsp;Quantidade de
-                        Atendimentos</th>
+                        Atendimento Realizado</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('quantidadeSessao')"><em
+                          [class]="getIconOrderBy('quantidadeSessao')"></em>&nbsp;Quantidade de
+                        Sessão do Pacote</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -167,6 +170,9 @@
                       </td>
                       <td>
                         {{ pacote.quantidadeAtendimentos }}
+                      </td>
+                      <td>
+                        {{ pacote.quantidadeSessao || '-' }}
                       </td>
                     </tr>
                   </tbody>

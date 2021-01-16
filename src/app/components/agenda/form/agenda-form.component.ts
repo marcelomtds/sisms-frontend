@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { DiaSemanaEnum } from '../../../core/model/enum/dia-semana.enum';
 import { Agenda } from '../../../core/model/model/agenda.model';
@@ -9,11 +10,7 @@ import { Paciente } from '../../../core/model/model/paciente.model';
 import { Tabset } from '../../../core/model/model/tabset.model';
 import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
 import { AgendaService } from '../../../core/services/agenda.service';
-import { CategoriaAtendimentoService } from '../../../core/services/categoria-atendimento.service';
-import { DiaSemanaService } from '../../../core/services/dia-semana.service';
 import { MessageService } from '../../../core/services/message.service';
-import { PacienteService } from '../../../core/services/paciente.service';
-import { TipoAtendimentoService } from '../../../core/services/tipo-atendimento.service';
 import { Messages } from '../../../shared/messages/messages';
 import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
 import Util from '../../../shared/util/util';
@@ -24,14 +21,14 @@ import Util from '../../../shared/util/util';
 })
 export class AgendaFormComponent implements OnInit {
 
-  public pacientes = new Array<Paciente>();
-  public dados = new Array<Agenda>();
-  public categoriasAtendimento = new Array<CategoriaAtendimento>();
-  public tiposAtendimento = new Array<TipoAtendimento>();
-  public diasSemana = new Array<DiaSemana>();
-  public form: FormGroup;
-  public isInvalidForm = false;
-  public tabset: Tabset[] = [
+  pacientes = new Array<Paciente>();
+  dados = new Array<Agenda>();
+  categoriasAtendimento = new Array<CategoriaAtendimento>();
+  tiposAtendimento = new Array<TipoAtendimento>();
+  diasSemana = new Array<DiaSemana>();
+  form: FormGroup;
+  isInvalidForm = false;
+  tabset: Tabset[] = [
     {
       titulo: 'Segunda - Feira',
       diaSemanaId: DiaSemanaEnum.SEGUNDA_FEIRA
@@ -62,96 +59,24 @@ export class AgendaFormComponent implements OnInit {
     },
   ];
 
-  public constructor(
+  constructor(
     private formBuilder: FormBuilder,
     private service: AgendaService,
     private messageService: MessageService,
-    private pacienteService: PacienteService,
-    private categoriaAtendimentoService: CategoriaAtendimentoService,
-    private tipoAtendimentoService: TipoAtendimentoService,
     private modalService: BsModalService,
-    private diaSemanaService: DiaSemanaService
+    private route: ActivatedRoute
   ) { }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.onCreateForm();
-    this.onLoadCombos();
-    this.findAll();
+    this.onLoadData();
   }
 
-  public getDados(diaSemana: number): Array<Agenda> {
+  getDados(diaSemana: number): Array<Agenda> {
     return this.dados.filter(x => x.diaSemanaId === diaSemana);
   }
 
-  private findAll(): void {
-    this.service.findAll().subscribe(response => {
-      this.dados = response.result;
-    });
-  }
-
-  public async onClickEditar(id: number): Promise<void> {
-    this.messageService.clearAllMessages();
-    const response = await this.service.findById(id).toPromise();
-    this.form.setValue({
-      id: response.result.id,
-      diaSemanaId: response.result.diaSemanaId,
-      horarioInicio: response.result.horarioInicio,
-      horarioFim: response.result.horarioFim,
-      pacienteId: response.result.pacienteId,
-      tipoAtendimentoId: response.result.tipoAtendimentoId,
-      categoriaAtendimentoId: response.result.categoriaAtendimentoId
-    });
-  }
-
-  public onClickExcluir(id: number): void {
-    this.messageService.clearAllMessages();
-    const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
-    modalRef.content.titulo = 'Confirmação de Exclusão';
-    modalRef.content.corpo = 'Deseja excluir esse registro?';
-    modalRef.content.onClose.subscribe((result: boolean) => {
-      if (result) {
-        this.service.delete(id).subscribe(response => {
-          this.messageService.sendMessageSuccess(response.message);
-          this.onUpdate();
-        });
-      }
-    });
-  }
-
-  private onCreateForm(): void {
-    this.form = this.formBuilder.group({
-      id: [null],
-      diaSemanaId: [null, Validators.required],
-      horarioInicio: [null, Validators.required],
-      horarioFim: [null, Validators.required],
-      pacienteId: [null, Validators.required],
-      tipoAtendimentoId: [null, Validators.required],
-      categoriaAtendimentoId: [null, Validators.required]
-    });
-  }
-
-  private onLoadCombos(): void {
-    this.pacienteService.findAllActive().subscribe(response => {
-      this.pacientes = response.result;
-    });
-    this.categoriaAtendimentoService.findAll().subscribe(response => {
-      this.categoriasAtendimento = response.result;
-    });
-    this.tipoAtendimentoService.findAll().subscribe(response => {
-      this.tiposAtendimento = response.result;
-    });
-    this.diaSemanaService.findAll().subscribe(response => {
-      this.diasSemana = response.result;
-      this.orderWeekDay();
-    });
-  }
-
-  private orderWeekDay(): void {
-    this.diasSemana.push(this.diasSemana[0]);
-    this.diasSemana.splice(0, 1);
-  }
-
-  public onClickFormSubmit(): void {
+  onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isHorarioValido(this.form.controls.horarioInicio.value)) {
@@ -182,15 +107,78 @@ export class AgendaFormComponent implements OnInit {
     }
   }
 
+  onClickCancel(): void {
+    this.messageService.clearAllMessages();
+    this.onUpdate();
+  }
+
+  onClickEditar(id: number): void {
+    this.messageService.clearAllMessages();
+    this.service.findById(id).subscribe(response => {
+      this.form.setValue({
+        id: response.result.id,
+        diaSemanaId: response.result.diaSemanaId,
+        horarioInicio: response.result.horarioInicio,
+        horarioFim: response.result.horarioFim,
+        pacienteId: response.result.pacienteId,
+        tipoAtendimentoId: response.result.tipoAtendimentoId,
+        categoriaAtendimentoId: response.result.categoriaAtendimentoId
+      });
+    });
+  }
+
+  onClickExcluir(id: number): void {
+    this.messageService.clearAllMessages();
+    const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
+    modalRef.content.titulo = 'Confirmação de Exclusão';
+    modalRef.content.corpo = 'Deseja excluir esse registro?';
+    modalRef.content.onClose.subscribe((result: boolean) => {
+      if (result) {
+        this.service.delete(id).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.onUpdate();
+        });
+      }
+    });
+  }
+
+  private onLoadData(): void {
+    this.route.data.subscribe(response => {
+      this.dados = response.resolve[0].result;
+      this.pacientes = response.resolve[1].result;
+      this.categoriasAtendimento = response.resolve[2].result;
+      this.tiposAtendimento = response.resolve[3].result;
+      this.diasSemana = response.resolve[4].result;
+      this.orderWeekDay();
+    });
+  }
+
+  private findAll(): void {
+    this.service.findAll().subscribe(response => {
+      this.dados = response.result;
+    });
+  }
+
+  private onCreateForm(): void {
+    this.form = this.formBuilder.group({
+      id: [null],
+      diaSemanaId: [null, Validators.required],
+      horarioInicio: [null, Validators.required],
+      horarioFim: [null, Validators.required],
+      pacienteId: [null, Validators.required],
+      tipoAtendimentoId: [null, Validators.required],
+      categoriaAtendimentoId: [null, Validators.required]
+    });
+  }
+
+  private orderWeekDay(): void {
+    this.diasSemana.push(this.diasSemana[0]);
+    this.diasSemana.splice(0, 1);
+  }
+
   private onUpdate(): void {
     this.onCreateForm();
     this.findAll();
     this.isInvalidForm = false;
   }
-
-  public onClickCancel(): void {
-    this.messageService.clearAllMessages();
-    this.onUpdate();
-  }
-
 }

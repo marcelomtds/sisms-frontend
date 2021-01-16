@@ -95,27 +95,11 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
         ...this.form.value,
         data: Util.convertStringToDate(this.form.controls.data.value)
       };
-      const valor = this.form.controls.valor.value + this.pacote.totalPago - (this.form.controls.id.value ? this.valorSelecionado : 0);
-      if (valor > this.pacote.valor) {
-        this.openModalConfirmacaoValorExcedido(formValue);
-      } else {
-        this.createOrUpdate(formValue);
-      }
+      this.createOrUpdate(formValue);
     } else {
       this.isInvalidForm = true;
       this.messageService.sendMessageError(Messages.MSG0004);
     }
-  }
-
-  private openModalConfirmacaoValorExcedido(obj: any): void {
-    const bsModalRefConfirmacaoValorExcedido = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
-    bsModalRefConfirmacaoValorExcedido.content.titulo = `Confirmação de ${this.form.controls.id.value ? 'Alteração' : 'Inclusão'}`;
-    bsModalRefConfirmacaoValorExcedido.content.corpo = 'O valor total pago excede o valor do pacote. Deseja continuar?';
-    bsModalRefConfirmacaoValorExcedido.content.onClose.subscribe((result) => {
-      if (result) {
-        this.createOrUpdate(obj);
-      }
-    });
   }
 
   private createOrUpdate(formValue: Lancamento): void {

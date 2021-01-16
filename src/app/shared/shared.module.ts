@@ -18,6 +18,8 @@ import { ModalVisualizarExameComponent } from './modais/modal-visualizar-exame/m
 import { ModalVisualizarPacienteUsuarioComponent } from './modais/modal-visualizar-paciente-usuario/modal-visualizar-paciente-usuario.component';
 import { ModalVisualizarPacoteComponent } from './modais/modal-visualizar-pacote/modal-visualizar-pacote.component';
 import { PipeModule } from './pipe/pipe.module';
+import { DadosPacoteComponent } from './components/dados-pacote/dados-pacote.component';
+import { DadosAtendimentoComponent } from './components/dados-atendimento/dados-atendimento.component';
 
 @NgModule({
   imports: [
@@ -29,7 +31,8 @@ import { PipeModule } from './pipe/pipe.module';
     PipeModule,
     MessageRequiredComponent,
     NoRecordsComponent,
-    PageActionComponent
+    PageActionComponent,
+    DadosPacoteComponent
   ],
   declarations: [
     ModalGerenciarLancamentoPacoteComponent,
@@ -48,7 +51,9 @@ import { PipeModule } from './pipe/pipe.module';
     ModalVisualizarExameComponent,
     MessageRequiredComponent,
     NoRecordsComponent,
-    PageActionComponent
+    PageActionComponent,
+    DadosPacoteComponent,
+    DadosAtendimentoComponent
   ],
   entryComponents: [
     ModalGerenciarLancamentoPacoteComponent,

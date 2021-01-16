@@ -125,7 +125,7 @@
                       <td>
                         <button title="Editar" (click)="onClickEditar(atendimento.id)" class="btn btn-primary"><em
                             class="fa fa-pencil"></em></button>
-                        <button title="Visualizar" (click)="onClickOpenModalVisualizar(atendimento.id)"
+                        <button title="Visualizar" (click)="onClickOpenModalVisualizar(atendimento)"
                           class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
                         <button title="Gerenciar Lançamentos" *ngIf="isSessao(atendimento.tipoAtendimentoId)"
                           (click)="onClickOpenModalGerenciarLancamentoSessao(atendimento.id)"

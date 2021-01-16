@@ -152,11 +152,11 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
     this.router.navigate([`/atendimento/${this.categoriaAtendimentoRouting.rota}/alterar/${id}`]);
   }
 
-  public async onClickOpenModalVisualizar(id: number): Promise<void> {
-    const atendimento: Response<Atendimento> = await this.service.findById(id).toPromise();
+  public async onClickOpenModalVisualizar(atendimento: Atendimento): Promise<void> {
     this.messageService.clearAllMessages();
     const initialState = {
-      atendimento: atendimento.result
+      atendimento: (await this.service.findById(atendimento.id).toPromise()).result,
+      pacote: atendimento.pacoteId ? (await this.pacoteService.findById(atendimento.pacoteId).toPromise()).result : null,
     };
     this.modalService.show(ModalVisualizarAtendimentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }

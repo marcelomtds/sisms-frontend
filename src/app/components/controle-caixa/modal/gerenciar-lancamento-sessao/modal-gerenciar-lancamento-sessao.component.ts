@@ -64,10 +64,6 @@ export class ModalGerenciarLancamentoSessaoComponent extends Pagination<Lancamen
     });
   }
 
-  public calcularTempo(dataInicio: any, dataFim: any): string {
-    return Util.calcularTempoHorasMinutos(dataInicio, dataFim);
-  }
-
   private onCreateForm(): void {
     this.form = this.formBuilder.group({
       id: [null],

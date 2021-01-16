@@ -194,26 +194,12 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   }
 
   private onLoadCombos(): void {
-    this.onLoadComboTipoAtendimento();
-    this.onLoadComboPaciente();
-    this.onLoadComboOutraMedida();
-  }
-
-  private onLoadComboTipoAtendimento(): void {
-    this.route.data.subscribe(response => {
-      this.tiposAtendimento = response.resolve.tiposAtendimento.result;
-    });
-  }
-
-  private onLoadComboPaciente(): void {
-    this.route.data.subscribe(response => {
-      this.pacientes = response.resolve.pacientes.result;
-    });
-  }
-
-  private onLoadComboOutraMedida(): void {
-    this.route.data.subscribe(response => {
-      this.outrasMedidas = response.resolve.outrasMedidas.result;
+    this.route.data.subscribe(responseData => {
+      responseData.resolve.combos.subscribe(responseComo => {
+        this.pacientes = responseComo[0].result;
+        this.outrasMedidas = responseComo[1].result;
+        this.tiposAtendimento = responseComo[2].result;
+      });
     });
   }
 
@@ -299,6 +285,19 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
           }
         });
       } else {
+        if (this.pacote.quantidadeSessao === this.pacote.quantidadeAtendimentos) {
+          const pacienteNomeCompleto = this.getNomePaciente(pacienteId);
+          const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
+          modalRef.content.titulo = 'Aviso de Limite de Atendimentos';
+          modalRef.content.corpo = `O limite de atendimentos para este pacote já foi atingido (${this.pacote.quantidadeAtendimentos}/${this.pacote.quantidadeSessao}). Crie um novo pacote ou altere o pacote atual. Criar novo pacote?`;
+          modalRef.content.onClose.subscribe((result: boolean) => {
+            if (result) {
+              this.onOpenModalCriarPacote(true);
+            } else {
+              this.onResetValues();
+            }
+          });
+        }
         this.form.controls.pacoteId.setValue(this.pacote.id);
         this.quantidadeSessao = this.pacote.quantidadeAtendimentos + 1;
       }
@@ -512,6 +511,10 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   public isFisioterapia(): boolean {
     return this.categoriaAtendimentoRouting.id === CategoriaAtendimentoEnum.FISIOTERAPIA;
+  }
+
+  showDadosPacote(): boolean {
+    return this.form.controls.pacienteId.value && this.checkTipoAtendimentoPacote() && this.pacote.id ? true : false;
   }
 
 }

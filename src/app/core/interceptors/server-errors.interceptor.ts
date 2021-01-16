@@ -24,12 +24,11 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                     switch (response.status) {
                         case 400:
                             this.showMessages(response.error);
-                            //TODO verificar redirecionamento
-                            //this.route.navigate(['/home']);
                             break;
                         case 401:
                             this.showMessages(response.error);
                             this.sharedService.removeUserAndTokenSession();
+                            window.location.reload();
                             this.route.navigate(['/login']);
                             break;
                         case 403:

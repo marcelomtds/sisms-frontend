@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { forkJoin, Observable } from 'rxjs';
 import { Atendimento } from 'src/app/core/model/model/atendimento.model';
 import { Response } from 'src/app/core/model/model/response.model';
 import { AtendimentoService } from 'src/app/core/services/atendimento.service';
@@ -10,7 +11,7 @@ import { TipoAtendimentoService } from 'src/app/core/services/tipo-atendimento.s
 import { Messages } from 'src/app/shared/messages/messages';
 
 @Injectable()
-export class AtendimentoFormResolver implements Resolve<any> {
+export class AtendimentoFormResolver implements Resolve<Observable<any>> {
 
     constructor(
         private atendimentoService: AtendimentoService,
@@ -27,17 +28,26 @@ export class AtendimentoFormResolver implements Resolve<any> {
         if (id) {
             const categoriaAtendimentoId = +route.data.id;
             atendimento = await this.atendimentoService.findById(+id).toPromise();
-            if (categoriaAtendimentoId !== atendimento.result.categoriaAtendimentoId) {
+            if (!atendimento || categoriaAtendimentoId !== atendimento.result.categoriaAtendimentoId) {
                 this.messageService.sendMessageError(Messages.MSG0027);
                 this.router.navigate(['/home']);
             }
         }
+        /*return {
+            atendimento: atendimento,
+            this.pacienteService.findAllActive(),
+            this.outraMedidaService.findAll(),
+            this.tipoAtendimentoService.findAll()
+        };*/
         return {
             atendimento: atendimento,
-            pacientes: await this.pacienteService.findAllActive().toPromise(),
-            outrasMedidas: await this.outraMedidaService.findAll().toPromise(),
-            tiposAtendimento: await this.tipoAtendimentoService.findAll().toPromise(),
+            combos: forkJoin([
+                this.pacienteService.findAllActive(),
+                this.outraMedidaService.findAll(),
+                this.tipoAtendimentoService.findAll()
+            ])
         };
+
     }
 
 }
