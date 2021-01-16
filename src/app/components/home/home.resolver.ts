@@ -18,7 +18,7 @@ export class HomeResolver implements Resolve<Observable<any>> {
         return forkJoin([
             this.pacienteService.findAllBirthdaysMonth(),
             this.usuarioService.findAllBirthdaysMonth(),
-            this.agendaService.findAll()
+            this.agendaService.findAllByWeekDay()
         ]);
     }
 
