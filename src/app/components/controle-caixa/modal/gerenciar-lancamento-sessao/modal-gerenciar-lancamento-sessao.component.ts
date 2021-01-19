@@ -31,6 +31,7 @@ export class ModalGerenciarLancamentoSessaoComponent extends Pagination<Lancamen
   public isInvalidForm = false;
   public showNoRecords = false;
   public currentUser = new Usuario();
+  public searchLancamentos = true;
 
   public constructor(
     private bsModalRef: BsModalRef,
@@ -115,7 +116,9 @@ export class ModalGerenciarLancamentoSessaoComponent extends Pagination<Lancamen
     this.onCreateForm();
     this.searchByFilter();
     this.findById();
-    this.service.setLancamento();
+    if(this.searchLancamentos) {
+      this.service.setLancamento();
+    }
     this.showNoRecords = false;
     this.isInvalidForm = false;
   }

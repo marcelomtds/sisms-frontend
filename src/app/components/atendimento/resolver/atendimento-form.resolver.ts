@@ -33,12 +33,6 @@ export class AtendimentoFormResolver implements Resolve<Observable<any>> {
                 this.router.navigate(['/home']);
             }
         }
-        /*return {
-            atendimento: atendimento,
-            this.pacienteService.findAllActive(),
-            this.outraMedidaService.findAll(),
-            this.tipoAtendimentoService.findAll()
-        };*/
         return {
             atendimento: atendimento,
             combos: forkJoin([

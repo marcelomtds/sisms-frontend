@@ -53,6 +53,10 @@ export default class Util {
         }
     }
 
+    static getLocalDateTime(): string {
+        return this.convertDateTimeToString(new Date());
+    }
+
     static convertStringToDateTime(data: string): string {
         if (data && data.length === 12) {
             return moment(data, 'DDMMYYYYHHmm').format('YYYY-MM-DDTHH:mm');

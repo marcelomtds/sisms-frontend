@@ -106,6 +106,8 @@
                           [class]="getIconOrderBy('usuario.nomeCompleto')"></em>&nbsp;Usuário</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('dataCriacao')"><em
                           [class]="getIconOrderBy('dataCriacao')"></em>&nbsp;Data de Criação</th>
+                      <th style="cursor: pointer" (click)="onClickOrderBy('dataInicio')"><em
+                          [class]="getIconOrderBy('dataInicio')"></em>&nbsp;Data de Início</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('categoriaAtendimento.descricao')"><em
                           [class]="getIconOrderBy('categoriaAtendimento.descricao')"></em>&nbsp;Categoria
                         de Atendimento</th>
@@ -155,6 +157,9 @@
                       </td>
                       <td>
                         {{ pacote.dataCriacao | date: 'dd/MM/yyyy' }}
+                      </td>
+                      <td>
+                        {{ (pacote.dataInicio | date : 'dd/MM/yyyy HH:mm') || '-' }}
                       </td>
                       <td>
                         {{ pacote.categoriaAtendimentoDescricao }}

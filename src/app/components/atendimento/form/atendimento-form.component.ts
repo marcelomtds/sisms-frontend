@@ -26,6 +26,7 @@ import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmac
 import { ModalCriarPacoteComponent } from 'src/app/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
 import Util from 'src/app/shared/util/util';
 import { AtendimentoService } from '../../../core/services/atendimento.service';
+import { ModalGerenciarLancamentoSessaoComponent } from '../../controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 
 @Component({
   selector: 'app-atendimento-form',
@@ -59,7 +60,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private spinnerService: NgxSpinnerService,
     private modalService: BsModalService,
-    private outraMedidaService: OutraMedidaService
+    private outraMedidaService: OutraMedidaService,
   ) {
     this.subscription = this.outraMedidaService.getOutrasMedidas().subscribe(() => {
       this.onRefreshComboOutraMedida();
@@ -73,8 +74,10 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.onCreateForm();
     this.onLoadCategoriaAtendimento();
-    this.findById();
     this.onLoadCombos();
+    if (this.route.snapshot.params.id) {
+      this.findById();
+    }
   }
 
   checkTipoAtendimentoPacote(): boolean {
@@ -104,9 +107,6 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   private findById(): void {
     this.route.data.subscribe(dados => {
       const response: Response<Atendimento> = dados.resolve.atendimento;
-      if (!response.result) {
-        return;
-      }
       this.form.setValue({
         id: response.result.id,
         pacoteId: response.result.pacoteId || null,
@@ -171,7 +171,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     this.messageService.clearAllMessages();
     this.spinnerService.show();
     try {
-      const imagem = this.form.controls.imagens.value.find(x => x.index === index);
+      const imagem = this.form.controls.imagens.value.find(it => it.index === index);
       const array = imagem.imagem.toString().split(';base64,');
       const blob = base64StringToBlob(array[array.length - 1]);
       const elemento = document.createElement('a');
@@ -215,7 +215,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       pacoteId: [null],
       pacienteId: [null, Validators.required],
       preAtendimentoId: [null],
-      preAtendimentoData: [Util.convertDateTimeToString(new Date()), Validators.required],
+      preAtendimentoData: [null, Validators.required],
       preAtendimentoPressaoArterial: [null],
       preAtendimentoPeso: [0],
       preAtendimentoSupraUmbilical: [0],
@@ -241,7 +241,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   setDataHoraAtual(field: string): void {
     if (!this.form.controls[field].value) {
-      this.form.controls[field].setValue(Util.convertDateTimeToString(new Date()));
+      this.form.controls[field].setValue(Util.getLocalDateTime());
     }
   }
 
@@ -251,7 +251,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   }
 
   private getNomePaciente(id: number): string {
-    return this.pacientes.find(x => x.id === id).nomeCompleto;
+    return this.pacientes.find(it => it.id === id).nomeCompleto;
   }
 
   async onChangePaciente(): Promise<void> {
@@ -261,6 +261,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     if (pacienteId) {
       this.isInvalidFormPacienteId = false;
       this.form.controls.pacienteId.setValue(pacienteId);
+      this.setDataHoraAtual('preAtendimentoData');
     } else {
       this.isInvalidFormPacienteId = true;
     }
@@ -356,7 +357,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   }
 
   onClickRemoverOutraMedida(index: number): void {
-    const result = this.outrasMedidasSelecionadas.findIndex(x => x.index === index);
+    const result = this.outrasMedidasSelecionadas.findIndex(it => it.index === index);
     if (result !== -1) {
       this.outrasMedidasSelecionadas.splice(result, 1);
     }
@@ -379,10 +380,10 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
           return;
         }
         for (const image of images) {
+          this.spinnerService.show();
           const reader = new FileReader();
           reader.readAsDataURL(image);
           reader.onload = () => {
-            this.spinnerService.show();
             resizeBase64ForMaxWidthAndMaxHeight(reader.result, 1024, 768, (resizedImage) => {
               this.form.value.imagens.push({
                 index: this.gerarIndex(this.form.value.imagens),
@@ -390,8 +391,8 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
                 imagem: resizedImage,
                 observacao: null
               });
-              this.spinnerService.hide();
             });
+            this.spinnerService.hide();
           };
         }
       } catch {
@@ -404,7 +405,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   private gerarIndex(lista: any[]): number {
     while (true) {
       const index = Math.floor((Math.random() * 100) + 1);
-      if (!lista.find(x => x.index === index)) {
+      if (!lista.find(it => it.index === index)) {
         return index;
       }
     }
@@ -429,7 +430,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   }
 
   onClickRemoverImagem(index: number): void {
-    const result = this.form.value.imagens.findIndex(x => x.index === index);
+    const result = this.form.value.imagens.findIndex(it => it.index === index);
     if (result !== -1) {
       this.form.value.imagens.splice(result, 1);
     }
@@ -492,11 +493,22 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
         this.service.create(formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
           this.router.navigate([`/atendimento/${this.categoriaAtendimentoRouting.rota}`]);
+          if (!response.result.aberto && response.result.tipoAtendimentoId === TipoAtendimentoEnum.SESSAO) {
+            this.onClickOpenModalGerenciarLancamentoSessao(response.result.id);
+          }
         });
       }
     } else {
       this.showErrorInvalidForm();
     }
+  }
+
+  public async onClickOpenModalGerenciarLancamentoSessao(id: number): Promise<void> {
+    const initialState = {
+      atendimento: (await this.service.findById(id).toPromise()).result,
+      searchLancamentos: false
+    };
+    this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
   private showErrorInvalidForm(): void {
@@ -514,7 +526,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
   }
 
   showDadosPacote(): boolean {
-    return this.form.controls.pacienteId.value && this.checkTipoAtendimentoPacote() && this.pacote.id ? true : false;
+    return this.form.controls.pacienteId.value && this.checkTipoAtendimentoPacote() && this.pacote ? true : false;
   }
 
 }

@@ -141,6 +141,12 @@ table th {
   margin: 20px 0;
 }
 
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+  backdrop-filter: blur(6px);
+}
+
 /*textarea {
   resize: none;
 }
