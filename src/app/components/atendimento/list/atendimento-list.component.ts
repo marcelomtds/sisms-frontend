@@ -10,7 +10,6 @@ import { AtendimentoFilter } from 'src/app/core/model/filter/atendimento.filter'
 import { PageableFilter } from 'src/app/core/model/filter/filter.filter';
 import { Atendimento } from 'src/app/core/model/model/atendimento.model';
 import { CategoriaAtendimentoRouting } from 'src/app/core/model/model/categoria-atendimento-routing.model';
-import { Response } from 'src/app/core/model/model/response.model';
 import { Usuario } from 'src/app/core/model/model/usuario.model';
 import { LancamentoService } from 'src/app/core/services/lancamento.service';
 import { MessageService } from 'src/app/core/services/message.service';
@@ -23,7 +22,6 @@ import { Paciente } from '../../../core/model/model/paciente.model';
 import Page from '../../../core/model/model/page.model';
 import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
 import { AtendimentoService } from '../../../core/services/atendimento.service';
-import { ModalGerenciarLancamentoPacoteComponent } from '../../controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
 import { ModalGerenciarLancamentoSessaoComponent } from '../../controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 
 @Component({
@@ -167,14 +165,6 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
       atendimento: (await this.service.findById(id).toPromise()).result
     };
     this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
-  }
-
-  public async onClickOpenModalGerenciarLancamentoPacote(id: number): Promise<void> {
-    this.messageService.clearAllMessages();
-    const initialState = {
-      pacote: (await this.pacoteService.findById(id).toPromise()).result
-    };
-    this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
 }

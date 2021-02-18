@@ -3,22 +3,22 @@ import { Periodo } from '../../core/model/model/periodo.model';
 
 export default class Util {
 
-    static readonly IMAGEFORMATS = ['jpeg', 'jpg', 'png'];
-    static readonly ATTACHMENTFORMATS = ['doc', 'docx', 'pdf', 'jpg', 'jpeg', 'png', 'xlsx', 'xls', 'txt'];
-    static readonly FILESIZE = 10485760;
+    static readonly IMAGE_FORMATS = ['jpeg', 'jpg', 'png'];
+    static readonly ATTACHMENT_FORMATS = ['doc', 'docx', 'ppt', 'pptx', 'pdf', 'jpg', 'jpeg', 'png', 'xlsx', 'xls', 'txt'];
+    static readonly FILE_SIZE = 10485760;
 
-    static isFormatoImagemValido(imagem: File): boolean {
-        const array = imagem.name.split('.');
-        return this.IMAGEFORMATS.findIndex(x => x.toLocaleLowerCase() === array[array.length - 1].toLocaleLowerCase()) >= 0;
+    static isFormatoImagemValido(name: string): boolean {
+        const array = name.split('.');
+        return this.IMAGE_FORMATS.findIndex(x => x.toLocaleLowerCase() === array[array.length - 1].toLocaleLowerCase()) >= 0;
     }
 
     static isFormatoAnexoValido(anexo: File): boolean {
         const array = anexo.name.split('.');
-        return this.ATTACHMENTFORMATS.findIndex(x => x.toLocaleLowerCase() === array[array.length - 1].toLocaleLowerCase()) >= 0;
+        return this.ATTACHMENT_FORMATS.findIndex(x => x.toLocaleLowerCase() === array[array.length - 1].toLocaleLowerCase()) >= 0;
     }
 
     static isTamanhoArquivoValido(arquivo: File): boolean {
-        return arquivo.size < this.FILESIZE;
+        return arquivo.size < this.FILE_SIZE;
     }
 
     static calcularIdadeAno(data: Date): number {

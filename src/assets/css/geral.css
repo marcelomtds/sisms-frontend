@@ -109,6 +109,7 @@ table th {
 
 .table-roll {
   overflow: auto;
+  max-height: 331px;
 }
 
 .legend-default {
@@ -146,25 +147,3 @@ table th {
   overflow-y: auto;
   backdrop-filter: blur(6px);
 }
-
-/*textarea {
-  resize: none;
-}
-
-.fieldset-default {
-  border: 1px solid black;
-  margin: 0 2px 20px;
-  padding: .35em .625em .75em;
-}
-
-.control-label {
-  color: black;
-}
-
-.control-h1 {
-  color: black;
-}
-
-.inline {
-  display: inline;
-}*/

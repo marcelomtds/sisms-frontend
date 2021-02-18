@@ -11,7 +11,7 @@
           </div>
           <div class="box-body">
             <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="tipoAtendimento">Tipo de Atendimento</label>
                   <ng-select id="tipoAtendimento" maxlength="50" formControlName="tipoAtendimentoId"
@@ -130,23 +130,23 @@
                         <button title="Gerenciar Lançamentos" *ngIf="isSessao(atendimento.tipoAtendimentoId)"
                           (click)="onClickOpenModalGerenciarLancamentoSessao(atendimento.id)"
                           class="btn btn-success btn-left"><em class="fa fa-usd"></em></button>
-                        <button title="Gerenciar Lançamentos" *ngIf="isPacote(atendimento.tipoAtendimentoId)"
-                          (click)="onClickOpenModalGerenciarLancamentoPacote(atendimento.pacoteId)"
-                          class="btn btn-success btn-left"><em class="fa fa-usd"></em></button>
                       </td>
                       <td>
-                        {{ atendimento.pacoteValor ? (atendimento.pacoteValor | currency:'BRL':'symbol':'0.2-2':'pt') : '-' }}
+                        {{ atendimento.pacoteValor ? (atendimento.pacoteValor | currency:'BRL':'symbol':'0.2-2':'pt') :
+                        '-' }}
                       </td>
                       <td [ngStyle]="{'color': !atendimento.totalPago ? 'red' : 'green', 'font-weight': 'bold'}"
                         *ngIf="isSessao(atendimento.tipoAtendimentoId)">
                         {{ atendimento.totalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
                       </td>
-                      <td [ngStyle]="{'color': atendimento.pacoteTotalPago < atendimento.pacoteValor ? 'red' : 'green', 'font-weight': 'bold'}"
+                      <td
+                        [ngStyle]="{'color': atendimento.pacoteTotalPago < atendimento.pacoteValor ? 'red' : 'green', 'font-weight': 'bold'}"
                         *ngIf="isPacote(atendimento.tipoAtendimentoId)">
                         {{ atendimento.pacoteTotalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
                       </td>
                       <td *ngIf="isPacote(atendimento.tipoAtendimentoId); else elseTotalPagar">
-                        {{ atendimento.pacoteValor - atendimento.pacoteTotalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
+                        {{ atendimento.pacoteValor - atendimento.pacoteTotalPago || 0 |
+                        currency:'BRL':'symbol':'0.2-2':'pt' }}
                       </td>
                       <ng-template #elseTotalPagar>
                         <td>

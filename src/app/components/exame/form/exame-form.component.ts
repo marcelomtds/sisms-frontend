@@ -23,13 +23,13 @@ export class ExameFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputImage', { static: true }) inputImage: ElementRef;
 
-  public pacientes = new Array<Paciente>();
-  public categoriasExame = new Array<CategoriaExame>();
-  public form: FormGroup;
-  public isInvalidForm = false;
-  public subscription: Subscription;
+  pacientes = new Array<Paciente>();
+  categoriasExame = new Array<CategoriaExame>();
+  form: FormGroup;
+  isInvalidForm = false;
+  subscription: Subscription;
 
-  public constructor(
+  constructor(
     private formBuilder: FormBuilder,
     private service: ExameService,
     private router: Router,
@@ -44,7 +44,7 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     const id = +this.route.snapshot.params.id;
     if (id) {
       this.findById(id);
@@ -53,7 +53,7 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     this.onLoadCombos();
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
@@ -88,7 +88,7 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onChangeAnexo(anexos: File[]): void {
+  onChangeAnexo(anexos: File[]): void {
     this.messageService.clearAllMessages();
     if (this.form.value.anexos.length + anexos.length > 10) {
       this.messageService.sendMessageError(Messages.MSG0073);
@@ -109,7 +109,7 @@ export class ExameFormComponent implements OnInit, OnDestroy {
           const reader = new FileReader();
           reader.readAsDataURL(anexo);
           reader.onload = () => {
-            if (Util.isFormatoImagemValido(anexo)) {
+            if (Util.isFormatoImagemValido(anexo.name)) {
               resizeBase64ForMaxWidthAndMaxHeight(reader.result, 1024, 768, (resizedImage) => {
                 this.form.value.anexos.push({
                   index: this.gerarIndex(this.form.value.anexos),
@@ -136,7 +136,7 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickDownloadFile(index: number): void {
+  onClickDownloadFile(index: number): void {
     this.messageService.clearAllMessages();
     this.spinnerService.show();
     try {
@@ -182,7 +182,7 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  public onClickRemoverAnexo(index: number): void {
+  onClickRemoverAnexo(index: number): void {
     const result = this.form.value.anexos.findIndex(x => x.index === index);
     if (result !== -1) {
       this.form.value.anexos.splice(result, 1);
@@ -202,7 +202,7 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onClickFormSubmit(): void {
+  onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isDataValida(this.form.controls.data.value)) {
@@ -231,9 +231,12 @@ export class ExameFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickCancelar(): void {
+  onClickCancelar(): void {
     this.messageService.clearAllMessages();
     window.history.back();
   }
 
+  isImage(name: string): boolean {
+    return Util.isFormatoImagemValido(name);;
+  }
 }

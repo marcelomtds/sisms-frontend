@@ -109,8 +109,10 @@ export class PacoteListComponent extends Pagination<PacoteFilter> implements OnI
     });
   }
 
-  public onClickFormSubmit(): void {
-    this.messageService.clearAllMessages();
+  public onClickFormSubmit(avoidShowMessage?: boolean): void {
+    if (!avoidShowMessage) {
+      this.messageService.clearAllMessages();
+    }
     const dataInicio = this.form.value.dataInicio;
     const dataFim = this.form.value.dataFim;
     if (dataInicio && !Util.isDataValida(dataInicio)) {
@@ -166,4 +168,18 @@ export class PacoteListComponent extends Pagination<PacoteFilter> implements OnI
     this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
+  public onClickExcluir(id: number): void {
+    this.messageService.clearAllMessages();
+    const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
+    modalRef.content.titulo = 'Confirmação de Exclusão';
+    modalRef.content.corpo = 'Deseja excluir esse registro?';
+    modalRef.content.onClose.subscribe((result: boolean) => {
+      if (result) {
+        this.service.delete(id).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.onClickFormSubmit(true);
+        });
+      }
+    });
+  }
 }

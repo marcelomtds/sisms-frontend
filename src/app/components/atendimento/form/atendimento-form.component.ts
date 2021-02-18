@@ -413,7 +413,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   private validarFormatoImagem(imagens: File[]): boolean {
     for (const image of imagens) {
-      if (!Util.isFormatoImagemValido(image)) {
+      if (!Util.isFormatoImagemValido(image.name)) {
         return false;
       }
     }

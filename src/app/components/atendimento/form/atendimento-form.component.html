@@ -338,8 +338,12 @@
                     <button style="margin-left: 5px;" title="Remover Imagem" class="btn btn-danger" type="button"
                       (click)="onClickRemoverImagem(imagem.index)"><em class="fa fa-close"></em></button>
                   </div>
+                  <div style="padding-bottom: 10px;">
+                    <a title="{{ imagem.nome }}">{{ imagem?.nome?.length > 27 ? (imagem.nome | slice:0:30) + '...' :
+                      imagem.nome}}</a>
+                  </div>
                   <div class="form-group">
-                    <img alt="Imagem" [src]="imagem.imagem" id="image{{ i }}" width="100%" height="100%">
+                    <img title="{{ imagem.nome }}" [src]="imagem.imagem" id="image{{ i }}" width="100%" height="100%">
                   </div>
                   <div class="form-group">
                     <label for="observacaoImagem{{ i }}">Observacão</label>

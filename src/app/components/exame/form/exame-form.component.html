@@ -79,7 +79,17 @@
                     class="btn btn-danger"><em class="fa fa-close"></em></button>
                 </div>
                 <div class="form-group">
-                  <a>{{ anexo.nome }}</a>
+                  <div style="padding-bottom: 10px;">
+                    <a title="{{ anexo.nome }}">{{ anexo?.nome?.length > 27 ? (anexo.nome | slice:0:30) + '...' :
+                      anexo.nome}}</a>
+                  </div>
+                  <div *ngIf="isImage(anexo.nome); else noImage;">
+                    <img title="{{ anexo.nome }}" [src]="anexo.anexo" width="100%" height="100%">
+                  </div>
+                  <ng-template #noImage>
+                    <img title="{{ anexo.nome }}" src="../../../../assets/img/sem-imagem.png" width="100%"
+                      height="100%">
+                  </ng-template>
                 </div>
                 <div class="form-group">
                   <label for="observacaoAnexo{{ i }}">Observacão</label>

@@ -228,7 +228,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     this.messageService.clearAllMessages();
     if (imagem) {
       try {
-        if (!Util.isFormatoImagemValido(imagem)) {
+        if (!Util.isFormatoImagemValido(imagem.name)) {
           this.messageService.sendMessageError(Messages.MSG0020);
           return;
         }
