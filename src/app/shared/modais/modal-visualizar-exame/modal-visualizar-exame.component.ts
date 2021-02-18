@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap';
-import { Exame } from '../../../core/model/model/exame.model';
-import { MessageService } from 'src/app/core/services/message.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { base64StringToBlob } from 'blob-util';
+import { BsModalRef } from 'ngx-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { MessageService } from 'src/app/core/services/message.service';
+import { Exame } from '../../../core/model/model/exame.model';
 import { Messages } from '../../messages/messages';
+import Util from '../../util/util';
 
 @Component({
   selector: 'app-modal-visualizar-exame',
@@ -43,4 +44,7 @@ export class ModalVisualizarExameComponent {
     }
   }
 
+  isImage(name: string): boolean {
+    return Util.isFormatoImagemValido(name);;
+  }
 }

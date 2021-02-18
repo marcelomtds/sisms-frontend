@@ -130,8 +130,8 @@
             </div>
           </div>
         </div>
-        <legend class="legend-default">Outras Medidas</legend>
-        <ng-container *ngIf="atendimento?.preAtendimentoOutrasMedidas?.length; else hiddenOMPre">
+        <ng-container *ngIf="atendimento?.preAtendimentoOutrasMedidas?.length">
+          <legend class="legend-default">Outras Medidas</legend>
           <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
               *ngFor="let medida of atendimento?.preAtendimentoOutrasMedidas; let i = index">
@@ -143,9 +143,6 @@
           </div>
         </ng-container>
         <legend class="legend-default"></legend>
-        <ng-template #hiddenOMPre>
-          {{ '-' }}
-        </ng-template>
       </ng-container>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -211,8 +208,8 @@
             </div>
           </div>
         </div>
-        <legend class="legend-default">Outras Medidas</legend>
-        <ng-container *ngIf="atendimento?.posAtendimentoOutrasMedidas?.length; else hiddenOMPos">
+        <ng-container *ngIf="atendimento?.posAtendimentoOutrasMedidas?.length">
+          <legend class="legend-default">Outras Medidas</legend>
           <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
               *ngFor="let medida of atendimento?.posAtendimentoOutrasMedidas; let i = index">
@@ -224,9 +221,6 @@
           </div>
         </ng-container>
         <legend class="legend-default"></legend>
-        <ng-template #hiddenOMPos>
-          {{ '-' }}
-        </ng-template>
       </ng-container>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -272,8 +266,8 @@
           </div>
         </div>
       </div>
-      <legend class="legend-default">Outras Medidas</legend>
       <ng-container *ngIf="atendimento?.preAtendimentoOutrasMedidas?.length; else hiddenOM">
+        <legend class="legend-default">Outras Medidas</legend>
         <div class="row">
           <div *ngFor="let medida of atendimento?.preAtendimentoOutrasMedidas; let i = index;"
             class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
@@ -285,9 +279,6 @@
           </div>
         </div>
       </ng-container>
-      <ng-template #hiddenOM>
-        {{ '-' }}
-      </ng-template>
     </div>
   </div>
   <div *ngIf="atendimento?.imagens?.length" class="box box-primary">
@@ -295,12 +286,15 @@
       <h3 class="box-title">Imagens</h3>
     </div>
     <div class="box-body">
-      <ng-container *ngFor="let imagem of atendimento?.imagens">
+      <ng-container *ngFor="let imagem of atendimento?.imagens; let last = last;">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="form-group" style="text-align: end;">
               <button title="Baixar Imagem" (click)="onClickDownloadImage(imagem.id)" class="btn btn-primary"><em
                   class="fa fa-cloud-download"></em></button>
+            </div>
+            <div class="form-group">
+              <a title="{{ imagem.nome }}">{{ imagem.nome }}</a>
             </div>
             <div class="form-group">
               <img [src]="imagem.imagem" alt="Imagem do Atendimento" style="width: 100%;">
@@ -311,10 +305,11 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="form-group">
               <label>Observação</label>
-              <p>{{ imagem.observacao }}</p>
+              <p>{{ imagem.observacao || '-' }}</p>
             </div>
           </div>
         </div>
+        <legend *ngIf="!last" class="legend-default"></legend>
       </ng-container>
     </div>
   </div>
