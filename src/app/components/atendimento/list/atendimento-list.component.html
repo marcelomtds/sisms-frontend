@@ -14,7 +14,7 @@
               <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
                   <label for="tipoAtendimento">Tipo de Atendimento</label>
-                  <ng-select id="tipoAtendimento" maxlength="50" formControlName="tipoAtendimentoId"
+                  <ng-select (change)="onChangeTipoAtendimento()" id="tipoAtendimento" maxlength="50" formControlName="tipoAtendimentoId"
                     [items]="tiposAtendimento" bindLabel="descricao" bindValue="id">
                   </ng-select>
                 </div>
@@ -74,7 +74,8 @@
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                 <div class="form-group">
                   <label for="lancamento">Lançamento</label>
-                  <ng-select id="lancamento" maxlength="50" formControlName="lancamentoPendente">
+                  <ng-select (change)="onChangeLancamentoPendente()" id="lancamento" maxlength="50"
+                    formControlName="lancamentoPendente">
                     <ng-option [value]=true>Com lançamento pendente</ng-option>
                     <ng-option [value]=false>Sem lançamento pendente</ng-option>
                   </ng-select>

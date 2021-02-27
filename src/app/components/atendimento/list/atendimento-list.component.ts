@@ -137,6 +137,18 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
     });
   }
 
+  onChangeLancamentoPendente(): void {
+    if (this.form.controls.lancamentoPendente.value === true || this.form.controls.lancamentoPendente.value === false) {
+      this.form.controls.tipoAtendimentoId.setValue(TipoAtendimentoEnum.SESSAO);
+    } else {
+      this.form.controls.tipoAtendimentoId.setValue(null);
+    }
+  }
+
+  onChangeTipoAtendimento(): void {
+    this.form.controls.lancamentoPendente.setValue(null);
+  }
+
   public onClickLimparCampos(): void {
     this.messageService.clearAllMessages();
     this.onCreateForm();
