@@ -91,6 +91,7 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
       preAtendimentoData: [null],
       posAtendimentoData: [null],
       aberto: null,
+      lancamentoPendente: null,
       categoriaAtendimentoId: [null]
     });
   }

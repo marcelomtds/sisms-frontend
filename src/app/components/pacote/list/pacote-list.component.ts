@@ -75,6 +75,7 @@ export class PacoteListComponent extends Pagination<PacoteFilter> implements OnI
       pacienteId: [null],
       usuarioId: [null],
       aberto: [null],
+      lancamentoPendente: [null],
       dataInicio: [null],
       dataFim: [null]
     });

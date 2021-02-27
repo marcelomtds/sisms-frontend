@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import Page from '../../../core/model/model/page.model';
 
@@ -6,7 +6,7 @@ import Page from '../../../core/model/model/page.model';
   selector: 'app-page-action',
   templateUrl: './page-action.component.html'
 })
-export class PageActionComponent {
+export class PageActionComponent implements OnChanges {
 
   @Input() filtro: PageableFilter<any>;
   @Input() dados: Page<any>;
@@ -16,14 +16,15 @@ export class PageActionComponent {
     private changeDetectorRef: ChangeDetectorRef
   ) { }
 
+  currentPage = 1;
+
+  ngOnChanges(): void {
+    this.currentPage = this.filtro.currentPage + 1;
+  }
+
   onChangePage(page: number): void {
+    this.changeDetectorRef.detectChanges();
     this.filtro.currentPage = page;
     this.searchByFilter.emit();
   }
-
-  onChangePageSize(): void {
-    this.changeDetectorRef.detectChanges();
-    this.onChangePage(0);
-  }
-
 }

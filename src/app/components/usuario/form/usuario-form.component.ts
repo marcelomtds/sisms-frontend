@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
 import { Subscription } from 'rxjs';
-import { Response } from 'src/app/core/model/model/response.model';
 import { MenuService } from 'src/app/core/services/menu.service';
 import { SharedService } from 'src/app/core/services/shared.service';
 import { Localidade } from '../../../core/model/model/localidade.model';
@@ -28,17 +27,17 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputImage', { static: false }) inputImage: ElementRef;
 
-  public form: FormGroup;
-  public sexos = new Array<Sexo>();
-  public profissoes = new Array<Profissao>();
-  public localidades = new Array<Localidade>();
-  public ufs = new Array<UF>();
-  public isShowSenha = false;
-  public isShowSenhaConfirmacao = false;
-  public isInvalidForm = false;
-  public subscription: Subscription;
+  form: FormGroup;
+  sexos = new Array<Sexo>();
+  profissoes = new Array<Profissao>();
+  localidades = new Array<Localidade>();
+  ufs = new Array<UF>();
+  isShowSenha = false;
+  isShowSenhaConfirmacao = false;
+  isInvalidForm = false;
+  subscription: Subscription;
 
-  public constructor(
+  constructor(
     private spinnerService: NgxSpinnerService,
     private router: Router,
     private route: ActivatedRoute,
@@ -62,37 +61,25 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.onCreateForm();
     this.onLoadCombos();
-    this.findById();
+    if (this.route.snapshot.params.id) {
+      this.findById();
+    }
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
   private onLoadCombos(): void {
-    this.onLoadComboProfissao();
-    this.onLoadComboUF();
-    this.onLoadComboSexo();
-  }
-
-  private onLoadComboProfissao(): void {
-    this.route.data.subscribe(response => {
-      this.profissoes = response.resolve.profissoes.result;
-    });
-  }
-
-  private onLoadComboUF(): void {
-    this.route.data.subscribe(response => {
-      this.ufs = response.resolve.ufs.result;
-    });
-  }
-
-  private onLoadComboSexo(): void {
-    this.route.data.subscribe(response => {
-      this.sexos = response.resolve.sexos.result;
+    this.route.data.subscribe(data => {
+      data.resolve.subscribe(resolve => {
+        this.profissoes = resolve[1].result;
+        this.sexos = resolve[2].result;
+        this.ufs = resolve[3].result;
+      });
     });
   }
 
@@ -138,15 +125,15 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onClickLocalidade(): void {
+  onClickLocalidade(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.enderecoLocalidadeUFId.value) {
       this.messageService.sendMessageWarning(Messages.MSG0010);
     }
   }
 
-  public onChangeUf(isclearAllMessages?: boolean): void {
-    if (isclearAllMessages) {
+  onChangeUf(isClearAllMessages?: boolean): void {
+    if (isClearAllMessages) {
       this.messageService.clearAllMessages();
     }
     const id = this.form.controls.enderecoLocalidadeUFId.value;
@@ -163,7 +150,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public get isCadastroCompleto(): boolean {
+  get isCadastroCompleto(): boolean {
     return this.sharedService.getUserSession().cadastroCompleto;
   }
 
@@ -176,7 +163,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickFormSubmit(): void {
+  onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
     this.removerValidacaoSenhas();
     if (this.form.valid) {
@@ -218,13 +205,13 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickRemoveImage(): void {
+  onClickRemoveImage(): void {
     this.messageService.clearAllMessages();
     this.form.controls.imagem.setValue(null);
     this.inputImage.nativeElement.value = null;
   }
 
-  public onChangeImage(imagem: File): void {
+  onChangeImage(imagem: File): void {
     this.messageService.clearAllMessages();
     if (imagem) {
       try {
@@ -253,43 +240,42 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
   }
 
   private findById(): void {
-    this.route.data.subscribe(dados => {
-      const response: Response<Usuario> = dados.resolve.usuario;
-      if (!response) {
-        return;
-      }
-      this.form.setValue({
-        id: response.result.id,
-        senha: null,
-        senhaConfirmacao: null,
-        nomeCompleto: response.result.nomeCompleto,
-        dataNascimento: Util.convertDateToString(response.result.dataNascimento),
-        rg: response.result.rg || null,
-        cpf: response.result.cpf || null,
-        imagem: response.result.imagem || null,
-        sexoId: response.result.sexoId,
-        profissaoId: response.result.profissaoId || null,
-        enderecoId: response.result.enderecoId,
-        enderecoCep: response.result.enderecoCep,
-        enderecoLogradouro: response.result.enderecoLogradouro,
-        enderecoNumero: response.result.enderecoNumero,
-        enderecoComplemento: response.result.enderecoComplemento || null,
-        enderecoBairro: response.result.enderecoBairro,
-        enderecoPontoReferencia: response.result.enderecoPontoReferencia || null,
-        enderecoLocalidadeId: response.result.enderecoLocalidadeId,
-        enderecoLocalidadeUFId: response.result.enderecoLocalidadeUFId,
-        contatoId: response.result.contatoId,
-        contatoCelular: response.result.contatoCelular || null,
-        contatoCelularRecado: response.result.contatoCelularRecado || null,
-        contatoResidencial: response.result.contatoResidencial || null,
-        contatoComercial: response.result.contatoComercial || null,
-        contatoEmail: response.result.contatoEmail || null,
+    this.route.data.subscribe(data => {
+      data.resolve.subscribe(resolve => {
+        const usuario: Usuario = resolve[0].result;
+        this.form.setValue({
+          id: usuario.id,
+          senha: null,
+          senhaConfirmacao: null,
+          nomeCompleto: usuario.nomeCompleto,
+          dataNascimento: Util.convertDateToString(usuario.dataNascimento),
+          rg: usuario.rg || null,
+          cpf: usuario.cpf || null,
+          imagem: usuario.imagem || null,
+          sexoId: usuario.sexoId,
+          profissaoId: usuario.profissaoId || null,
+          enderecoId: usuario.enderecoId,
+          enderecoCep: usuario.enderecoCep,
+          enderecoLogradouro: usuario.enderecoLogradouro,
+          enderecoNumero: usuario.enderecoNumero,
+          enderecoComplemento: usuario.enderecoComplemento || null,
+          enderecoBairro: usuario.enderecoBairro,
+          enderecoPontoReferencia: usuario.enderecoPontoReferencia || null,
+          enderecoLocalidadeId: usuario.enderecoLocalidadeId,
+          enderecoLocalidadeUFId: usuario.enderecoLocalidadeUFId,
+          contatoId: usuario.contatoId,
+          contatoCelular: usuario.contatoCelular || null,
+          contatoCelularRecado: usuario.contatoCelularRecado || null,
+          contatoResidencial: usuario.contatoResidencial || null,
+          contatoComercial: usuario.contatoComercial || null,
+          contatoEmail: usuario.contatoEmail || null,
+        });
+        this.onChangeUf();
       });
-      this.onChangeUf();
     });
   }
 
-  public showHidePassword(param: string): void {
+  showHidePassword(param: string): void {
     this.messageService.clearAllMessages();
     if (param === 'senha') {
       this.isShowSenha = !this.isShowSenha;

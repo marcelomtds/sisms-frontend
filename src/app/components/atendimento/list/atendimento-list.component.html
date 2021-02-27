@@ -71,6 +71,15 @@
                   </ng-select>
                 </div>
               </div>
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="form-group">
+                  <label for="lancamento">Lançamento</label>
+                  <ng-select id="lancamento" maxlength="50" formControlName="lancamentoPendente">
+                    <ng-option [value]=true>Com lançamento pendente</ng-option>
+                    <ng-option [value]=false>Sem lançamento pendente</ng-option>
+                  </ng-select>
+                </div>
+              </div>
             </div>
           </div>
           <div class="box-footer">
@@ -96,10 +105,7 @@
                   <thead>
                     <tr>
                       <th>Opções</th>
-                      <th style="cursor: pointer" (click)="onClickOrderBy('pacote.valor')"><em
-                          [class]="getIconOrderBy('pacote.valor')"></em>&nbsp;Valor do Pacote</th>
-                      <th>Total Pago</th>
-                      <th>Total à Pagar</th>
+                      <th>Valor Pago</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('aberto')"><em
                           [class]="getIconOrderBy('aberto')"></em>&nbsp;Status</th>
                       <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
@@ -131,28 +137,13 @@
                           (click)="onClickOpenModalGerenciarLancamentoSessao(atendimento.id)"
                           class="btn btn-success btn-left"><em class="fa fa-usd"></em></button>
                       </td>
-                      <td>
-                        {{ atendimento.pacoteValor ? (atendimento.pacoteValor | currency:'BRL':'symbol':'0.2-2':'pt') :
-                        '-' }}
-                      </td>
                       <td [ngStyle]="{'color': !atendimento.totalPago ? 'red' : 'green', 'font-weight': 'bold'}"
                         *ngIf="isSessao(atendimento.tipoAtendimentoId)">
                         {{ atendimento.totalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
                       </td>
-                      <td
-                        [ngStyle]="{'color': atendimento.pacoteTotalPago < atendimento.pacoteValor ? 'red' : 'green', 'font-weight': 'bold'}"
-                        *ngIf="isPacote(atendimento.tipoAtendimentoId)">
-                        {{ atendimento.pacoteTotalPago || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}
+                      <td *ngIf="isPacote(atendimento.tipoAtendimentoId)">
+                        {{ '-' }}
                       </td>
-                      <td *ngIf="isPacote(atendimento.tipoAtendimentoId); else elseTotalPagar">
-                        {{ atendimento.pacoteValor - atendimento.pacoteTotalPago || 0 |
-                        currency:'BRL':'symbol':'0.2-2':'pt' }}
-                      </td>
-                      <ng-template #elseTotalPagar>
-                        <td>
-                          {{ '-' }}
-                        </td>
-                      </ng-template>
                       <td [ngStyle]="{'color': atendimento.aberto ? 'red' : 'green', 'font-weight': 'bold'}">
                         {{ atendimento.aberto ? 'Em Aberto' : 'Encerrado' }}
                       </td>

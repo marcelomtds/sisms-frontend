@@ -71,6 +71,15 @@
                   </ng-select>
                 </div>
               </div>
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="form-group">
+                  <label for="lancamento">Lançamento</label>
+                  <ng-select id="lancamento" maxlength="50" formControlName="lancamentoPendente">
+                    <ng-option [value]=true>Com lançamento pendente</ng-option>
+                    <ng-option [value]=false>Sem lançamento pendente</ng-option>
+                  </ng-select>
+                </div>
+              </div>
             </div>
           </div>
           <div class="box-footer">

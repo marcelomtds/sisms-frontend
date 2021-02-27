@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { ProfissaoService } from 'src/app/core/services/profissao.service';
 import { SexoService } from 'src/app/core/services/sexo.service';
 import { SharedService } from 'src/app/core/services/shared.service';
@@ -32,12 +33,12 @@ export class UsuarioResolver implements Resolve<any> {
             this.router.navigate(['/acesso-negado']);
             return;
         }
-        return {
-            usuario: await this.usuarioService.findById(id).toPromise(),
-            profissoes: await this.profissaoService.findAll().toPromise(),
-            sexos: await this.sexoService.findAll().toPromise(),
-            ufs: await this.ufService.findAll().toPromise(),
-        };
+        return forkJoin([
+            this.usuarioService.findById(id),
+            this.profissaoService.findAll(),
+            this.sexoService.findAll(),
+            this.ufService.findAll()
+        ]);
     }
 
 }

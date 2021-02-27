@@ -9,6 +9,7 @@ export class AtendimentoFilter {
         public preAtendimentoData?: string,
         public posAtendimentoData?: string,
         public aberto?: boolean,
+        public lancamentoPendente?: boolean,
         public categoriaAtendimentoId?: number
     ) { }
 
