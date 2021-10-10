@@ -11,7 +11,8 @@ export class LancamentoFilter {
         public usuarioId?: number,
         public categoriaLancamentoId?: number,
         public dataInicio?: string,
-        public dataFim?: string
+        public dataFim?: string,
+        public credito?: boolean
     ) { }
 
 }

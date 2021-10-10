@@ -20,8 +20,11 @@ export class Lancamento {
         public tipoLancamentoDescricao?: string,
         public tipoAtendimentoId?: number,
         public tipoAtendimentoDescricao?: string,
+        public pacienteId?: number,
+        public pacienteNomeCompleto?: string,
         public atendimentoCategoriaAtendimentoDescricao?: string,
-        public pacoteCategoriaAtendimentoDescricao?: string
+        public pacoteCategoriaAtendimentoDescricao?: string,
+        public credito?: boolean
     ) { }
 
 }

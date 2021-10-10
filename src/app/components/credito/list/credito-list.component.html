@@ -1,0 +1,120 @@
+<section class="content-header">
+    <h1>Buscar Créditos</h1>
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Filtros</h3>
+          </div>
+          <div class="box-body">
+            <form [formGroup]="form">
+              <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                  <div class="form-group">
+                    <label for="paciente">Paciente</label>
+                    <ng-select id="paciente" placeholder="Selecione" formControlName="pacienteId" [items]="pacientes"
+                      bindLabel="nomeCompleto" bindValue="id">
+                      <ng-template ng-option-tmp let-item="item">
+                        {{ item.nomeCompleto }}
+                        <br />
+                        <small>CPF: {{ item.cpf | cpf }}</small>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                  <div class="form-group">
+                    <label for="dataInicio">Data Início</label>
+                    <input id="dataInicio" type="text" [validation]="false" mask="00/00/0000" formControlName="dataInicio"
+                      class="form-control" />
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                  <div class="form-group">
+                    <label for="dataFim">Data Fim</label>
+                    <input id="dataFim" type="text" [validation]="false" mask="00/00/0000" formControlName="dataFim"
+                      class="form-control" />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="box-footer">
+            <button (click)="onClickFormSubmit()" class="btn btn-primary pull-right" style="margin-left: 15px;"><em
+                class="fa fa-search"></em>&nbsp;Buscar</button>
+            <button class="btn btn-warning pull-right" (click)="onClickLimparCampos()"><em
+                class="fa fa-eraser"></em>&nbsp;Limpar</button>
+          </div>
+        </div>
+        <div *ngIf="dados?.content?.length > 0" class="col-md-12" style="padding: 0px">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <div class="row">
+                <div class="col-xs-12">
+                  <h3 class="box-title">Resultado</h3>
+                </div>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="table-roll">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Opção</th>
+                        <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
+                            [class]="getIconOrderBy('paciente.nomeCompleto')"></em>&nbsp;Paciente</th>
+                        <th style="cursor: pointer" (click)="onClickOrderBy('usuario.nomeCompleto')"><em
+                            [class]="getIconOrderBy('usuario.nomeCompleto')"></em>&nbsp;Usuário</th>
+                        <th style="cursor: pointer" (click)="onClickOrderBy('data')"><em
+                            [class]="getIconOrderBy('data')"></em>&nbsp;Data</th>
+                        <th style="cursor: pointer" (click)="onClickOrderBy('valor')"><em
+                            [class]="getIconOrderBy('valor')"></em>&nbsp;Valor</th>
+                        <th style="cursor: pointer" (click)="onClickOrderBy('formaPagamento.descricao')"><em
+                            [class]="getIconOrderBy('formaPagamento.descricao')"></em>&nbsp;Forma de
+                          Pagamento</th>
+                        <th style="cursor: pointer;" (click)="onClickOrderBy('observacao')"><em
+                            [class]="getIconOrderBy('observacao')"></em>&nbsp;Observação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let lancamento of dados.content">
+                        <td>
+                          <ng-container *ngIf="isAdministrador || lancamento.usuarioId === currentUser.id; else hidden">
+                            <!-- <button title="Editar" *ngIf="form.controls.id.value !== lancamento.id" class="btn btn-primary"
+                              (click)="onClickEditar(lancamento.id)"><em class="fa fa-pencil"></em></button> -->
+                            <!-- <button title="Excluir"
+                              class="btn btn-danger {{ form.controls.id.value !== lancamento.id ? 'btn-left' : '' }}"
+                              (click)="onClickExcluir(lancamento.id)"><em class="fa fa-trash"></em></button> -->
+                          </ng-container>
+                          <ng-template #hidden>
+                            {{ '-' }}
+                          </ng-template>
+                        </td>
+                        <td>
+                          {{ lancamento.pacienteNomeCompleto }}
+                        </td>
+                        <td>
+                          {{ lancamento.usuarioNomeCompleto }}
+                        </td>
+                        <td>{{ lancamento.data | date : 'dd/MM/yyyy' }}</td>
+                        <td>{{ lancamento.valor | currency:'BRL':'symbol':'0.2-2':'pt' }}</td>
+                        <td>{{ lancamento.formaPagamentoDescricao }}</td>
+                        <td style=" white-space: pre-wrap;">{{ lancamento.observacao || '-' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+            <div class="box-footer">
+              <app-page-action [dados]="dados" [filtro]="filtro" (searchByFilter)="searchByFilter()">
+              </app-page-action>
+            </div>
+          </div>
+        </div>
+        <app-no-records *ngIf="showNoRecords && !dados.content?.length"></app-no-records>
+      </div>
+    </div>
+  </section>
+  
