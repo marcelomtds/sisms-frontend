@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { PerfilEnum } from 'src/app/core/model/enum/perfil.enum';
+import { SexoEnum } from 'src/app/core/model/enum/sexo.enum';
 import { LancamentoFilter } from 'src/app/core/model/filter/lancamento.filter';
 import { FormaPagamento } from 'src/app/core/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/core/model/model/lancamento.model';
@@ -31,6 +32,8 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
   public isInvalidForm = false;
   public showNoRecords = false;
   public valorSelecionado = 0;
+  public quantidadeCredito = 0;
+  public valorTotalCredito = 0;
   public currentUser = new Usuario();
 
   public constructor(
@@ -65,6 +68,13 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
 
   public get isAdministrador(): boolean {
     return this.currentUser.perfilRole === PerfilEnum.ADMINISTRADOR;
+  }
+
+  private findPatientCredit(): void {
+    this.service.findPatientCredit(this.pacote.pacienteId).subscribe(response => {
+      this.quantidadeCredito = response.result.length;
+      this.valorTotalCredito = response.result.reduce((total, lancamento) => total + lancamento.valor, 0);
+    });
   }
 
   private onLoadComboFormaPagamento(): void {
@@ -156,6 +166,12 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
     });
   }
 
+  public getCreditLabel(): string {
+    const sexo = this.pacote.pacienteSexoId === SexoEnum.MASCULINO ? 'A' : 'O';
+    const quantidade = this.quantidadeCredito > 1 ? 'créditos' : 'crédito';
+    return `${sexo} paciente ${this.pacote.pacienteNomeCompleto} possui ${this.quantidadeCredito} ${quantidade} no total de ${}`;
+  }
+
   public getDataAtual(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.data.value) {
@@ -173,6 +189,7 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
     this.service.findByFilter(this.filtro).subscribe(response => {
       this.showNoRecords = true;
       this.dados = response.result;
+      this.findPatientCredit();
     });
   }
 

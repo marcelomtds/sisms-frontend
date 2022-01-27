@@ -8,6 +8,7 @@ export class Pacote {
         public valor?: number,
         public pacienteId?: number,
         public pacienteNomeCompleto?: number,
+        public pacienteSexoId?: number,
         public usuarioId?: number,
         public usuarioNomeCompleto?: string,
         public categoriaAtendimentoId?: number,

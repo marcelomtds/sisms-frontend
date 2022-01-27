@@ -8,6 +8,51 @@
 
   <div class="box box-primary">
     <div class="box-header with-border">
+      <h3 class="box-title">Crédito</h3>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          O paciente possui {{ quantidadeCredito }} créditos no valor de {{ valorTotalCredito }} a serem utilizados.
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                Total:
+                <br>
+                <p>R$ 200,00</p>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                Parcial:
+                <br>
+                <input id="valor" maxlength="10" currencyMask
+                  [options]="{ align: 'left', suffix: '', prefix: '', thousands: '.', decimal: ',', allowNegative: 'false'  }"
+                  type="text" formControlName="valor" class="form-control" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box-footer">
+      <button class="btn btn-success pull-right" (click)="onClickFormSubmit()"><em
+          class="fa fa-save"></em>&nbsp;Utilizar</button>
+    </div>
+  </div>
+
+  <div class="box box-primary">
+    <div class="box-header with-border">
       <h3 class="box-title">{{ form.controls.id.value ? 'Alterar' : 'Cadastrar' }}</h3>
     </div>
     <div class="box-body">
