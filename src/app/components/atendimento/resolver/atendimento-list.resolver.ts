@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { PerfilEnum } from 'src/app/core/model/enum/perfil.enum';
+import { IAtendimentoListResolver } from 'src/app/core/model/interface/atendimento-resolver.interface';
 import { PacienteService } from 'src/app/core/services/paciente.service';
 import { SharedService } from 'src/app/core/services/shared.service';
 import { TipoAtendimentoService } from 'src/app/core/services/tipo-atendimento.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Injectable()
-export class AtendimentoListResolver implements Resolve<Observable<any>> {
+export class AtendimentoListResolver implements Resolve<Observable<IAtendimentoListResolver>> {
 
     constructor(
         private pacienteService: PacienteService,
@@ -17,12 +18,15 @@ export class AtendimentoListResolver implements Resolve<Observable<any>> {
         private sharedService: SharedService
     ) { }
 
-    resolve(): Observable<any> {
-        return forkJoin([
-            this.pacienteService.findAllActive(),
-            this.isAdministrador() ? this.usuarioService.findAll() : null,
-            this.tipoAtendimentoService.findAll()
-        ]);
+    resolve(): Observable<IAtendimentoListResolver> {
+        const services: IAtendimentoListResolver = {
+            pacientes: this.pacienteService.findAllActive(),
+            tiposAtendimento: this.tipoAtendimentoService.findAll()
+        }
+        if (this.isAdministrador()) {
+            services.usuarios = this.usuarioService.findAll();
+        }
+        return forkJoin(services);
     }
 
     private isAdministrador(): boolean {

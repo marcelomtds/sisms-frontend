@@ -1,8 +1,13 @@
+import { formatCurrency } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { FormaPagamentoEnum } from 'src/app/core/model/enum/forma-pagamento.enum';
+import { OpcaoUtilizacaoCreditoEnum } from 'src/app/core/model/enum/opcao-utilizacao-credito.enum';
 import { PerfilEnum } from 'src/app/core/model/enum/perfil.enum';
 import { SexoEnum } from 'src/app/core/model/enum/sexo.enum';
+import { TipoAtendimentoEnum } from 'src/app/core/model/enum/tipo-atendimento.enum';
+import { TipoLancamentoEnum } from 'src/app/core/model/enum/tipo-lancamento.enum';
 import { LancamentoFilter } from 'src/app/core/model/filter/lancamento.filter';
 import { FormaPagamento } from 'src/app/core/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/core/model/model/lancamento.model';
@@ -25,6 +30,9 @@ import Util from 'src/app/shared/util/util';
 })
 export class ModalGerenciarLancamentoPacoteComponent extends Pagination<LancamentoFilter> implements OnInit {
 
+  readonly OPCAO_UTILIZACAO_CREDITO_TOTAL = OpcaoUtilizacaoCreditoEnum.TOTAL;
+  readonly OPCAO_UTILIZACAO_CREDITO_PARCIAL = OpcaoUtilizacaoCreditoEnum.PARCIAL;
+
   public dados = new Page<Array<Lancamento>>();
   public form: FormGroup;
   public pacote = new Pacote();
@@ -32,9 +40,11 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
   public isInvalidForm = false;
   public showNoRecords = false;
   public valorSelecionado = 0;
-  public quantidadeCredito = 0;
-  public valorTotalCredito = 0;
+  public saldo = 0;
   public currentUser = new Usuario();
+  valorParcial = 0;
+  opcaoUtilizacaoCredito = OpcaoUtilizacaoCreditoEnum.TOTAL;
+
 
   public constructor(
     private bsModalRef: BsModalRef,
@@ -70,17 +80,22 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
     return this.currentUser.perfilRole === PerfilEnum.ADMINISTRADOR;
   }
 
-  private findPatientCredit(): void {
-    this.service.findPatientCredit(this.pacote.pacienteId).subscribe(response => {
-      this.quantidadeCredito = response.result.length;
-      this.valorTotalCredito = response.result.reduce((total, lancamento) => total + lancamento.valor, 0);
+  private findPatientBalance(): void {
+    this.service.findPatientBalance(this.pacote.pacienteId).subscribe(response => {
+      this.saldo = response.result;
     });
   }
 
   private onLoadComboFormaPagamento(): void {
-    this.formaPagamentoService.findAll().subscribe(response => {
-      this.formasPagamento = response.result;
-    });
+    if (this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.UTILIZACAO_CREDITO) {
+      this.formaPagamentoService.findAll().subscribe(response => {
+        this.formasPagamento = response.result;
+      });
+    } else {
+      this.formaPagamentoService.findAllIgnoringIds([FormaPagamentoEnum.UTILIZACAO_CREDITO]).subscribe(response => {
+        this.formasPagamento = response.result;
+      });
+    }
   }
 
   private onCreateForm(): void {
@@ -90,7 +105,10 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
       valor: [0, Validators.required],
       observacao: [null],
       pacoteId: [this.pacote.id, Validators.required],
-      formaPagamentoId: [null, Validators.required]
+      formaPagamentoId: [null, Validators.required],
+      tipoLancamentoId: [TipoLancamentoEnum.ENTRADA, Validators.required],
+      pacienteId: [this.pacote.pacienteId, Validators.required],
+      tipoAtendimentoId: [TipoAtendimentoEnum.PACOTE, Validators.required]
     });
   }
 
@@ -103,7 +121,9 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
       }
       const formValue: Lancamento = {
         ...this.form.value,
-        data: Util.convertStringToDate(this.form.controls.data.value)
+        data: Util.convertStringToDate(this.form.controls.data.value),
+        valor: this.form.controls.valor.value,
+        formaPagamentoId: this.form.controls.formaPagamentoId.value
       };
       this.createOrUpdate(formValue);
     } else {
@@ -127,17 +147,29 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
   }
 
   private onUpdate(): void {
-    this.onCreateForm();
     this.searchByFilter();
     this.findById();
     this.service.setLancamento();
-    this.valorSelecionado = 0;
+    this.resetarCampos();
+    this.onLoadComboFormaPagamento();
+  }
+
+  private resetarCampos(): void {
     this.showNoRecords = false;
     this.isInvalidForm = false;
+    this.valorSelecionado = 0;
+    this.form.controls.valor.enable();
+    this.form.controls.valor.updateValueAndValidity();
+    this.form.controls.formaPagamentoId.enable();
+    this.form.controls.formaPagamentoId.updateValueAndValidity();
+    this.valorParcial = 0;
+    this.opcaoUtilizacaoCredito = this.OPCAO_UTILIZACAO_CREDITO_TOTAL;
+    this.onCreateForm();
   }
 
   public onClickEditar(lancamento: Lancamento): void {
     this.messageService.clearAllMessages();
+    this.resetarCampos();
     this.valorSelecionado = lancamento.valor;
     this.service.findById(lancamento.id).subscribe(response => {
       this.form.setValue({
@@ -146,8 +178,16 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
         valor: response.result.valor,
         observacao: response.result.observacao || null,
         pacoteId: response.result.pacoteId,
-        formaPagamentoId: response.result.formaPagamentoId
+        formaPagamentoId: response.result.formaPagamentoId,
+        tipoLancamentoId: response.result.tipoLancamentoId,
+        pacienteId: response.result.pacienteId,
+        tipoAtendimentoId: response.result.tipoAtendimentoId
       });
+      if (this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.UTILIZACAO_CREDITO) {
+        this.form.controls.formaPagamentoId.disable();
+        this.form.controls.formaPagamentoId.updateValueAndValidity();
+      }
+      this.onLoadComboFormaPagamento();
     });
   }
 
@@ -167,9 +207,36 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
   }
 
   public getCreditLabel(): string {
-    const sexo = this.pacote.pacienteSexoId === SexoEnum.MASCULINO ? 'A' : 'O';
-    const quantidade = this.quantidadeCredito > 1 ? 'créditos' : 'crédito';
-    return `${sexo} paciente ${this.pacote.pacienteNomeCompleto} possui ${this.quantidadeCredito} ${quantidade} no total de ${}`;
+    const sexo = this.pacote.pacienteSexoId === SexoEnum.MASCULINO ? 'O' : 'A';
+    return `${sexo} paciente ${this.pacote.pacienteNomeCompleto} possui um crédito/saldo no valor de ${formatCurrency(this.saldo, 'pt-BR', 'R$')}. Utilizar:`;
+  }
+
+  onClickUseCredit(): void {
+    this.messageService.clearAllMessages();
+    if (this.opcaoUtilizacaoCredito === this.OPCAO_UTILIZACAO_CREDITO_PARCIAL && !this.valorParcial) {
+      this.messageService.sendMessageError(Messages.MSG0085);
+      return;
+    }
+    if (this.valorParcial > this.saldo) {
+      this.messageService.sendMessageError(Messages.MSG0084);
+      return;
+    }
+    if (this.opcaoUtilizacaoCredito === this.OPCAO_UTILIZACAO_CREDITO_TOTAL) {
+      this.form.controls.valor.setValue(this.saldo);
+    } else {
+      this.form.controls.valor.setValue(this.valorParcial);
+    }
+    this.form.controls.valor.disable();
+    this.form.controls.valor.updateValueAndValidity();
+    this.form.controls.formaPagamentoId.setValue(FormaPagamentoEnum.UTILIZACAO_CREDITO);
+    this.form.controls.formaPagamentoId.disable();
+    this.form.controls.formaPagamentoId.updateValueAndValidity();
+    this.form.controls.tipoLancamentoId.setValue(TipoLancamentoEnum.UTILIZACAO_CREDITO);
+    this.onLoadComboFormaPagamento();
+  }
+
+  showEditButton(lancamento: Lancamento): boolean {
+    return this.form.controls.id.value !== lancamento.id;
   }
 
   public getDataAtual(): void {
@@ -189,7 +256,7 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
     this.service.findByFilter(this.filtro).subscribe(response => {
       this.showNoRecords = true;
       this.dados = response.result;
-      this.findPatientCredit();
+      this.findPatientBalance();
     });
   }
 
@@ -201,10 +268,8 @@ export class ModalGerenciarLancamentoPacoteComponent extends Pagination<Lancamen
 
   public onClickCancelar(): void {
     this.messageService.clearAllMessages();
-    this.showNoRecords = false;
-    this.isInvalidForm = false;
-    this.valorSelecionado = 0;
-    this.onCreateForm();
+    this.onLoadComboFormaPagamento();
+    this.resetarCampos();
   }
 
   public onClickCloseModal(): void {

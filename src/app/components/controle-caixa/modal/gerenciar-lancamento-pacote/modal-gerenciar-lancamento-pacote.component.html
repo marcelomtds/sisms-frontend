@@ -6,14 +6,14 @@
 
   <app-dados-pacote [pacote]="pacote"></app-dados-pacote>
 
-  <div class="box box-primary">
+  <div class="box box-primary" *ngIf="saldo">
     <div class="box-header with-border">
       <h3 class="box-title">Crédito</h3>
     </div>
     <div class="box-body">
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          O paciente possui {{ quantidadeCredito }} créditos no valor de {{ valorTotalCredito }} a serem utilizados.
+          {{ getCreditLabel() }}
         </div>
       </div>
       <div class="row">
@@ -21,10 +21,11 @@
           <div class="form-group">
             <div class="radio">
               <label>
-                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                <input [disabled]="form.controls.id.value" [(ngModel)]="opcaoUtilizacaoCredito" type="radio"
+                  name="opcaoUtilizacaoCredito" id="total" [value]="OPCAO_UTILIZACAO_CREDITO_TOTAL">
                 Total:
                 <br>
-                <p>R$ 200,00</p>
+                <p>{{ saldo | currency:'BRL':'symbol':'0.2-2':'pt'}}</p>
               </label>
             </div>
           </div>
@@ -33,12 +34,14 @@
           <div class="form-group">
             <div class="radio">
               <label>
-                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                <input [disabled]="form.controls.id.value" [(ngModel)]="opcaoUtilizacaoCredito" type="radio"
+                  name="opcaoUtilizacaoCredito" id="parcial" [value]="OPCAO_UTILIZACAO_CREDITO_PARCIAL">
                 Parcial:
                 <br>
-                <input id="valor" maxlength="10" currencyMask
+                <input [disabled]="form.controls.id.value" id="valor" maxlength="10" currencyMask
                   [options]="{ align: 'left', suffix: '', prefix: '', thousands: '.', decimal: ',', allowNegative: 'false'  }"
-                  type="text" formControlName="valor" class="form-control" />
+                  type="text" [(ngModel)]="valorParcial" class="form-control"
+                  (focus)="opcaoUtilizacaoCredito = OPCAO_UTILIZACAO_CREDITO_PARCIAL" />
               </label>
             </div>
           </div>
@@ -46,7 +49,7 @@
       </div>
     </div>
     <div class="box-footer">
-      <button class="btn btn-success pull-right" (click)="onClickFormSubmit()"><em
+      <button [disabled]="form.controls.id.value" class="btn btn-success pull-right" (click)="onClickUseCredit()"><em
           class="fa fa-save"></em>&nbsp;Utilizar</button>
     </div>
   </div>
@@ -135,7 +138,7 @@
             <tr *ngFor="let lancamento of dados.content">
               <td>
                 <ng-container *ngIf="isAdministrador || lancamento.usuarioId === currentUser.id; else hidden">
-                  <button title="Editar" *ngIf="form.controls.id.value !== lancamento.id" class="btn btn-primary"
+                  <button title="Editar" *ngIf="showEditButton(lancamento)" class="btn btn-primary"
                     (click)="onClickEditar(lancamento)"><em class="fa fa-pencil"></em></button>
                   <button title="Excluir"
                     class="btn btn-danger {{ form.controls.id.value !== lancamento.id ? 'btn-left' : '' }}"

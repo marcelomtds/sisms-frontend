@@ -24,7 +24,6 @@ export class Lancamento {
         public pacienteNomeCompleto?: string,
         public atendimentoCategoriaAtendimentoDescricao?: string,
         public pacoteCategoriaAtendimentoDescricao?: string,
-        public credito?: boolean
     ) { }
 
 }

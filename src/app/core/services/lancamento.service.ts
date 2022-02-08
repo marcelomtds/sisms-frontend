@@ -31,8 +31,12 @@ export class LancamentoService extends BaseService<Lancamento, LancamentoFilter>
     return this.http.post<Response<LancamentoTotal>>(`${this.apiBaseUrl}/findTotalByFilter`, filter);
   }
 
-  public findPatientCredit(id: number): Observable<Response<Array<Lancamento>>> {
-    return this.http.get<Response<Array<Lancamento>>>(`${this.apiBaseUrl}/findPatientCredit/${id}`);
+  public findPatientBalance(id: number): Observable<Response<number>> {
+    return this.http.get<Response<number>>(`${this.apiBaseUrl}/findPatientBalance/${id}`);
+  }
+
+  public findExtractByPatient(id: number): Observable<Response<Array<Lancamento>>> {
+    return this.http.get<Response<Array<Lancamento>>>(`${this.apiBaseUrl}/findExtractByPatient/${id}`);
   }
 
 }

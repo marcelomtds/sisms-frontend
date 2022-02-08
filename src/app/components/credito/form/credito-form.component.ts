@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
+import { FormaPagamentoEnum } from 'src/app/core/model/enum/forma-pagamento.enum';
+import { TipoLancamentoEnum } from 'src/app/core/model/enum/tipo-lancamento.enum';
 import { FormaPagamento } from 'src/app/core/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/core/model/model/lancamento.model';
 import { Paciente } from 'src/app/core/model/model/paciente.model';
@@ -46,7 +48,7 @@ export class CreditoFormComponent implements OnInit {
   }
 
   private onLoadCombos(): void {
-    this.formaPagamentoService.findAll().subscribe(response => {
+    this.formaPagamentoService.findAllIgnoringIds([FormaPagamentoEnum.UTILIZACAO_CREDITO]).subscribe(response => {
       this.formasPagamento = response.result;
     });
     this.pacienteService.findAllActive().subscribe(response => {
@@ -63,7 +65,7 @@ export class CreditoFormComponent implements OnInit {
         formaPagamentoId: response.result.formaPagamentoId,
         pacienteId: response.result.pacienteId,
         observacao: response.result.observacao || null,
-        credito: response.result.credito
+        tipoLancamentoId: response.result.tipoLancamentoId
       });
     });
   }
@@ -76,7 +78,7 @@ export class CreditoFormComponent implements OnInit {
       formaPagamentoId: [null, Validators.required],
       pacienteId: [null, Validators.required],
       observacao: [null],
-      credito: [true]
+      tipoLancamentoId: [TipoLancamentoEnum.ENTRADA_CREDITO, Validators.required]
     });
   }
 

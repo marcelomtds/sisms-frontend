@@ -34,6 +34,7 @@ import { ModalGerenciarLancamentoPacoteComponent } from '../modal/gerenciar-lanc
 import { ModalGerenciarLancamentoSessaoComponent } from '../modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
 import { PacoteService } from 'src/app/core/services/pacote.service';
 import { AtendimentoService } from 'src/app/core/services/atendimento.service';
+import { FormaPagamentoEnum } from 'src/app/core/model/enum/forma-pagamento.enum';
 
 @Component({
   selector: 'app-controle-caixa-list',
@@ -129,13 +130,14 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     const tipoLancamentoId = this.form.controls.tipoLancamentoId.value;
     this.onCreateForm();
     this.form.controls.tipoLancamentoId.setValue(tipoLancamentoId);
+    this.mesAno = null;
   }
 
   public onLoadCombos(): void {
     this.usuarioService.findAll().subscribe(response => {
       this.usuarios = response.result;
     });
-    this.tipoLancamentoService.findAll().subscribe(response => {
+    this.tipoLancamentoService.findAllIgnoringIds([TipoLancamentoEnum.ENTRADA_CREDITO, TipoLancamentoEnum.UTILIZACAO_CREDITO]).subscribe(response => {
       this.tiposLancamento = response.result;
     });
     this.tipoAtendimentoService.findAll().subscribe(response => {
@@ -147,7 +149,7 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     this.pacienteService.findAll().subscribe(response => {
       this.pacientes = response.result;
     });
-    this.formaPagamentoService.findAll().subscribe(response => {
+    this.formaPagamentoService.findAllIgnoringIds([FormaPagamentoEnum.UTILIZACAO_CREDITO]).subscribe(response => {
       this.formasPagamento = response.result;
     });
     this.onLoadComboCategoriaLancamento();
@@ -178,6 +180,7 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
       ...this.filtro,
       filter: {
         ...this.form.value,
+        tipoLancamentoIds: this.getTiposLancamento(),
         dataInicio: Util.convertStringToDate(dataInicio),
         dataFim: Util.convertStringToDate(dataFim)
       },
@@ -185,13 +188,23 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     this.searchByFilter();
   }
 
+  private getTiposLancamento(): number[] {
+    if (!this.form.controls.tipoLancamentoId.value) {
+      return [TipoLancamentoEnum.ENTRADA, TipoLancamentoEnum.SAIDA, TipoLancamentoEnum.ENTRADA_CREDITO]
+    } else if (this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.ENTRADA) {
+      return [TipoLancamentoEnum.ENTRADA, TipoLancamentoEnum.ENTRADA_CREDITO]
+    } else if (this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.SAIDA) {
+      return [TipoLancamentoEnum.SAIDA]
+    }
+  }
+
   public searchByFilter(): void {
     this.showNoRecords = true;
     this.service.findByFilter(this.filtro).subscribe(response => {
       this.dados = response.result;
-    });
-    this.service.findTotalByFilter(this.filtro).subscribe(response => {
-      this.lancamentoTotal = response.result;
+      this.service.findTotalByFilter(this.filtro).subscribe(response => {
+        this.lancamentoTotal = response.result;
+      });
     });
   }
 

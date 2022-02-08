@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { FormaPagamentoEnum } from 'src/app/core/model/enum/forma-pagamento.enum';
 import { CategoriaLancamento } from 'src/app/core/model/model/categoria-lancamento.model';
 import { FormaPagamento } from 'src/app/core/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/core/model/model/lancamento.model';
@@ -64,7 +65,7 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
   }
 
   private onLoadComboFormaPagamento(): void {
-    this.formaPagamentoService.findAll().subscribe(response => {
+    this.formaPagamentoService.findAllIgnoringIds([FormaPagamentoEnum.UTILIZACAO_CREDITO]).subscribe(response => {
       this.formasPagamento = response.result;
     });
   }

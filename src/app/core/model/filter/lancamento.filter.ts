@@ -5,7 +5,7 @@ export class LancamentoFilter {
         public pacoteId?: number,
         public categoriaAtendimentoId?: number,
         public formaPagamentoId?: number,
-        public tipoLancamentoId?: number,
+        public tipoLancamentoIds?: number[],
         public tipoAtendimentoId?: number,
         public pacienteId?: number,
         public usuarioId?: number,
