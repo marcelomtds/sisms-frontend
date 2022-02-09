@@ -3,9 +3,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
+import { FormaPagamentoEnum } from 'src/app/core/model/enum/forma-pagamento.enum';
 import { TipoAtendimentoEnum } from 'src/app/core/model/enum/tipo-atendimento.enum';
+import { AtendimentoService } from 'src/app/core/services/atendimento.service';
+import { PacoteService } from 'src/app/core/services/pacote.service';
 import { Pagination } from 'src/app/shared/components/pagination/pagination';
 import { Messages } from 'src/app/shared/messages/messages';
+import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { TipoLancamentoEnum } from '../../../core/model/enum/tipo-lancamento.enum';
 import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import { LancamentoFilter } from '../../../core/model/filter/lancamento.filter';
@@ -32,8 +36,6 @@ import { UsuarioService } from '../../../core/services/usuario.service';
 import Util from '../../../shared/util/util';
 import { ModalGerenciarLancamentoPacoteComponent } from '../modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
 import { ModalGerenciarLancamentoSessaoComponent } from '../modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
-import { PacoteService } from 'src/app/core/services/pacote.service';
-import { AtendimentoService } from 'src/app/core/services/atendimento.service';
 
 @Component({
   selector: 'app-controle-caixa-list',
@@ -113,29 +115,18 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     return this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.SAIDA || !this.form.controls.tipoLancamentoId.value;
   }
 
-  public showEditButtonSaida(tipoLancamentoId: number): boolean {
-    return TipoLancamentoEnum.SAIDA === tipoLancamentoId;
-  }
-
-  public showEditButtonEntradaSessao(tipoLancamentoId: number, tipoAtendimentoId: number): boolean {
-    return TipoLancamentoEnum.ENTRADA === tipoLancamentoId && TipoAtendimentoEnum.SESSAO === tipoAtendimentoId;
-  }
-
-  public showEditButtonEntradaPacote(tipoLancamentoId: number, tipoAtendimentoId: number): boolean {
-    return TipoLancamentoEnum.ENTRADA === tipoLancamentoId && TipoAtendimentoEnum.PACOTE === tipoAtendimentoId;
-  }
-
   public onChangeTipoLancamento(): void {
     const tipoLancamentoId = this.form.controls.tipoLancamentoId.value;
     this.onCreateForm();
     this.form.controls.tipoLancamentoId.setValue(tipoLancamentoId);
+    this.mesAno = null;
   }
 
   public onLoadCombos(): void {
     this.usuarioService.findAll().subscribe(response => {
       this.usuarios = response.result;
     });
-    this.tipoLancamentoService.findAll().subscribe(response => {
+    this.tipoLancamentoService.findAllIgnoringIds([TipoLancamentoEnum.ENTRADA_CREDITO, TipoLancamentoEnum.UTILIZACAO_CREDITO]).subscribe(response => {
       this.tiposLancamento = response.result;
     });
     this.tipoAtendimentoService.findAll().subscribe(response => {
@@ -147,7 +138,7 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     this.pacienteService.findAll().subscribe(response => {
       this.pacientes = response.result;
     });
-    this.formaPagamentoService.findAll().subscribe(response => {
+    this.formaPagamentoService.findAllIgnoringIds([FormaPagamentoEnum.UTILIZACAO_CREDITO]).subscribe(response => {
       this.formasPagamento = response.result;
     });
     this.onLoadComboCategoriaLancamento();
@@ -178,6 +169,7 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
       ...this.filtro,
       filter: {
         ...this.form.value,
+        tipoLancamentoIds: this.getTiposLancamento(),
         dataInicio: Util.convertStringToDate(dataInicio),
         dataFim: Util.convertStringToDate(dataFim)
       },
@@ -185,13 +177,23 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     this.searchByFilter();
   }
 
+  private getTiposLancamento(): number[] {
+    if (!this.form.controls.tipoLancamentoId.value) {
+      return [TipoLancamentoEnum.ENTRADA, TipoLancamentoEnum.SAIDA, TipoLancamentoEnum.ENTRADA_CREDITO]
+    } else if (this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.ENTRADA) {
+      return [TipoLancamentoEnum.ENTRADA, TipoLancamentoEnum.ENTRADA_CREDITO]
+    } else if (this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.SAIDA) {
+      return [TipoLancamentoEnum.SAIDA]
+    }
+  }
+
   public searchByFilter(): void {
     this.showNoRecords = true;
     this.service.findByFilter(this.filtro).subscribe(response => {
       this.dados = response.result;
-    });
-    this.service.findTotalByFilter(this.filtro).subscribe(response => {
-      this.lancamentoTotal = response.result;
+      this.service.findTotalByFilter(this.filtro).subscribe(response => {
+        this.lancamentoTotal = response.result;
+      });
     });
   }
 
@@ -220,25 +222,42 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     this.mesAnoList = Util.mesAno();
   }
 
-  public onClickEditar(id: number): void {
-    this.messageService.clearAllMessages();
-    this.router.navigate([`/controle-caixa/saida/alterar/${id}`]);
+  exibirBotaExcluir(lancamento: Lancamento): boolean {
+    return lancamento.tipoLancamentoId === TipoLancamentoEnum.SAIDA;
   }
 
-  public async onClickOpenModalGerenciarLancamentoSessao(id: number): Promise<void> {
+  onClickExcluir(id: number): void {
     this.messageService.clearAllMessages();
-    const initialState = {
-      atendimento: (await this.atendimentoService.findById(id).toPromise()).result
-    };
-    this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+    const modalRef = this.modalService.show(ModalConfirmacaoComponent, { backdrop: 'static' });
+    modalRef.content.titulo = 'Confirmação de Exclusão';
+    modalRef.content.corpo = 'Deseja excluir esse registro?';
+    modalRef.content.onClose.subscribe((result: boolean) => {
+      if (result) {
+        this.service.delete(id).subscribe(response => {
+          this.messageService.sendMessageSuccess(response.message);
+          this.searchByFilter();
+        });
+      }
+    });
   }
 
-  public async onClickOpenModalGerenciarLancamentoPacote(id: number): Promise<void> {
+  public async onClickEdit(lancamento: Lancamento): Promise<void> {
     this.messageService.clearAllMessages();
-    const initialState = {
-      pacote: (await this.pacoteService.findById(id).toPromise()).result
-    };
-    this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+    let initialState;
+    if (lancamento.tipoLancamentoId === TipoLancamentoEnum.ENTRADA_CREDITO) {
+      this.router.navigate([`/credito/alterar/${lancamento.id}`]);
+    } else if (lancamento.tipoLancamentoId === TipoLancamentoEnum.SAIDA) {
+      this.router.navigate([`/controle-caixa/saida/alterar/${lancamento.id}`]);
+    } else if (lancamento.tipoAtendimentoId === TipoAtendimentoEnum.SESSAO) {
+      initialState = {
+        dados: (await this.atendimentoService.findById(lancamento.atendimentoId).toPromise()).result
+      };
+      this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+    } else if (lancamento.tipoAtendimentoId === TipoAtendimentoEnum.PACOTE) {
+      initialState = {
+        dados: (await this.pacoteService.findById(lancamento.pacoteId).toPromise()).result
+      };
+      this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+    }
   }
-
 }

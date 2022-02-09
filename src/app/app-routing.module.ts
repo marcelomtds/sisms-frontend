@@ -68,6 +68,11 @@ export const ROUTES: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'credito',
+    loadChildren: () => import('./components/credito/credito.module').then(m => m.CreditoModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     canActivate: [AuthGuard],
     redirectTo: 'home'

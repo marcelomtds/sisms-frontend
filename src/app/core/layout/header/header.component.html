@@ -49,7 +49,7 @@
             </li>
           </ul>
         </li>
-        <li *ngIf="isCadastroCompleto" class="dropdown user user-menu">
+        <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="{{ usuario.imagem || '../../../../assets/img/sem-foto.jpg' }}" class="user-image"
               alt="Foto do Perfil">
@@ -64,7 +64,7 @@
                 <small>Perfil: {{ usuario.perfilDescricao }}</small>
               </p>
             </li>
-            <li class="user-body">
+            <li *ngIf="isCadastroCompleto" class="user-body">
               <div class="row">
                 <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                   <button title="Aterar Dados Cadastrais" (click)="onClickAlterarDados(usuario.id)"
