@@ -164,7 +164,7 @@ export class PacoteListComponent extends Pagination<PacoteFilter> implements OnI
   public async onClickOpenModalGerenciarLancamentos(id: number): Promise<void> {
     this.messageService.clearAllMessages();
     const initialState = {
-      pacote: (await this.service.findById(id).toPromise()).result
+      dados: (await this.service.findById(id).toPromise()).result
     };
     this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }

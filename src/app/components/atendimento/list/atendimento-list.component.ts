@@ -176,7 +176,7 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
   public async onClickOpenModalGerenciarLancamentoSessao(id: number): Promise<void> {
     this.messageService.clearAllMessages();
     const initialState = {
-      atendimento: (await this.service.findById(id).toPromise()).result
+      dados: (await this.service.findById(id).toPromise()).result
     };
     this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }

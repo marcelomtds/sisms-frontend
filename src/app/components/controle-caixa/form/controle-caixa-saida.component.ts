@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormaPagamentoEnum } from 'src/app/core/model/enum/forma-pagamento.enum';
+import { TipoLancamentoEnum } from 'src/app/core/model/enum/tipo-lancamento.enum';
 import { CategoriaLancamento } from 'src/app/core/model/model/categoria-lancamento.model';
 import { FormaPagamento } from 'src/app/core/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/core/model/model/lancamento.model';
@@ -78,7 +79,8 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
         valor: response.result.valor,
         observacao: response.result.observacao || null,
         categoriaLancamentoId: response.result.categoriaLancamentoId,
-        formaPagamentoId: response.result.formaPagamentoId
+        formaPagamentoId: response.result.formaPagamentoId,
+        tipoLancamentoId: response.result.tipoLancamentoId,
       });
     });
   }
@@ -90,7 +92,8 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
       valor: [0, Validators.required],
       observacao: [null],
       categoriaLancamentoId: [null, Validators.required],
-      formaPagamentoId: [null, Validators.required]
+      formaPagamentoId: [null, Validators.required],
+      tipoLancamentoId: [TipoLancamentoEnum.SAIDA, Validators.required]
     });
   }
 

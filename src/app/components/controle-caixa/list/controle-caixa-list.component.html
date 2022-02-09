@@ -178,24 +178,14 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let lancamento of dados.content">
-                    <td>
-                      <ng-container *ngIf="showEditButtonSaida(lancamento.tipoLancamentoId)">
-                        <button title="Editar Saída" [routerLink]="['/controle-caixa/saida/alterar', lancamento.id]"
-                          class="btn btn-primary"><em class="fa fa-pencil"></em></button>
-                      </ng-container>
-                      <ng-container
-                        *ngIf="showEditButtonEntradaSessao(lancamento.tipoLancamentoId, lancamento.tipoAtendimentoId)">
-                        <button (click)="onClickOpenModalGerenciarLancamentoSessao(lancamento.atendimentoId)"
-                          title="Gerenciar Pagamento" class="btn btn-primary"><em class="fa fa-pencil"></em></button>
-                      </ng-container>
-                      <ng-container
-                        *ngIf="showEditButtonEntradaPacote(lancamento.tipoLancamentoId, lancamento.tipoAtendimentoId)">
-                        <button (click)="onClickOpenModalGerenciarLancamentoPacote(lancamento.pacoteId)"
-                          title="Gerenciar Pagamento" class="btn btn-primary"><em class="fa fa-pencil"></em></button>
-                      </ng-container>
+                    <td class="botao-opcao">
+                      <button (click)="onClickEdit(lancamento)" title="Gerenciar Lançamento" class="btn btn-primary"><em
+                          class="fa fa-pencil"></em></button>
+                      <button *ngIf="exibirBotaExcluir(lancamento)" (click)="onClickExcluir(lancamento.id)" title="Excluir Lançamento"
+                        class="btn btn-danger"><em class="fa fa-trash"></em></button>
                     </td>
                     <td>
-                      {{ lancamento.atendimentoPacienteNomeCompleto || lancamento.pacotePacienteNomeCompleto || '-' }}
+                      {{ lancamento.pacienteNomeCompleto || '-' }}
                     </td>
                     <td>{{ lancamento.usuarioNomeCompleto }}</td>
                     <td>{{ lancamento.data | date : 'dd/MM/yyyy' }}</td>
@@ -205,7 +195,8 @@
                     <td>{{ lancamento?.categoriaLancamentoDescricao || '-' }}</td>
                     <td>{{ lancamento.tipoAtendimentoDescricao || '-' }}</td>
                     <td>
-                      {{ lancamento?.atendimentoCategoriaAtendimentoDescricao || lancamento?.pacoteCategoriaAtendimentoDescricao || '-' }}
+                      {{ lancamento?.atendimentoCategoriaAtendimentoDescricao ||
+                      lancamento?.pacoteCategoriaAtendimentoDescricao || '-' }}
                     </td>
                   </tr>
                 </tbody>

@@ -147,12 +147,12 @@ export class CreditoListComponent implements OnInit {
     let initialState;
     if (lancamento.tipoLancamentoId === TipoLancamentoEnum.UTILIZACAO_CREDITO && lancamento.tipoAtendimentoId === TipoAtendimentoEnum.SESSAO) {
       initialState = {
-        atendimento: (await this.atendimentoService.findById(lancamento.atendimentoId).toPromise()).result
+        dados: (await this.atendimentoService.findById(lancamento.atendimentoId).toPromise()).result
       };
       this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
     } else if (lancamento.tipoLancamentoId === TipoLancamentoEnum.UTILIZACAO_CREDITO && lancamento.tipoAtendimentoId === TipoAtendimentoEnum.PACOTE) {
       initialState = {
-        pacote: (await this.pacoteService.findById(lancamento.pacoteId).toPromise()).result
+        dados: (await this.pacoteService.findById(lancamento.pacoteId).toPromise()).result
       };
       this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
     } else if (lancamento.tipoLancamentoId === TipoLancamentoEnum.ENTRADA_CREDITO) {

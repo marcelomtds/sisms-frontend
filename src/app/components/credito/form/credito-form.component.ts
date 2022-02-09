@@ -67,6 +67,8 @@ export class CreditoFormComponent implements OnInit {
         observacao: response.result.observacao || null,
         tipoLancamentoId: response.result.tipoLancamentoId
       });
+      this.form.controls.pacienteId.disable();
+      this.form.controls.pacienteId.updateValueAndValidity();
     });
   }
 
@@ -99,6 +101,7 @@ export class CreditoFormComponent implements OnInit {
       const formValue: Lancamento = {
         ...this.form.value,
         data: Util.convertStringToDate(this.form.controls.data.value),
+        pacienteId: this.form.controls.pacienteId.value
       };
       if (formValue.id) {
         this.service.update(formValue.id, formValue).subscribe(response => {

@@ -505,7 +505,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
 
   public async onClickOpenModalGerenciarLancamentoSessao(id: number): Promise<void> {
     const initialState = {
-      atendimento: (await this.service.findById(id).toPromise()).result,
+      dados: (await this.service.findById(id).toPromise()).result,
       searchLancamentos: false
     };
     this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
