@@ -131,15 +131,15 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let paciente of dados.content">
-                    <td>
+                    <td class="botao-opcao">
                       <button title="{{ paciente.ativo ? 'Inativar' : 'Ativar' }}"
                         (click)="onClickUpdateStatus(paciente)"
                         class="btn btn-{{ paciente.ativo ? 'danger' : 'success' }}"><em
                           class="fa fa-{{ paciente.ativo ? 'ban' : 'check' }}"></em></button>
                       <button title="Visualizar" (click)="onClickOpenModalVisualizar(paciente)"
-                        class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
+                        class="btn btn-primary"><em class="fa fa-eye"></em></button>
                       <button title="Editar" [routerLink]="['/paciente/alterar', paciente.id]"
-                        class="btn btn-primary btn-left"><em class="fa fa-pencil"></em></button>
+                        class="btn btn-primary"><em class="fa fa-pencil"></em></button>
                     </td>
                     <td>
                       {{ paciente.nomeCompleto }}

@@ -22,11 +22,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let row of dados">
-              <td>
+              <td class="botao-opcao">
                 <button title="Editar" *ngIf="form.controls.id.value !== row.id" class="btn btn-primary"
                   (click)="onClickEditar(row)"><em class="fa fa-pencil"></em></button>
-                <button title="Excluir" class="btn btn-danger {{ form.controls.id.value !== row.id ? 'btn-left' : '' }}"
-                  (click)="onClickExcluir(row.id)"><em class="fa fa-trash"></em></button>
+                <button title="Excluir" class="btn btn-danger" (click)="onClickExcluir(row.id)"><em
+                    class="fa fa-trash"></em></button>
               </td>
               <td>
                 {{ row.horarioInicio | horario }}

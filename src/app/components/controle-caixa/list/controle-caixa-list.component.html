@@ -148,7 +148,7 @@
               </div>
             </div>
             <div class="table-roll">
-              <table id="example2" class="table table-bordered table-hover">
+              <table style="width: 100%" id="example2" class="table table-bordered table-hover">
                 <thead>
                   <tr>
                     <th>Opções</th>
@@ -181,8 +181,8 @@
                     <td class="botao-opcao">
                       <button (click)="onClickEdit(lancamento)" title="Gerenciar Lançamento" class="btn btn-primary"><em
                           class="fa fa-pencil"></em></button>
-                      <button *ngIf="exibirBotaExcluir(lancamento)" (click)="onClickExcluir(lancamento.id)" title="Excluir Lançamento"
-                        class="btn btn-danger"><em class="fa fa-trash"></em></button>
+                      <button *ngIf="exibirBotaExcluir(lancamento)" (click)="onClickExcluir(lancamento.id)"
+                        title="Excluir Lançamento" class="btn btn-danger"><em class="fa fa-trash"></em></button>
                     </td>
                     <td>
                       {{ lancamento.pacienteNomeCompleto || '-' }}

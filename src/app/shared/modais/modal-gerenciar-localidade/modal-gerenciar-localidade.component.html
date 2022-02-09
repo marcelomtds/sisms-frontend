@@ -52,27 +52,26 @@
         <table id="example2" class="table table-bordered table-hover">
           <thead>
             <tr>
+              <th>Opção</th>
               <th style="cursor: pointer" (click)="onClickOrderBy('descricao')"><em
                   [class]="getIconOrderBy('descricao')"></em>&nbsp;Descrição</th>
               <th style="cursor: pointer" (click)="onClickOrderBy('uf.descricao')"><em
                   [class]="getIconOrderBy('uf.descricao')"></em>&nbsp;Estado</th>
-              <th>Opção</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let localidade of dados.content">
+              <td class="botao-opcao">
+                <button title="Editar" *ngIf="form.controls.id.value !== localidade.id; else hidden"
+                  class="btn btn-primary" (click)="onClickEditar(localidade.id)"><em
+                    class="fa fa-pencil"></em>&nbsp;</button>
+                <ng-template #hidden>{{ '-' }}</ng-template>
+              </td>
               <td>
                 {{ localidade.descricao }}
               </td>
               <td>
                 {{ localidade.ufDescricao }}
-              </td>
-              <td>
-                <button title="Editar" *ngIf="form.controls.id.value !== localidade.id; else hidden"
-                  class="btn btn-primary" (click)="onClickEditar(localidade.id)"><em
-                    class="fa fa-pencil"></em>&nbsp;</button>
-                <ng-template #hidden>{{ '-' }}</ng-template>
-
               </td>
             </tr>
           </tbody>
