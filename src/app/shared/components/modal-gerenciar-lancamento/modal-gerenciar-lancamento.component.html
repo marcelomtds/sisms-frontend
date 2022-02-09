@@ -140,13 +140,13 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let lancamento of dadosGrid.content">
-                            <td>
+                            <td class="botao-opcao">
                                 <ng-container
                                     *ngIf="isAdministrador || lancamento.usuarioId === currentUser.id; else hidden">
                                     <button title="Editar" *ngIf="showEditButton(lancamento)" class="btn btn-primary"
                                         (click)="onClickEditar(lancamento)"><em class="fa fa-pencil"></em></button>
                                     <button title="Excluir"
-                                        class="btn btn-danger {{ form.controls.id.value !== lancamento.id ? 'btn-left' : '' }}"
+                                        class="btn btn-danger"
                                         (click)="onClickExcluir(lancamento.id)"><em class="fa fa-trash"></em></button>
                                 </ng-container>
                                 <ng-template #hidden>

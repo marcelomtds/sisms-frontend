@@ -136,20 +136,17 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let pacote of dados?.content">
-                      <td>
+                      <td class="botao-opcao">
                         <button title="Encerrar" *ngIf="pacote?.aberto" (click)="onClickClosePacote(pacote.id)"
                           class="btn btn-danger"><em class="fa fa-ban"></em></button>
                         <button *ngIf="pacote?.aberto" title="Editar" [routerLink]="['/pacote/alterar', pacote.id]"
-                          class="btn btn-primary {{ pacote?.aberto ? 'btn-left' : '' }}"><em
-                            class="fa fa-pencil"></em></button>
+                          class="btn btn-primary"><em class="fa fa-pencil"></em></button>
                         <button *ngIf="pacote?.aberto" title="Excluir" (click)="onClickExcluir(pacote.id)"
-                          class="btn btn-danger {{ pacote?.aberto ? 'btn-left' : '' }}"><em
-                            class="fa fa-trash"></em></button>
+                          class="btn btn-danger"><em class="fa fa-trash"></em></button>
                         <button title="Visualizar" (click)="onClickOpenModalVisualizar(pacote)"
-                          class="btn btn-primary {{ pacote?.aberto ? 'btn-left' : '' }}"><em
-                            class="fa fa-eye"></em></button>
+                          class="btn btn-primary"><em class="fa fa-eye"></em></button>
                         <button title="Gerenciar Lançamentos" (click)="onClickOpenModalGerenciarLancamentos(pacote.id)"
-                          class="btn btn-success btn-left"><em class="fa fa-usd"></em></button>
+                          class="btn btn-success"><em class="fa fa-usd"></em></button>
                       </td>
                       <td>
                         {{ pacote.valor || 0 | currency:'BRL':'symbol':'0.2-2':'pt' }}

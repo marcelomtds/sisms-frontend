@@ -26,10 +26,10 @@
               </thead>
               <tbody>
                 <tr *ngFor="let reserva of dados.content">
-                  <td>
+                  <td class="botao-opcao">
                     <button title="Editar" [routerLink]="['/reserva/alterar', reserva.id]" class="btn btn-primary"><em
                         class="fa fa-pencil"></em></button>
-                    <button title="Excluir" (click)="onClickExcluir(reserva.id)" class="btn btn-danger btn-left"><em
+                    <button title="Excluir" (click)="onClickExcluir(reserva.id)" class="btn btn-danger"><em
                         class="fa fa-trash"></em></button>
                     <button title="Visualizar Paciente" (click)="onClickOpenModalVisualizarPaciente(reserva.pacienteId)"
                       class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
@@ -38,7 +38,8 @@
                     {{ reserva.pacienteNomeCompleto }}
                   </td>
                   <td style=" white-space: pre-wrap;">
-                    {{ reserva?.observacao?.length > 40 ? (reserva?.observacao | slice: 0 : 40) + '...' : reserva.observacao || '-' }}
+                    {{ reserva?.observacao?.length > 40 ? (reserva?.observacao | slice: 0 : 40) + '...' :
+                    reserva.observacao || '-' }}
                   </td>
                 </tr>
               </tbody>

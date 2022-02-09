@@ -42,23 +42,23 @@
         <table id="example2" class="table table-bordered table-hover">
           <thead>
             <tr>
+              <th>Opção</th>
               <th style="cursor: pointer" (click)="onClickOrderBy('descricao')"><em
                   [class]="getIconOrderBy('descricao')"></em>&nbsp;Descrição</th>
-              <th>Opção</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let outraMedida of dados.content">
-              <td>
-                {{ outraMedida.descricao }}
-              </td>
-              <td>
+              <td class="botao-opcao">
                 <button title="Editar" *ngIf="form.controls.id.value !== outraMedida.id; else hidden"
                   class="btn btn-primary" (click)="onClickEditar(outraMedida.id)"><em
                     class="fa fa-pencil"></em>&nbsp;</button>
                 <ng-template #hidden>
                   {{ '-' }}
                 </ng-template>
+              </td>
+              <td>
+                {{ outraMedida.descricao }}
               </td>
             </tr>
           </tbody>
