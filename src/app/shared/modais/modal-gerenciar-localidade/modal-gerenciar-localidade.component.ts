@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
+import { Localidade } from 'src/app/core/model/model/localidade.model';
 import Page from '../../../core/model/model/page.model';
 import { UF } from '../../../core/model/model/uf.model';
 import { LocalidadeService } from '../../../core/services/localidade.service';
@@ -15,7 +16,7 @@ import { Messages } from '../../messages/messages';
 })
 export class ModalGerenciarLocalidadeComponent extends Pagination<{}> implements OnInit {
 
-  public dados = new Page<Array<UF>>();
+  public dados = new Page<Array<Localidade>>();
   public ufs = new Array<UF>();
   public form: FormGroup;
   public isInvalidForm = false;

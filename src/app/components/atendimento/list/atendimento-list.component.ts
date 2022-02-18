@@ -97,10 +97,11 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
   }
 
   private onLoadCombos(): void {
+    //TODO tipar o response de todos resolvers
     this.route.data.subscribe(response => {
-      this.pacientes = response.resolve[0].result;
-      this.usuarios = response.resolve[1].result;
-      this.tiposAtendimento = response.resolve[2].result;
+      this.pacientes = response.resolve.pacientes.result;
+      this.tiposAtendimento = response.resolve.tiposAtendimento.result;
+      this.usuarios = response.resolve.usuarios.result;
     });
   }
 
@@ -175,7 +176,7 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
   public async onClickOpenModalGerenciarLancamentoSessao(id: number): Promise<void> {
     this.messageService.clearAllMessages();
     const initialState = {
-      atendimento: (await this.service.findById(id).toPromise()).result
+      dados: (await this.service.findById(id).toPromise()).result
     };
     this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }

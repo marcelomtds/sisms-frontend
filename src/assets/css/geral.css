@@ -104,7 +104,9 @@ table th {
 }
 
 .botao-opcao {
-  margin-left: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 8px;
 }
 
 .table-roll {

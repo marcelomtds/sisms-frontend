@@ -138,7 +138,7 @@ export default class Util {
         const mesAnoList = new Array<Periodo>();
         let mesAtual = new Date().getMonth() + 1;
         let anoAtual = new Date().getFullYear();
-        for (let i = 1; i <= 12; i++) {
+        for (let i = 1; i <= 24; i++) {
             if (mesAtual < 1) {
                 mesAtual = 12;
                 anoAtual = anoAtual - 1;

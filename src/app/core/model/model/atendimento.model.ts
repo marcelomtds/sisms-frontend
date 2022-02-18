@@ -14,6 +14,7 @@ export class Atendimento {
         public usuarioNomeCompleto?: string,
         public pacienteId?: number,
         public pacienteNomeCompleto?: string,
+        public pacienteSexoId?: string,
         public preAtendimentoId?: number,
         public preAtendimentoData?: string,
         public preAtendimentoPressaoArterial?: number,

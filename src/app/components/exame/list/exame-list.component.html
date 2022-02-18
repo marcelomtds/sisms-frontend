@@ -83,12 +83,12 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let exame of dados.content">
-                    <td>
+                    <td class="botao-opcao">
                       <button title="Editar" [routerLink]="['/exame/alterar', exame.id]" class="btn btn-primary"><em
                           class="fa fa-pencil"></em></button>
                       <button title="Visualizar" (click)="onClickOpenModalVisualizar(exame.id)"
-                        class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
-                      <button title="Excluir" (click)="onClickExcluir(exame.id)" class="btn btn-danger btn-left"><em
+                        class="btn btn-primary"><em class="fa fa-eye"></em></button>
+                      <button title="Excluir" (click)="onClickExcluir(exame.id)" class="btn btn-danger"><em
                           class="fa fa-trash"></em></button>
                     </td>
                     <td>
@@ -101,7 +101,7 @@
                       {{ exame.data | date: 'dd/MM/yyyy' }}
                     </td>
                     <td style=" white-space: pre-wrap;">
-                      {{ formatarObservacao(exame.observacao)   }}
+                      {{ formatarObservacao(exame.observacao) }}
                     </td>
                   </tr>
                 </tbody>

@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public get getNome(): string {
-    return this.usuario.nomeCompleto.split(' ')[0];
+    return this.usuario.nomeCompleto ? this.usuario.nomeCompleto.split(' ')[0] : '';
   }
 
   public get isCadastroCompleto(): boolean {

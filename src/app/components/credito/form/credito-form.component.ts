@@ -1,73 +1,58 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { BsModalService } from 'ngx-bootstrap';
 import { FormaPagamentoEnum } from 'src/app/core/model/enum/forma-pagamento.enum';
 import { TipoLancamentoEnum } from 'src/app/core/model/enum/tipo-lancamento.enum';
-import { CategoriaLancamento } from 'src/app/core/model/model/categoria-lancamento.model';
 import { FormaPagamento } from 'src/app/core/model/model/forma-pagamento.model';
 import { Lancamento } from 'src/app/core/model/model/lancamento.model';
-import { CategoriaLancamentoService } from 'src/app/core/services/categoria-lancamento.service';
+import { Paciente } from 'src/app/core/model/model/paciente.model';
 import { FormaPagamentoService } from 'src/app/core/services/forma-pagamento.service';
+import { LancamentoService } from 'src/app/core/services/lancamento.service';
 import { MessageService } from 'src/app/core/services/message.service';
+import { PacienteService } from 'src/app/core/services/paciente.service';
+import { SharedService } from 'src/app/core/services/shared.service';
 import { Messages } from 'src/app/shared/messages/messages';
 import Util from 'src/app/shared/util/util';
-import { LancamentoService } from '../../../core/services/lancamento.service';
 
 @Component({
-  selector: 'app-controle-caixa-saida',
-  templateUrl: './controle-caixa-saida.component.html'
+  selector: 'app-credito-form',
+  templateUrl: './credito-form.component.html'
 })
-export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
+export class CreditoFormComponent implements OnInit {
 
-  public form: FormGroup;
-  public categoriasLancamento = new Array<CategoriaLancamento>();
-  public formasPagamento = new Array<FormaPagamento>();
-  public isInvalidForm = false;
-  public subscription: Subscription;
+  form: FormGroup;
+  isInvalidForm = false;
+  pacientes = new Array<Paciente>();
+  formasPagamento = new Array<FormaPagamento>();
 
-  public constructor(
-    private formBuilder: FormBuilder,
+  constructor(
     private service: LancamentoService,
+    private formBuilder: FormBuilder,
+    private formaPagamentoService: FormaPagamentoService,
+    private modalService: BsModalService,
     private messageService: MessageService,
-    private route: ActivatedRoute,
     private router: Router,
-    private categoriaLancamentoService: CategoriaLancamentoService,
-    private formaPagamentoService: FormaPagamentoService
-  ) {
-    this.subscription = this.categoriaLancamentoService.getCategoriaLancamento().subscribe(() => {
-      this.onLoadComboCategoriaLancamento();
-    });
-  }
+    private route: ActivatedRoute,
+    private pacienteService: PacienteService,
+    private sharedService: SharedService
+  ) { }
 
-  public ngOnInit(): void {
+  ngOnInit() {
     const id = +this.route.snapshot.params.id;
     if (id) {
       this.findById(id);
     }
     this.onCreateForm();
-    this.onLoadComboCategoriaLancamento();
-    this.onLoadComboFormaPagamento();
+    this.onLoadCombos();
   }
 
-  public ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  public onClickCancelar(): void {
-    this.messageService.clearAllMessages();
-    window.history.back();
-  }
-
-  private onLoadComboCategoriaLancamento(): void {
-    this.categoriaLancamentoService.findAll().subscribe(response => {
-      this.categoriasLancamento = response.result;
-    });
-  }
-
-  private onLoadComboFormaPagamento(): void {
+  private onLoadCombos(): void {
     this.formaPagamentoService.findAllIgnoringIds([FormaPagamentoEnum.UTILIZACAO_CREDITO]).subscribe(response => {
       this.formasPagamento = response.result;
+    });
+    this.pacienteService.findAllActive().subscribe(response => {
+      this.pacientes = response.result;
     });
   }
 
@@ -77,34 +62,36 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
         id: response.result.id,
         data: Util.convertDateToString(response.result.data),
         valor: response.result.valor,
-        observacao: response.result.observacao || null,
-        categoriaLancamentoId: response.result.categoriaLancamentoId,
         formaPagamentoId: response.result.formaPagamentoId,
-        tipoLancamentoId: response.result.tipoLancamentoId,
+        pacienteId: response.result.pacienteId,
+        observacao: response.result.observacao || null,
+        tipoLancamentoId: response.result.tipoLancamentoId
       });
+      this.form.controls.pacienteId.disable();
+      this.form.controls.pacienteId.updateValueAndValidity();
     });
   }
 
-  private onCreateForm(): void {
+  onCreateForm(): void {
     this.form = this.formBuilder.group({
       id: [null],
       data: [null, Validators.required],
-      valor: [0, Validators.required],
-      observacao: [null],
-      categoriaLancamentoId: [null, Validators.required],
+      valor: [0, [Validators.required, Validators.min(0.01), Validators.max(999999.99)]],
       formaPagamentoId: [null, Validators.required],
-      tipoLancamentoId: [TipoLancamentoEnum.SAIDA, Validators.required]
+      pacienteId: [null, Validators.required],
+      observacao: [null],
+      tipoLancamentoId: [TipoLancamentoEnum.ENTRADA_CREDITO, Validators.required]
     });
   }
 
-  public getDataAtual(): void {
+  getDataAtual(): void {
     this.messageService.clearAllMessages();
     if (!this.form.controls.data.value) {
       this.form.controls.data.setValue(new Date().toLocaleDateString());
     }
   }
 
-  public onClickFormSubmit(): void {
+  onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
       if (!Util.isDataValida(this.form.controls.data.value)) {
@@ -113,23 +100,29 @@ export class ControleCaixaSaidaComponent implements OnInit, OnDestroy {
       }
       const formValue: Lancamento = {
         ...this.form.value,
-        data: Util.convertStringToDate(this.form.controls.data.value)
+        data: Util.convertStringToDate(this.form.controls.data.value),
+        pacienteId: this.form.controls.pacienteId.value
       };
       if (formValue.id) {
         this.service.update(formValue.id, formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.router.navigate(['/controle-caixa']);
+          this.router.navigate(['/credito']);
         });
       } else {
         this.service.create(formValue).subscribe(response => {
           this.messageService.sendMessageSuccess(response.message);
-          this.router.navigate(['/controle-caixa']);
+          this.router.navigate(['/credito']);
         });
       }
     } else {
       this.isInvalidForm = true;
       this.messageService.sendMessageError(Messages.MSG0004);
     }
+  }
+
+  onClickCancelar(): void {
+    this.messageService.clearAllMessages();
+    window.history.back();
   }
 
 }

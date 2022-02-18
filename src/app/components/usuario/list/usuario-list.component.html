@@ -81,7 +81,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let usuario of dados.content">
-                    <td>
+                    <td class="botao-opcao">
                       <button title="{{ usuario.ativo ? 'Inativar' : 'Ativar' }}"
                         *ngIf="authGuardService.isPermitido(permissaoAdministrador) && usuario.id !== currentUser?.id"
                         (click)="onClickUpdateStatus(usuario)"
@@ -90,7 +90,7 @@
                       </button>
                       <button title="Visualizar" *ngIf="authGuardService.isPermitido(permissaoAdministrador)"
                         (click)="onClickOpenModalVisualizar(usuario.id)"
-                        class="btn btn-primary {{ usuario.id !== currentUser?.id ? 'btn-left' : '' }}"><em
+                        class="btn btn-primary"><em
                           class="fa fa-eye"></em>
                       </button>
                     </td>

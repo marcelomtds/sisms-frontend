@@ -237,6 +237,6 @@ export class ExameFormComponent implements OnInit, OnDestroy {
   }
 
   isImage(name: string): boolean {
-    return Util.isFormatoImagemValido(name);;
+    return Util.isFormatoImagemValido(name);
   }
 }
