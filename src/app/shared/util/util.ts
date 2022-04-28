@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import { Periodo } from '../../core/model/model/periodo.model';
+import { PeriodoData } from '../../core/model/model/periodo-data.model';
 
 export default class Util {
 
@@ -134,8 +134,8 @@ export default class Util {
         }
     }
 
-    static mesAno(): Periodo[] {
-        const mesAnoList = new Array<Periodo>();
+    static mesAno(): PeriodoData[] {
+        const mesAnoList = new Array<PeriodoData>();
         let mesAtual = new Date().getMonth() + 1;
         let anoAtual = new Date().getFullYear();
         for (let i = 1; i <= 24; i++) {
@@ -145,7 +145,7 @@ export default class Util {
             }
             const dataInicio = moment(`${anoAtual}-${mesAtual}`, 'YYYY-MM');
             const dataFim = moment(dataInicio).endOf('month');
-            const obj: Periodo = {
+            const obj: PeriodoData = {
                 dataInicio: dataInicio.toDate(),
                 dataFim: dataFim.toDate(),
                 descricao: `${Util.mesesAno(mesAtual)}/${anoAtual}`
