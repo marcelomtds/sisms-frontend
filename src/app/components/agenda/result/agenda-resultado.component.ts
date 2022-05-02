@@ -13,13 +13,13 @@ export class AgendaResultadoComponent {
   @Output() editEmitter = new EventEmitter<number>();
   @Output() removeEmitter = new EventEmitter<number>();
 
-  public onClickEditar(id: number): void {
+  public onClickEditar(agenda: Agenda): void {
     window.scroll(0, 0);
-    this.editEmitter.emit(id);
+    this.editEmitter.emit(agenda.id);
   }
 
-  public onClickExcluir(value: number): void {
-    this.removeEmitter.emit(value);
+  public onClickExcluir(id: number): void {
+    this.removeEmitter.emit(id);
   }
 
 }

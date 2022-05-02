@@ -1,8 +1,7 @@
 export class Periodo {
 
     constructor(
-        public dataInicio?: Date,
-        public dataFim?: Date,
+        public id?: number,
         public descricao?: string
     ) { }
 

@@ -20,7 +20,7 @@ import { LancamentoTotal } from '../../../core/model/model/lancamento-total.mode
 import { Lancamento } from '../../../core/model/model/lancamento.model';
 import { Paciente } from '../../../core/model/model/paciente.model';
 import Page from '../../../core/model/model/page.model';
-import { Periodo } from '../../../core/model/model/periodo.model';
+import { PeriodoData } from '../../../core/model/model/periodo-data.model';
 import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
 import { TipoLancamento } from '../../../core/model/model/tipo-lancamento.model';
 import { Usuario } from '../../../core/model/model/usuario.model';
@@ -50,12 +50,12 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
   public categoriasLancamento = new Array<CategoriaLancamento>();
   public categoriasAtendimento = new Array<CategoriaAtendimento>();
   public formasPagamento = new Array<FormaPagamento>();
-  public mesAnoList = new Array<Periodo>();
+  public mesAnoList = new Array<PeriodoData>();
   public form: FormGroup;
   public dados = new Page<Array<Lancamento>>();
   public showNoRecords = false;
   public lancamentoTotal = new LancamentoTotal;
-  public mesAno: Periodo;
+  public mesAno: PeriodoData;
   public subscription: Subscription;
 
   public constructor(
@@ -207,7 +207,7 @@ export class ControleCaixaListComponent extends Pagination<LancamentoFilter> imp
     this.mesAno = null;
   }
 
-  public onChangeComboMesAno(periodo: Periodo): void {
+  public onChangeComboMesAno(periodo: PeriodoData): void {
     this.messageService.clearAllMessages();
     if (periodo) {
       this.form.controls.dataInicio.setValue(periodo.dataInicio.toLocaleDateString());

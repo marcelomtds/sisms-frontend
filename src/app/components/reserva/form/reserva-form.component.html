@@ -11,19 +11,54 @@
         <div class="box-body">
           <form [formGroup]="form">
             <div class="row">
-              <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                 <div class="form-group">
-                  <label for="paciente">Paciente</label>
-                  <ng-select id="paciente" placeholder="Selecione" formControlName="pacienteId" [items]="pacientes"
-                    bindLabel="nomeCompleto" bindValue="id">
-                    <ng-template ng-option-tmp let-item="item">
-                      {{ item.nomeCompleto }}
-                      <br />
-                      <small>CPF: {{ item.cpf | cpf }}</small>
-                    </ng-template>
-                  </ng-select>
-                  <app-message-required [isInvalidForm]="isInvalidForm" [controlComponent]="form.get('pacienteId')">
+                  <label for="pacienteNomeCompleto">Nome Completo</label>
+                  <input id="pacienteNomeCompleto" trim="blur" maxlength="200" type="text"
+                    formControlName="pacienteNomeCompleto" class="form-control" />
+                  <app-message-required [isInvalidForm]="isInvalidForm"
+                    [controlComponent]="form.get('pacienteNomeCompleto')">
                   </app-message-required>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="telefone">Número do Telefone</label>
+                  <input id="telefone" [validation]="false" [mask]="getPhoneNumberMask()" type="text"
+                    formControlName="telefone" class="form-control" />
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="categoriaAtendimento">Categoria de Atendimento</label>
+                  <ng-select id="categoriaAtendimento" placeholder="Selecione" formControlName="categoriaAtendimentoId"
+                    [items]="categoriasAtendimento" bindLabel="descricao" bindValue="id">
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="periodo">Período</label>
+                  <ng-select id="periodo" placeholder="Selecione" formControlName="periodoId" [items]="periodos"
+                    bindLabel="descricao" bindValue="id">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <div class="form-group">
+                  <label for="horario">Horário</label>
+                  <input [dropSpecialCharacters]="false" [validation]="false" mask="00:00" id="horario" maxlength="5"
+                    type="text" formControlName="horario" class="form-control" />
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label for="diaSemana">Dia da Semana</label>
+                  <ng-select id="diaSemana" placeholder="Selecione" formControlName="diaSemanaId" [items]="diasSemana"
+                    bindLabel="descricao" bindValue="id">
+                  </ng-select>
                 </div>
               </div>
             </div>

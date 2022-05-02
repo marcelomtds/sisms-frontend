@@ -28,10 +28,10 @@ export class Paciente {
         public enderecoLocalidadeUFId?: number,
         public enderecoLocalidadeUFDescricao?: string,
         public contatoId?: number,
-        public contatoCelular?: string,
-        public contatoCelularRecado?: string,
-        public contatoResidencial?: string,
-        public contatoComercial?: string,
+        public contatoTelefone1?: string,
+        public contatoTelefone2?: string,
+        public contatoTelefone3?: string,
+        public contatoTelefone4?: string,
         public contatoEmail?: string
     ) { }
 

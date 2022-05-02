@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { resizeBase64ForMaxWidthAndMaxHeight } from 'resize-base64';
@@ -117,10 +117,10 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
       enderecoLocalidadeId: [null, Validators.required],
       enderecoLocalidadeUFId: [null, Validators.required],
       contatoId: [null],
-      contatoCelular: [null],
-      contatoCelularRecado: [null],
-      contatoResidencial: [null],
-      contatoComercial: [null],
+      contatoTelefone1: [null],
+      contatoTelefone2: [null],
+      contatoTelefone3: [null],
+      contatoTelefone4: [null],
       contatoEmail: [null],
     });
   }
@@ -264,10 +264,10 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
           enderecoLocalidadeId: usuario.enderecoLocalidadeId,
           enderecoLocalidadeUFId: usuario.enderecoLocalidadeUFId,
           contatoId: usuario.contatoId,
-          contatoCelular: usuario.contatoCelular || null,
-          contatoCelularRecado: usuario.contatoCelularRecado || null,
-          contatoResidencial: usuario.contatoResidencial || null,
-          contatoComercial: usuario.contatoComercial || null,
+          contatoTelefone1: usuario.contatoTelefone1 || null,
+          contatoTelefone2: usuario.contatoTelefone2 || null,
+          contatoTelefone3: usuario.contatoTelefone3 || null,
+          contatoTelefone4: usuario.contatoTelefone4 || null,
           contatoEmail: usuario.contatoEmail || null,
         });
         this.onChangeUf();
@@ -284,4 +284,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  getPhoneNumberMask(control: AbstractControl): string {
+    return Util.getPhoneNumberMask(control);
+  }
 }

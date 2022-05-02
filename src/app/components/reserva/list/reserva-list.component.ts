@@ -33,7 +33,7 @@ export class ReservaListComponent extends Pagination<{}> implements OnInit {
   }
 
   private initFilterValue(): void {
-    this.filtro.orderBy = 'paciente.nomeCompleto';
+    this.filtro.orderBy = 'pacienteNomeCompleto';
     this.filtro.direction = 'ASC';
   }
 

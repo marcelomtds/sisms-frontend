@@ -28,5 +28,6 @@ export enum Messages {
     MSG0072 = 'Ocorreu um erro ao carregar os arquivos. Contate o administrador do sistema.',
     MSG0073 = 'É permitido adicionar no máximo 10 anexos.',
     MSG0084 = 'O valor informado é maior do que o valor do saldo disponível.',
-    MSG0085 = 'É necessário informar o valor quando a opção parcial é selecionada.'
+    MSG0085 = 'É necessário informar o valor quando a opção parcial é selecionada.',
+    MSG0089 = 'O horário é inválido..'
 }

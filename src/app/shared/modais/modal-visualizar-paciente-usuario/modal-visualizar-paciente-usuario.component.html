@@ -166,28 +166,28 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <label>Nº Tel. Celular</label>
-            <p>{{ dados?.contatoCelular ? (dados.contatoCelular | telefone) : '-' }}</p>
+            <label>Nº Telefone (Principal)</label>
+            <p>{{ dados?.contatoTelefone1 | telefone }}</p>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <label>Nº Tel. Celular Recado</label>
-            <p>{{ dados?.contatoCelularRecado ? (dados.contatoCelularRecado | telefone) : '-' }}</p>
+            <label>Nº Telelefone 2</label>
+            <p>{{ dados?.contatoTelefone2 | telefone }}</p>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <label>Nº Tel. Residencial</label>
-            <p>{{ dados?.contatoResidencial ? (dados.contatoResidencial | telefone) : '-' }}</p>
+            <label>Nº Telelefone 3</label>
+            <p>{{ dados?.contatoTelefone3 | telefone }}</p>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <label>Nº Tel. Comercial</label>
-            <p>{{ dados?.contatoComercial ? (dados.contatoComercial | telefone) : '-' }}</p>
+            <label>Nº Telelefone 4</label>
+            <p>{{ dados?.contatoTelefone4 | telefone }}</p>
           </div>
         </div>
       </div>
