@@ -119,6 +119,6 @@ export class ReservaFormComponent implements OnInit {
   }
 
   getPhoneNumberMask(): string {
-    return this.form.controls.telefone.value && this.form.controls.telefone.value.length < 11 ? '(00) 0000-00000' : '(00) 00000-0000';
+    return Util.getPhoneNumberMask(this.form.controls.telefone);
   }
 }

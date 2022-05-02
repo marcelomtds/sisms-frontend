@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { Pagination } from 'src/app/shared/components/pagination/pagination';
+import Util from 'src/app/shared/util/util';
 import { PageableFilter } from '../../../core/model/filter/filter.filter';
 import { PacienteUsuarioFilter } from '../../../core/model/filter/paciente-usuario.filter';
 import { Localidade } from '../../../core/model/model/localidade.model';
@@ -72,10 +73,7 @@ export class PacienteListComponent extends Pagination<PacienteUsuarioFilter> imp
       sexoId: [null],
       localidadeId: [null],
       ufId: [null],
-      celular: [null],
-      celularRecado: [null],
-      residencial: [null],
-      comercial: [null],
+      telefone: [null],
       ativo: [null],
     });
   }
@@ -170,4 +168,7 @@ export class PacienteListComponent extends Pagination<PacienteUsuarioFilter> imp
     this.modalService.show(ModalVisualizarPacienteUsuarioComponent, { initialState, backdrop: 'static', class: 'gray modal-lg' });
   }
 
+  getPhoneNumberMask(): string {
+    return Util.getPhoneNumberMask(this.form.controls.telefone);
+  }
 }

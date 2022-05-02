@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Paciente } from 'src/app/core/model/model/paciente.model';
@@ -118,10 +118,10 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
       enderecoLocalidadeId: [null, Validators.required],
       enderecoLocalidadeUFId: [null, Validators.required],
       contatoId: [null],
-      contatoCelular: [null],
-      contatoCelularRecado: [null],
-      contatoResidencial: [null],
-      contatoComercial: [null],
+      contatoTelefone1: [null],
+      contatoTelefone2: [null],
+      contatoTelefone3: [null],
+      contatoTelefone4: [null],
       contatoEmail: [null],
     });
   }
@@ -204,10 +204,10 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
         enderecoLocalidadeId: response.result.enderecoLocalidadeId,
         enderecoLocalidadeUFId: response.result.enderecoLocalidadeUFId,
         contatoId: response.result.contatoId || null,
-        contatoCelular: response.result.contatoCelular || null,
-        contatoCelularRecado: response.result.contatoCelularRecado || null,
-        contatoResidencial: response.result.contatoResidencial || null,
-        contatoComercial: response.result.contatoComercial || null,
+        contatoTelefone1: response.result.contatoTelefone1 || null,
+        contatoTelefone2: response.result.contatoTelefone2 || null,
+        contatoTelefone3: response.result.contatoTelefone3 || null,
+        contatoTelefone4: response.result.contatoTelefone4 || null,
         contatoEmail: response.result.contatoEmail || null,
       });
       this.onLoadComboLocalidade();
@@ -220,4 +220,7 @@ export class PacienteFormComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
+  getPhoneNumberMask(control: AbstractControl): string {
+    return Util.getPhoneNumberMask(control);
+  }
 }

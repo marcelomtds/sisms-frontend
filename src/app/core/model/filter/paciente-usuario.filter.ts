@@ -7,10 +7,7 @@ export class PacienteUsuarioFilter {
         public sexoId?: number,
         public LocalidadeId?: number,
         public ufId?: number,
-        public celular?: string,
-        public celularRecado?: string,
-        public residencial?: string,
-        public comercial?: string
+        public telefone?: string
     ) { }
 
 }

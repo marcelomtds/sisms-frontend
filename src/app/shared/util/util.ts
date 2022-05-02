@@ -1,3 +1,4 @@
+import { AbstractControl } from '@angular/forms';
 import * as moment from 'moment';
 import { PeriodoData } from '../../core/model/model/periodo-data.model';
 
@@ -156,4 +157,7 @@ export default class Util {
         return mesAnoList;
     }
 
+    static getPhoneNumberMask(control: AbstractControl): string {
+        return control && control.value && control.value.length < 11 ? '(00) 0000-00000' : '(00) 00000-0000';
+    }
 }
