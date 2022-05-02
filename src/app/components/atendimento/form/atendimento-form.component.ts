@@ -24,6 +24,7 @@ import { PacoteService } from 'src/app/core/services/pacote.service';
 import { Messages } from 'src/app/shared/messages/messages';
 import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalCriarPacoteComponent } from 'src/app/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
+import { ModalVisualizarAtendimentoComponent } from 'src/app/shared/modais/modal-visualizar-atendimento/modal-visualizar-atendimento.component';
 import Util from 'src/app/shared/util/util';
 import { AtendimentoService } from '../../../core/services/atendimento.service';
 import { ModalGerenciarLancamentoSessaoComponent } from '../../controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
@@ -55,6 +56,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private pacotService: PacoteService,
     private service: AtendimentoService,
+    private pacoteService: PacoteService,
     private route: ActivatedRoute,
     private messageService: MessageService,
     private router: Router,
@@ -529,4 +531,21 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
     return this.form.controls.pacienteId.value && this.checkTipoAtendimentoPacote() && this.pacote ? true : false;
   }
 
+  exibirBotaoVisualizarUltimoAtendimento(): boolean {
+    return this.form.controls.pacienteId.value && this.form.controls.aberto.value && this.isDrenagem();
+  }
+
+  async onClickOpenModalVisualizarUltimoAtendimento(): Promise<void> {
+    this.messageService.clearAllMessages();
+    const atendimento = (await this.service.findLastByPaciente(this.form.controls.pacienteId.value).toPromise()).result;
+    if (atendimento) {
+      const initialState = {
+        atendimento: atendimento,
+        pacote: atendimento.pacoteId ? (await this.pacoteService.findById(atendimento.pacoteId).toPromise()).result : null,
+      };
+      this.modalService.show(ModalVisualizarAtendimentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+    } else {
+      this.messageService.sendMessageError(Messages.MSG0090);
+    }
+  }
 }

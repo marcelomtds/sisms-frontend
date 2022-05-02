@@ -5,6 +5,7 @@ export class PreAtendimentoOutraMedida {
         public id?: number,
         public preAtendimentoId?: number,
         public outraMedidaId?: number,
+        public outraMedidaDescricao?: string,
         public valor?: number
     ) { }
 
