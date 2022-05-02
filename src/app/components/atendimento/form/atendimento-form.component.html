@@ -69,6 +69,13 @@
                   </div>
                 </div>
               </div>
+              <div *ngIf="exibirBotaoVisualizarUltimoAtendimento()" class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <button title="Visualizar último atendimento" (click)="onClickOpenModalVisualizarUltimoAtendimento()"
+                    class="btn btn-primary"><span><em class="fa fa-eye"></em>&nbsp;Visualizar último
+                      atendimento</span></button>
+                </div>
+              </div>
             </ng-container>
           </div>
         </div>

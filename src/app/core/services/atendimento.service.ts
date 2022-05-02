@@ -27,6 +27,7 @@ export class AtendimentoService extends BaseService<Atendimento, AtendimentoFilt
     return this.http.get<Response<Array<Atendimento>>>(`${this.apiBaseUrl}/findByPackage/${pacoteId}`);
   }
 
-
-
+  public findLastByPaciente(pacienteId: number): Observable<Response<Atendimento>> {
+    return this.http.get<Response<Atendimento>>(`${this.apiBaseUrl}/findLastByPaciente/${pacienteId}`);
+  }
 }
