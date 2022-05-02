@@ -231,30 +231,31 @@
             <div class="row">
               <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
-                  <label for="celular">Nº Tel. Celular</label>
-                  <input id="celular" [validation]="false" mask="(00) 00000-0000" type="text"
-                    formControlName="contatoCelular" class="form-control" />
+                  <label for="telefonePrincipal">Nº Tel. (Principal)</label>
+                  <input id="telefonePrincipal" [validation]="false"
+                    [mask]="getPhoneNumberMask(form.controls.contatoTelefone1)" type="text"
+                    formControlName="contatoTelefone1" class="form-control" />
                 </div>
               </div>
               <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
-                  <label for="celularRecado">Nº Tel. Cel. Recado</label>
-                  <input id="celularRecado" [validation]="false" mask="(00) 00000-0000" type="text"
-                    formControlName="contatoCelularRecado" class="form-control" />
+                  <label for="telefone2">Nº Telefone 2</label>
+                  <input id="telefone2" [validation]="false" [mask]="getPhoneNumberMask(form.controls.contatoTelefone2)"
+                    type="text" formControlName="contatoTelefone2" class="form-control" />
                 </div>
               </div>
               <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
-                  <label for="residencial">Nº Tel. Residencial</label>
-                  <input id="residencial" [validation]="false" mask="(00) 0000-0000" type="text"
-                    formControlName="contatoResidencial" class="form-control" />
+                  <label for="telefone3">Nº Telefone 3</label>
+                  <input id="telefone3" [validation]="false" [mask]="getPhoneNumberMask(form.controls.contatoTelefone3)"
+                    type="text" formControlName="contatoTelefone3" class="form-control" />
                 </div>
               </div>
               <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="form-group">
-                  <label for="comercial">Nº Tel. Comercial</label>
-                  <input id="comercial" [validation]="false" mask="(00) 0000-0000" type="text"
-                    formControlName="contatoComercial" class="form-control" />
+                  <label for="telefone4">Nº Telefone 4</label>
+                  <input id="telefone4" [validation]="false" [mask]="getPhoneNumberMask(form.controls.contatoTelefone4)"
+                    type="text" formControlName="contatoTelefone4" class="form-control" />
                 </div>
               </div>
               <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">

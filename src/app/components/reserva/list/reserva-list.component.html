@@ -18,8 +18,22 @@
               <thead>
                 <tr>
                   <th>Opções</th>
-                  <th style="cursor: pointer" (click)="onClickOrderBy('paciente.nomeCompleto')"><em
-                      [class]="getIconOrderBy('paciente.nomeCompleto')"></em>&nbsp;Paciente</th>
+                  <th style="cursor: pointer" (click)="onClickOrderBy('pacienteNomeCompleto')"><em
+                      [class]="getIconOrderBy('pacienteNomeCompleto')"></em>&nbsp;Nome do Paciente</th>
+                  <th style="cursor: pointer" (click)="onClickOrderBy('telefone')"><em
+                      [class]="getIconOrderBy('telefone')"></em>&nbsp;Telefone</th>
+                  <th style="cursor: pointer" (click)="onClickOrderBy('categoriaAtendimento.descricao')"><em
+                      [class]="getIconOrderBy('categoriaAtendimento.descricao')"></em>&nbsp;Categoria de Atendimento
+                  </th>
+                  <th style="cursor: pointer" (click)="onClickOrderBy('periodo')"><em
+                      [class]="getIconOrderBy('periodo')"></em>&nbsp;Período
+                  </th>
+                  <th style="cursor: pointer" (click)="onClickOrderBy('horario')"><em
+                      [class]="getIconOrderBy('horario')"></em>&nbsp;Horário
+                  </th>
+                  <th style="cursor: pointer" (click)="onClickOrderBy('diaSemana.descricao')"><em
+                      [class]="getIconOrderBy('diaSemana.descricao')"></em>&nbsp;Dia da Semana
+                  </th>
                   <th style="cursor: pointer" (click)="onClickOrderBy('observacao')"><em
                       [class]="getIconOrderBy('observacao')"></em>&nbsp;Observação</th>
                 </tr>
@@ -31,11 +45,24 @@
                         class="fa fa-pencil"></em></button>
                     <button title="Excluir" (click)="onClickExcluir(reserva.id)" class="btn btn-danger"><em
                         class="fa fa-trash"></em></button>
-                    <button title="Visualizar Paciente" (click)="onClickOpenModalVisualizarPaciente(reserva.pacienteId)"
-                      class="btn btn-primary btn-left"><em class="fa fa-eye"></em></button>
                   </td>
                   <td>
                     {{ reserva.pacienteNomeCompleto }}
+                  </td>
+                  <td>
+                    {{ reserva.telefone || '-' | telefone }}
+                  </td>
+                  <td>
+                    {{ reserva.categoriaAtendimentoDescricao || '-' }}
+                  </td>
+                  <td>
+                    {{ reserva.periodoDescricao || '-' }}
+                  </td>
+                  <td>
+                    {{ reserva.horario || '-' | horario }}
+                  </td>
+                  <td>
+                    {{ reserva.diaSemanaDescricao || '-' }}
                   </td>
                   <td style=" white-space: pre-wrap;">
                     {{ reserva?.observacao?.length > 40 ? (reserva?.observacao | slice: 0 : 40) + '...' :

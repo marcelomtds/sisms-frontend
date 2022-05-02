@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Paciente } from 'src/app/core/model/model/paciente.model';
+import { CategoriaAtendimento } from 'src/app/core/model/model/categoria-atendimento.model';
+import { DiaSemana } from 'src/app/core/model/model/dia-semana.model';
+import { Periodo } from 'src/app/core/model/model/periodo.model';
 import { Reserva } from 'src/app/core/model/model/reserva.model';
+import { CategoriaAtendimentoService } from 'src/app/core/services/categoria-atendimento.service';
+import { DiaSemanaService } from 'src/app/core/services/dia-semana.service';
 import { MessageService } from 'src/app/core/services/message.service';
-import { PacienteService } from 'src/app/core/services/paciente.service';
+import { PeriodoService } from 'src/app/core/services/periodo.service';
 import { ReservaService } from 'src/app/core/services/reserva.service';
 import { Messages } from 'src/app/shared/messages/messages';
+import Util from 'src/app/shared/util/util';
 
 @Component({
   selector: 'app-reserva-form',
@@ -14,8 +19,10 @@ import { Messages } from 'src/app/shared/messages/messages';
 })
 export class ReservaFormComponent implements OnInit {
 
-  public pacientes = new Array<Paciente>();
   public dados = new Array<Reserva>();
+  categoriasAtendimento = new Array<CategoriaAtendimento>();
+  periodos = new Array<Periodo>();
+  diasSemana = new Array<DiaSemana>();
   public form: FormGroup;
   public isInvalidForm = false;
 
@@ -23,18 +30,32 @@ export class ReservaFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private service: ReservaService,
     private messageService: MessageService,
-    private pacienteService: PacienteService,
+    private categoriaAtendimentoService: CategoriaAtendimentoService,
+    private periodoService: PeriodoService,
+    private diaSemanaService: DiaSemanaService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
 
   public ngOnInit(): void {
     this.onCreateForm();
-    this.onLoadPacientes();
+    this.onLoadCombos();
     const id = +this.route.snapshot.params.id;
     if (id) {
       this.findById(id);
     }
+  }
+
+  private onLoadCombos(): void {
+    this.categoriaAtendimentoService.findAll().subscribe(response => {
+      this.categoriasAtendimento = response.result;
+    });
+    this.periodoService.findAll().subscribe(response => {
+      this.periodos = response.result;
+    });
+    this.diaSemanaService.findAll().subscribe(response => {
+      this.diasSemana = response.result;
+    });
   }
 
   private async findById(id): Promise<void> {
@@ -42,32 +63,36 @@ export class ReservaFormComponent implements OnInit {
     const response = await this.service.findById(id).toPromise();
     this.form.setValue({
       id: response.result.id,
-      pacienteId: response.result.pacienteId,
+      pacienteNomeCompleto: response.result.pacienteNomeCompleto,
+      telefone: response.result.telefone,
+      categoriaAtendimentoId: response.result.categoriaAtendimentoId,
+      periodoId: response.result.periodoId,
+      horario: response.result.horario,
+      diaSemanaId: response.result.diaSemanaId,
       observacao: response.result.observacao
     });
-    if (!this.pacientes.find(x => x.id === response.result.pacienteId)) {
-      this.pacientes.push(((await this.pacienteService.findById(response.result.pacienteId).toPromise()).result));
-      this.pacientes = [...this.pacientes];
-    }
   }
 
   private onCreateForm(): void {
     this.form = this.formBuilder.group({
       id: [null],
-      pacienteId: [null, Validators.required],
+      pacienteNomeCompleto: [null, Validators.required],
+      telefone: [null],
+      categoriaAtendimentoId: [null],
+      periodoId: [null],
+      horario: [null],
+      diaSemanaId: [null],
       observacao: [null]
-    });
-  }
-
-  private onLoadPacientes(): void {
-    this.pacienteService.findAllWithoutBondWithReservation().subscribe(response => {
-      this.pacientes = response.result;
     });
   }
 
   public onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
+      if (!Util.isHorarioValido(this.form.controls.horario.value)) {
+        this.messageService.sendMessageError(Messages.MSG0062);
+        return;
+      }
       const formValue: Reserva = {
         ...this.form.value
       };
@@ -93,4 +118,7 @@ export class ReservaFormComponent implements OnInit {
     window.history.back();
   }
 
+  getPhoneNumberMask(): string {
+    return Util.getPhoneNumberMask(this.form.controls.telefone);
+  }
 }
