@@ -1,0 +1,130 @@
+<section class="content-header">
+    <h1>Relatório - Quantidade de Atendimento por Período</h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Filtros</h3>
+                </div>
+                <div class="box-body">
+                    <form [formGroup]="form">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label for="agruparPorMes">
+                                            <input id="agruparPorMes" type="checkbox" formControlName="agruparPorMes"
+                                                (change)="onChangeCheckboxAgruparPorMes()" />
+                                            Agrupar por Mês
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="!form.controls.agruparPorMes.value">
+                                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                                    <div class="form-group">
+                                        <label for="dataInicio">Data Início</label>
+                                        <input id="dataInicio" [validation]="false" type="text" mask="00/00/0000"
+                                            formControlName="dataInicio" class="form-control" [readonly]="mesAno" />
+                                        <app-message-required [isInvalidForm]="isInvalidForm"
+                                            [controlComponent]="form.get('dataInicio')">
+                                        </app-message-required>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                                    <div class="form-group">
+                                        <label for="dataFim">Data Fim</label>
+                                        <input id="dataFim" [validation]="false" type="text" mask="00/00/0000"
+                                            formControlName="dataFim" class="form-control" [readonly]="mesAno" />
+                                        <app-message-required [isInvalidForm]="isInvalidForm"
+                                            [controlComponent]="form.get('dataFim')">
+                                        </app-message-required>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="mesAno">Mês/Ano</label>
+                                        <ng-select id="mesAno" [items]="mesAnoList" bindLabel="descricao"
+                                            (change)="onChangeComboMesAno($event)" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="mesAno">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="form.controls.agruparPorMes.value">
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="mesAnoInicio">Mês/Ano Início</label>
+                                        <ng-select id="mesAnoInicio" [items]="mesAnoList" bindLabel="descricao"
+                                            (change)="onChangeComboMesAnoControl('dataInicio', $event)" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="mesAnoInicio" required #mesAnoInicioNgModel="ngModel">
+                                        </ng-select>
+                                        <app-message-required [isInvalidForm]="isInvalidForm"
+                                            [controlComponent]="mesAnoInicioNgModel">
+                                        </app-message-required>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="mesAnoFim">Mês/Ano Fim</label>
+                                        <ng-select id="mesAnoFim" [items]="mesAnoList" bindLabel="descricao"
+                                            (change)="onChangeComboMesAnoControl('dataFim', $event)"
+                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="mesAnoFim" required
+                                            #mesAnoFimNgModel="ngModel">
+                                        </ng-select>
+                                        <app-message-required [isInvalidForm]="isInvalidForm"
+                                            [controlComponent]="mesAnoFimNgModel">
+                                        </app-message-required>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 ">
+                                <div class="form-group">
+                                    <label for="categoriaAtendimento">Categoria de Atendimento</label>
+                                    <ng-select id="categoriaAtendimento" placeholder="Selecione"
+                                        formControlName="categoriasAtendimentoId" [items]="categoriasAtendimento"
+                                        bindLabel="descricao" bindValue="id" [multiple]="true">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-footer">
+                    <button (click)="onClickFormSubmit()" class="btn btn-primary pull-right"
+                        style="margin-left: 15px;"><em class="fa fa-search"></em>&nbsp;Buscar</button>
+                    <button class="btn btn-warning pull-right" (click)="onClickLimparCampos()"><em
+                            class="fa fa-eraser"></em>&nbsp;Limpar</button>
+                </div>
+            </div>
+            <div *ngIf="dados?.length> 0" class="col-md-12" style="padding: 0px">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <h3 class="box-title">Resultado</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <ngx-charts-bar-vertical-2d [view]="view" [scheme]="colorScheme" [results]="dados"
+                            [noBarWhenZero]="false" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                            [legendPosition]="legendPosition" [showXAxisLabel]="showXAxisLabel"
+                            [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                            [legendTitle]="legendTitle" [barPadding]="barPadding" [groupPadding]="groupPadding"
+                            [maxXAxisTickLength]="maxXAxisTickLength" [showDataLabel]="showDataLabel">
+                            <ng-template #legendEntryTemplate let-color="color" let-label="label">
+                                <span [style]="'color: ' + color">{{label}}</span>
+                              </ng-template>
+                        </ngx-charts-bar-vertical-2d>
+                    </div>
+                </div>
+            </div>
+            <app-no-records *ngIf="showNoRecords && !dados?.length"></app-no-records>
+        </div>
+    </div>
+</section>

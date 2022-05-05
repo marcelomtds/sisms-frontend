@@ -73,6 +73,11 @@ export const ROUTES: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'relatorio',
+    loadChildren: () => import('./components/relatorio/relatorio.module').then(m => m.RelatorioModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     canActivate: [AuthGuard],
     redirectTo: 'home'
