@@ -23,7 +23,7 @@ import { Messages } from '../../../shared/messages/messages';
 import { ModalConfirmacaoComponent } from '../../../shared/modais/modal-confirmacao/modal-confirmacao.component';
 import { ModalVisualizarPacoteComponent } from '../../../shared/modais/modal-visualizar-pacote/modal-visualizar-pacote.component';
 import Util from '../../../shared/util/util';
-import { ModalGerenciarLancamentoPacoteComponent } from '../../controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
+import { ModalGerenciarLancamentoComponent } from 'src/app/shared/components/modal-gerenciar-lancamento/modal-gerenciar-lancamento.component';
 
 @Component({
   selector: 'app-pacote-list',
@@ -166,7 +166,7 @@ export class PacoteListComponent extends Pagination<PacoteFilter> implements OnI
     const initialState = {
       dados: (await this.service.findById(id).toPromise()).result
     };
-    this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+    this.modalService.show(ModalGerenciarLancamentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
   public onClickExcluir(id: number): void {
