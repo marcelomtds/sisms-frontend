@@ -18,8 +18,7 @@ import { SharedService } from 'src/app/core/services/shared.service';
 import { Messages } from 'src/app/shared/messages/messages';
 import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
 import Util from 'src/app/shared/util/util';
-import { ModalGerenciarLancamentoPacoteComponent } from '../../controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
-import { ModalGerenciarLancamentoSessaoComponent } from '../../controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
+import { ModalGerenciarLancamentoComponent } from 'src/app/shared/components/modal-gerenciar-lancamento/modal-gerenciar-lancamento.component';
 
 @Component({
   selector: 'app-credito-list',
@@ -149,12 +148,12 @@ export class CreditoListComponent implements OnInit {
       initialState = {
         dados: (await this.atendimentoService.findById(lancamento.atendimentoId).toPromise()).result
       };
-      this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+      this.modalService.show(ModalGerenciarLancamentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
     } else if (lancamento.tipoLancamentoId === TipoLancamentoEnum.UTILIZACAO_CREDITO && lancamento.tipoAtendimentoId === TipoAtendimentoEnum.PACOTE) {
       initialState = {
         dados: (await this.pacoteService.findById(lancamento.pacoteId).toPromise()).result
       };
-      this.modalService.show(ModalGerenciarLancamentoPacoteComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+      this.modalService.show(ModalGerenciarLancamentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
     } else if (lancamento.tipoLancamentoId === TipoLancamentoEnum.ENTRADA_CREDITO) {
       this.router.navigate([`/credito/alterar/${lancamento.id}`]);
     }

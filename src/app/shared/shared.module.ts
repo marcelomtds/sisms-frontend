@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ModalGerenciarLancamentoPacoteComponent } from '../components/controle-caixa/modal/gerenciar-lancamento-pacote/modal-gerenciar-lancamento-pacote.component';
-import { ModalGerenciarLancamentoSessaoComponent } from '../components/controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
+import { ModalGerenciarLancamentoComponent } from './components/modal-gerenciar-lancamento/modal-gerenciar-lancamento.component';
 import { SismsCommonsModule } from '../components/sisms-commons.module';
 import { DadosAtendimentoComponent } from './components/dados-atendimento/dados-atendimento.component';
 import { DadosPacoteComponent } from './components/dados-pacote/dados-pacote.component';
@@ -35,8 +34,7 @@ import { PipeModule } from './pipe/pipe.module';
     DadosPacoteComponent
   ],
   declarations: [
-    ModalGerenciarLancamentoPacoteComponent,
-    ModalGerenciarLancamentoSessaoComponent,
+    ModalGerenciarLancamentoComponent,
     ModalVisualizarAtendimentoComponent,
     ModalCriarPacoteComponent,
     ModalGerenciarProfissaoComponent,
@@ -56,8 +54,7 @@ import { PipeModule } from './pipe/pipe.module';
     DadosAtendimentoComponent
   ],
   entryComponents: [
-    ModalGerenciarLancamentoPacoteComponent,
-    ModalGerenciarLancamentoSessaoComponent,
+    ModalGerenciarLancamentoComponent,
     ModalVisualizarAtendimentoComponent,
     ModalCriarPacoteComponent,
     ModalGerenciarProfissaoComponent,

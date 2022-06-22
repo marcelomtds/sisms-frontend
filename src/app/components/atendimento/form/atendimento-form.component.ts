@@ -26,7 +26,7 @@ import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmac
 import { ModalCriarPacoteComponent } from 'src/app/shared/modais/modal-criar-pacote/modal-criar-pacote.component';
 import Util from 'src/app/shared/util/util';
 import { AtendimentoService } from '../../../core/services/atendimento.service';
-import { ModalGerenciarLancamentoSessaoComponent } from '../../controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
+import { ModalGerenciarLancamentoComponent } from 'src/app/shared/components/modal-gerenciar-lancamento/modal-gerenciar-lancamento.component';
 
 @Component({
   selector: 'app-atendimento-form',
@@ -508,7 +508,7 @@ export class AtendimentoFormComponent implements OnInit, OnDestroy {
       dados: (await this.service.findById(id).toPromise()).result,
       searchLancamentos: false
     };
-    this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+    this.modalService.show(ModalGerenciarLancamentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
   private showErrorInvalidForm(): void {
