@@ -89,8 +89,9 @@ export class ReservaFormComponent implements OnInit {
   public onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
     if (this.form.valid) {
-      if (!Util.isHorarioValido(this.form.controls.horario.value)) {
-        this.messageService.sendMessageError(Messages.MSG0062);
+      const horario = this.form.controls.horario.value;
+      if (horario && !Util.isHorarioValido(horario)) {
+        this.messageService.sendMessageError(Messages.MSG0089);
         return;
       }
       const formValue: Reserva = {
