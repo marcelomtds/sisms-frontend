@@ -22,7 +22,7 @@ import { Paciente } from '../../../core/model/model/paciente.model';
 import Page from '../../../core/model/model/page.model';
 import { TipoAtendimento } from '../../../core/model/model/tipo-atendimento.model';
 import { AtendimentoService } from '../../../core/services/atendimento.service';
-import { ModalGerenciarLancamentoSessaoComponent } from '../../controle-caixa/modal/gerenciar-lancamento-sessao/modal-gerenciar-lancamento-sessao.component';
+import { ModalGerenciarLancamentoComponent } from 'src/app/shared/components/modal-gerenciar-lancamento/modal-gerenciar-lancamento.component';
 
 @Component({
   selector: 'app-atendimento-list',
@@ -178,7 +178,7 @@ export class AtendimentoListComponent extends Pagination<AtendimentoFilter> impl
     const initialState = {
       dados: (await this.service.findById(id).toPromise()).result
     };
-    this.modalService.show(ModalGerenciarLancamentoSessaoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
+    this.modalService.show(ModalGerenciarLancamentoComponent, { initialState, class: 'gray modal-lg', backdrop: 'static' });
   }
 
 }

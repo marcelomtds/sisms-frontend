@@ -1,11 +1,11 @@
 import { formatCurrency } from "@angular/common";
 import { Component } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { FormaPagamentoEnum } from "src/app/core/model/enum/forma-pagamento.enum";
 import { OpcaoUtilizacaoCreditoEnum } from "src/app/core/model/enum/opcao-utilizacao-credito.enum";
 import { PerfilEnum } from "src/app/core/model/enum/perfil.enum";
-import { SexoEnum } from "src/app/core/model/enum/sexo.enum";
+import { TipoAtendimentoEnum } from "src/app/core/model/enum/tipo-atendimento.enum";
 import { TipoLancamentoEnum } from "src/app/core/model/enum/tipo-lancamento.enum";
 import { LancamentoFilter } from "src/app/core/model/filter/lancamento.filter";
 import { FormaPagamento } from "src/app/core/model/model/forma-pagamento.model";
@@ -27,72 +27,36 @@ import { Pagination } from "../pagination/pagination";
     selector: 'app-modal-gerenciar-lancamento',
     templateUrl: './modal-gerenciar-lancamento.component.html'
 })
-export abstract class ModalGerenciarLancamentoComponent extends Pagination<LancamentoFilter>  {
+export class ModalGerenciarLancamentoComponent extends Pagination<LancamentoFilter>  {
 
-    protected readonly OPCAO_UTILIZACAO_CREDITO_TOTAL = OpcaoUtilizacaoCreditoEnum.TOTAL;
-    protected readonly OPCAO_UTILIZACAO_CREDITO_PARCIAL = OpcaoUtilizacaoCreditoEnum.PARCIAL;
+    readonly OPCAO_UTILIZACAO_CREDITO_TOTAL = OpcaoUtilizacaoCreditoEnum.TOTAL;
+    readonly OPCAO_UTILIZACAO_CREDITO_PARCIAL = OpcaoUtilizacaoCreditoEnum.PARCIAL;
 
-    protected dadosGrid = new Page<Array<Lancamento>>();
-    protected form: FormGroup;
-    protected formasPagamento = new Array<FormaPagamento>();
-    protected isInvalidForm = false;
-    protected showNoRecords = false;
-    protected valorSelecionado = 0;
-    protected saldo = 0;
-    protected currentUser = new Usuario();
-    protected valorParcial = 0;
-    protected opcaoUtilizacaoCredito = OpcaoUtilizacaoCreditoEnum.TOTAL;
-    protected dados: any;
+    dadosGrid = new Page<Array<Lancamento>>();
+    form: FormGroup;
+    formasPagamento = new Array<FormaPagamento>();
+    isInvalidForm = false;
+    showNoRecords = false;
+    valorSelecionado = 0;
+    saldo = 0;
+    currentUser = new Usuario();
+    valorParcial = 0;
+    opcaoUtilizacaoCredito = OpcaoUtilizacaoCreditoEnum.TOTAL;
+    dados: any;
 
     constructor(
-        protected bsModalRef: BsModalRef,
-        protected service: LancamentoService,
-        protected sharedService: SharedService,
-        protected formaPagamentoService: FormaPagamentoService,
-        protected pacoteService: PacoteService,
-        protected atendimentoService: AtendimentoService,
-        protected modalService: BsModalService,
-        protected messageService: MessageService,
-        protected formBuilder: FormBuilder,
+        private bsModalRef: BsModalRef,
+        private service: LancamentoService,
+        private sharedService: SharedService,
+        private formaPagamentoService: FormaPagamentoService,
+        private pacoteService: PacoteService,
+        private atendimentoService: AtendimentoService,
+        private modalService: BsModalService,
+        private formBuilder: FormBuilder,
+        messageService: MessageService,
 
     ) {
         super(messageService);
-    }
-
-    protected abstract searchByFilter(): void;
-    protected abstract findById(): void;
-    protected abstract onCreateForm(): void;
-    protected abstract onClickEditar(lancamento: Lancamento): void;
-
-    protected onLoadComboFormaPagamento(): void {
-        if (this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.UTILIZACAO_CREDITO) {
-            this.formaPagamentoService.findAll().subscribe(response => {
-                this.formasPagamento = response.result;
-            });
-        } else {
-            this.formaPagamentoService.findAllIgnoringIds([FormaPagamentoEnum.UTILIZACAO_CREDITO]).subscribe(response => {
-                this.formasPagamento = response.result;
-            });
-        }
-    }
-
-    protected findPatientBalance(): void {
-        this.service.findPatientBalance(this.dados.pacienteId).subscribe(response => {
-            this.saldo = response.result;
-        });
-    }
-
-    protected resetarCampos(): void {
-        this.showNoRecords = false;
-        this.isInvalidForm = false;
-        this.valorSelecionado = 0;
-        this.form.controls.valor.enable();
-        this.form.controls.valor.updateValueAndValidity();
-        this.form.controls.formaPagamentoId.enable();
-        this.form.controls.formaPagamentoId.updateValueAndValidity();
-        this.valorParcial = 0;
-        this.opcaoUtilizacaoCredito = this.OPCAO_UTILIZACAO_CREDITO_TOTAL;
-        this.onCreateForm();
     }
 
     ngOnInit(): void {
@@ -103,12 +67,16 @@ export abstract class ModalGerenciarLancamentoComponent extends Pagination<Lanca
         this.initOrderBy();
     }
 
-    exibirDadosPacote(): boolean {
-        return !!this.form.controls.pacoteId;
+    get isAdministrador(): boolean {
+        return this.currentUser.perfilRole === PerfilEnum.ADMINISTRADOR;
     }
 
-    exibirDadosAtendimento(): boolean {
-        return !!this.form.controls.atendimentoId;
+    get isPacote(): boolean {
+        return !this.isAtendimento;
+    }
+
+    get isAtendimento(): boolean {
+        return this.dados.tipoAtendimentoId === TipoAtendimentoEnum.SESSAO;
     }
 
     onClickFormSubmit(): void {
@@ -195,8 +163,75 @@ export abstract class ModalGerenciarLancamentoComponent extends Pagination<Lanca
         this.bsModalRef.hide();
     }
 
-    get isAdministrador(): boolean {
-        return this.currentUser.perfilRole === PerfilEnum.ADMINISTRADOR;
+    onClickEditar(lancamento: Lancamento): void {
+        this.messageService.clearAllMessages();
+        this.resetarCampos();
+        this.valorSelecionado = lancamento.valor;
+        this.service.findById(lancamento.id).subscribe(response => {
+            this.form.setValue({
+                id: response.result.id,
+                data: Util.convertDateToString(response.result.data),
+                valor: response.result.valor,
+                observacao: response.result.observacao || null,
+                pacoteId: response.result.pacoteId || null,
+                atendimentoId: response.result.atendimentoId || null,
+                formaPagamentoId: response.result.formaPagamentoId,
+                tipoLancamentoId: response.result.tipoLancamentoId,
+                pacienteId: response.result.pacienteId,
+                tipoAtendimentoId: response.result.tipoAtendimentoId
+            });
+            if (this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.UTILIZACAO_CREDITO) {
+                this.form.controls.formaPagamentoId.disable();
+                this.form.controls.formaPagamentoId.updateValueAndValidity();
+            }
+            this.onLoadComboFormaPagamento();
+        });
+    }
+
+    searchByFilter(): void {
+        this.filtro = {
+            ...this.filtro,
+            filter: {
+                pacoteId: this.isPacote ? this.dados.id : null,
+                atendimentoId: this.isAtendimento ? this.dados.id : null
+            }
+        };
+        this.service.findByFilter(this.filtro).subscribe(response => {
+            this.showNoRecords = true;
+            this.dadosGrid = response.result;
+            this.findPatientBalance();
+        });
+    }
+
+    private onLoadComboFormaPagamento(): void {
+        if (this.form.controls.tipoLancamentoId.value === TipoLancamentoEnum.UTILIZACAO_CREDITO) {
+            this.formaPagamentoService.findAll().subscribe(response => {
+                this.formasPagamento = response.result;
+            });
+        } else {
+            this.formaPagamentoService.findAllIgnoringIds([FormaPagamentoEnum.UTILIZACAO_CREDITO]).subscribe(response => {
+                this.formasPagamento = response.result;
+            });
+        }
+    }
+
+    private findPatientBalance(): void {
+        this.service.findPatientBalance(this.dados.pacienteId).subscribe(response => {
+            this.saldo = response.result;
+        });
+    }
+
+    private resetarCampos(): void {
+        this.showNoRecords = false;
+        this.isInvalidForm = false;
+        this.valorSelecionado = 0;
+        this.form.controls.valor.enable();
+        this.form.controls.valor.updateValueAndValidity();
+        this.form.controls.formaPagamentoId.enable();
+        this.form.controls.formaPagamentoId.updateValueAndValidity();
+        this.valorParcial = 0;
+        this.opcaoUtilizacaoCredito = this.OPCAO_UTILIZACAO_CREDITO_TOTAL;
+        this.onCreateForm();
     }
 
     private initOrderBy(): void {
@@ -226,6 +261,40 @@ export abstract class ModalGerenciarLancamentoComponent extends Pagination<Lanca
             this.service.create(formValue).subscribe(response => {
                 this.messageService.sendMessageSuccess(response.message);
                 this.onUpdate();
+            });
+        }
+    }
+
+    private onCreateForm(): void {
+        this.form = this.formBuilder.group({
+            id: [null],
+            data: [null, Validators.required],
+            valor: [0, Validators.required],
+            observacao: [null],
+            pacoteId: [this.isPacote ? this.dados.id : null],
+            atendimentoId: [this.isAtendimento ? this.dados.id : null],
+            formaPagamentoId: [null, Validators.required],
+            tipoLancamentoId: [TipoLancamentoEnum.ENTRADA, Validators.required],
+            pacienteId: [this.dados.pacienteId, Validators.required],
+            tipoAtendimentoId: [this.isPacote ? TipoAtendimentoEnum.PACOTE : TipoAtendimentoEnum.SESSAO, Validators.required]
+        });
+        if (this.isPacote) {
+            this.form.controls.pacoteId.setValidators(Validators.required);
+            this.form.controls.pacoteId.updateValueAndValidity();
+        } else {
+            this.form.controls.atendimentoId.setValidators(Validators.required);
+            this.form.controls.atendimentoId.updateValueAndValidity();
+        }
+    }
+
+    private findById(): void {
+        if (this.isPacote) {
+            this.pacoteService.findById(this.dados.id).subscribe(response => {
+                this.dados = response.result;
+            });
+        } else {
+            this.atendimentoService.findById(this.dados.id).subscribe(response => {
+                this.dados = response.result;
             });
         }
     }

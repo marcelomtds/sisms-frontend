@@ -4,8 +4,8 @@
                 class="fa fa-close"></em>&nbsp;Fechar</button>
     </div>
 
-    <app-dados-pacote *ngIf="exibirDadosPacote()" [pacote]="dados"></app-dados-pacote>
-    <app-dados-atendimento *ngIf="exibirDadosAtendimento()" [atendimento]="dados"></app-dados-atendimento>
+    <app-dados-pacote *ngIf="isPacote" [pacote]="dados"></app-dados-pacote>
+    <app-dados-atendimento *ngIf="isAtendimento" [atendimento]="dados"></app-dados-atendimento>
 
     <div class="box box-primary" *ngIf="saldo">
         <div class="box-header with-border">
