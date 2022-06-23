@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { PerfilEnum } from 'src/app/core/model/enum/perfil.enum';
 import { TipoAtendimentoEnum } from 'src/app/core/model/enum/tipo-atendimento.enum';
 import { TipoLancamentoEnum } from 'src/app/core/model/enum/tipo-lancamento.enum';
@@ -17,8 +17,8 @@ import { PacoteService } from 'src/app/core/services/pacote.service';
 import { SharedService } from 'src/app/core/services/shared.service';
 import { Messages } from 'src/app/shared/messages/messages';
 import { ModalConfirmacaoComponent } from 'src/app/shared/modais/modal-confirmacao/modal-confirmacao.component';
-import Util from 'src/app/shared/util/util';
 import { ModalGerenciarLancamentoComponent } from 'src/app/shared/components/modal-gerenciar-lancamento/modal-gerenciar-lancamento.component';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-credito-list',
@@ -73,17 +73,7 @@ export class CreditoListComponent implements OnInit {
 
   public onClickFormSubmit(): void {
     this.messageService.clearAllMessages();
-    const dataInicio = this.form.value.dataInicio;
-    const dataFim = this.form.value.dataFim;
     if (this.form.valid) {
-      if (dataInicio && !Util.isDataValida(dataInicio)) {
-        this.messageService.sendMessageError(Messages.MSG0013);
-        return;
-      }
-      if (dataFim && !Util.isDataValida(dataFim)) {
-        this.messageService.sendMessageError(Messages.MSG0014);
-        return;
-      }
       this.onLoadExtract();
     } else {
       this.isInvalidForm = true;
@@ -92,14 +82,19 @@ export class CreditoListComponent implements OnInit {
   }
 
   private onLoadExtract(): void {
-    this.service.findExtractByPatient(this.form.controls.pacienteId.value).subscribe(response => {
-      this.dados = response.result;
-      this.dados.forEach(it => { it.valor = it.tipoLancamentoId === TipoLancamentoEnum.UTILIZACAO_CREDITO ? it.valor * -1 : it.valor });
-      this.service.findPatientBalance(this.form.controls.pacienteId.value).subscribe(response => {
-        this.saldo = response.result;
+    const findExtractByPatient = this.service.findExtractByPatient(this.form.controls.pacienteId.value);
+    const findPatientBalance = this.service.findPatientBalance(this.form.controls.pacienteId.value);
+    forkJoin([findExtractByPatient, findPatientBalance])
+      .pipe(
+        tap(response => response[0].result.forEach(it => {
+          it.valor = it.tipoLancamentoId === TipoLancamentoEnum.UTILIZACAO_CREDITO ? it.valor * -1 : it.valor;
+        }))
+      )
+      .subscribe(response => {
+        this.dados = response[0].result;
+        this.saldo = response[1].result;
+        this.showNoRecords = true;
       });
-      this.showNoRecords = true;
-    });
   }
 
   showDeleteButton(lancamento: Lancamento): boolean {
