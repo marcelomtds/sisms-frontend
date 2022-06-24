@@ -6,4 +6,6 @@ export enum FormaPagamentoEnum {
     CHEQUE = 5,
     OUTROS = 6,
     UTILIZACAO_CREDITO = 7,
+    PIX = 8,
+    TRANSFERENCIA_ELETRONICA = 9
 }
